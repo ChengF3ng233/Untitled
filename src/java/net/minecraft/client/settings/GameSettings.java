@@ -144,7 +144,6 @@ public class GameSettings
     public int streamMicToggleBehavior = 0;
     public boolean useNativeTransport = true;
     public boolean entityShadows = true;
-    public boolean realmsNotifications = true;
     public KeyBinding keyBindForward = new KeyBinding("key.forward", 17, "key.categories.movement");
     public KeyBinding keyBindLeft = new KeyBinding("key.left", 30, "key.categories.movement");
     public KeyBinding keyBindBack = new KeyBinding("key.back", 31, "key.categories.movement");
@@ -683,11 +682,6 @@ public class GameSettings
             this.entityShadows = !this.entityShadows;
         }
 
-        if (settingsOption == GameSettings.Options.REALMS_NOTIFICATIONS)
-        {
-            this.realmsNotifications = !this.realmsNotifications;
-        }
-
         this.saveOptions();
     }
 
@@ -751,9 +745,6 @@ public class GameSettings
 
             case ENTITY_SHADOWS:
                 return this.entityShadows;
-
-            case REALMS_NOTIFICATIONS:
-                return this.realmsNotifications;
 
             default:
                 return false;
@@ -1222,11 +1213,6 @@ public class GameSettings
                                 this.entityShadows = astring[1].equals("true");
                             }
 
-                            if (astring[0].equals("realmsNotifications"))
-                            {
-                                this.realmsNotifications = astring[1].equals("true");
-                            }
-
                             for (KeyBinding keybinding : this.keyBindings)
                             {
                                 if (astring[0].equals("key_" + keybinding.getKeyDescription()))
@@ -1378,7 +1364,6 @@ public class GameSettings
             printwriter.println("reducedDebugInfo:" + this.reducedDebugInfo);
             printwriter.println("useNativeTransport:" + this.useNativeTransport);
             printwriter.println("entityShadows:" + this.entityShadows);
-            printwriter.println("realmsNotifications:" + this.realmsNotifications);
 
             for (KeyBinding keybinding : this.keyBindings)
             {
@@ -3384,7 +3369,6 @@ public class GameSettings
         BLOCK_ALTERNATIVES("options.blockAlternatives", false, true),
         REDUCED_DEBUG_INFO("options.reducedDebugInfo", false, true),
         ENTITY_SHADOWS("options.entityShadows", false, true),
-        REALMS_NOTIFICATIONS("options.realmsNotifications", false, true),
         FOG_FANCY("of.options.FOG_FANCY", false, false),
         FOG_START("of.options.FOG_START", false, false),
         MIPMAP_TYPE("of.options.MIPMAP_TYPE", true, false, 0.0F, 3.0F, 1.0F),

@@ -19,8 +19,6 @@ import net.minecraft.client.renderer.WorldRenderer;
 import net.minecraft.client.renderer.texture.DynamicTexture;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.client.resources.I18n;
-import net.minecraft.client.settings.GameSettings;
-import net.minecraft.realms.RealmsBridge;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.MathHelper;
 import net.minecraft.util.ResourceLocation;
@@ -86,17 +84,9 @@ public class GuiMainMenu extends GuiScreen implements GuiYesNoCallback
     private int field_92019_w;
     private ResourceLocation backgroundTexture;
 
-    /** Minecraft Realms button. */
-    private GuiButton realmsButton;
-    private boolean field_183502_L;
-    private GuiScreen field_183503_M;
-    private GuiButton modButton;
-    private GuiScreen modUpdateNotification;
-
     public GuiMainMenu()
     {
         this.openGLWarning2 = field_96138_a;
-        this.field_183502_L = false;
         this.splashText = "missingno";
         BufferedReader bufferedreader = null;
 
@@ -159,22 +149,12 @@ public class GuiMainMenu extends GuiScreen implements GuiYesNoCallback
         }
     }
 
-    private boolean func_183501_a()
-    {
-        return Minecraft.getMinecraft().gameSettings.getOptionOrdinalValue(GameSettings.Options.REALMS_NOTIFICATIONS) && this.field_183503_M != null;
-    }
-
     /**
      * Called from the main game loop to update the screen.
      */
     public void updateScreen()
     {
         ++this.panoramaTimer;
-
-        if (this.func_183501_a())
-        {
-            this.field_183503_M.updateScreen();
-        }
     }
 
     /**
@@ -243,21 +223,6 @@ public class GuiMainMenu extends GuiScreen implements GuiYesNoCallback
             this.field_92020_v = this.field_92022_t + k;
             this.field_92019_w = this.field_92021_u + 24;
         }
-
-        this.mc.setConnectedToRealms(false);
-
-        if (Minecraft.getMinecraft().gameSettings.getOptionOrdinalValue(GameSettings.Options.REALMS_NOTIFICATIONS) && !this.field_183502_L)
-        {
-            RealmsBridge realmsbridge = new RealmsBridge();
-            this.field_183503_M = realmsbridge.getNotificationScreen(this);
-            this.field_183502_L = true;
-        }
-
-        if (this.func_183501_a())
-        {
-            this.field_183503_M.setGuiSize(this.width, this.height);
-            this.field_183503_M.initGui();
-        }
     }
 
     /**
@@ -267,16 +232,6 @@ public class GuiMainMenu extends GuiScreen implements GuiYesNoCallback
     {
         this.buttonList.add(new GuiButton(1, this.width / 2 - 100, p_73969_1_, I18n.format("menu.singleplayer", new Object[0])));
         this.buttonList.add(new GuiButton(2, this.width / 2 - 100, p_73969_1_ + p_73969_2_ * 1, I18n.format("menu.multiplayer", new Object[0])));
-
-        if (Reflector.GuiModList_Constructor.exists())
-        {
-            this.buttonList.add(this.realmsButton = new GuiButton(14, this.width / 2 + 2, p_73969_1_ + p_73969_2_ * 2, 98, 20, I18n.format("menu.online", new Object[0]).replace("Minecraft", "").trim()));
-            this.buttonList.add(this.modButton = new GuiButton(6, this.width / 2 - 100, p_73969_1_ + p_73969_2_ * 2, 98, 20, I18n.format("fml.menu.mods", new Object[0])));
-        }
-        else
-        {
-            this.buttonList.add(this.realmsButton = new GuiButton(14, this.width / 2 - 100, p_73969_1_ + p_73969_2_ * 2, I18n.format("menu.online", new Object[0])));
-        }
     }
 
     /**
@@ -320,11 +275,6 @@ public class GuiMainMenu extends GuiScreen implements GuiYesNoCallback
             this.mc.displayGuiScreen(new GuiMultiplayer(this));
         }
 
-        if (button.id == 14 && this.realmsButton.visible)
-        {
-            this.switchToRealms();
-        }
-
         if (button.id == 4)
         {
             this.mc.shutdown();
@@ -351,12 +301,6 @@ public class GuiMainMenu extends GuiScreen implements GuiYesNoCallback
                 this.mc.displayGuiScreen(guiyesno);
             }
         }
-    }
-
-    private void switchToRealms()
-    {
-        RealmsBridge realmsbridge = new RealmsBridge();
-        realmsbridge.switchToRealms(this);
     }
 
     public void confirmClicked(boolean result, int id)
@@ -679,16 +623,6 @@ public class GuiMainMenu extends GuiScreen implements GuiYesNoCallback
         }
 
         super.drawScreen(mouseX, mouseY, partialTicks);
-
-        if (this.func_183501_a())
-        {
-            this.field_183503_M.drawScreen(mouseX, mouseY, partialTicks);
-        }
-
-        if (this.modUpdateNotification != null)
-        {
-            this.modUpdateNotification.drawScreen(mouseX, mouseY, partialTicks);
-        }
     }
 
     /**
@@ -706,22 +640,6 @@ public class GuiMainMenu extends GuiScreen implements GuiYesNoCallback
                 guiconfirmopenlink.disableSecurityWarning();
                 this.mc.displayGuiScreen(guiconfirmopenlink);
             }
-        }
-
-        if (this.func_183501_a())
-        {
-            this.field_183503_M.mouseClicked(mouseX, mouseY, mouseButton);
-        }
-    }
-
-    /**
-     * Called when the screen is unloaded. Used to disable keyboard repeat events
-     */
-    public void onGuiClosed()
-    {
-        if (this.field_183503_M != null)
-        {
-            this.field_183503_M.onGuiClosed();
         }
     }
 }
