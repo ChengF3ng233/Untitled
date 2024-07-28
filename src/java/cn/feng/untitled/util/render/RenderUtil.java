@@ -1,6 +1,10 @@
 package cn.feng.untitled.util.render;
 
+import cn.feng.untitled.util.MinecraftInstance;
+import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.client.renderer.GlStateManager;
+import org.lwjgl.input.Mouse;
+import org.lwjgl.opengl.GL11;
 
 import static org.lwjgl.opengl.GL11.*;
 
@@ -8,7 +12,7 @@ import static org.lwjgl.opengl.GL11.*;
  * @author ChengFeng
  * @since 2024/7/28
  **/
-public class RenderUtil {
+public class RenderUtil extends MinecraftInstance {
     /**
      * This will set the alpha limit to a specified value ranging from 0-1
      * @param limit minimal alpha value
@@ -43,5 +47,61 @@ public class RenderUtil {
      */
     public static void scaleEnd() {
         glPopMatrix();
+    }
+
+    /**
+     * GL Scissor
+     * @param x x
+     * @param y y
+     * @param width width
+     * @param height height
+     */
+    public static void scissorStart(double x, double y, double width, double height) {
+        GL11.glPushMatrix();
+        glEnable(GL_SCISSOR_TEST);
+        ScaledResolution sr = new ScaledResolution(mc);
+        final double scale = sr.getScaleFactor();
+        double finalHeight = height * scale;
+        double finalY = (sr.getScaledHeight() - y) * scale;
+        double finalX = x * scale;
+        double finalWidth = width * scale;
+        glScissor((int) finalX, (int) (finalY - finalHeight), (int) finalWidth, (int) finalHeight);
+    }
+
+    /**
+     * End GL Scissor
+     */
+    public static void scissorEnd() {
+        glDisable(GL_SCISSOR_TEST);
+        GL11.glPopMatrix();
+    }
+
+    /**
+     * Judge if cursor is hovering specific area.
+     * @param mouseX mX
+     * @param mouseY mY
+     * @param x x
+     * @param y y
+     * @param width width
+     * @param height height
+     * @return boolean
+     */
+    public static boolean hovering(float mouseX, float mouseY, float x, float y, float width, float height) {
+        return mouseX >= x && mouseY >= y && mouseX < x + width && mouseY < y + height;
+    }
+
+    /**
+     * Judge if mouse button is down while the cursor in specific area.
+     * @param mouseX mX
+     * @param mouseY mY
+     * @param x x
+     * @param y y
+     * @param width width
+     * @param height height
+     * @param button mouse button
+     * @return boolean
+     */
+    public static boolean holding(float mouseX, float mouseY, float x, float y, float width, float height, int button) {
+        return Mouse.isButtonDown(button) && hovering(mouseX, mouseY, x, y, width, height);
     }
 }

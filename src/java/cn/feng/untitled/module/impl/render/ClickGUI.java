@@ -12,7 +12,7 @@ import org.lwjgl.input.Keyboard;
  * @since 2024/7/28
  **/
 public class ClickGUI extends Module {
-    public ModeValue mode = new ModeValue("Mode", "Window", new String[]{"Window", "Dropdown"});
+    public ModeValue mode = new ModeValue("Mode", "NeverLose", new String[]{"NeverLose", "Dropdown"});
 
     public ClickGUI() {
         super("ClickGUI", ModuleCategory.RENDER, Keyboard.KEY_RSHIFT);
@@ -27,7 +27,7 @@ public class ClickGUI extends Module {
                 break;
             case "Window":
             default:
-                mc.displayGuiScreen(Client.instance.hudManager.windowGUI);
+                mc.displayGuiScreen(Client.instance.hudManager.neverLoseGUI);
                 break;
         }
         enabled = false;
