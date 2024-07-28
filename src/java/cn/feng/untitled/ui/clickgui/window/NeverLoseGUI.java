@@ -1,5 +1,6 @@
 package cn.feng.untitled.ui.clickgui.window;
 
+import cn.feng.untitled.ui.font.FontUtil;
 import cn.feng.untitled.util.animation.Animation;
 import cn.feng.untitled.util.animation.Direction;
 import cn.feng.untitled.util.animation.impl.SmoothStepAnimation;
@@ -28,7 +29,7 @@ public class NeverLoseGUI extends GuiScreen {
         width = 420f;
         height = 310f;
         leftWidth = 90f;
-        topWidth = 40f;
+        topWidth = 35f;
         radius = 4f;
         dragging = false;
 
@@ -72,6 +73,11 @@ public class NeverLoseGUI extends GuiScreen {
         RoundedUtil.drawRoundOutline(x + leftWidth - radius, y - radius, width - leftWidth + radius * 2, topWidth + radius, radius, 0.2f, ThemeColor.titleColor, ThemeColor.outlineColor);
         RenderUtil.scissorEnd();
         StencilUtil.uninitStencilBuffer();
+
+        //Title
+        float gap = 2f;
+        FontUtil.FontType.TENACITY.boldSize(28).drawCenteredString("NEVERLOSE", x + leftWidth / 2f, y + topWidth / 3f, ThemeColor.focusedColor.getRGB());
+        FontUtil.FontType.TENACITY.boldSize(28).drawCenteredString("NEVERLOSE", x + leftWidth / 2f - 0.5f, y + topWidth / 3f - 0.5f, Color.WHITE.getRGB());
 
         RenderUtil.scaleEnd();
     }

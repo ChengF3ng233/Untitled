@@ -104,4 +104,23 @@ public class RenderUtil extends MinecraftInstance {
     public static boolean holding(float mouseX, float mouseY, float x, float y, float width, float height, int button) {
         return Mouse.isButtonDown(button) && hovering(mouseX, mouseY, x, y, width, height);
     }
+
+    /**
+     This method colors the next avalible texture with a specified alpha value ranging from 0-1
+      */
+    public static void color(int color, float alpha) {
+        float r = (float) (color >> 16 & 255) / 255.0F;
+        float g = (float) (color >> 8 & 255) / 255.0F;
+        float b = (float) (color & 255) / 255.0F;
+        GlStateManager.color(r, g, b, alpha);
+    }
+
+    /**
+     * Colors the next texture without a specified alpha value
+     * @param color color
+     */
+    public static void color(int color) {
+        color(color, (float) (color >> 24 & 255) / 255.0F);
+    }
+
 }
