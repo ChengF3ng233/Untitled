@@ -1,5 +1,7 @@
 package net.minecraft.client.gui;
 
+import cn.feng.untitled.Client;
+import cn.feng.untitled.event.impl.ChatEvent;
 import com.google.common.base.Splitter;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
@@ -485,10 +487,15 @@ public abstract class GuiScreen extends Gui implements GuiYesNoCallback
 
     public void sendChatMessage(String msg, boolean addToChat)
     {
+        ChatEvent chatEvent = new ChatEvent(msg);
+        Client.instance.eventBus.post(chatEvent);
+
         if (addToChat)
         {
             this.mc.ingameGUI.getChatGUI().addToSentMessages(msg);
         }
+
+        if (chatEvent.isCancelled()) return;
 
         this.mc.thePlayer.sendChatMessage(msg);
     }

@@ -1,4 +1,4 @@
-package cn.feng.untitled.util;
+package cn.feng.untitled.util.misc;
 
 import org.apache.logging.log4j.LogManager;
 
@@ -7,7 +7,7 @@ import org.apache.logging.log4j.LogManager;
  * @since 2024/7/28
  **/
 public class Logger {
-    private static final org.apache.logging.log4j.Logger logger = LogManager.getLogger();
+    private static final org.apache.logging.log4j.Logger logger = LogManager.getLogger("Untitled");
     public static void info(String msg) {
         logger.info(msg);
     }
