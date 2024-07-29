@@ -1,9 +1,12 @@
 package net.minecraft.client.gui;
 
+import cn.feng.untitled.util.render.RoundedUtil;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.settings.GameSettings;
 import net.minecraft.util.MathHelper;
+
+import java.awt.*;
 
 public class GuiOptionSlider extends GuiButton
 {
@@ -56,10 +59,7 @@ public class GuiOptionSlider extends GuiButton
                 this.displayString = mc.gameSettings.getKeyBinding(this.options);
             }
 
-            mc.getTextureManager().bindTexture(buttonTextures);
-            GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
-            this.drawTexturedModalRect(this.xPosition + (int)(this.sliderValue * (float)(this.width - 8)), this.yPosition, 0, 66, 4, 20);
-            this.drawTexturedModalRect(this.xPosition + (int)(this.sliderValue * (float)(this.width - 8)) + 4, this.yPosition, 196, 66, 4, 20);
+            RoundedUtil.drawRound(this.xPosition + 2f, this.yPosition + 2f, this.sliderValue * this.width - 4f, this.height - 4f, 1f, new Color(200, 200, 200, 100));
         }
     }
 

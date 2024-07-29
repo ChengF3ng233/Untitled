@@ -17,5 +17,4 @@ public class SmoothStepAnimation extends Animation {
     protected double getEquation(double x) {
         return -2 * Math.pow(x, 3) + (3 * Math.pow(x, 2));
     }
-
 }

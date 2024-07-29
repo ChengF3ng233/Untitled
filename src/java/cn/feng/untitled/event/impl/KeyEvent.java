@@ -1,6 +1,6 @@
 package cn.feng.untitled.event.impl;
 
-import cn.feng.untitled.event.CancellableEvent;
+import cn.feng.untitled.event.api.CancellableEvent;
 
 /**
  * @author ChengFeng

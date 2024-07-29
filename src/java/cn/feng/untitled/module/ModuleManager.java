@@ -1,6 +1,6 @@
 package cn.feng.untitled.module;
 
-import cn.feng.untitled.event.SubscribeEvent;
+import cn.feng.untitled.event.api.SubscribeEvent;
 import cn.feng.untitled.event.impl.KeyEvent;
 import cn.feng.untitled.module.impl.movement.ToggleSprint;
 import cn.feng.untitled.module.impl.render.ClickGUI;

@@ -3,7 +3,7 @@ package cn.feng.untitled;
 import cn.feng.untitled.command.CommandManager;
 import cn.feng.untitled.event.EventBus;
 import cn.feng.untitled.module.ModuleManager;
-import cn.feng.untitled.ui.font.FontUtil;
+import cn.feng.untitled.ui.font.FontLoader;
 import cn.feng.untitled.ui.hud.HudManager;
 import cn.feng.untitled.util.misc.Logger;
 import org.lwjgl.opengl.Display;
@@ -18,10 +18,10 @@ public enum Client {
     public HudManager hudManager;
 
     public void start() {
-        Logger.info("Client preparing...");
+        Logger.info("Client starting up...");
 
         Logger.info("Loading fonts...");
-        FontUtil.setupFonts();
+        FontLoader.registerFonts();
 
         Logger.info("Initializing managers...");
         eventBus = new EventBus();
@@ -38,6 +38,7 @@ public enum Client {
         hudManager.initGUI();
 
         Display.setTitle(CLIENT_NAME);
+        Logger.info("Done.");
     }
 
     public void stop() {

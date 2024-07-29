@@ -1,7 +1,7 @@
 package cn.feng.untitled.command;
 
 import cn.feng.untitled.command.impl.HelpCommand;
-import cn.feng.untitled.event.SubscribeEvent;
+import cn.feng.untitled.event.api.SubscribeEvent;
 import cn.feng.untitled.event.impl.ChatEvent;
 import cn.feng.untitled.event.type.PacketType;
 import cn.feng.untitled.util.misc.ChatUtil;

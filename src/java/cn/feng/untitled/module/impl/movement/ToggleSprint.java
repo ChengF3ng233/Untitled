@@ -1,7 +1,7 @@
 package cn.feng.untitled.module.impl.movement;
 
 import cn.feng.untitled.event.type.EventType;
-import cn.feng.untitled.event.SubscribeEvent;
+import cn.feng.untitled.event.api.SubscribeEvent;
 import cn.feng.untitled.event.impl.MotionEvent;
 import cn.feng.untitled.module.Module;
 import cn.feng.untitled.module.ModuleCategory;

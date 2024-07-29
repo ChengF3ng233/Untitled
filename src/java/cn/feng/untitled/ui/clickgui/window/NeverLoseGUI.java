@@ -1,6 +1,5 @@
 package cn.feng.untitled.ui.clickgui.window;
 
-import cn.feng.untitled.ui.font.FontUtil;
 import cn.feng.untitled.util.animation.Animation;
 import cn.feng.untitled.util.animation.Direction;
 import cn.feng.untitled.util.animation.impl.SmoothStepAnimation;
@@ -76,8 +75,6 @@ public class NeverLoseGUI extends GuiScreen {
 
         //Title
         float gap = 2f;
-        FontUtil.FontType.TENACITY.boldSize(28).drawCenteredString("NEVERLOSE", x + leftWidth / 2f, y + topWidth / 3f, ThemeColor.focusedColor.getRGB());
-        FontUtil.FontType.TENACITY.boldSize(28).drawCenteredString("NEVERLOSE", x + leftWidth / 2f - 0.5f, y + topWidth / 3f - 0.5f, Color.WHITE.getRGB());
 
         RenderUtil.scaleEnd();
     }
