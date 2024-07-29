@@ -3,31 +3,38 @@ package net.minecraft.client.model;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.MathHelper;
 
-public class ModelVillager extends ModelBase
-{
-    /** The head box of the VillagerModel */
+public class ModelVillager extends ModelBase {
+    /**
+     * The head box of the VillagerModel
+     */
     public ModelRenderer villagerHead;
 
-    /** The body of the VillagerModel */
+    /**
+     * The body of the VillagerModel
+     */
     public ModelRenderer villagerBody;
 
-    /** The arms of the VillagerModel */
+    /**
+     * The arms of the VillagerModel
+     */
     public ModelRenderer villagerArms;
 
-    /** The right leg of the VillagerModel */
+    /**
+     * The right leg of the VillagerModel
+     */
     public ModelRenderer rightVillagerLeg;
 
-    /** The left leg of the VillagerModel */
+    /**
+     * The left leg of the VillagerModel
+     */
     public ModelRenderer leftVillagerLeg;
     public ModelRenderer villagerNose;
 
-    public ModelVillager(float p_i1163_1_)
-    {
+    public ModelVillager(float p_i1163_1_) {
         this(p_i1163_1_, 0.0F, 64, 64);
     }
 
-    public ModelVillager(float p_i1164_1_, float p_i1164_2_, int p_i1164_3_, int p_i1164_4_)
-    {
+    public ModelVillager(float p_i1164_1_, float p_i1164_2_, int p_i1164_3_, int p_i1164_4_) {
         this.villagerHead = (new ModelRenderer(this)).setTextureSize(p_i1164_3_, p_i1164_4_);
         this.villagerHead.setRotationPoint(0.0F, 0.0F + p_i1164_2_, 0.0F);
         this.villagerHead.setTextureOffset(0, 0).addBox(-4.0F, -10.0F, -4.0F, 8, 10, 8, p_i1164_1_);
@@ -56,8 +63,7 @@ public class ModelVillager extends ModelBase
     /**
      * Sets the models various rotation angles then renders the model.
      */
-    public void render(Entity entityIn, float p_78088_2_, float p_78088_3_, float p_78088_4_, float p_78088_5_, float p_78088_6_, float scale)
-    {
+    public void render(Entity entityIn, float p_78088_2_, float p_78088_3_, float p_78088_4_, float p_78088_5_, float p_78088_6_, float scale) {
         this.setRotationAngles(p_78088_2_, p_78088_3_, p_78088_4_, p_78088_5_, p_78088_6_, scale, entityIn);
         this.villagerHead.render(scale);
         this.villagerBody.render(scale);
@@ -71,15 +77,14 @@ public class ModelVillager extends ModelBase
      * and legs, where par1 represents the time(so that arms and legs swing back and forth) and par2 represents how
      * "far" arms and legs can swing at most.
      */
-    public void setRotationAngles(float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float scaleFactor, Entity entityIn)
-    {
-        this.villagerHead.rotateAngleY = netHeadYaw / (180F / (float)Math.PI);
-        this.villagerHead.rotateAngleX = headPitch / (180F / (float)Math.PI);
+    public void setRotationAngles(float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float scaleFactor, Entity entityIn) {
+        this.villagerHead.rotateAngleY = netHeadYaw / (180F / (float) Math.PI);
+        this.villagerHead.rotateAngleX = headPitch / (180F / (float) Math.PI);
         this.villagerArms.rotationPointY = 3.0F;
         this.villagerArms.rotationPointZ = -1.0F;
         this.villagerArms.rotateAngleX = -0.75F;
         this.rightVillagerLeg.rotateAngleX = MathHelper.cos(limbSwing * 0.6662F) * 1.4F * limbSwingAmount * 0.5F;
-        this.leftVillagerLeg.rotateAngleX = MathHelper.cos(limbSwing * 0.6662F + (float)Math.PI) * 1.4F * limbSwingAmount * 0.5F;
+        this.leftVillagerLeg.rotateAngleX = MathHelper.cos(limbSwing * 0.6662F + (float) Math.PI) * 1.4F * limbSwingAmount * 0.5F;
         this.rightVillagerLeg.rotateAngleY = 0.0F;
         this.leftVillagerLeg.rotateAngleY = 0.0F;
     }

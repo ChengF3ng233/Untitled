@@ -1,33 +1,27 @@
 package net.optifine.shaders.config;
 
-public class ShaderMacro
-{
-    private String name;
-    private String value;
+public class ShaderMacro {
+    private final String name;
+    private final String value;
 
-    public ShaderMacro(String name, String value)
-    {
+    public ShaderMacro(String name, String value) {
         this.name = name;
         this.value = value;
     }
 
-    public String getName()
-    {
+    public String getName() {
         return this.name;
     }
 
-    public String getValue()
-    {
+    public String getValue() {
         return this.value;
     }
 
-    public String getSourceLine()
-    {
+    public String getSourceLine() {
         return "#define " + this.name + " " + this.value;
     }
 
-    public String toString()
-    {
+    public String toString() {
         return this.getSourceLine();
     }
 }

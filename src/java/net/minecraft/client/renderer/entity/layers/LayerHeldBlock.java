@@ -10,21 +10,17 @@ import net.minecraft.client.renderer.entity.RenderEnderman;
 import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.entity.monster.EntityEnderman;
 
-public class LayerHeldBlock implements LayerRenderer<EntityEnderman>
-{
+public class LayerHeldBlock implements LayerRenderer<EntityEnderman> {
     private final RenderEnderman endermanRenderer;
 
-    public LayerHeldBlock(RenderEnderman endermanRendererIn)
-    {
+    public LayerHeldBlock(RenderEnderman endermanRendererIn) {
         this.endermanRenderer = endermanRendererIn;
     }
 
-    public void doRenderLayer(EntityEnderman entitylivingbaseIn, float p_177141_2_, float p_177141_3_, float partialTicks, float p_177141_5_, float p_177141_6_, float p_177141_7_, float scale)
-    {
+    public void doRenderLayer(EntityEnderman entitylivingbaseIn, float p_177141_2_, float p_177141_3_, float partialTicks, float p_177141_5_, float p_177141_6_, float p_177141_7_, float scale) {
         IBlockState iblockstate = entitylivingbaseIn.getHeldBlockState();
 
-        if (iblockstate.getBlock().getMaterial() != Material.air)
-        {
+        if (iblockstate.getBlock().getMaterial() != Material.air) {
             BlockRendererDispatcher blockrendererdispatcher = Minecraft.getMinecraft().getBlockRendererDispatcher();
             GlStateManager.enableRescaleNormal();
             GlStateManager.pushMatrix();
@@ -37,7 +33,7 @@ public class LayerHeldBlock implements LayerRenderer<EntityEnderman>
             int i = entitylivingbaseIn.getBrightnessForRender(partialTicks);
             int j = i % 65536;
             int k = i / 65536;
-            OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, (float)j / 1.0F, (float)k / 1.0F);
+            OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, (float) j, (float) k);
             GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
             this.endermanRenderer.bindTexture(TextureMap.locationBlocksTexture);
             blockrendererdispatcher.renderBlockBrightness(iblockstate, 1.0F);
@@ -46,8 +42,7 @@ public class LayerHeldBlock implements LayerRenderer<EntityEnderman>
         }
     }
 
-    public boolean shouldCombineTextures()
-    {
+    public boolean shouldCombineTextures() {
         return false;
     }
 }

@@ -6,17 +6,14 @@ import net.minecraft.util.BlockPos;
 import net.minecraft.village.Village;
 import net.minecraft.village.VillageDoorInfo;
 
-public class EntityAIRestrictOpenDoor extends EntityAIBase
-{
-    private EntityCreature entityObj;
+public class EntityAIRestrictOpenDoor extends EntityAIBase {
+    private final EntityCreature entityObj;
     private VillageDoorInfo frontDoor;
 
-    public EntityAIRestrictOpenDoor(EntityCreature creatureIn)
-    {
+    public EntityAIRestrictOpenDoor(EntityCreature creatureIn) {
         this.entityObj = creatureIn;
 
-        if (!(creatureIn.getNavigator() instanceof PathNavigateGround))
-        {
+        if (!(creatureIn.getNavigator() instanceof PathNavigateGround)) {
             throw new IllegalArgumentException("Unsupported mob type for RestrictOpenDoorGoal");
         }
     }
@@ -24,25 +21,18 @@ public class EntityAIRestrictOpenDoor extends EntityAIBase
     /**
      * Returns whether the EntityAIBase should begin execution.
      */
-    public boolean shouldExecute()
-    {
-        if (this.entityObj.worldObj.isDaytime())
-        {
+    public boolean shouldExecute() {
+        if (this.entityObj.worldObj.isDaytime()) {
             return false;
-        }
-        else
-        {
+        } else {
             BlockPos blockpos = new BlockPos(this.entityObj);
             Village village = this.entityObj.worldObj.getVillageCollection().getNearestVillage(blockpos, 16);
 
-            if (village == null)
-            {
+            if (village == null) {
                 return false;
-            }
-            else
-            {
+            } else {
                 this.frontDoor = village.getNearestDoor(blockpos);
-                return this.frontDoor == null ? false : (double)this.frontDoor.getDistanceToInsideBlockSq(blockpos) < 2.25D;
+                return this.frontDoor != null && (double) this.frontDoor.getDistanceToInsideBlockSq(blockpos) < 2.25D;
             }
         }
     }
@@ -50,35 +40,31 @@ public class EntityAIRestrictOpenDoor extends EntityAIBase
     /**
      * Returns whether an in-progress EntityAIBase should continue executing
      */
-    public boolean continueExecuting()
-    {
-        return this.entityObj.worldObj.isDaytime() ? false : !this.frontDoor.getIsDetachedFromVillageFlag() && this.frontDoor.func_179850_c(new BlockPos(this.entityObj));
+    public boolean continueExecuting() {
+        return !this.entityObj.worldObj.isDaytime() && !this.frontDoor.getIsDetachedFromVillageFlag() && this.frontDoor.func_179850_c(new BlockPos(this.entityObj));
     }
 
     /**
      * Execute a one shot task or start executing a continuous task
      */
-    public void startExecuting()
-    {
-        ((PathNavigateGround)this.entityObj.getNavigator()).setBreakDoors(false);
-        ((PathNavigateGround)this.entityObj.getNavigator()).setEnterDoors(false);
+    public void startExecuting() {
+        ((PathNavigateGround) this.entityObj.getNavigator()).setBreakDoors(false);
+        ((PathNavigateGround) this.entityObj.getNavigator()).setEnterDoors(false);
     }
 
     /**
      * Resets the task
      */
-    public void resetTask()
-    {
-        ((PathNavigateGround)this.entityObj.getNavigator()).setBreakDoors(true);
-        ((PathNavigateGround)this.entityObj.getNavigator()).setEnterDoors(true);
+    public void resetTask() {
+        ((PathNavigateGround) this.entityObj.getNavigator()).setBreakDoors(true);
+        ((PathNavigateGround) this.entityObj.getNavigator()).setEnterDoors(true);
         this.frontDoor = null;
     }
 
     /**
      * Updates the task
      */
-    public void updateTask()
-    {
+    public void updateTask() {
         this.frontDoor.incrementDoorOpeningRestrictionCounter();
     }
 }

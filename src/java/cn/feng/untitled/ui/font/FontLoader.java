@@ -12,13 +12,13 @@ import java.util.Map;
 public class FontLoader {
     private static final Map<Integer, Font> greyCliff = new HashMap<>();
     private static final Map<Integer, Font> rubik = new HashMap<>();
-    private static final Map<Integer, Font> miSans = new HashMap<>();
+    public static Map<Integer, Font> miSans = new HashMap<>();
 
     /**
      * Register international font MiSans
      */
     public static void registerFonts() {
-        miSans(18);
+       // miSans(18);
     }
 
     public static Font greyCliff(int size) {
@@ -35,7 +35,7 @@ public class FontLoader {
 
     private static Font get(Map<Integer, Font> map, int size, String name, boolean international) {
         if (!map.containsKey(size)) {
-            Logger.info("Registering font: " + name + "." + (international? " This may take much time because the number of the characters is large." : ""));
+            Logger.info("Registering font: " + name + "." + (international? " This may be EXTREMELY SLOW on low-end PCs." : ""));
             java.awt.Font font = FontUtil.getResource("untitled/font/" + name + ".ttf", size);
             if (font != null) {
                 map.put(size, new FontRenderer(font, true, true, international));

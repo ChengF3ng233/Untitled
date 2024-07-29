@@ -5,47 +5,69 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.boss.EntityDragon;
 
-public class ModelDragon extends ModelBase
-{
-    /** The head Model renderer of the dragon */
-    private ModelRenderer head;
+public class ModelDragon extends ModelBase {
+    /**
+     * The head Model renderer of the dragon
+     */
+    private final ModelRenderer head;
 
-    /** The spine Model renderer of the dragon */
-    private ModelRenderer spine;
+    /**
+     * The spine Model renderer of the dragon
+     */
+    private final ModelRenderer spine;
 
-    /** The jaw Model renderer of the dragon */
-    private ModelRenderer jaw;
+    /**
+     * The jaw Model renderer of the dragon
+     */
+    private final ModelRenderer jaw;
 
-    /** The body Model renderer of the dragon */
-    private ModelRenderer body;
+    /**
+     * The body Model renderer of the dragon
+     */
+    private final ModelRenderer body;
 
-    /** The rear leg Model renderer of the dragon */
-    private ModelRenderer rearLeg;
+    /**
+     * The rear leg Model renderer of the dragon
+     */
+    private final ModelRenderer rearLeg;
 
-    /** The front leg Model renderer of the dragon */
-    private ModelRenderer frontLeg;
+    /**
+     * The front leg Model renderer of the dragon
+     */
+    private final ModelRenderer frontLeg;
 
-    /** The rear leg tip Model renderer of the dragon */
-    private ModelRenderer rearLegTip;
+    /**
+     * The rear leg tip Model renderer of the dragon
+     */
+    private final ModelRenderer rearLegTip;
 
-    /** The front leg tip Model renderer of the dragon */
-    private ModelRenderer frontLegTip;
+    /**
+     * The front leg tip Model renderer of the dragon
+     */
+    private final ModelRenderer frontLegTip;
 
-    /** The rear foot Model renderer of the dragon */
-    private ModelRenderer rearFoot;
+    /**
+     * The rear foot Model renderer of the dragon
+     */
+    private final ModelRenderer rearFoot;
 
-    /** The front foot Model renderer of the dragon */
-    private ModelRenderer frontFoot;
+    /**
+     * The front foot Model renderer of the dragon
+     */
+    private final ModelRenderer frontFoot;
 
-    /** The wing Model renderer of the dragon */
-    private ModelRenderer wing;
+    /**
+     * The wing Model renderer of the dragon
+     */
+    private final ModelRenderer wing;
 
-    /** The wing tip Model renderer of the dragon */
-    private ModelRenderer wingTip;
+    /**
+     * The wing tip Model renderer of the dragon
+     */
+    private final ModelRenderer wingTip;
     private float partialTicks;
 
-    public ModelDragon(float p_i46360_1_)
-    {
+    public ModelDragon(float p_i46360_1_) {
         this.textureWidth = 256;
         this.textureHeight = 256;
         this.setTextureOffset("body.body", 0, 0);
@@ -127,21 +149,19 @@ public class ModelDragon extends ModelBase
      * Used for easily adding entity-dependent animations. The second and third float params here are the same second
      * and third as in the setRotationAngles method.
      */
-    public void setLivingAnimations(EntityLivingBase entitylivingbaseIn, float p_78086_2_, float p_78086_3_, float partialTickTime)
-    {
+    public void setLivingAnimations(EntityLivingBase entitylivingbaseIn, float p_78086_2_, float p_78086_3_, float partialTickTime) {
         this.partialTicks = partialTickTime;
     }
 
     /**
      * Sets the models various rotation angles then renders the model.
      */
-    public void render(Entity entityIn, float p_78088_2_, float p_78088_3_, float p_78088_4_, float p_78088_5_, float p_78088_6_, float scale)
-    {
+    public void render(Entity entityIn, float p_78088_2_, float p_78088_3_, float p_78088_4_, float p_78088_5_, float p_78088_6_, float scale) {
         GlStateManager.pushMatrix();
-        EntityDragon entitydragon = (EntityDragon)entityIn;
+        EntityDragon entitydragon = (EntityDragon) entityIn;
         float f = entitydragon.prevAnimTime + (entitydragon.animTime - entitydragon.prevAnimTime) * this.partialTicks;
-        this.jaw.rotateAngleX = (float)(Math.sin((double)(f * (float)Math.PI * 2.0F)) + 1.0D) * 0.2F;
-        float f1 = (float)(Math.sin((double)(f * (float)Math.PI * 2.0F - 1.0F)) + 1.0D);
+        this.jaw.rotateAngleX = (float) (Math.sin(f * (float) Math.PI * 2.0F) + 1.0D) * 0.2F;
+        float f1 = (float) (Math.sin(f * (float) Math.PI * 2.0F - 1.0F) + 1.0D);
         f1 = (f1 * f1 * 1.0F + f1 * 2.0F) * 0.05F;
         GlStateManager.translate(0.0F, f1 - 2.0F, -3.0F);
         GlStateManager.rotate(f1 * 2.0F, 1.0F, 0.0F, 0.0F);
@@ -150,25 +170,24 @@ public class ModelDragon extends ModelBase
         float f5 = 1.5F;
         double[] adouble = entitydragon.getMovementOffsets(6, this.partialTicks);
         float f6 = this.updateRotations(entitydragon.getMovementOffsets(5, this.partialTicks)[0] - entitydragon.getMovementOffsets(10, this.partialTicks)[0]);
-        float f7 = this.updateRotations(entitydragon.getMovementOffsets(5, this.partialTicks)[0] + (double)(f6 / 2.0F));
+        float f7 = this.updateRotations(entitydragon.getMovementOffsets(5, this.partialTicks)[0] + (double) (f6 / 2.0F));
         f2 = f2 + 2.0F;
-        float f8 = f * (float)Math.PI * 2.0F;
+        float f8 = f * (float) Math.PI * 2.0F;
         f2 = 20.0F;
         float f3 = -12.0F;
 
-        for (int i = 0; i < 5; ++i)
-        {
+        for (int i = 0; i < 5; ++i) {
             double[] adouble1 = entitydragon.getMovementOffsets(5 - i, this.partialTicks);
-            float f9 = (float)Math.cos((double)((float)i * 0.45F + f8)) * 0.15F;
-            this.spine.rotateAngleY = this.updateRotations(adouble1[0] - adouble[0]) * (float)Math.PI / 180.0F * f5;
-            this.spine.rotateAngleX = f9 + (float)(adouble1[1] - adouble[1]) * (float)Math.PI / 180.0F * f5 * 5.0F;
-            this.spine.rotateAngleZ = -this.updateRotations(adouble1[0] - (double)f7) * (float)Math.PI / 180.0F * f5;
+            float f9 = (float) Math.cos((float) i * 0.45F + f8) * 0.15F;
+            this.spine.rotateAngleY = this.updateRotations(adouble1[0] - adouble[0]) * (float) Math.PI / 180.0F * f5;
+            this.spine.rotateAngleX = f9 + (float) (adouble1[1] - adouble[1]) * (float) Math.PI / 180.0F * f5 * 5.0F;
+            this.spine.rotateAngleZ = -this.updateRotations(adouble1[0] - (double) f7) * (float) Math.PI / 180.0F * f5;
             this.spine.rotationPointY = f2;
             this.spine.rotationPointZ = f3;
             this.spine.rotationPointX = f4;
-            f2 = (float)((double)f2 + Math.sin((double)this.spine.rotateAngleX) * 10.0D);
-            f3 = (float)((double)f3 - Math.cos((double)this.spine.rotateAngleY) * Math.cos((double)this.spine.rotateAngleX) * 10.0D);
-            f4 = (float)((double)f4 - Math.sin((double)this.spine.rotateAngleY) * Math.cos((double)this.spine.rotateAngleX) * 10.0D);
+            f2 = (float) ((double) f2 + Math.sin(this.spine.rotateAngleX) * 10.0D);
+            f3 = (float) ((double) f3 - Math.cos(this.spine.rotateAngleY) * Math.cos(this.spine.rotateAngleX) * 10.0D);
+            f4 = (float) ((double) f4 - Math.sin(this.spine.rotateAngleY) * Math.cos(this.spine.rotateAngleX) * 10.0D);
             this.spine.render(scale);
         }
 
@@ -176,8 +195,8 @@ public class ModelDragon extends ModelBase
         this.head.rotationPointZ = f3;
         this.head.rotationPointX = f4;
         double[] adouble2 = entitydragon.getMovementOffsets(0, this.partialTicks);
-        this.head.rotateAngleY = this.updateRotations(adouble2[0] - adouble[0]) * (float)Math.PI / 180.0F * 1.0F;
-        this.head.rotateAngleZ = -this.updateRotations(adouble2[0] - (double)f7) * (float)Math.PI / 180.0F * 1.0F;
+        this.head.rotateAngleY = this.updateRotations(adouble2[0] - adouble[0]) * (float) Math.PI / 180.0F;
+        this.head.rotateAngleZ = -this.updateRotations(adouble2[0] - (double) f7) * (float) Math.PI / 180.0F;
         this.head.render(scale);
         GlStateManager.pushMatrix();
         GlStateManager.translate(0.0F, 1.0F, 0.0F);
@@ -186,14 +205,13 @@ public class ModelDragon extends ModelBase
         this.body.rotateAngleZ = 0.0F;
         this.body.render(scale);
 
-        for (int j = 0; j < 2; ++j)
-        {
+        for (int j = 0; j < 2; ++j) {
             GlStateManager.enableCull();
-            float f11 = f * (float)Math.PI * 2.0F;
-            this.wing.rotateAngleX = 0.125F - (float)Math.cos((double)f11) * 0.2F;
+            float f11 = f * (float) Math.PI * 2.0F;
+            this.wing.rotateAngleX = 0.125F - (float) Math.cos(f11) * 0.2F;
             this.wing.rotateAngleY = 0.25F;
-            this.wing.rotateAngleZ = (float)(Math.sin((double)f11) + 0.125D) * 0.8F;
-            this.wingTip.rotateAngleZ = -((float)(Math.sin((double)(f11 + 2.0F)) + 0.5D)) * 0.75F;
+            this.wing.rotateAngleZ = (float) (Math.sin(f11) + 0.125D) * 0.8F;
+            this.wingTip.rotateAngleZ = -((float) (Math.sin(f11 + 2.0F) + 0.5D)) * 0.75F;
             this.rearLeg.rotateAngleX = 1.0F + f1 * 0.1F;
             this.rearLegTip.rotateAngleX = 0.5F + f1 * 0.1F;
             this.rearFoot.rotateAngleX = 0.75F + f1 * 0.1F;
@@ -205,8 +223,7 @@ public class ModelDragon extends ModelBase
             this.rearLeg.render(scale);
             GlStateManager.scale(-1.0F, 1.0F, 1.0F);
 
-            if (j == 0)
-            {
+            if (j == 0) {
                 GlStateManager.cullFace(1028);
             }
         }
@@ -214,26 +231,25 @@ public class ModelDragon extends ModelBase
         GlStateManager.popMatrix();
         GlStateManager.cullFace(1029);
         GlStateManager.disableCull();
-        float f10 = -((float)Math.sin((double)(f * (float)Math.PI * 2.0F))) * 0.0F;
-        f8 = f * (float)Math.PI * 2.0F;
+        float f10 = -((float) Math.sin(f * (float) Math.PI * 2.0F)) * 0.0F;
+        f8 = f * (float) Math.PI * 2.0F;
         f2 = 10.0F;
         f3 = 60.0F;
         f4 = 0.0F;
         adouble = entitydragon.getMovementOffsets(11, this.partialTicks);
 
-        for (int k = 0; k < 12; ++k)
-        {
+        for (int k = 0; k < 12; ++k) {
             adouble2 = entitydragon.getMovementOffsets(12 + k, this.partialTicks);
-            f10 = (float)((double)f10 + Math.sin((double)((float)k * 0.45F + f8)) * 0.05000000074505806D);
-            this.spine.rotateAngleY = (this.updateRotations(adouble2[0] - adouble[0]) * f5 + 180.0F) * (float)Math.PI / 180.0F;
-            this.spine.rotateAngleX = f10 + (float)(adouble2[1] - adouble[1]) * (float)Math.PI / 180.0F * f5 * 5.0F;
-            this.spine.rotateAngleZ = this.updateRotations(adouble2[0] - (double)f7) * (float)Math.PI / 180.0F * f5;
+            f10 = (float) ((double) f10 + Math.sin((float) k * 0.45F + f8) * 0.05000000074505806D);
+            this.spine.rotateAngleY = (this.updateRotations(adouble2[0] - adouble[0]) * f5 + 180.0F) * (float) Math.PI / 180.0F;
+            this.spine.rotateAngleX = f10 + (float) (adouble2[1] - adouble[1]) * (float) Math.PI / 180.0F * f5 * 5.0F;
+            this.spine.rotateAngleZ = this.updateRotations(adouble2[0] - (double) f7) * (float) Math.PI / 180.0F * f5;
             this.spine.rotationPointY = f2;
             this.spine.rotationPointZ = f3;
             this.spine.rotationPointX = f4;
-            f2 = (float)((double)f2 + Math.sin((double)this.spine.rotateAngleX) * 10.0D);
-            f3 = (float)((double)f3 - Math.cos((double)this.spine.rotateAngleY) * Math.cos((double)this.spine.rotateAngleX) * 10.0D);
-            f4 = (float)((double)f4 - Math.sin((double)this.spine.rotateAngleY) * Math.cos((double)this.spine.rotateAngleX) * 10.0D);
+            f2 = (float) ((double) f2 + Math.sin(this.spine.rotateAngleX) * 10.0D);
+            f3 = (float) ((double) f3 - Math.cos(this.spine.rotateAngleY) * Math.cos(this.spine.rotateAngleX) * 10.0D);
+            f4 = (float) ((double) f4 - Math.sin(this.spine.rotateAngleY) * Math.cos(this.spine.rotateAngleX) * 10.0D);
             this.spine.render(scale);
         }
 
@@ -245,18 +261,15 @@ public class ModelDragon extends ModelBase
      * or subtracts 360 degrees, so that the appearance is the same, although the numbers are then simplified to range
      * -180 to 180
      */
-    private float updateRotations(double p_78214_1_)
-    {
-        while (p_78214_1_ >= 180.0D)
-        {
+    private float updateRotations(double p_78214_1_) {
+        while (p_78214_1_ >= 180.0D) {
             p_78214_1_ -= 360.0D;
         }
 
-        while (p_78214_1_ < -180.0D)
-        {
+        while (p_78214_1_ < -180.0D) {
             p_78214_1_ += 360.0D;
         }
 
-        return (float)p_78214_1_;
+        return (float) p_78214_1_;
     }
 }

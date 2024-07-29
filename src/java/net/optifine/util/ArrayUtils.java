@@ -6,22 +6,15 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 
-public class ArrayUtils
-{
-    public static boolean contains(Object[] arr, Object val)
-    {
-        if (arr == null)
-        {
+public class ArrayUtils {
+    public static boolean contains(Object[] arr, Object val) {
+        if (arr == null) {
             return false;
-        }
-        else
-        {
-            for (int i = 0; i < arr.length; ++i)
-            {
+        } else {
+            for (int i = 0; i < arr.length; ++i) {
                 Object object = arr[i];
 
-                if (object == val)
-                {
+                if (object == val) {
                     return true;
                 }
             }
@@ -30,209 +23,158 @@ public class ArrayUtils
         }
     }
 
-    public static int[] addIntsToArray(int[] intArray, int[] copyFrom)
-    {
-        if (intArray != null && copyFrom != null)
-        {
+    public static int[] addIntsToArray(int[] intArray, int[] copyFrom) {
+        if (intArray != null && copyFrom != null) {
             int i = intArray.length;
             int j = i + copyFrom.length;
             int[] aint = new int[j];
             System.arraycopy(intArray, 0, aint, 0, i);
 
-            for (int k = 0; k < copyFrom.length; ++k)
-            {
-                aint[k + i] = copyFrom[k];
-            }
+            System.arraycopy(copyFrom, 0, aint, 0 + i, copyFrom.length);
 
             return aint;
-        }
-        else
-        {
+        } else {
             throw new NullPointerException("The given array is NULL");
         }
     }
 
-    public static int[] addIntToArray(int[] intArray, int intValue)
-    {
-        return addIntsToArray(intArray, new int[] {intValue});
+    public static int[] addIntToArray(int[] intArray, int intValue) {
+        return addIntsToArray(intArray, new int[]{intValue});
     }
 
-    public static Object[] addObjectsToArray(Object[] arr, Object[] objs)
-    {
-        if (arr == null)
-        {
+    public static Object[] addObjectsToArray(Object[] arr, Object[] objs) {
+        if (arr == null) {
             throw new NullPointerException("The given array is NULL");
-        }
-        else if (objs.length == 0)
-        {
+        } else if (objs.length == 0) {
             return arr;
-        }
-        else
-        {
+        } else {
             int i = arr.length;
             int j = i + objs.length;
-            Object[] aobject = (Object[])((Object[])Array.newInstance(arr.getClass().getComponentType(), j));
+            Object[] aobject = (Object[]) Array.newInstance(arr.getClass().getComponentType(), j);
             System.arraycopy(arr, 0, aobject, 0, i);
             System.arraycopy(objs, 0, aobject, i, objs.length);
             return aobject;
         }
     }
 
-    public static Object[] addObjectToArray(Object[] arr, Object obj)
-    {
-        if (arr == null)
-        {
+    public static Object[] addObjectToArray(Object[] arr, Object obj) {
+        if (arr == null) {
             throw new NullPointerException("The given array is NULL");
-        }
-        else
-        {
+        } else {
             int i = arr.length;
             int j = i + 1;
-            Object[] aobject = (Object[])((Object[])Array.newInstance(arr.getClass().getComponentType(), j));
+            Object[] aobject = (Object[]) Array.newInstance(arr.getClass().getComponentType(), j);
             System.arraycopy(arr, 0, aobject, 0, i);
             aobject[i] = obj;
             return aobject;
         }
     }
 
-    public static Object[] addObjectToArray(Object[] arr, Object obj, int index)
-    {
+    public static Object[] addObjectToArray(Object[] arr, Object obj, int index) {
         List list = new ArrayList(Arrays.asList(arr));
         list.add(index, obj);
-        Object[] aobject = (Object[])((Object[])Array.newInstance(arr.getClass().getComponentType(), list.size()));
+        Object[] aobject = (Object[]) Array.newInstance(arr.getClass().getComponentType(), list.size());
         return list.toArray(aobject);
     }
 
-    public static String arrayToString(boolean[] arr, String separator)
-    {
-        if (arr == null)
-        {
+    public static String arrayToString(boolean[] arr, String separator) {
+        if (arr == null) {
             return "";
-        }
-        else
-        {
+        } else {
             StringBuffer stringbuffer = new StringBuffer(arr.length * 5);
 
-            for (int i = 0; i < arr.length; ++i)
-            {
+            for (int i = 0; i < arr.length; ++i) {
                 boolean flag = arr[i];
 
-                if (i > 0)
-                {
+                if (i > 0) {
                     stringbuffer.append(separator);
                 }
 
-                stringbuffer.append(String.valueOf(flag));
+                stringbuffer.append(flag);
             }
 
             return stringbuffer.toString();
         }
     }
 
-    public static String arrayToString(float[] arr)
-    {
+    public static String arrayToString(float[] arr) {
         return arrayToString(arr, ", ");
     }
 
-    public static String arrayToString(float[] arr, String separator)
-    {
-        if (arr == null)
-        {
+    public static String arrayToString(float[] arr, String separator) {
+        if (arr == null) {
             return "";
-        }
-        else
-        {
+        } else {
             StringBuffer stringbuffer = new StringBuffer(arr.length * 5);
 
-            for (int i = 0; i < arr.length; ++i)
-            {
+            for (int i = 0; i < arr.length; ++i) {
                 float f = arr[i];
 
-                if (i > 0)
-                {
+                if (i > 0) {
                     stringbuffer.append(separator);
                 }
 
-                stringbuffer.append(String.valueOf(f));
+                stringbuffer.append(f);
             }
 
             return stringbuffer.toString();
         }
     }
 
-    public static String arrayToString(float[] arr, String separator, String format)
-    {
-        if (arr == null)
-        {
+    public static String arrayToString(float[] arr, String separator, String format) {
+        if (arr == null) {
             return "";
-        }
-        else
-        {
+        } else {
             StringBuffer stringbuffer = new StringBuffer(arr.length * 5);
 
-            for (int i = 0; i < arr.length; ++i)
-            {
+            for (int i = 0; i < arr.length; ++i) {
                 float f = arr[i];
 
-                if (i > 0)
-                {
+                if (i > 0) {
                     stringbuffer.append(separator);
                 }
 
-                stringbuffer.append(String.format(format, new Object[] {Float.valueOf(f)}));
+                stringbuffer.append(String.format(format, Float.valueOf(f)));
             }
 
             return stringbuffer.toString();
         }
     }
 
-    public static String arrayToString(int[] arr)
-    {
+    public static String arrayToString(int[] arr) {
         return arrayToString(arr, ", ");
     }
 
-    public static String arrayToString(int[] arr, String separator)
-    {
-        if (arr == null)
-        {
+    public static String arrayToString(int[] arr, String separator) {
+        if (arr == null) {
             return "";
-        }
-        else
-        {
+        } else {
             StringBuffer stringbuffer = new StringBuffer(arr.length * 5);
 
-            for (int i = 0; i < arr.length; ++i)
-            {
+            for (int i = 0; i < arr.length; ++i) {
                 int j = arr[i];
 
-                if (i > 0)
-                {
+                if (i > 0) {
                     stringbuffer.append(separator);
                 }
 
-                stringbuffer.append(String.valueOf(j));
+                stringbuffer.append(j);
             }
 
             return stringbuffer.toString();
         }
     }
 
-    public static String arrayToHexString(int[] arr, String separator)
-    {
-        if (arr == null)
-        {
+    public static String arrayToHexString(int[] arr, String separator) {
+        if (arr == null) {
             return "";
-        }
-        else
-        {
+        } else {
             StringBuffer stringbuffer = new StringBuffer(arr.length * 5);
 
-            for (int i = 0; i < arr.length; ++i)
-            {
+            for (int i = 0; i < arr.length; ++i) {
                 int j = arr[i];
 
-                if (i > 0)
-                {
+                if (i > 0) {
                     stringbuffer.append(separator);
                 }
 
@@ -244,64 +186,46 @@ public class ArrayUtils
         }
     }
 
-    public static String arrayToString(Object[] arr)
-    {
+    public static String arrayToString(Object[] arr) {
         return arrayToString(arr, ", ");
     }
 
-    public static String arrayToString(Object[] arr, String separator)
-    {
-        if (arr == null)
-        {
+    public static String arrayToString(Object[] arr, String separator) {
+        if (arr == null) {
             return "";
-        }
-        else
-        {
+        } else {
             StringBuffer stringbuffer = new StringBuffer(arr.length * 5);
 
-            for (int i = 0; i < arr.length; ++i)
-            {
+            for (int i = 0; i < arr.length; ++i) {
                 Object object = arr[i];
 
-                if (i > 0)
-                {
+                if (i > 0) {
                     stringbuffer.append(separator);
                 }
 
-                stringbuffer.append(String.valueOf(object));
+                stringbuffer.append(object);
             }
 
             return stringbuffer.toString();
         }
     }
 
-    public static Object[] collectionToArray(Collection coll, Class elementClass)
-    {
-        if (coll == null)
-        {
+    public static Object[] collectionToArray(Collection coll, Class elementClass) {
+        if (coll == null) {
             return null;
-        }
-        else if (elementClass == null)
-        {
+        } else if (elementClass == null) {
             return null;
-        }
-        else if (elementClass.isPrimitive())
-        {
+        } else if (elementClass.isPrimitive()) {
             throw new IllegalArgumentException("Can not make arrays with primitive elements (int, double), element class: " + elementClass);
-        }
-        else
-        {
-            Object[] aobject = (Object[])((Object[])Array.newInstance(elementClass, coll.size()));
+        } else {
+            Object[] aobject = (Object[]) Array.newInstance(elementClass, coll.size());
             return coll.toArray(aobject);
         }
     }
 
-    public static boolean equalsOne(int val, int[] vals)
-    {
-        for (int i = 0; i < vals.length; ++i)
-        {
-            if (vals[i] == val)
-            {
+    public static boolean equalsOne(int val, int[] vals) {
+        for (int i = 0; i < vals.length; ++i) {
+            if (vals[i] == val) {
                 return true;
             }
         }
@@ -309,20 +233,14 @@ public class ArrayUtils
         return false;
     }
 
-    public static boolean equalsOne(Object a, Object[] bs)
-    {
-        if (bs == null)
-        {
+    public static boolean equalsOne(Object a, Object[] bs) {
+        if (bs == null) {
             return false;
-        }
-        else
-        {
-            for (int i = 0; i < bs.length; ++i)
-            {
+        } else {
+            for (int i = 0; i < bs.length; ++i) {
                 Object object = bs[i];
 
-                if (equals(a, object))
-                {
+                if (equals(a, object)) {
                     return true;
                 }
             }
@@ -331,25 +249,18 @@ public class ArrayUtils
         }
     }
 
-    public static boolean equals(Object o1, Object o2)
-    {
-        return o1 == o2 ? true : (o1 == null ? false : o1.equals(o2));
+    public static boolean equals(Object o1, Object o2) {
+        return o1 == o2 || (o1 != null && o1.equals(o2));
     }
 
-    public static boolean isSameOne(Object a, Object[] bs)
-    {
-        if (bs == null)
-        {
+    public static boolean isSameOne(Object a, Object[] bs) {
+        if (bs == null) {
             return false;
-        }
-        else
-        {
-            for (int i = 0; i < bs.length; ++i)
-            {
+        } else {
+            for (int i = 0; i < bs.length; ++i) {
                 Object object = bs[i];
 
-                if (a == object)
-                {
+                if (a == object) {
                     return true;
                 }
             }
@@ -358,30 +269,22 @@ public class ArrayUtils
         }
     }
 
-    public static Object[] removeObjectFromArray(Object[] arr, Object obj)
-    {
+    public static Object[] removeObjectFromArray(Object[] arr, Object obj) {
         List list = new ArrayList(Arrays.asList(arr));
         list.remove(obj);
         Object[] aobject = collectionToArray(list, arr.getClass().getComponentType());
         return aobject;
     }
 
-    public static int[] toPrimitive(Integer[] arr)
-    {
-        if (arr == null)
-        {
+    public static int[] toPrimitive(Integer[] arr) {
+        if (arr == null) {
             return null;
-        }
-        else if (arr.length == 0)
-        {
+        } else if (arr.length == 0) {
             return new int[0];
-        }
-        else
-        {
+        } else {
             int[] aint = new int[arr.length];
 
-            for (int i = 0; i < aint.length; ++i)
-            {
+            for (int i = 0; i < aint.length; ++i) {
                 aint[i] = arr[i].intValue();
             }
 

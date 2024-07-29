@@ -6,8 +6,7 @@ import net.minecraft.util.IChatComponent;
 import net.minecraft.util.Vec3;
 import net.minecraft.world.World;
 
-public interface ICommandSender
-{
+public interface ICommandSender {
     /**
      * Get the name of this object. For players this returns their username
      */

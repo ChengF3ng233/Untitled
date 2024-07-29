@@ -2,9 +2,10 @@ package net.minecraft.entity.ai;
 
 import net.minecraft.entity.EntityLiving;
 
-public class EntityAIOpenDoor extends EntityAIDoorInteract
-{
-    /** If the entity close the door */
+public class EntityAIOpenDoor extends EntityAIDoorInteract {
+    /**
+     * If the entity close the door
+     */
     boolean closeDoor;
 
     /**
@@ -12,8 +13,7 @@ public class EntityAIOpenDoor extends EntityAIDoorInteract
      */
     int closeDoorTemporisation;
 
-    public EntityAIOpenDoor(EntityLiving entitylivingIn, boolean shouldClose)
-    {
+    public EntityAIOpenDoor(EntityLiving entitylivingIn, boolean shouldClose) {
         super(entitylivingIn);
         this.theEntity = entitylivingIn;
         this.closeDoor = shouldClose;
@@ -22,16 +22,14 @@ public class EntityAIOpenDoor extends EntityAIDoorInteract
     /**
      * Returns whether an in-progress EntityAIBase should continue executing
      */
-    public boolean continueExecuting()
-    {
+    public boolean continueExecuting() {
         return this.closeDoor && this.closeDoorTemporisation > 0 && super.continueExecuting();
     }
 
     /**
      * Execute a one shot task or start executing a continuous task
      */
-    public void startExecuting()
-    {
+    public void startExecuting() {
         this.closeDoorTemporisation = 20;
         this.doorBlock.toggleDoor(this.theEntity.worldObj, this.doorPosition, true);
     }
@@ -39,10 +37,8 @@ public class EntityAIOpenDoor extends EntityAIDoorInteract
     /**
      * Resets the task
      */
-    public void resetTask()
-    {
-        if (this.closeDoor)
-        {
+    public void resetTask() {
+        if (this.closeDoor) {
             this.doorBlock.toggleDoor(this.theEntity.worldObj, this.doorPosition, false);
         }
     }
@@ -50,8 +46,7 @@ public class EntityAIOpenDoor extends EntityAIDoorInteract
     /**
      * Updates the task
      */
-    public void updateTask()
-    {
+    public void updateTask() {
         --this.closeDoorTemporisation;
         super.updateTask();
     }

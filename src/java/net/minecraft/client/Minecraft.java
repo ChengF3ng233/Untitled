@@ -8,9 +8,9 @@ import com.google.common.util.concurrent.ListenableFuture;
 import com.google.common.util.concurrent.ListenableFutureTask;
 import com.mojang.authlib.GameProfile;
 import com.mojang.authlib.minecraft.MinecraftSessionService;
-import com.mojang.authlib.properties.Property;
 import com.mojang.authlib.properties.PropertyMap;
 import com.mojang.authlib.yggdrasil.YggdrasilAuthenticationService;
+import de.florianmichael.viamcp.fixes.AttackOrder;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.audio.MusicTicker;
@@ -159,6 +159,25 @@ public class Minecraft implements IThreadListener, IPlayerUsage {
     private final MinecraftSessionService sessionService;
     private final Queue<FutureTask<?>> scheduledTasks = Queues.newArrayDeque();
     private final Thread mcThread = Thread.currentThread();
+    private final boolean enableGLErrorChecking = true;
+    /**
+     * True if the player is connected to a realms server
+     */
+    private final boolean connectedToRealms = false;
+    private final Timer timer = new Timer(20.0F);
+    /**
+     * Instance of PlayerUsageSnooper.
+     */
+    private final PlayerUsageSnooper usageSnooper = new PlayerUsageSnooper("client", this, MinecraftServer.getCurrentTimeMillis());
+    /**
+     * Display width
+     */
+    private final int tempDisplayWidth;
+    /**
+     * Display height
+     */
+    private final int tempDisplayHeight;
+    private final long field_175615_aJ = 0L;
     public PlayerControllerMP playerController;
     public int displayWidth;
     public int displayHeight;
@@ -235,21 +254,11 @@ public class Minecraft implements IThreadListener, IPlayerUsage {
      */
     private TextureManager renderEngine;
     private boolean fullscreen;
-    private final boolean enableGLErrorChecking = true;
     private boolean hasCrashed;
     /**
      * Instance of CrashReport.
      */
     private CrashReport crashReporter;
-    /**
-     * True if the player is connected to a realms server
-     */
-    private final boolean connectedToRealms = false;
-    private final Timer timer = new Timer(20.0F);
-    /**
-     * Instance of PlayerUsageSnooper.
-     */
-    private final PlayerUsageSnooper usageSnooper = new PlayerUsageSnooper("client", this, MinecraftServer.getCurrentTimeMillis());
     private RenderManager renderManager;
     private RenderItem renderItem;
     private ItemRenderer itemRenderer;
@@ -259,14 +268,6 @@ public class Minecraft implements IThreadListener, IPlayerUsage {
      * Mouse left click counter
      */
     private int leftClickCounter;
-    /**
-     * Display width
-     */
-    private final int tempDisplayWidth;
-    /**
-     * Display height
-     */
-    private final int tempDisplayHeight;
     /**
      * Instance of IntegratedServer.
      */
@@ -298,7 +299,6 @@ public class Minecraft implements IThreadListener, IPlayerUsage {
     private MusicTicker mcMusicTicker;
     private ResourceLocation mojangLogo;
     private SkinManager skinManager;
-    private final long field_175615_aJ = 0L;
     private ModelManager modelManager;
     /**
      * The BlockRenderDispatcher instance that will be used based off gamesettings
@@ -1335,7 +1335,8 @@ public class Minecraft implements IThreadListener, IPlayerUsage {
 
     private void clickMouse() {
         if (this.leftClickCounter <= 0) {
-            this.thePlayer.swingItem();
+//            this.thePlayer.swingItem();
+            AttackOrder.sendConditionalSwing(this.objectMouseOver);
 
             if (this.objectMouseOver == null) {
                 logger.error("Null returned as 'hitResult', this shouldn't happen!");
@@ -1346,7 +1347,8 @@ public class Minecraft implements IThreadListener, IPlayerUsage {
             } else {
                 switch (this.objectMouseOver.typeOfHit) {
                     case ENTITY:
-                        this.playerController.attackEntity(this.thePlayer, this.objectMouseOver.entityHit);
+//                        this.playerController.attackEntity(this.thePlayer, this.objectMouseOver.entityHit);
+                        AttackOrder.sendFixedAttack(this.thePlayer, this.objectMouseOver.entityHit);
                         break;
 
                     case BLOCK:
@@ -2123,8 +2125,7 @@ public class Minecraft implements IThreadListener, IPlayerUsage {
                     item = Items.painting;
                 } else if (this.objectMouseOver.entityHit instanceof EntityLeashKnot) {
                     item = Items.lead;
-                } else if (this.objectMouseOver.entityHit instanceof EntityItemFrame) {
-                    EntityItemFrame entityitemframe = (EntityItemFrame) this.objectMouseOver.entityHit;
+                } else if (this.objectMouseOver.entityHit instanceof EntityItemFrame entityitemframe) {
                     ItemStack itemstack = entityitemframe.getDisplayedItem();
 
                     if (itemstack == null) {
@@ -2134,8 +2135,7 @@ public class Minecraft implements IThreadListener, IPlayerUsage {
                         i = itemstack.getMetadata();
                         flag1 = true;
                     }
-                } else if (this.objectMouseOver.entityHit instanceof EntityMinecart) {
-                    EntityMinecart entityminecart = (EntityMinecart) this.objectMouseOver.entityHit;
+                } else if (this.objectMouseOver.entityHit instanceof EntityMinecart entityminecart) {
 
                     switch (entityminecart.getMinecartType()) {
                         case FURNACE:

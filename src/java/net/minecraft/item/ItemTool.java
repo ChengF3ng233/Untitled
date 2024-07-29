@@ -1,7 +1,9 @@
 package net.minecraft.item;
 
 import com.google.common.collect.Multimap;
+
 import java.util.Set;
+
 import net.minecraft.block.Block;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.EntityLivingBase;
@@ -10,19 +12,19 @@ import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.util.BlockPos;
 import net.minecraft.world.World;
 
-public class ItemTool extends Item
-{
-    private Set<Block> effectiveBlocks;
+public class ItemTool extends Item {
     protected float efficiencyOnProperMaterial = 4.0F;
-
-    /** Damage versus entities. */
-    private float damageVsEntity;
-
-    /** The material this tool is made from. */
+    /**
+     * The material this tool is made from.
+     */
     protected Item.ToolMaterial toolMaterial;
+    private final Set<Block> effectiveBlocks;
+    /**
+     * Damage versus entities.
+     */
+    private final float damageVsEntity;
 
-    protected ItemTool(float attackDamage, Item.ToolMaterial material, Set<Block> effectiveBlocks)
-    {
+    protected ItemTool(float attackDamage, Item.ToolMaterial material, Set<Block> effectiveBlocks) {
         this.toolMaterial = material;
         this.effectiveBlocks = effectiveBlocks;
         this.maxStackSize = 1;
@@ -32,8 +34,7 @@ public class ItemTool extends Item
         this.setCreativeTab(CreativeTabs.tabTools);
     }
 
-    public float getStrVsBlock(ItemStack stack, Block state)
-    {
+    public float getStrVsBlock(ItemStack stack, Block state) {
         return this.effectiveBlocks.contains(state) ? this.efficiencyOnProperMaterial : 1.0F;
     }
 
@@ -41,8 +42,7 @@ public class ItemTool extends Item
      * Current implementations of this method in child classes do not use the entry argument beside ev. They just raise
      * the damage on the stack.
      */
-    public boolean hitEntity(ItemStack stack, EntityLivingBase target, EntityLivingBase attacker)
-    {
+    public boolean hitEntity(ItemStack stack, EntityLivingBase target, EntityLivingBase attacker) {
         stack.damageItem(2, attacker);
         return true;
     }
@@ -50,10 +50,8 @@ public class ItemTool extends Item
     /**
      * Called when a Block is destroyed using this Item. Return true to trigger the "Use Item" statistic.
      */
-    public boolean onBlockDestroyed(ItemStack stack, World worldIn, Block blockIn, BlockPos pos, EntityLivingBase playerIn)
-    {
-        if ((double)blockIn.getBlockHardness(worldIn, pos) != 0.0D)
-        {
+    public boolean onBlockDestroyed(ItemStack stack, World worldIn, Block blockIn, BlockPos pos, EntityLivingBase playerIn) {
+        if ((double) blockIn.getBlockHardness(worldIn, pos) != 0.0D) {
             stack.damageItem(1, playerIn);
         }
 
@@ -63,44 +61,38 @@ public class ItemTool extends Item
     /**
      * Returns True is the item is renderer in full 3D when hold.
      */
-    public boolean isFull3D()
-    {
+    public boolean isFull3D() {
         return true;
     }
 
-    public Item.ToolMaterial getToolMaterial()
-    {
+    public Item.ToolMaterial getToolMaterial() {
         return this.toolMaterial;
     }
 
     /**
      * Return the enchantability factor of the item, most of the time is based on material.
      */
-    public int getItemEnchantability()
-    {
+    public int getItemEnchantability() {
         return this.toolMaterial.getEnchantability();
     }
 
     /**
      * Return the name for this tool's material.
      */
-    public String getToolMaterialName()
-    {
+    public String getToolMaterialName() {
         return this.toolMaterial.toString();
     }
 
     /**
      * Return whether this item is repairable in an anvil.
      */
-    public boolean getIsRepairable(ItemStack toRepair, ItemStack repair)
-    {
-        return this.toolMaterial.getRepairItem() == repair.getItem() ? true : super.getIsRepairable(toRepair, repair);
+    public boolean getIsRepairable(ItemStack toRepair, ItemStack repair) {
+        return this.toolMaterial.getRepairItem() == repair.getItem() || super.getIsRepairable(toRepair, repair);
     }
 
-    public Multimap<String, AttributeModifier> getItemAttributeModifiers()
-    {
+    public Multimap<String, AttributeModifier> getItemAttributeModifiers() {
         Multimap<String, AttributeModifier> multimap = super.getItemAttributeModifiers();
-        multimap.put(SharedMonsterAttributes.attackDamage.getAttributeUnlocalizedName(), new AttributeModifier(itemModifierUUID, "Tool modifier", (double)this.damageVsEntity, 0));
+        multimap.put(SharedMonsterAttributes.attackDamage.getAttributeUnlocalizedName(), new AttributeModifier(itemModifierUUID, "Tool modifier", this.damageVsEntity, 0));
         return multimap;
     }
 }

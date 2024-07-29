@@ -1,7 +1,6 @@
 package net.minecraft.entity;
 
-public interface IRangedAttackMob
-{
+public interface IRangedAttackMob {
     /**
      * Attack the specified entity using a ranged attack.
      */

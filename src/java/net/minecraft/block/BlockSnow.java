@@ -1,6 +1,5 @@
 package net.minecraft.block;
 
-import java.util.Random;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.properties.PropertyInteger;
@@ -21,12 +20,12 @@ import net.minecraft.world.EnumSkyBlock;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
-public class BlockSnow extends Block
-{
+import java.util.Random;
+
+public class BlockSnow extends Block {
     public static final PropertyInteger LAYERS = PropertyInteger.create("layers", 1, 8);
 
-    protected BlockSnow()
-    {
+    protected BlockSnow() {
         super(Material.snow);
         this.setDefaultState(this.blockState.getBaseState().withProperty(LAYERS, Integer.valueOf(1)));
         this.setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 0.125F, 1.0F);
@@ -35,82 +34,68 @@ public class BlockSnow extends Block
         this.setBlockBoundsForItemRender();
     }
 
-    public boolean isPassable(IBlockAccess worldIn, BlockPos pos)
-    {
-        return ((Integer)worldIn.getBlockState(pos).getValue(LAYERS)).intValue() < 5;
+    public boolean isPassable(IBlockAccess worldIn, BlockPos pos) {
+        return worldIn.getBlockState(pos).getValue(LAYERS).intValue() < 5;
     }
 
-    public AxisAlignedBB getCollisionBoundingBox(World worldIn, BlockPos pos, IBlockState state)
-    {
-        int i = ((Integer)state.getValue(LAYERS)).intValue() - 1;
+    public AxisAlignedBB getCollisionBoundingBox(World worldIn, BlockPos pos, IBlockState state) {
+        int i = state.getValue(LAYERS).intValue() - 1;
         float f = 0.125F;
-        return new AxisAlignedBB((double)pos.getX() + this.minX, (double)pos.getY() + this.minY, (double)pos.getZ() + this.minZ, (double)pos.getX() + this.maxX, (double)((float)pos.getY() + (float)i * f), (double)pos.getZ() + this.maxZ);
+        return new AxisAlignedBB((double) pos.getX() + this.minX, (double) pos.getY() + this.minY, (double) pos.getZ() + this.minZ, (double) pos.getX() + this.maxX, (float) pos.getY() + (float) i * f, (double) pos.getZ() + this.maxZ);
     }
 
     /**
      * Used to determine ambient occlusion and culling when rebuilding chunks for render
      */
-    public boolean isOpaqueCube()
-    {
+    public boolean isOpaqueCube() {
         return false;
     }
 
-    public boolean isFullCube()
-    {
+    public boolean isFullCube() {
         return false;
     }
 
     /**
      * Sets the block's bounds for rendering it as an item
      */
-    public void setBlockBoundsForItemRender()
-    {
+    public void setBlockBoundsForItemRender() {
         this.getBoundsForLayers(0);
     }
 
-    public void setBlockBoundsBasedOnState(IBlockAccess worldIn, BlockPos pos)
-    {
+    public void setBlockBoundsBasedOnState(IBlockAccess worldIn, BlockPos pos) {
         IBlockState iblockstate = worldIn.getBlockState(pos);
-        this.getBoundsForLayers(((Integer)iblockstate.getValue(LAYERS)).intValue());
+        this.getBoundsForLayers(iblockstate.getValue(LAYERS).intValue());
     }
 
-    protected void getBoundsForLayers(int p_150154_1_)
-    {
-        this.setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, (float)p_150154_1_ / 8.0F, 1.0F);
+    protected void getBoundsForLayers(int p_150154_1_) {
+        this.setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, (float) p_150154_1_ / 8.0F, 1.0F);
     }
 
-    public boolean canPlaceBlockAt(World worldIn, BlockPos pos)
-    {
+    public boolean canPlaceBlockAt(World worldIn, BlockPos pos) {
         IBlockState iblockstate = worldIn.getBlockState(pos.down());
         Block block = iblockstate.getBlock();
-        return block != Blocks.ice && block != Blocks.packed_ice ? (block.getMaterial() == Material.leaves ? true : (block == this && ((Integer)iblockstate.getValue(LAYERS)).intValue() >= 7 ? true : block.isOpaqueCube() && block.blockMaterial.blocksMovement())) : false;
+        return block != Blocks.ice && block != Blocks.packed_ice && (block.getMaterial() == Material.leaves || (block == this && iblockstate.getValue(LAYERS).intValue() >= 7 || block.isOpaqueCube() && block.blockMaterial.blocksMovement()));
     }
 
     /**
      * Called when a neighboring block changes.
      */
-    public void onNeighborBlockChange(World worldIn, BlockPos pos, IBlockState state, Block neighborBlock)
-    {
+    public void onNeighborBlockChange(World worldIn, BlockPos pos, IBlockState state, Block neighborBlock) {
         this.checkAndDropBlock(worldIn, pos, state);
     }
 
-    private boolean checkAndDropBlock(World worldIn, BlockPos pos, IBlockState state)
-    {
-        if (!this.canPlaceBlockAt(worldIn, pos))
-        {
+    private boolean checkAndDropBlock(World worldIn, BlockPos pos, IBlockState state) {
+        if (!this.canPlaceBlockAt(worldIn, pos)) {
             this.dropBlockAsItem(worldIn, pos, state, 0);
             worldIn.setBlockToAir(pos);
             return false;
-        }
-        else
-        {
+        } else {
             return true;
         }
     }
 
-    public void harvestBlock(World worldIn, EntityPlayer player, BlockPos pos, IBlockState state, TileEntity te)
-    {
-        spawnAsEntity(worldIn, pos, new ItemStack(Items.snowball, ((Integer)state.getValue(LAYERS)).intValue() + 1, 0));
+    public void harvestBlock(World worldIn, EntityPlayer player, BlockPos pos, IBlockState state, TileEntity te) {
+        spawnAsEntity(worldIn, pos, new ItemStack(Items.snowball, state.getValue(LAYERS).intValue() + 1, 0));
         worldIn.setBlockToAir(pos);
         player.triggerAchievement(StatList.mineBlockStatArray[Block.getIdFromBlock(this)]);
     }
@@ -118,59 +103,50 @@ public class BlockSnow extends Block
     /**
      * Get the Item that this Block should drop when harvested.
      */
-    public Item getItemDropped(IBlockState state, Random rand, int fortune)
-    {
+    public Item getItemDropped(IBlockState state, Random rand, int fortune) {
         return Items.snowball;
     }
 
     /**
      * Returns the quantity of items to drop on block destruction.
      */
-    public int quantityDropped(Random random)
-    {
+    public int quantityDropped(Random random) {
         return 0;
     }
 
-    public void updateTick(World worldIn, BlockPos pos, IBlockState state, Random rand)
-    {
-        if (worldIn.getLightFor(EnumSkyBlock.BLOCK, pos) > 11)
-        {
+    public void updateTick(World worldIn, BlockPos pos, IBlockState state, Random rand) {
+        if (worldIn.getLightFor(EnumSkyBlock.BLOCK, pos) > 11) {
             this.dropBlockAsItem(worldIn, pos, worldIn.getBlockState(pos), 0);
             worldIn.setBlockToAir(pos);
         }
     }
 
-    public boolean shouldSideBeRendered(IBlockAccess worldIn, BlockPos pos, EnumFacing side)
-    {
-        return side == EnumFacing.UP ? true : super.shouldSideBeRendered(worldIn, pos, side);
+    public boolean shouldSideBeRendered(IBlockAccess worldIn, BlockPos pos, EnumFacing side) {
+        return side == EnumFacing.UP || super.shouldSideBeRendered(worldIn, pos, side);
     }
 
     /**
      * Convert the given metadata into a BlockState for this Block
      */
-    public IBlockState getStateFromMeta(int meta)
-    {
+    public IBlockState getStateFromMeta(int meta) {
         return this.getDefaultState().withProperty(LAYERS, Integer.valueOf((meta & 7) + 1));
     }
 
     /**
      * Whether this Block can be replaced directly by other blocks (true for e.g. tall grass)
      */
-    public boolean isReplaceable(World worldIn, BlockPos pos)
-    {
-        return ((Integer)worldIn.getBlockState(pos).getValue(LAYERS)).intValue() == 1;
+    public boolean isReplaceable(World worldIn, BlockPos pos) {
+        return worldIn.getBlockState(pos).getValue(LAYERS).intValue() == 1;
     }
 
     /**
      * Convert the BlockState into the correct metadata value
      */
-    public int getMetaFromState(IBlockState state)
-    {
-        return ((Integer)state.getValue(LAYERS)).intValue() - 1;
+    public int getMetaFromState(IBlockState state) {
+        return state.getValue(LAYERS).intValue() - 1;
     }
 
-    protected BlockState createBlockState()
-    {
-        return new BlockState(this, new IProperty[] {LAYERS});
+    protected BlockState createBlockState() {
+        return new BlockState(this, LAYERS);
     }
 }

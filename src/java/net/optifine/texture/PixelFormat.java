@@ -1,7 +1,6 @@
 package net.optifine.texture;
 
-public enum PixelFormat
-{
+public enum PixelFormat {
     RED(6403),
     RG(33319),
     RGB(6407),
@@ -15,15 +14,13 @@ public enum PixelFormat
     RGBA_INTEGER(36249),
     BGRA_INTEGER(36251);
 
-    private int id;
+    private final int id;
 
-    private PixelFormat(int id)
-    {
+    PixelFormat(int id) {
         this.id = id;
     }
 
-    public int getId()
-    {
+    public int getId() {
         return this.id;
     }
 }

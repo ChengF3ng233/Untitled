@@ -6,48 +6,39 @@ import net.minecraft.util.BlockPos;
 import net.minecraft.world.biome.BiomeGenBase;
 import net.optifine.util.TileEntityUtils;
 
-public class RandomTileEntity implements IRandomEntity
-{
+public class RandomTileEntity implements IRandomEntity {
     private TileEntity tileEntity;
 
-    public int getId()
-    {
+    public int getId() {
         return Config.getRandom(this.tileEntity.getPos(), this.tileEntity.getBlockMetadata());
     }
 
-    public BlockPos getSpawnPosition()
-    {
+    public BlockPos getSpawnPosition() {
         return this.tileEntity.getPos();
     }
 
-    public String getName()
-    {
+    public String getName() {
         String s = TileEntityUtils.getTileEntityName(this.tileEntity);
         return s;
     }
 
-    public BiomeGenBase getSpawnBiome()
-    {
+    public BiomeGenBase getSpawnBiome() {
         return this.tileEntity.getWorld().getBiomeGenForCoords(this.tileEntity.getPos());
     }
 
-    public int getHealth()
-    {
+    public int getHealth() {
         return -1;
     }
 
-    public int getMaxHealth()
-    {
+    public int getMaxHealth() {
         return -1;
     }
 
-    public TileEntity getTileEntity()
-    {
+    public TileEntity getTileEntity() {
         return this.tileEntity;
     }
 
-    public void setTileEntity(TileEntity tileEntity)
-    {
+    public void setTileEntity(TileEntity tileEntity) {
         this.tileEntity = tileEntity;
     }
 }

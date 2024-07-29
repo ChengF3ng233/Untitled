@@ -1,15 +1,13 @@
 package net.minecraft.scoreboard;
 
-import java.util.Comparator;
-import java.util.List;
 import net.minecraft.entity.player.EntityPlayer;
 
-public class Score
-{
-    public static final Comparator<Score> scoreComparator = new Comparator<Score>()
-    {
-        public int compare(Score p_compare_1_, Score p_compare_2_)
-        {
+import java.util.Comparator;
+import java.util.List;
+
+public class Score {
+    public static final Comparator<Score> scoreComparator = new Comparator<Score>() {
+        public int compare(Score p_compare_1_, Score p_compare_2_) {
             return p_compare_1_.getScorePoints() > p_compare_2_.getScorePoints() ? 1 : (p_compare_1_.getScorePoints() < p_compare_2_.getScorePoints() ? -1 : p_compare_2_.getPlayerName().compareToIgnoreCase(p_compare_1_.getPlayerName()));
         }
     };
@@ -20,97 +18,75 @@ public class Score
     private boolean locked;
     private boolean forceUpdate;
 
-    public Score(Scoreboard theScoreboardIn, ScoreObjective theScoreObjectiveIn, String scorePlayerNameIn)
-    {
+    public Score(Scoreboard theScoreboardIn, ScoreObjective theScoreObjectiveIn, String scorePlayerNameIn) {
         this.theScoreboard = theScoreboardIn;
         this.theScoreObjective = theScoreObjectiveIn;
         this.scorePlayerName = scorePlayerNameIn;
         this.forceUpdate = true;
     }
 
-    public void increseScore(int amount)
-    {
-        if (this.theScoreObjective.getCriteria().isReadOnly())
-        {
+    public void increseScore(int amount) {
+        if (this.theScoreObjective.getCriteria().isReadOnly()) {
             throw new IllegalStateException("Cannot modify read-only score");
-        }
-        else
-        {
+        } else {
             this.setScorePoints(this.getScorePoints() + amount);
         }
     }
 
-    public void decreaseScore(int amount)
-    {
-        if (this.theScoreObjective.getCriteria().isReadOnly())
-        {
+    public void decreaseScore(int amount) {
+        if (this.theScoreObjective.getCriteria().isReadOnly()) {
             throw new IllegalStateException("Cannot modify read-only score");
-        }
-        else
-        {
+        } else {
             this.setScorePoints(this.getScorePoints() - amount);
         }
     }
 
-    public void func_96648_a()
-    {
-        if (this.theScoreObjective.getCriteria().isReadOnly())
-        {
+    public void func_96648_a() {
+        if (this.theScoreObjective.getCriteria().isReadOnly()) {
             throw new IllegalStateException("Cannot modify read-only score");
-        }
-        else
-        {
+        } else {
             this.increseScore(1);
         }
     }
 
-    public int getScorePoints()
-    {
+    public int getScorePoints() {
         return this.scorePoints;
     }
 
-    public void setScorePoints(int points)
-    {
+    public void setScorePoints(int points) {
         int i = this.scorePoints;
         this.scorePoints = points;
 
-        if (i != points || this.forceUpdate)
-        {
+        if (i != points || this.forceUpdate) {
             this.forceUpdate = false;
             this.getScoreScoreboard().func_96536_a(this);
         }
     }
 
-    public ScoreObjective getObjective()
-    {
+    public ScoreObjective getObjective() {
         return this.theScoreObjective;
     }
 
     /**
      * Returns the name of the player this score belongs to
      */
-    public String getPlayerName()
-    {
+    public String getPlayerName() {
         return this.scorePlayerName;
     }
 
-    public Scoreboard getScoreScoreboard()
-    {
+    public Scoreboard getScoreScoreboard() {
         return this.theScoreboard;
     }
 
-    public boolean isLocked()
-    {
+    public boolean isLocked() {
         return this.locked;
     }
 
-    public void setLocked(boolean locked)
-    {
+    public void setLocked(boolean locked) {
         this.locked = locked;
     }
 
-    public void func_96651_a(List<EntityPlayer> p_96651_1_)
-    {
+    public void func_96651_a(List<EntityPlayer> p_96651_1_) {
         this.setScorePoints(this.theScoreObjective.getCriteria().setScore(p_96651_1_));
     }
 }

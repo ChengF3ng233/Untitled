@@ -3,8 +3,7 @@ package net.optifine;
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.EnumFacing;
 
-public enum BlockDir
-{
+public enum BlockDir {
     DOWN(EnumFacing.DOWN),
     UP(EnumFacing.UP),
     NORTH(EnumFacing.NORTH),
@@ -24,80 +23,67 @@ public enum BlockDir
     UP_WEST(EnumFacing.UP, EnumFacing.WEST),
     UP_EAST(EnumFacing.UP, EnumFacing.EAST);
 
-    private EnumFacing facing1;
+    private final EnumFacing facing1;
     private EnumFacing facing2;
 
-    private BlockDir(EnumFacing facing1)
-    {
+    BlockDir(EnumFacing facing1) {
         this.facing1 = facing1;
     }
 
-    private BlockDir(EnumFacing facing1, EnumFacing facing2)
-    {
+    BlockDir(EnumFacing facing1, EnumFacing facing2) {
         this.facing1 = facing1;
         this.facing2 = facing2;
     }
 
-    public EnumFacing getFacing1()
-    {
+    public EnumFacing getFacing1() {
         return this.facing1;
     }
 
-    public EnumFacing getFacing2()
-    {
+    public EnumFacing getFacing2() {
         return this.facing2;
     }
 
-    BlockPos offset(BlockPos pos)
-    {
+    BlockPos offset(BlockPos pos) {
         pos = pos.offset(this.facing1, 1);
 
-        if (this.facing2 != null)
-        {
+        if (this.facing2 != null) {
             pos = pos.offset(this.facing2, 1);
         }
 
         return pos;
     }
 
-    public int getOffsetX()
-    {
+    public int getOffsetX() {
         int i = this.facing1.getFrontOffsetX();
 
-        if (this.facing2 != null)
-        {
+        if (this.facing2 != null) {
             i += this.facing2.getFrontOffsetX();
         }
 
         return i;
     }
 
-    public int getOffsetY()
-    {
+    public int getOffsetY() {
         int i = this.facing1.getFrontOffsetY();
 
-        if (this.facing2 != null)
-        {
+        if (this.facing2 != null) {
             i += this.facing2.getFrontOffsetY();
         }
 
         return i;
     }
 
-    public int getOffsetZ()
-    {
+    public int getOffsetZ() {
         int i = this.facing1.getFrontOffsetZ();
 
-        if (this.facing2 != null)
-        {
+        if (this.facing2 != null) {
             i += this.facing2.getFrontOffsetZ();
         }
 
         return i;
     }
 
-    public boolean isDouble()
-    {
+    public boolean isDouble() {
         return this.facing2 != null;
     }
 }

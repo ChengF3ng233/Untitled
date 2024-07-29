@@ -7,35 +7,26 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
 
-public class RecipeBookCloning implements IRecipe
-{
+public class RecipeBookCloning implements IRecipe {
     /**
      * Used to check if a recipe matches current crafting inventory
      */
-    public boolean matches(InventoryCrafting inv, World worldIn)
-    {
+    public boolean matches(InventoryCrafting inv, World worldIn) {
         int i = 0;
         ItemStack itemstack = null;
 
-        for (int j = 0; j < inv.getSizeInventory(); ++j)
-        {
+        for (int j = 0; j < inv.getSizeInventory(); ++j) {
             ItemStack itemstack1 = inv.getStackInSlot(j);
 
-            if (itemstack1 != null)
-            {
-                if (itemstack1.getItem() == Items.written_book)
-                {
-                    if (itemstack != null)
-                    {
+            if (itemstack1 != null) {
+                if (itemstack1.getItem() == Items.written_book) {
+                    if (itemstack != null) {
                         return false;
                     }
 
                     itemstack = itemstack1;
-                }
-                else
-                {
-                    if (itemstack1.getItem() != Items.writable_book)
-                    {
+                } else {
+                    if (itemstack1.getItem() != Items.writable_book) {
                         return false;
                     }
 
@@ -50,30 +41,22 @@ public class RecipeBookCloning implements IRecipe
     /**
      * Returns an Item that is the result of this recipe
      */
-    public ItemStack getCraftingResult(InventoryCrafting inv)
-    {
+    public ItemStack getCraftingResult(InventoryCrafting inv) {
         int i = 0;
         ItemStack itemstack = null;
 
-        for (int j = 0; j < inv.getSizeInventory(); ++j)
-        {
+        for (int j = 0; j < inv.getSizeInventory(); ++j) {
             ItemStack itemstack1 = inv.getStackInSlot(j);
 
-            if (itemstack1 != null)
-            {
-                if (itemstack1.getItem() == Items.written_book)
-                {
-                    if (itemstack != null)
-                    {
+            if (itemstack1 != null) {
+                if (itemstack1.getItem() == Items.written_book) {
+                    if (itemstack != null) {
                         return null;
                     }
 
                     itemstack = itemstack1;
-                }
-                else
-                {
-                    if (itemstack1.getItem() != Items.writable_book)
-                    {
+                } else {
+                    if (itemstack1.getItem() != Items.writable_book) {
                         return null;
                     }
 
@@ -82,21 +65,17 @@ public class RecipeBookCloning implements IRecipe
             }
         }
 
-        if (itemstack != null && i >= 1 && ItemEditableBook.getGeneration(itemstack) < 2)
-        {
+        if (itemstack != null && i >= 1 && ItemEditableBook.getGeneration(itemstack) < 2) {
             ItemStack itemstack2 = new ItemStack(Items.written_book, i);
-            itemstack2.setTagCompound((NBTTagCompound)itemstack.getTagCompound().copy());
+            itemstack2.setTagCompound((NBTTagCompound) itemstack.getTagCompound().copy());
             itemstack2.getTagCompound().setInteger("generation", ItemEditableBook.getGeneration(itemstack) + 1);
 
-            if (itemstack.hasDisplayName())
-            {
+            if (itemstack.hasDisplayName()) {
                 itemstack2.setStackDisplayName(itemstack.getDisplayName());
             }
 
             return itemstack2;
-        }
-        else
-        {
+        } else {
             return null;
         }
     }
@@ -104,26 +83,21 @@ public class RecipeBookCloning implements IRecipe
     /**
      * Returns the size of the recipe area
      */
-    public int getRecipeSize()
-    {
+    public int getRecipeSize() {
         return 9;
     }
 
-    public ItemStack getRecipeOutput()
-    {
+    public ItemStack getRecipeOutput() {
         return null;
     }
 
-    public ItemStack[] getRemainingItems(InventoryCrafting inv)
-    {
+    public ItemStack[] getRemainingItems(InventoryCrafting inv) {
         ItemStack[] aitemstack = new ItemStack[inv.getSizeInventory()];
 
-        for (int i = 0; i < aitemstack.length; ++i)
-        {
+        for (int i = 0; i < aitemstack.length; ++i) {
             ItemStack itemstack = inv.getStackInSlot(i);
 
-            if (itemstack != null && itemstack.getItem() instanceof ItemEditableBook)
-            {
+            if (itemstack != null && itemstack.getItem() instanceof ItemEditableBook) {
                 aitemstack[i] = itemstack;
                 break;
             }

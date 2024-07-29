@@ -1,28 +1,30 @@
 package net.minecraft.network.play.server;
 
-import java.io.IOException;
 import net.minecraft.network.Packet;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.network.play.INetHandlerPlayClient;
 import net.minecraft.util.BlockPos;
 
-public class S28PacketEffect implements Packet<INetHandlerPlayClient>
-{
+import java.io.IOException;
+
+public class S28PacketEffect implements Packet<INetHandlerPlayClient> {
     private int soundType;
     private BlockPos soundPos;
 
-    /** can be a block/item id or other depending on the soundtype */
+    /**
+     * can be a block/item id or other depending on the soundtype
+     */
     private int soundData;
 
-    /** If true the sound is played across the server */
+    /**
+     * If true the sound is played across the server
+     */
     private boolean serverWide;
 
-    public S28PacketEffect()
-    {
+    public S28PacketEffect() {
     }
 
-    public S28PacketEffect(int soundTypeIn, BlockPos soundPosIn, int soundDataIn, boolean serverWideIn)
-    {
+    public S28PacketEffect(int soundTypeIn, BlockPos soundPosIn, int soundDataIn, boolean serverWideIn) {
         this.soundType = soundTypeIn;
         this.soundPos = soundPosIn;
         this.soundData = soundDataIn;
@@ -32,8 +34,7 @@ public class S28PacketEffect implements Packet<INetHandlerPlayClient>
     /**
      * Reads the raw packet data from the data stream.
      */
-    public void readPacketData(PacketBuffer buf) throws IOException
-    {
+    public void readPacketData(PacketBuffer buf) throws IOException {
         this.soundType = buf.readInt();
         this.soundPos = buf.readBlockPos();
         this.soundData = buf.readInt();
@@ -43,8 +44,7 @@ public class S28PacketEffect implements Packet<INetHandlerPlayClient>
     /**
      * Writes the raw packet data to the data stream.
      */
-    public void writePacketData(PacketBuffer buf) throws IOException
-    {
+    public void writePacketData(PacketBuffer buf) throws IOException {
         buf.writeInt(this.soundType);
         buf.writeBlockPos(this.soundPos);
         buf.writeInt(this.soundData);
@@ -54,28 +54,23 @@ public class S28PacketEffect implements Packet<INetHandlerPlayClient>
     /**
      * Passes this Packet on to the NetHandler for processing.
      */
-    public void processPacket(INetHandlerPlayClient handler)
-    {
+    public void processPacket(INetHandlerPlayClient handler) {
         handler.handleEffect(this);
     }
 
-    public boolean isSoundServerwide()
-    {
+    public boolean isSoundServerwide() {
         return this.serverWide;
     }
 
-    public int getSoundType()
-    {
+    public int getSoundType() {
         return this.soundType;
     }
 
-    public int getSoundData()
-    {
+    public int getSoundData() {
         return this.soundData;
     }
 
-    public BlockPos getSoundPos()
-    {
+    public BlockPos getSoundPos() {
         return this.soundPos;
     }
 }

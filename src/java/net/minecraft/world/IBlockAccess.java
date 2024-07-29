@@ -6,8 +6,7 @@ import net.minecraft.util.BlockPos;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.world.biome.BiomeGenBase;
 
-public interface IBlockAccess
-{
+public interface IBlockAccess {
     TileEntity getTileEntity(BlockPos pos);
 
     int getCombinedLight(BlockPos pos, int lightValue);

@@ -1,7 +1,6 @@
 package net.minecraft.util;
 
-public interface IProgressUpdate
-{
+public interface IProgressUpdate {
     /**
      * Shows the 'Saving level' string.
      */

@@ -3,19 +3,19 @@ package net.minecraft.client.resources;
 import com.google.common.collect.Maps;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
-import java.io.BufferedReader;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.Reader;
-import java.util.Map;
 import net.minecraft.client.resources.data.IMetadataSection;
 import net.minecraft.client.resources.data.IMetadataSerializer;
 import net.minecraft.util.ResourceLocation;
 import org.apache.commons.io.IOUtils;
 
-public class SimpleResource implements IResource
-{
-    private final Map<String, IMetadataSection> mapMetadataSections = Maps.<String, IMetadataSection>newHashMap();
+import java.io.BufferedReader;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.Reader;
+import java.util.Map;
+
+public class SimpleResource implements IResource {
+    private final Map<String, IMetadataSection> mapMetadataSections = Maps.newHashMap();
     private final String resourcePackName;
     private final ResourceLocation srResourceLocation;
     private final InputStream resourceInputStream;
@@ -24,8 +24,7 @@ public class SimpleResource implements IResource
     private boolean mcmetaJsonChecked;
     private JsonObject mcmetaJson;
 
-    public SimpleResource(String resourcePackNameIn, ResourceLocation srResourceLocationIn, InputStream resourceInputStreamIn, InputStream mcmetaInputStreamIn, IMetadataSerializer srMetadataSerializerIn)
-    {
+    public SimpleResource(String resourcePackNameIn, ResourceLocation srResourceLocationIn, InputStream resourceInputStreamIn, InputStream mcmetaInputStreamIn, IMetadataSerializer srMetadataSerializerIn) {
         this.resourcePackName = resourcePackNameIn;
         this.srResourceLocation = srResourceLocationIn;
         this.resourceInputStream = resourceInputStreamIn;
@@ -33,49 +32,37 @@ public class SimpleResource implements IResource
         this.srMetadataSerializer = srMetadataSerializerIn;
     }
 
-    public ResourceLocation getResourceLocation()
-    {
+    public ResourceLocation getResourceLocation() {
         return this.srResourceLocation;
     }
 
-    public InputStream getInputStream()
-    {
+    public InputStream getInputStream() {
         return this.resourceInputStream;
     }
 
-    public boolean hasMetadata()
-    {
+    public boolean hasMetadata() {
         return this.mcmetaInputStream != null;
     }
 
-    public <T extends IMetadataSection> T getMetadata(String p_110526_1_)
-    {
-        if (!this.hasMetadata())
-        {
-            return (T)null;
-        }
-        else
-        {
-            if (this.mcmetaJson == null && !this.mcmetaJsonChecked)
-            {
+    public <T extends IMetadataSection> T getMetadata(String p_110526_1_) {
+        if (!this.hasMetadata()) {
+            return null;
+        } else {
+            if (this.mcmetaJson == null && !this.mcmetaJsonChecked) {
                 this.mcmetaJsonChecked = true;
                 BufferedReader bufferedreader = null;
 
-                try
-                {
+                try {
                     bufferedreader = new BufferedReader(new InputStreamReader(this.mcmetaInputStream));
-                    this.mcmetaJson = (new JsonParser()).parse((Reader)bufferedreader).getAsJsonObject();
-                }
-                finally
-                {
-                    IOUtils.closeQuietly((Reader)bufferedreader);
+                    this.mcmetaJson = (new JsonParser()).parse(bufferedreader).getAsJsonObject();
+                } finally {
+                    IOUtils.closeQuietly(bufferedreader);
                 }
             }
 
-            T t = (T)this.mapMetadataSections.get(p_110526_1_);
+            T t = (T) this.mapMetadataSections.get(p_110526_1_);
 
-            if (t == null)
-            {
+            if (t == null) {
                 t = this.srMetadataSerializer.parseMetadataSection(p_110526_1_, this.mcmetaJson);
             }
 
@@ -83,55 +70,32 @@ public class SimpleResource implements IResource
         }
     }
 
-    public String getResourcePackName()
-    {
+    public String getResourcePackName() {
         return this.resourcePackName;
     }
 
-    public boolean equals(Object p_equals_1_)
-    {
-        if (this == p_equals_1_)
-        {
+    public boolean equals(Object p_equals_1_) {
+        if (this == p_equals_1_) {
             return true;
-        }
-        else if (!(p_equals_1_ instanceof SimpleResource))
-        {
+        } else if (!(p_equals_1_ instanceof SimpleResource simpleresource)) {
             return false;
-        }
-        else
-        {
-            SimpleResource simpleresource = (SimpleResource)p_equals_1_;
+        } else {
 
-            if (this.srResourceLocation != null)
-            {
-                if (!this.srResourceLocation.equals(simpleresource.srResourceLocation))
-                {
+            if (this.srResourceLocation != null) {
+                if (!this.srResourceLocation.equals(simpleresource.srResourceLocation)) {
                     return false;
                 }
-            }
-            else if (simpleresource.srResourceLocation != null)
-            {
+            } else if (simpleresource.srResourceLocation != null) {
                 return false;
             }
 
-            if (this.resourcePackName != null)
-            {
-                if (!this.resourcePackName.equals(simpleresource.resourcePackName))
-                {
-                    return false;
-                }
-            }
-            else if (simpleresource.resourcePackName != null)
-            {
-                return false;
-            }
-
-            return true;
+            if (this.resourcePackName != null) {
+                return this.resourcePackName.equals(simpleresource.resourcePackName);
+            } else return simpleresource.resourcePackName == null;
         }
     }
 
-    public int hashCode()
-    {
+    public int hashCode() {
         int i = this.resourcePackName != null ? this.resourcePackName.hashCode() : 0;
         i = 31 * i + (this.srResourceLocation != null ? this.srResourceLocation.hashCode() : 0);
         return i;

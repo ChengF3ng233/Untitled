@@ -1,5 +1,7 @@
 package cn.feng.untitled.ui.font;
 
+import java.io.Serializable;
+
 /**
  * @author ChengFeng
  * @since 2024/7/29

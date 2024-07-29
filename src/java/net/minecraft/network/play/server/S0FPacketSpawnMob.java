@@ -1,7 +1,5 @@
 package net.minecraft.network.play.server;
 
-import java.io.IOException;
-import java.util.List;
 import net.minecraft.entity.DataWatcher;
 import net.minecraft.entity.EntityList;
 import net.minecraft.entity.EntityLivingBase;
@@ -10,8 +8,10 @@ import net.minecraft.network.PacketBuffer;
 import net.minecraft.network.play.INetHandlerPlayClient;
 import net.minecraft.util.MathHelper;
 
-public class S0FPacketSpawnMob implements Packet<INetHandlerPlayClient>
-{
+import java.io.IOException;
+import java.util.List;
+
+public class S0FPacketSpawnMob implements Packet<INetHandlerPlayClient> {
     private int entityId;
     private int type;
     private int x;
@@ -26,66 +26,57 @@ public class S0FPacketSpawnMob implements Packet<INetHandlerPlayClient>
     private DataWatcher field_149043_l;
     private List<DataWatcher.WatchableObject> watcher;
 
-    public S0FPacketSpawnMob()
-    {
+    public S0FPacketSpawnMob() {
     }
 
-    public S0FPacketSpawnMob(EntityLivingBase entityIn)
-    {
+    public S0FPacketSpawnMob(EntityLivingBase entityIn) {
         this.entityId = entityIn.getEntityId();
-        this.type = (byte)EntityList.getEntityID(entityIn);
+        this.type = (byte) EntityList.getEntityID(entityIn);
         this.x = MathHelper.floor_double(entityIn.posX * 32.0D);
         this.y = MathHelper.floor_double(entityIn.posY * 32.0D);
         this.z = MathHelper.floor_double(entityIn.posZ * 32.0D);
-        this.yaw = (byte)((int)(entityIn.rotationYaw * 256.0F / 360.0F));
-        this.pitch = (byte)((int)(entityIn.rotationPitch * 256.0F / 360.0F));
-        this.headPitch = (byte)((int)(entityIn.rotationYawHead * 256.0F / 360.0F));
+        this.yaw = (byte) ((int) (entityIn.rotationYaw * 256.0F / 360.0F));
+        this.pitch = (byte) ((int) (entityIn.rotationPitch * 256.0F / 360.0F));
+        this.headPitch = (byte) ((int) (entityIn.rotationYawHead * 256.0F / 360.0F));
         double d0 = 3.9D;
         double d1 = entityIn.motionX;
         double d2 = entityIn.motionY;
         double d3 = entityIn.motionZ;
 
-        if (d1 < -d0)
-        {
+        if (d1 < -d0) {
             d1 = -d0;
         }
 
-        if (d2 < -d0)
-        {
+        if (d2 < -d0) {
             d2 = -d0;
         }
 
-        if (d3 < -d0)
-        {
+        if (d3 < -d0) {
             d3 = -d0;
         }
 
-        if (d1 > d0)
-        {
+        if (d1 > d0) {
             d1 = d0;
         }
 
-        if (d2 > d0)
-        {
+        if (d2 > d0) {
             d2 = d0;
         }
 
-        if (d3 > d0)
-        {
+        if (d3 > d0) {
             d3 = d0;
         }
 
-        this.velocityX = (int)(d1 * 8000.0D);
-        this.velocityY = (int)(d2 * 8000.0D);
-        this.velocityZ = (int)(d3 * 8000.0D);
+        this.velocityX = (int) (d1 * 8000.0D);
+        this.velocityY = (int) (d2 * 8000.0D);
+        this.velocityZ = (int) (d3 * 8000.0D);
         this.field_149043_l = entityIn.getDataWatcher();
     }
 
     /**
      * Reads the raw packet data from the data stream.
      */
-    public void readPacketData(PacketBuffer buf) throws IOException
-    {
+    public void readPacketData(PacketBuffer buf) throws IOException {
         this.entityId = buf.readVarIntFromBuffer();
         this.type = buf.readByte() & 255;
         this.x = buf.readInt();
@@ -103,8 +94,7 @@ public class S0FPacketSpawnMob implements Packet<INetHandlerPlayClient>
     /**
      * Writes the raw packet data to the data stream.
      */
-    public void writePacketData(PacketBuffer buf) throws IOException
-    {
+    public void writePacketData(PacketBuffer buf) throws IOException {
         buf.writeVarIntToBuffer(this.entityId);
         buf.writeByte(this.type & 255);
         buf.writeInt(this.x);
@@ -122,73 +112,59 @@ public class S0FPacketSpawnMob implements Packet<INetHandlerPlayClient>
     /**
      * Passes this Packet on to the NetHandler for processing.
      */
-    public void processPacket(INetHandlerPlayClient handler)
-    {
+    public void processPacket(INetHandlerPlayClient handler) {
         handler.handleSpawnMob(this);
     }
 
-    public List<DataWatcher.WatchableObject> func_149027_c()
-    {
-        if (this.watcher == null)
-        {
+    public List<DataWatcher.WatchableObject> func_149027_c() {
+        if (this.watcher == null) {
             this.watcher = this.field_149043_l.getAllWatched();
         }
 
         return this.watcher;
     }
 
-    public int getEntityID()
-    {
+    public int getEntityID() {
         return this.entityId;
     }
 
-    public int getEntityType()
-    {
+    public int getEntityType() {
         return this.type;
     }
 
-    public int getX()
-    {
+    public int getX() {
         return this.x;
     }
 
-    public int getY()
-    {
+    public int getY() {
         return this.y;
     }
 
-    public int getZ()
-    {
+    public int getZ() {
         return this.z;
     }
 
-    public int getVelocityX()
-    {
+    public int getVelocityX() {
         return this.velocityX;
     }
 
-    public int getVelocityY()
-    {
+    public int getVelocityY() {
         return this.velocityY;
     }
 
-    public int getVelocityZ()
-    {
+    public int getVelocityZ() {
         return this.velocityZ;
     }
 
-    public byte getYaw()
-    {
+    public byte getYaw() {
         return this.yaw;
     }
 
-    public byte getPitch()
-    {
+    public byte getPitch() {
         return this.pitch;
     }
 
-    public byte getHeadPitch()
-    {
+    public byte getHeadPitch() {
         return this.headPitch;
     }
 }

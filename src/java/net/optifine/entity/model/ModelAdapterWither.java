@@ -10,80 +10,58 @@ import net.minecraft.entity.boss.EntityWither;
 import net.minecraft.src.Config;
 import net.optifine.reflect.Reflector;
 
-public class ModelAdapterWither extends ModelAdapter
-{
-    public ModelAdapterWither()
-    {
+public class ModelAdapterWither extends ModelAdapter {
+    public ModelAdapterWither() {
         super(EntityWither.class, "wither", 0.5F);
     }
 
-    public ModelBase makeModel()
-    {
+    public ModelBase makeModel() {
         return new ModelWither(0.0F);
     }
 
-    public ModelRenderer getModelRenderer(ModelBase model, String modelPart)
-    {
-        if (!(model instanceof ModelWither))
-        {
+    public ModelRenderer getModelRenderer(ModelBase model, String modelPart) {
+        if (!(model instanceof ModelWither modelwither)) {
             return null;
-        }
-        else
-        {
-            ModelWither modelwither = (ModelWither)model;
+        } else {
             String s = "body";
 
-            if (modelPart.startsWith(s))
-            {
-                ModelRenderer[] amodelrenderer1 = (ModelRenderer[])((ModelRenderer[])Reflector.getFieldValue(modelwither, Reflector.ModelWither_bodyParts));
+            if (modelPart.startsWith(s)) {
+                ModelRenderer[] amodelrenderer1 = (ModelRenderer[]) Reflector.getFieldValue(modelwither, Reflector.ModelWither_bodyParts);
 
-                if (amodelrenderer1 == null)
-                {
+                if (amodelrenderer1 == null) {
                     return null;
-                }
-                else
-                {
+                } else {
                     String s3 = modelPart.substring(s.length());
                     int j = Config.parseInt(s3, -1);
                     --j;
                     return j >= 0 && j < amodelrenderer1.length ? amodelrenderer1[j] : null;
                 }
-            }
-            else
-            {
+            } else {
                 String s1 = "head";
 
-                if (modelPart.startsWith(s1))
-                {
-                    ModelRenderer[] amodelrenderer = (ModelRenderer[])((ModelRenderer[])Reflector.getFieldValue(modelwither, Reflector.ModelWither_heads));
+                if (modelPart.startsWith(s1)) {
+                    ModelRenderer[] amodelrenderer = (ModelRenderer[]) Reflector.getFieldValue(modelwither, Reflector.ModelWither_heads);
 
-                    if (amodelrenderer == null)
-                    {
+                    if (amodelrenderer == null) {
                         return null;
-                    }
-                    else
-                    {
+                    } else {
                         String s2 = modelPart.substring(s1.length());
                         int i = Config.parseInt(s2, -1);
                         --i;
                         return i >= 0 && i < amodelrenderer.length ? amodelrenderer[i] : null;
                     }
-                }
-                else
-                {
+                } else {
                     return null;
                 }
             }
         }
     }
 
-    public String[] getModelRendererNames()
-    {
-        return new String[] {"body1", "body2", "body3", "head1", "head2", "head3"};
+    public String[] getModelRendererNames() {
+        return new String[]{"body1", "body2", "body3", "head1", "head2", "head3"};
     }
 
-    public IEntityRenderer makeEntityRender(ModelBase modelBase, float shadowSize)
-    {
+    public IEntityRenderer makeEntityRender(ModelBase modelBase, float shadowSize) {
         RenderManager rendermanager = Minecraft.getMinecraft().getRenderManager();
         RenderWither renderwither = new RenderWither(rendermanager);
         renderwither.mainModel = modelBase;

@@ -1,14 +1,11 @@
 package net.minecraft.util;
 
-public abstract class LazyLoadBase<T>
-{
+public abstract class LazyLoadBase<T> {
     private T value;
     private boolean isLoaded = false;
 
-    public T getValue()
-    {
-        if (!this.isLoaded)
-        {
+    public T getValue() {
+        if (!this.isLoaded) {
             this.isLoaded = true;
             this.value = this.load();
         }

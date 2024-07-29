@@ -1,7 +1,6 @@
 package net.minecraft.command;
 
-public interface IAdminCommand
-{
+public interface IAdminCommand {
     /**
      * Send an informative message to the server operators
      */

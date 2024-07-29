@@ -1,35 +1,30 @@
 package net.minecraft.scoreboard;
 
-import java.util.List;
 import net.minecraft.entity.player.EntityPlayer;
 
-public class ScoreDummyCriteria implements IScoreObjectiveCriteria
-{
+import java.util.List;
+
+public class ScoreDummyCriteria implements IScoreObjectiveCriteria {
     private final String dummyName;
 
-    public ScoreDummyCriteria(String name)
-    {
+    public ScoreDummyCriteria(String name) {
         this.dummyName = name;
         IScoreObjectiveCriteria.INSTANCES.put(name, this);
     }
 
-    public String getName()
-    {
+    public String getName() {
         return this.dummyName;
     }
 
-    public int setScore(List<EntityPlayer> p_96635_1_)
-    {
+    public int setScore(List<EntityPlayer> p_96635_1_) {
         return 0;
     }
 
-    public boolean isReadOnly()
-    {
+    public boolean isReadOnly() {
         return false;
     }
 
-    public IScoreObjectiveCriteria.EnumRenderType getRenderType()
-    {
+    public IScoreObjectiveCriteria.EnumRenderType getRenderType() {
         return IScoreObjectiveCriteria.EnumRenderType.INTEGER;
     }
 }

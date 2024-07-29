@@ -2,11 +2,11 @@ package net.minecraft.util;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
+
 import java.util.List;
 import java.util.Map;
 
-public enum EnumParticleTypes
-{
+public enum EnumParticleTypes {
     EXPLOSION_NORMAL("explode", 0, true),
     EXPLOSION_LARGE("largeexplode", 1, true),
     EXPLOSION_HUGE("hugeexplosion", 2, true),
@@ -50,77 +50,67 @@ public enum EnumParticleTypes
     ITEM_TAKE("take", 40, false),
     MOB_APPEARANCE("mobappearance", 41, true);
 
+    private static final Map<Integer, EnumParticleTypes> PARTICLES = Maps.newHashMap();
+    private static final String[] PARTICLE_NAMES;
+
+    static {
+        List<String> list = Lists.newArrayList();
+
+        for (EnumParticleTypes enumparticletypes : values()) {
+            PARTICLES.put(Integer.valueOf(enumparticletypes.getParticleID()), enumparticletypes);
+
+            if (!enumparticletypes.getParticleName().endsWith("_")) {
+                list.add(enumparticletypes.getParticleName());
+            }
+        }
+
+        PARTICLE_NAMES = list.toArray(new String[list.size()]);
+    }
+
     private final String particleName;
     private final int particleID;
     private final boolean shouldIgnoreRange;
     private final int argumentCount;
-    private static final Map<Integer, EnumParticleTypes> PARTICLES = Maps.<Integer, EnumParticleTypes>newHashMap();
-    private static final String[] PARTICLE_NAMES;
 
-    private EnumParticleTypes(String particleNameIn, int particleIDIn, boolean p_i46011_5_, int argumentCountIn)
-    {
+    EnumParticleTypes(String particleNameIn, int particleIDIn, boolean p_i46011_5_, int argumentCountIn) {
         this.particleName = particleNameIn;
         this.particleID = particleIDIn;
         this.shouldIgnoreRange = p_i46011_5_;
         this.argumentCount = argumentCountIn;
     }
 
-    private EnumParticleTypes(String particleNameIn, int particleIDIn, boolean p_i46012_5_)
-    {
+    EnumParticleTypes(String particleNameIn, int particleIDIn, boolean p_i46012_5_) {
         this(particleNameIn, particleIDIn, p_i46012_5_, 0);
     }
 
-    public static String[] getParticleNames()
-    {
+    public static String[] getParticleNames() {
         return PARTICLE_NAMES;
-    }
-
-    public String getParticleName()
-    {
-        return this.particleName;
-    }
-
-    public int getParticleID()
-    {
-        return this.particleID;
-    }
-
-    public int getArgumentCount()
-    {
-        return this.argumentCount;
-    }
-
-    public boolean getShouldIgnoreRange()
-    {
-        return this.shouldIgnoreRange;
-    }
-
-    public boolean hasArguments()
-    {
-        return this.argumentCount > 0;
     }
 
     /**
      * Gets the relative EnumParticleTypes by id.
      */
-    public static EnumParticleTypes getParticleFromId(int particleId)
-    {
-        return (EnumParticleTypes)PARTICLES.get(Integer.valueOf(particleId));
+    public static EnumParticleTypes getParticleFromId(int particleId) {
+        return PARTICLES.get(Integer.valueOf(particleId));
     }
 
-    static {
-        List<String> list = Lists.<String>newArrayList();
+    public String getParticleName() {
+        return this.particleName;
+    }
 
-        for (EnumParticleTypes enumparticletypes : values())
-        {
-            PARTICLES.put(Integer.valueOf(enumparticletypes.getParticleID()), enumparticletypes);
+    public int getParticleID() {
+        return this.particleID;
+    }
 
-            if (!enumparticletypes.getParticleName().endsWith("_"))
-            {
-                list.add(enumparticletypes.getParticleName());
-            }
-        }
+    public int getArgumentCount() {
+        return this.argumentCount;
+    }
 
-        PARTICLE_NAMES = (String[])list.toArray(new String[list.size()]);
+    public boolean getShouldIgnoreRange() {
+        return this.shouldIgnoreRange;
+    }
+
+    public boolean hasArguments() {
+        return this.argumentCount > 0;
     }
 }

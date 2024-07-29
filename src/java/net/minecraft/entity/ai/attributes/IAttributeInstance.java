@@ -3,8 +3,7 @@ package net.minecraft.entity.ai.attributes;
 import java.util.Collection;
 import java.util.UUID;
 
-public interface IAttributeInstance
-{
+public interface IAttributeInstance {
     /**
      * Get the Attribute this is an instance of
      */

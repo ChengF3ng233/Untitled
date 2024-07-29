@@ -1,42 +1,34 @@
 package net.optifine.reflect;
 
+import net.minecraft.client.Minecraft;
+import net.minecraft.src.Config;
+
 import java.lang.reflect.Field;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
-import net.minecraft.client.Minecraft;
-import net.minecraft.src.Config;
 
-public class FieldLocatorActionKeyF3 implements IFieldLocator
-{
-    public Field getField()
-    {
+public class FieldLocatorActionKeyF3 implements IFieldLocator {
+    public Field getField() {
         Class oclass = Minecraft.class;
         Field field = this.getFieldRenderChunksMany();
 
-        if (field == null)
-        {
+        if (field == null) {
             Config.log("(Reflector) Field not present: " + oclass.getName() + ".actionKeyF3 (field renderChunksMany not found)");
             return null;
-        }
-        else
-        {
+        } else {
             Field field1 = ReflectorRaw.getFieldAfter(Minecraft.class, field, Boolean.TYPE, 0);
 
-            if (field1 == null)
-            {
+            if (field1 == null) {
                 Config.log("(Reflector) Field not present: " + oclass.getName() + ".actionKeyF3");
                 return null;
-            }
-            else
-            {
+            } else {
                 return field1;
             }
         }
     }
 
-    private Field getFieldRenderChunksMany()
-    {
+    private Field getFieldRenderChunksMany() {
         Minecraft minecraft = Minecraft.getMinecraft();
         boolean flag = minecraft.renderChunksMany;
         Field[] afield = Minecraft.class.getDeclaredFields();
@@ -49,7 +41,7 @@ public class FieldLocatorActionKeyF3 implements IFieldLocator
         Set<Field> set1 = new HashSet(Arrays.asList(afield2));
         Set<Field> set2 = new HashSet(set);
         set2.retainAll(set1);
-        Field[] afield3 = (Field[])((Field[])set2.toArray(new Field[set2.size()]));
+        Field[] afield3 = set2.toArray(new Field[set2.size()]);
         return afield3.length != 1 ? null : afield3[0];
     }
 }

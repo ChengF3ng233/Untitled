@@ -1,6 +1,5 @@
 package net.optifine.reflect;
 
-public interface IResolvable
-{
+public interface IResolvable {
     void resolve();
 }

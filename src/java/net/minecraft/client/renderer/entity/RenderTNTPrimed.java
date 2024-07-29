@@ -9,10 +9,8 @@ import net.minecraft.init.Blocks;
 import net.minecraft.util.MathHelper;
 import net.minecraft.util.ResourceLocation;
 
-public class RenderTNTPrimed extends Render<EntityTNTPrimed>
-{
-    public RenderTNTPrimed(RenderManager renderManagerIn)
-    {
+public class RenderTNTPrimed extends Render<EntityTNTPrimed> {
+    public RenderTNTPrimed(RenderManager renderManagerIn) {
         super(renderManagerIn);
         this.shadowSize = 0.5F;
     }
@@ -20,15 +18,13 @@ public class RenderTNTPrimed extends Render<EntityTNTPrimed>
     /**
      * Renders the desired {@code T} type Entity.
      */
-    public void doRender(EntityTNTPrimed entity, double x, double y, double z, float entityYaw, float partialTicks)
-    {
+    public void doRender(EntityTNTPrimed entity, double x, double y, double z, float entityYaw, float partialTicks) {
         BlockRendererDispatcher blockrendererdispatcher = Minecraft.getMinecraft().getBlockRendererDispatcher();
         GlStateManager.pushMatrix();
-        GlStateManager.translate((float)x, (float)y + 0.5F, (float)z);
+        GlStateManager.translate((float) x, (float) y + 0.5F, (float) z);
 
-        if ((float)entity.fuse - partialTicks + 1.0F < 10.0F)
-        {
-            float f = 1.0F - ((float)entity.fuse - partialTicks + 1.0F) / 10.0F;
+        if ((float) entity.fuse - partialTicks + 1.0F < 10.0F) {
+            float f = 1.0F - ((float) entity.fuse - partialTicks + 1.0F) / 10.0F;
             f = MathHelper.clamp_float(f, 0.0F, 1.0F);
             f = f * f;
             f = f * f;
@@ -36,14 +32,13 @@ public class RenderTNTPrimed extends Render<EntityTNTPrimed>
             GlStateManager.scale(f1, f1, f1);
         }
 
-        float f2 = (1.0F - ((float)entity.fuse - partialTicks + 1.0F) / 100.0F) * 0.8F;
+        float f2 = (1.0F - ((float) entity.fuse - partialTicks + 1.0F) / 100.0F) * 0.8F;
         this.bindEntityTexture(entity);
         GlStateManager.translate(-0.5F, -0.5F, 0.5F);
         blockrendererdispatcher.renderBlockBrightness(Blocks.tnt.getDefaultState(), entity.getBrightness(partialTicks));
         GlStateManager.translate(0.0F, 0.0F, 1.0F);
 
-        if (entity.fuse / 5 % 2 == 0)
-        {
+        if (entity.fuse / 5 % 2 == 0) {
             GlStateManager.disableTexture2D();
             GlStateManager.disableLighting();
             GlStateManager.enableBlend();
@@ -67,8 +62,7 @@ public class RenderTNTPrimed extends Render<EntityTNTPrimed>
     /**
      * Returns the location of an entity's texture. Doesn't seem to be called unless you call Render.bindEntityTexture.
      */
-    protected ResourceLocation getEntityTexture(EntityTNTPrimed entity)
-    {
+    protected ResourceLocation getEntityTexture(EntityTNTPrimed entity) {
         return TextureMap.locationBlocksTexture;
     }
 }

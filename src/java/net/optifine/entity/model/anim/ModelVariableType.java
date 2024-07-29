@@ -3,8 +3,7 @@ package net.optifine.entity.model.anim;
 import net.minecraft.client.model.ModelRenderer;
 import net.minecraft.src.Config;
 
-public enum ModelVariableType
-{
+public enum ModelVariableType {
     POS_X("tx"),
     POS_Y("ty"),
     POS_Z("tz"),
@@ -18,23 +17,31 @@ public enum ModelVariableType
     SCALE_Y("sy"),
     SCALE_Z("sz");
 
-    private String name;
     public static ModelVariableType[] VALUES = values();
+    private final String name;
 
-    private ModelVariableType(String name)
-    {
+    ModelVariableType(String name) {
         this.name = name;
     }
 
-    public String getName()
-    {
+    public static ModelVariableType parse(String str) {
+        for (int i = 0; i < VALUES.length; ++i) {
+            ModelVariableType modelvariabletype = VALUES[i];
+
+            if (modelvariabletype.getName().equals(str)) {
+                return modelvariabletype;
+            }
+        }
+
+        return null;
+    }
+
+    public String getName() {
         return this.name;
     }
 
-    public float getFloat(ModelRenderer mr)
-    {
-        switch (this)
-        {
+    public float getFloat(ModelRenderer mr) {
+        switch (this) {
             case POS_X:
                 return mr.rotationPointX;
 
@@ -77,10 +84,8 @@ public enum ModelVariableType
         }
     }
 
-    public void setFloat(ModelRenderer mr, float val)
-    {
-        switch (this)
-        {
+    public void setFloat(ModelRenderer mr, float val) {
+        switch (this) {
             case POS_X:
                 mr.rotationPointX = val;
                 return;
@@ -132,20 +137,5 @@ public enum ModelVariableType
             default:
                 Config.warn("SetFloat not supported for: " + this);
         }
-    }
-
-    public static ModelVariableType parse(String str)
-    {
-        for (int i = 0; i < VALUES.length; ++i)
-        {
-            ModelVariableType modelvariabletype = VALUES[i];
-
-            if (modelvariabletype.getName().equals(str))
-            {
-                return modelvariabletype;
-            }
-        }
-
-        return null;
     }
 }

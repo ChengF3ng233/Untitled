@@ -1,7 +1,6 @@
 package net.optifine.texture;
 
-public enum PixelType
-{
+public enum PixelType {
     BYTE(5120),
     SHORT(5122),
     INT(5124),
@@ -23,15 +22,13 @@ public enum PixelType
     UNSIGNED_INT_10_10_10_2(32822),
     UNSIGNED_INT_2_10_10_10_REV(33640);
 
-    private int id;
+    private final int id;
 
-    private PixelType(int id)
-    {
+    PixelType(int id) {
         this.id = id;
     }
 
-    public int getId()
-    {
+    public int getId() {
         return this.id;
     }
 }

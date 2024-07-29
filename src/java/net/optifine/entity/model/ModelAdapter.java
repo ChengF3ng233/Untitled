@@ -1,49 +1,43 @@
 package net.optifine.entity.model;
 
-import java.util.ArrayList;
-import java.util.List;
 import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.model.ModelRenderer;
 
-public abstract class ModelAdapter
-{
-    private Class entityClass;
-    private String name;
-    private float shadowSize;
+import java.util.ArrayList;
+import java.util.List;
+
+public abstract class ModelAdapter {
+    private final Class entityClass;
+    private final String name;
+    private final float shadowSize;
     private String[] aliases;
 
-    public ModelAdapter(Class entityClass, String name, float shadowSize)
-    {
+    public ModelAdapter(Class entityClass, String name, float shadowSize) {
         this.entityClass = entityClass;
         this.name = name;
         this.shadowSize = shadowSize;
     }
 
-    public ModelAdapter(Class entityClass, String name, float shadowSize, String[] aliases)
-    {
+    public ModelAdapter(Class entityClass, String name, float shadowSize, String[] aliases) {
         this.entityClass = entityClass;
         this.name = name;
         this.shadowSize = shadowSize;
         this.aliases = aliases;
     }
 
-    public Class getEntityClass()
-    {
+    public Class getEntityClass() {
         return this.entityClass;
     }
 
-    public String getName()
-    {
+    public String getName() {
         return this.name;
     }
 
-    public String[] getAliases()
-    {
+    public String[] getAliases() {
         return this.aliases;
     }
 
-    public float getShadowSize()
-    {
+    public float getShadowSize() {
         return this.shadowSize;
     }
 
@@ -55,23 +49,20 @@ public abstract class ModelAdapter
 
     public abstract IEntityRenderer makeEntityRender(ModelBase var1, float var2);
 
-    public ModelRenderer[] getModelRenderers(ModelBase model)
-    {
+    public ModelRenderer[] getModelRenderers(ModelBase model) {
         String[] astring = this.getModelRendererNames();
         List<ModelRenderer> list = new ArrayList();
 
-        for (int i = 0; i < astring.length; ++i)
-        {
+        for (int i = 0; i < astring.length; ++i) {
             String s = astring[i];
             ModelRenderer modelrenderer = this.getModelRenderer(model, s);
 
-            if (modelrenderer != null)
-            {
+            if (modelrenderer != null) {
                 list.add(modelrenderer);
             }
         }
 
-        ModelRenderer[] amodelrenderer = (ModelRenderer[])((ModelRenderer[])list.toArray(new ModelRenderer[list.size()]));
+        ModelRenderer[] amodelrenderer = list.toArray(new ModelRenderer[list.size()]);
         return amodelrenderer;
     }
 }

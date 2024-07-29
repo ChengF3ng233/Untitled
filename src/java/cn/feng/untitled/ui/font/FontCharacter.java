@@ -1,6 +1,5 @@
 package cn.feng.untitled.ui.font;
 
-import lombok.Getter;
 import net.minecraft.client.renderer.GlStateManager;
 import org.lwjgl.opengl.GL11;
 
@@ -8,18 +7,7 @@ import org.lwjgl.opengl.GL11;
  * @author ChengFeng
  * @since 2024/7/29
  **/
-@Getter
-public class FontCharacter {
-    private final int texture;
-    private final float width;
-    private final float height;
-
-    public FontCharacter(int texture, float width, float height) {
-        this.texture = texture;
-        this.width = width;
-        this.height = height;
-    }
-
+public record FontCharacter(int texture, float width, float height) {
     public void render(float x, float y) {
         GlStateManager.bindTexture(this.texture);
         GL11.glBegin(7);

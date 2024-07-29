@@ -7,10 +7,8 @@ import net.minecraft.world.biome.BiomeGenBase;
 import net.minecraft.world.biome.WorldChunkManager;
 import net.minecraft.world.chunk.NibbleArray;
 
-public class ChunkLoader
-{
-    public static ChunkLoader.AnvilConverterData load(NBTTagCompound nbt)
-    {
+public class ChunkLoader {
+    public static ChunkLoader.AnvilConverterData load(NBTTagCompound nbt) {
         int i = nbt.getInteger("xPos");
         int j = nbt.getInteger("zPos");
         ChunkLoader.AnvilConverterData chunkloader$anvilconverterdata = new ChunkLoader.AnvilConverterData(i, j);
@@ -24,27 +22,22 @@ public class ChunkLoader
         chunkloader$anvilconverterdata.tileEntities = nbt.getTagList("TileEntities", 10);
         chunkloader$anvilconverterdata.tileTicks = nbt.getTagList("TileTicks", 10);
 
-        try
-        {
+        try {
             chunkloader$anvilconverterdata.lastUpdated = nbt.getLong("LastUpdate");
-        }
-        catch (ClassCastException var5)
-        {
-            chunkloader$anvilconverterdata.lastUpdated = (long)nbt.getInteger("LastUpdate");
+        } catch (ClassCastException var5) {
+            chunkloader$anvilconverterdata.lastUpdated = nbt.getInteger("LastUpdate");
         }
 
         return chunkloader$anvilconverterdata;
     }
 
-    public static void convertToAnvilFormat(ChunkLoader.AnvilConverterData p_76690_0_, NBTTagCompound compound, WorldChunkManager p_76690_2_)
-    {
+    public static void convertToAnvilFormat(ChunkLoader.AnvilConverterData p_76690_0_, NBTTagCompound compound, WorldChunkManager p_76690_2_) {
         compound.setInteger("xPos", p_76690_0_.x);
         compound.setInteger("zPos", p_76690_0_.z);
         compound.setLong("LastUpdate", p_76690_0_.lastUpdated);
         int[] aint = new int[p_76690_0_.heightmap.length];
 
-        for (int i = 0; i < p_76690_0_.heightmap.length; ++i)
-        {
+        for (int i = 0; i < p_76690_0_.heightmap.length; ++i) {
             aint[i] = p_76690_0_.heightmap[i];
         }
 
@@ -52,21 +45,16 @@ public class ChunkLoader
         compound.setBoolean("TerrainPopulated", p_76690_0_.terrainPopulated);
         NBTTagList nbttaglist = new NBTTagList();
 
-        for (int j = 0; j < 8; ++j)
-        {
+        for (int j = 0; j < 8; ++j) {
             boolean flag = true;
 
-            for (int k = 0; k < 16 && flag; ++k)
-            {
-                for (int l = 0; l < 16 && flag; ++l)
-                {
-                    for (int i1 = 0; i1 < 16; ++i1)
-                    {
+            for (int k = 0; k < 16 && flag; ++k) {
+                for (int l = 0; l < 16 && flag; ++l) {
+                    for (int i1 = 0; i1 < 16; ++i1) {
                         int j1 = k << 11 | i1 << 7 | l + (j << 4);
                         int k1 = p_76690_0_.blocks[j1];
 
-                        if (k1 != 0)
-                        {
+                        if (k1 != 0) {
                             flag = false;
                             break;
                         }
@@ -74,22 +62,18 @@ public class ChunkLoader
                 }
             }
 
-            if (!flag)
-            {
+            if (!flag) {
                 byte[] abyte1 = new byte[4096];
                 NibbleArray nibblearray = new NibbleArray();
                 NibbleArray nibblearray1 = new NibbleArray();
                 NibbleArray nibblearray2 = new NibbleArray();
 
-                for (int j3 = 0; j3 < 16; ++j3)
-                {
-                    for (int l1 = 0; l1 < 16; ++l1)
-                    {
-                        for (int i2 = 0; i2 < 16; ++i2)
-                        {
+                for (int j3 = 0; j3 < 16; ++j3) {
+                    for (int l1 = 0; l1 < 16; ++l1) {
+                        for (int i2 = 0; i2 < 16; ++i2) {
                             int j2 = j3 << 11 | i2 << 7 | l1 + (j << 4);
                             int k2 = p_76690_0_.blocks[j2];
-                            abyte1[l1 << 8 | i2 << 4 | j3] = (byte)(k2 & 255);
+                            abyte1[l1 << 8 | i2 << 4 | j3] = (byte) (k2 & 255);
                             nibblearray.set(j3, l1, i2, p_76690_0_.data.get(j3, l1 + (j << 4), i2));
                             nibblearray1.set(j3, l1, i2, p_76690_0_.skyLight.get(j3, l1 + (j << 4), i2));
                             nibblearray2.set(j3, l1, i2, p_76690_0_.blockLight.get(j3, l1 + (j << 4), i2));
@@ -98,7 +82,7 @@ public class ChunkLoader
                 }
 
                 NBTTagCompound nbttagcompound = new NBTTagCompound();
-                nbttagcompound.setByte("Y", (byte)(j & 255));
+                nbttagcompound.setByte("Y", (byte) (j & 255));
                 nbttagcompound.setByteArray("Blocks", abyte1);
                 nbttagcompound.setByteArray("Data", nibblearray.getData());
                 nbttagcompound.setByteArray("SkyLight", nibblearray1.getData());
@@ -111,12 +95,10 @@ public class ChunkLoader
         byte[] abyte = new byte[256];
         BlockPos.MutableBlockPos blockpos$mutableblockpos = new BlockPos.MutableBlockPos();
 
-        for (int l2 = 0; l2 < 16; ++l2)
-        {
-            for (int i3 = 0; i3 < 16; ++i3)
-            {
+        for (int l2 = 0; l2 < 16; ++l2) {
+            for (int i3 = 0; i3 < 16; ++i3) {
                 blockpos$mutableblockpos.set(p_76690_0_.x << 4 | l2, 0, p_76690_0_.z << 4 | i3);
-                abyte[i3 << 4 | l2] = (byte)(p_76690_2_.getBiomeGenerator(blockpos$mutableblockpos, BiomeGenBase.field_180279_ad).biomeID & 255);
+                abyte[i3 << 4 | l2] = (byte) (p_76690_2_.getBiomeGenerator(blockpos$mutableblockpos, BiomeGenBase.field_180279_ad).biomeID & 255);
             }
         }
 
@@ -124,14 +106,14 @@ public class ChunkLoader
         compound.setTag("Entities", p_76690_0_.entities);
         compound.setTag("TileEntities", p_76690_0_.tileEntities);
 
-        if (p_76690_0_.tileTicks != null)
-        {
+        if (p_76690_0_.tileTicks != null) {
             compound.setTag("TileTicks", p_76690_0_.tileTicks);
         }
     }
 
-    public static class AnvilConverterData
-    {
+    public static class AnvilConverterData {
+        public final int x;
+        public final int z;
         public long lastUpdated;
         public boolean terrainPopulated;
         public byte[] heightmap;
@@ -142,11 +124,8 @@ public class ChunkLoader
         public NBTTagList entities;
         public NBTTagList tileEntities;
         public NBTTagList tileTicks;
-        public final int x;
-        public final int z;
 
-        public AnvilConverterData(int xIn, int zIn)
-        {
+        public AnvilConverterData(int xIn, int zIn) {
             this.x = xIn;
             this.z = zIn;
         }

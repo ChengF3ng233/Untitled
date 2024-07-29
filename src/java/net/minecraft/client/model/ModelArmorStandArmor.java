@@ -3,20 +3,16 @@ package net.minecraft.client.model;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.EntityArmorStand;
 
-public class ModelArmorStandArmor extends ModelBiped
-{
-    public ModelArmorStandArmor()
-    {
+public class ModelArmorStandArmor extends ModelBiped {
+    public ModelArmorStandArmor() {
         this(0.0F);
     }
 
-    public ModelArmorStandArmor(float modelSize)
-    {
+    public ModelArmorStandArmor(float modelSize) {
         this(modelSize, 64, 32);
     }
 
-    protected ModelArmorStandArmor(float modelSize, int textureWidthIn, int textureHeightIn)
-    {
+    protected ModelArmorStandArmor(float modelSize, int textureWidthIn, int textureHeightIn) {
         super(modelSize, 0.0F, textureWidthIn, textureHeightIn);
     }
 
@@ -25,11 +21,8 @@ public class ModelArmorStandArmor extends ModelBiped
      * and legs, where par1 represents the time(so that arms and legs swing back and forth) and par2 represents how
      * "far" arms and legs can swing at most.
      */
-    public void setRotationAngles(float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float scaleFactor, Entity entityIn)
-    {
-        if (entityIn instanceof EntityArmorStand)
-        {
-            EntityArmorStand entityarmorstand = (EntityArmorStand)entityIn;
+    public void setRotationAngles(float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float scaleFactor, Entity entityIn) {
+        if (entityIn instanceof EntityArmorStand entityarmorstand) {
             this.bipedHead.rotateAngleX = 0.017453292F * entityarmorstand.getHeadRotation().getX();
             this.bipedHead.rotateAngleY = 0.017453292F * entityarmorstand.getHeadRotation().getY();
             this.bipedHead.rotateAngleZ = 0.017453292F * entityarmorstand.getHeadRotation().getZ();

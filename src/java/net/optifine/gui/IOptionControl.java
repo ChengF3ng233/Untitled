@@ -2,7 +2,6 @@ package net.optifine.gui;
 
 import net.minecraft.client.settings.GameSettings;
 
-public interface IOptionControl
-{
+public interface IOptionControl {
     GameSettings.Options getOption();
 }

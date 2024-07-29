@@ -1,46 +1,33 @@
 package net.optifine.model;
 
-import java.util.ArrayList;
-import java.util.List;
 import net.minecraft.block.Block;
-import net.minecraft.client.renderer.block.model.BakedQuad;
-import net.minecraft.client.renderer.block.model.BlockFaceUV;
-import net.minecraft.client.renderer.block.model.BlockPartFace;
-import net.minecraft.client.renderer.block.model.BlockPartRotation;
-import net.minecraft.client.renderer.block.model.BreakingFour;
-import net.minecraft.client.renderer.block.model.FaceBakery;
-import net.minecraft.client.renderer.block.model.ItemCameraTransforms;
+import net.minecraft.client.renderer.block.model.*;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.renderer.texture.TextureMap;
-import net.minecraft.client.resources.model.IBakedModel;
-import net.minecraft.client.resources.model.ModelManager;
-import net.minecraft.client.resources.model.ModelResourceLocation;
-import net.minecraft.client.resources.model.ModelRotation;
-import net.minecraft.client.resources.model.SimpleBakedModel;
+import net.minecraft.client.resources.model.*;
 import net.minecraft.src.Config;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.EnumFacing;
 import org.lwjgl.util.vector.Vector3f;
 
-public class BlockModelUtils
-{
+import java.util.ArrayList;
+import java.util.List;
+
+public class BlockModelUtils {
     private static final float VERTEX_COORD_ACCURACY = 1.0E-6F;
 
-    public static IBakedModel makeModelCube(String spriteName, int tintIndex)
-    {
+    public static IBakedModel makeModelCube(String spriteName, int tintIndex) {
         TextureAtlasSprite textureatlassprite = Config.getMinecraft().getTextureMapBlocks().getAtlasSprite(spriteName);
         return makeModelCube(textureatlassprite, tintIndex);
     }
 
-    public static IBakedModel makeModelCube(TextureAtlasSprite sprite, int tintIndex)
-    {
+    public static IBakedModel makeModelCube(TextureAtlasSprite sprite, int tintIndex) {
         List list = new ArrayList();
         EnumFacing[] aenumfacing = EnumFacing.VALUES;
         List<List<BakedQuad>> list1 = new ArrayList();
 
-        for (int i = 0; i < aenumfacing.length; ++i)
-        {
+        for (int i = 0; i < aenumfacing.length; ++i) {
             EnumFacing enumfacing = aenumfacing[i];
             List list2 = new ArrayList();
             list2.add(makeBakedQuad(enumfacing, sprite, tintIndex));
@@ -51,16 +38,14 @@ public class BlockModelUtils
         return ibakedmodel;
     }
 
-    public static IBakedModel joinModelsCube(IBakedModel modelBase, IBakedModel modelAdd)
-    {
+    public static IBakedModel joinModelsCube(IBakedModel modelBase, IBakedModel modelAdd) {
         List<BakedQuad> list = new ArrayList();
         list.addAll(modelBase.getGeneralQuads());
         list.addAll(modelAdd.getGeneralQuads());
         EnumFacing[] aenumfacing = EnumFacing.VALUES;
         List list1 = new ArrayList();
 
-        for (int i = 0; i < aenumfacing.length; ++i)
-        {
+        for (int i = 0; i < aenumfacing.length; ++i) {
             EnumFacing enumfacing = aenumfacing[i];
             List list2 = new ArrayList();
             list2.addAll(modelBase.getFaceQuads(enumfacing));
@@ -76,11 +61,10 @@ public class BlockModelUtils
         return ibakedmodel;
     }
 
-    public static BakedQuad makeBakedQuad(EnumFacing facing, TextureAtlasSprite sprite, int tintIndex)
-    {
+    public static BakedQuad makeBakedQuad(EnumFacing facing, TextureAtlasSprite sprite, int tintIndex) {
         Vector3f vector3f = new Vector3f(0.0F, 0.0F, 0.0F);
         Vector3f vector3f1 = new Vector3f(16.0F, 16.0F, 16.0F);
-        BlockFaceUV blockfaceuv = new BlockFaceUV(new float[] {0.0F, 0.0F, 16.0F, 16.0F}, 0);
+        BlockFaceUV blockfaceuv = new BlockFaceUV(new float[]{0.0F, 0.0F, 16.0F, 16.0F}, 0);
         BlockPartFace blockpartface = new BlockPartFace(facing, tintIndex, "#" + facing.getName(), blockfaceuv);
         ModelRotation modelrotation = ModelRotation.X0_Y0;
         BlockPartRotation blockpartrotation = null;
@@ -91,36 +75,28 @@ public class BlockModelUtils
         return bakedquad;
     }
 
-    public static IBakedModel makeModel(String modelName, String spriteOldName, String spriteNewName)
-    {
+    public static IBakedModel makeModel(String modelName, String spriteOldName, String spriteNewName) {
         TextureMap texturemap = Config.getMinecraft().getTextureMapBlocks();
         TextureAtlasSprite textureatlassprite = texturemap.getSpriteSafe(spriteOldName);
         TextureAtlasSprite textureatlassprite1 = texturemap.getSpriteSafe(spriteNewName);
         return makeModel(modelName, textureatlassprite, textureatlassprite1);
     }
 
-    public static IBakedModel makeModel(String modelName, TextureAtlasSprite spriteOld, TextureAtlasSprite spriteNew)
-    {
-        if (spriteOld != null && spriteNew != null)
-        {
+    public static IBakedModel makeModel(String modelName, TextureAtlasSprite spriteOld, TextureAtlasSprite spriteNew) {
+        if (spriteOld != null && spriteNew != null) {
             ModelManager modelmanager = Config.getModelManager();
 
-            if (modelmanager == null)
-            {
+            if (modelmanager == null) {
                 return null;
-            }
-            else
-            {
+            } else {
                 ModelResourceLocation modelresourcelocation = new ModelResourceLocation(modelName, "normal");
                 IBakedModel ibakedmodel = modelmanager.getModel(modelresourcelocation);
 
-                if (ibakedmodel != null && ibakedmodel != modelmanager.getMissingModel())
-                {
+                if (ibakedmodel != null && ibakedmodel != modelmanager.getMissingModel()) {
                     IBakedModel ibakedmodel1 = ModelUtils.duplicateModel(ibakedmodel);
                     EnumFacing[] aenumfacing = EnumFacing.VALUES;
 
-                    for (int i = 0; i < aenumfacing.length; ++i)
-                    {
+                    for (int i = 0; i < aenumfacing.length; ++i) {
                         EnumFacing enumfacing = aenumfacing[i];
                         List<BakedQuad> list = ibakedmodel1.getFaceQuads(enumfacing);
                         replaceTexture(list, spriteOld, spriteNew);
@@ -129,27 +105,20 @@ public class BlockModelUtils
                     List<BakedQuad> list1 = ibakedmodel1.getGeneralQuads();
                     replaceTexture(list1, spriteOld, spriteNew);
                     return ibakedmodel1;
-                }
-                else
-                {
+                } else {
                     return null;
                 }
             }
-        }
-        else
-        {
+        } else {
             return null;
         }
     }
 
-    private static void replaceTexture(List<BakedQuad> quads, TextureAtlasSprite spriteOld, TextureAtlasSprite spriteNew)
-    {
+    private static void replaceTexture(List<BakedQuad> quads, TextureAtlasSprite spriteOld, TextureAtlasSprite spriteNew) {
         List<BakedQuad> list = new ArrayList();
 
-        for (BakedQuad bakedquad : quads)
-        {
-            if (bakedquad.getSprite() == spriteOld)
-            {
+        for (BakedQuad bakedquad : quads) {
+            if (bakedquad.getSprite() == spriteOld) {
                 bakedquad = new BreakingFour(bakedquad, spriteNew);
             }
 
@@ -160,31 +129,27 @@ public class BlockModelUtils
         quads.addAll(list);
     }
 
-    public static void snapVertexPosition(Vector3f pos)
-    {
+    public static void snapVertexPosition(Vector3f pos) {
         pos.setX(snapVertexCoord(pos.getX()));
         pos.setY(snapVertexCoord(pos.getY()));
         pos.setZ(snapVertexCoord(pos.getZ()));
     }
 
-    private static float snapVertexCoord(float x)
-    {
+    private static float snapVertexCoord(float x) {
         return x > -1.0E-6F && x < 1.0E-6F ? 0.0F : (x > 0.999999F && x < 1.000001F ? 1.0F : x);
     }
 
-    public static AxisAlignedBB getOffsetBoundingBox(AxisAlignedBB aabb, Block.EnumOffsetType offsetType, BlockPos pos)
-    {
+    public static AxisAlignedBB getOffsetBoundingBox(AxisAlignedBB aabb, Block.EnumOffsetType offsetType, BlockPos pos) {
         int i = pos.getX();
         int j = pos.getZ();
-        long k = (long)(i * 3129871) ^ (long)j * 116129781L;
+        long k = (long) (i * 3129871L) ^ (long) j * 116129781L;
         k = k * k * 42317861L + k * 11L;
-        double d0 = ((double)((float)(k >> 16 & 15L) / 15.0F) - 0.5D) * 0.5D;
-        double d1 = ((double)((float)(k >> 24 & 15L) / 15.0F) - 0.5D) * 0.5D;
+        double d0 = ((double) ((float) (k >> 16 & 15L) / 15.0F) - 0.5D) * 0.5D;
+        double d1 = ((double) ((float) (k >> 24 & 15L) / 15.0F) - 0.5D) * 0.5D;
         double d2 = 0.0D;
 
-        if (offsetType == Block.EnumOffsetType.XYZ)
-        {
-            d2 = ((double)((float)(k >> 20 & 15L) / 15.0F) - 1.0D) * 0.2D;
+        if (offsetType == Block.EnumOffsetType.XYZ) {
+            d2 = ((double) ((float) (k >> 20 & 15L) / 15.0F) - 1.0D) * 0.2D;
         }
 
         return aabb.offset(d0, d2, d1);

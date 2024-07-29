@@ -10,31 +10,25 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.IStringSerializable;
 import net.minecraft.world.World;
 
-public abstract class BlockLog extends BlockRotatedPillar
-{
-    public static final PropertyEnum<BlockLog.EnumAxis> LOG_AXIS = PropertyEnum.<BlockLog.EnumAxis>create("axis", BlockLog.EnumAxis.class);
+public abstract class BlockLog extends BlockRotatedPillar {
+    public static final PropertyEnum<BlockLog.EnumAxis> LOG_AXIS = PropertyEnum.create("axis", BlockLog.EnumAxis.class);
 
-    public BlockLog()
-    {
+    public BlockLog() {
         super(Material.wood);
         this.setCreativeTab(CreativeTabs.tabBlock);
         this.setHardness(2.0F);
         this.setStepSound(soundTypeWood);
     }
 
-    public void breakBlock(World worldIn, BlockPos pos, IBlockState state)
-    {
+    public void breakBlock(World worldIn, BlockPos pos, IBlockState state) {
         int i = 4;
         int j = i + 1;
 
-        if (worldIn.isAreaLoaded(pos.add(-j, -j, -j), pos.add(j, j, j)))
-        {
-            for (BlockPos blockpos : BlockPos.getAllInBox(pos.add(-i, -i, -i), pos.add(i, i, i)))
-            {
+        if (worldIn.isAreaLoaded(pos.add(-j, -j, -j), pos.add(j, j, j))) {
+            for (BlockPos blockpos : BlockPos.getAllInBox(pos.add(-i, -i, -i), pos.add(i, i, i))) {
                 IBlockState iblockstate = worldIn.getBlockState(blockpos);
 
-                if (iblockstate.getBlock().getMaterial() == Material.leaves && !((Boolean)iblockstate.getValue(BlockLeaves.CHECK_DECAY)).booleanValue())
-                {
+                if (iblockstate.getBlock().getMaterial() == Material.leaves && !iblockstate.getValue(BlockLeaves.CHECK_DECAY).booleanValue()) {
                     worldIn.setBlockState(blockpos, iblockstate.withProperty(BlockLeaves.CHECK_DECAY, Boolean.valueOf(true)), 4);
                 }
             }
@@ -45,13 +39,11 @@ public abstract class BlockLog extends BlockRotatedPillar
      * Called by ItemBlocks just before a block is actually set in the world, to allow for adjustments to the
      * IBlockstate
      */
-    public IBlockState onBlockPlaced(World worldIn, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer)
-    {
+    public IBlockState onBlockPlaced(World worldIn, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer) {
         return super.onBlockPlaced(worldIn, pos, facing, hitX, hitY, hitZ, meta, placer).withProperty(LOG_AXIS, BlockLog.EnumAxis.fromFacingAxis(facing.getAxis()));
     }
 
-    public static enum EnumAxis implements IStringSerializable
-    {
+    public enum EnumAxis implements IStringSerializable {
         X("x"),
         Y("y"),
         Z("z"),
@@ -59,20 +51,12 @@ public abstract class BlockLog extends BlockRotatedPillar
 
         private final String name;
 
-        private EnumAxis(String name)
-        {
+        EnumAxis(String name) {
             this.name = name;
         }
 
-        public String toString()
-        {
-            return this.name;
-        }
-
-        public static BlockLog.EnumAxis fromFacingAxis(EnumFacing.Axis axis)
-        {
-            switch (axis)
-            {
+        public static BlockLog.EnumAxis fromFacingAxis(EnumFacing.Axis axis) {
+            switch (axis) {
                 case X:
                     return X;
 
@@ -87,8 +71,11 @@ public abstract class BlockLog extends BlockRotatedPillar
             }
         }
 
-        public String getName()
-        {
+        public String toString() {
+            return this.name;
+        }
+
+        public String getName() {
             return this.name;
         }
     }

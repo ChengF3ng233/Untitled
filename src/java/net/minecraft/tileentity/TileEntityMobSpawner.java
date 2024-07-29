@@ -8,41 +8,35 @@ import net.minecraft.util.BlockPos;
 import net.minecraft.util.ITickable;
 import net.minecraft.world.World;
 
-public class TileEntityMobSpawner extends TileEntity implements ITickable
-{
-    private final MobSpawnerBaseLogic spawnerLogic = new MobSpawnerBaseLogic()
-    {
-        public void func_98267_a(int id)
-        {
+public class TileEntityMobSpawner extends TileEntity implements ITickable {
+    private final MobSpawnerBaseLogic spawnerLogic = new MobSpawnerBaseLogic() {
+        public void func_98267_a(int id) {
             TileEntityMobSpawner.this.worldObj.addBlockEvent(TileEntityMobSpawner.this.pos, Blocks.mob_spawner, id, 0);
         }
-        public World getSpawnerWorld()
-        {
+
+        public World getSpawnerWorld() {
             return TileEntityMobSpawner.this.worldObj;
         }
-        public BlockPos getSpawnerPosition()
-        {
+
+        public BlockPos getSpawnerPosition() {
             return TileEntityMobSpawner.this.pos;
         }
-        public void setRandomEntity(MobSpawnerBaseLogic.WeightedRandomMinecart p_98277_1_)
-        {
+
+        public void setRandomEntity(MobSpawnerBaseLogic.WeightedRandomMinecart p_98277_1_) {
             super.setRandomEntity(p_98277_1_);
 
-            if (this.getSpawnerWorld() != null)
-            {
+            if (this.getSpawnerWorld() != null) {
                 this.getSpawnerWorld().markBlockForUpdate(TileEntityMobSpawner.this.pos);
             }
         }
     };
 
-    public void readFromNBT(NBTTagCompound compound)
-    {
+    public void readFromNBT(NBTTagCompound compound) {
         super.readFromNBT(compound);
         this.spawnerLogic.readFromNBT(compound);
     }
 
-    public void writeToNBT(NBTTagCompound compound)
-    {
+    public void writeToNBT(NBTTagCompound compound) {
         super.writeToNBT(compound);
         this.spawnerLogic.writeToNBT(compound);
     }
@@ -50,8 +44,7 @@ public class TileEntityMobSpawner extends TileEntity implements ITickable
     /**
      * Like the old updateEntity(), except more generic.
      */
-    public void update()
-    {
+    public void update() {
         this.spawnerLogic.updateSpawner();
     }
 
@@ -59,26 +52,22 @@ public class TileEntityMobSpawner extends TileEntity implements ITickable
      * Allows for a specialized description packet to be created. This is often used to sync tile entity data from the
      * server to the client easily. For example this is used by signs to synchronise the text to be displayed.
      */
-    public Packet getDescriptionPacket()
-    {
+    public Packet getDescriptionPacket() {
         NBTTagCompound nbttagcompound = new NBTTagCompound();
         this.writeToNBT(nbttagcompound);
         nbttagcompound.removeTag("SpawnPotentials");
         return new S35PacketUpdateTileEntity(this.pos, 1, nbttagcompound);
     }
 
-    public boolean receiveClientEvent(int id, int type)
-    {
-        return this.spawnerLogic.setDelayToMin(id) ? true : super.receiveClientEvent(id, type);
+    public boolean receiveClientEvent(int id, int type) {
+        return this.spawnerLogic.setDelayToMin(id) || super.receiveClientEvent(id, type);
     }
 
-    public boolean func_183000_F()
-    {
+    public boolean func_183000_F() {
         return true;
     }
 
-    public MobSpawnerBaseLogic getSpawnerBaseLogic()
-    {
+    public MobSpawnerBaseLogic getSpawnerBaseLogic() {
         return this.spawnerLogic;
     }
 }

@@ -1,7 +1,5 @@
 package net.optifine.entity.model;
 
-import java.util.HashMap;
-import java.util.Map;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.model.ModelHorse;
@@ -11,61 +9,24 @@ import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.entity.passive.EntityHorse;
 import net.optifine.reflect.Reflector;
 
-public class ModelAdapterHorse extends ModelAdapter
-{
+import java.util.HashMap;
+import java.util.Map;
+
+public class ModelAdapterHorse extends ModelAdapter {
     private static Map<String, Integer> mapPartFields = null;
 
-    public ModelAdapterHorse()
-    {
+    public ModelAdapterHorse() {
         super(EntityHorse.class, "horse", 0.75F);
     }
 
-    protected ModelAdapterHorse(Class entityClass, String name, float shadowSize)
-    {
+    protected ModelAdapterHorse(Class entityClass, String name, float shadowSize) {
         super(entityClass, name, shadowSize);
     }
 
-    public ModelBase makeModel()
-    {
-        return new ModelHorse();
-    }
-
-    public ModelRenderer getModelRenderer(ModelBase model, String modelPart)
-    {
-        if (!(model instanceof ModelHorse))
-        {
-            return null;
-        }
-        else
-        {
-            ModelHorse modelhorse = (ModelHorse)model;
-            Map<String, Integer> map = getMapPartFields();
-
-            if (map.containsKey(modelPart))
-            {
-                int i = ((Integer)map.get(modelPart)).intValue();
-                return (ModelRenderer)Reflector.getFieldValue(modelhorse, Reflector.ModelHorse_ModelRenderers, i);
-            }
-            else
-            {
-                return null;
-            }
-        }
-    }
-
-    public String[] getModelRendererNames()
-    {
-        return new String[] {"head", "upper_mouth", "lower_mouth", "horse_left_ear", "horse_right_ear", "mule_left_ear", "mule_right_ear", "neck", "horse_face_ropes", "mane", "body", "tail_base", "tail_middle", "tail_tip", "back_left_leg", "back_left_shin", "back_left_hoof", "back_right_leg", "back_right_shin", "back_right_hoof", "front_left_leg", "front_left_shin", "front_left_hoof", "front_right_leg", "front_right_shin", "front_right_hoof", "mule_left_chest", "mule_right_chest", "horse_saddle_bottom", "horse_saddle_front", "horse_saddle_back", "horse_left_saddle_rope", "horse_left_saddle_metal", "horse_right_saddle_rope", "horse_right_saddle_metal", "horse_left_face_metal", "horse_right_face_metal", "horse_left_rein", "horse_right_rein"};
-    }
-
-    private static Map<String, Integer> getMapPartFields()
-    {
-        if (mapPartFields != null)
-        {
+    private static Map<String, Integer> getMapPartFields() {
+        if (mapPartFields != null) {
             return mapPartFields;
-        }
-        else
-        {
+        } else {
             mapPartFields = new HashMap();
             mapPartFields.put("head", Integer.valueOf(0));
             mapPartFields.put("upper_mouth", Integer.valueOf(1));
@@ -110,10 +71,32 @@ public class ModelAdapterHorse extends ModelAdapter
         }
     }
 
-    public IEntityRenderer makeEntityRender(ModelBase modelBase, float shadowSize)
-    {
+    public ModelBase makeModel() {
+        return new ModelHorse();
+    }
+
+    public ModelRenderer getModelRenderer(ModelBase model, String modelPart) {
+        if (!(model instanceof ModelHorse modelhorse)) {
+            return null;
+        } else {
+            Map<String, Integer> map = getMapPartFields();
+
+            if (map.containsKey(modelPart)) {
+                int i = map.get(modelPart).intValue();
+                return (ModelRenderer) Reflector.getFieldValue(modelhorse, Reflector.ModelHorse_ModelRenderers, i);
+            } else {
+                return null;
+            }
+        }
+    }
+
+    public String[] getModelRendererNames() {
+        return new String[]{"head", "upper_mouth", "lower_mouth", "horse_left_ear", "horse_right_ear", "mule_left_ear", "mule_right_ear", "neck", "horse_face_ropes", "mane", "body", "tail_base", "tail_middle", "tail_tip", "back_left_leg", "back_left_shin", "back_left_hoof", "back_right_leg", "back_right_shin", "back_right_hoof", "front_left_leg", "front_left_shin", "front_left_hoof", "front_right_leg", "front_right_shin", "front_right_hoof", "mule_left_chest", "mule_right_chest", "horse_saddle_bottom", "horse_saddle_front", "horse_saddle_back", "horse_left_saddle_rope", "horse_left_saddle_metal", "horse_right_saddle_rope", "horse_right_saddle_metal", "horse_left_face_metal", "horse_right_face_metal", "horse_left_rein", "horse_right_rein"};
+    }
+
+    public IEntityRenderer makeEntityRender(ModelBase modelBase, float shadowSize) {
         RenderManager rendermanager = Minecraft.getMinecraft().getRenderManager();
-        RenderHorse renderhorse = new RenderHorse(rendermanager, (ModelHorse)modelBase, shadowSize);
+        RenderHorse renderhorse = new RenderHorse(rendermanager, (ModelHorse) modelBase, shadowSize);
         return renderhorse;
     }
 }

@@ -1,35 +1,29 @@
 package net.optifine.util;
 
-import java.util.HashMap;
-import java.util.Map;
 import net.minecraft.client.Minecraft;
 
-public class FrameEvent
-{
-    private static Map<String, Integer> mapEventFrames = new HashMap();
+import java.util.HashMap;
+import java.util.Map;
 
-    public static boolean isActive(String name, int frameInterval)
-    {
-        synchronized (mapEventFrames)
-        {
+public class FrameEvent {
+    private static final Map<String, Integer> mapEventFrames = new HashMap();
+
+    public static boolean isActive(String name, int frameInterval) {
+        synchronized (mapEventFrames) {
             int i = Minecraft.getMinecraft().entityRenderer.frameCount;
-            Integer integer = (Integer)mapEventFrames.get(name);
+            Integer integer = mapEventFrames.get(name);
 
-            if (integer == null)
-            {
-                integer = new Integer(i);
+            if (integer == null) {
+                integer = Integer.valueOf(i);
                 mapEventFrames.put(name, integer);
             }
 
             int j = integer.intValue();
 
-            if (i > j && i < j + frameInterval)
-            {
+            if (i > j && i < j + frameInterval) {
                 return false;
-            }
-            else
-            {
-                mapEventFrames.put(name, new Integer(i));
+            } else {
+                mapEventFrames.put(name, Integer.valueOf(i));
                 return true;
             }
         }

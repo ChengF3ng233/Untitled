@@ -2,7 +2,6 @@ package net.optifine.config;
 
 import net.minecraft.util.ResourceLocation;
 
-public interface IObjectLocator
-{
+public interface IObjectLocator {
     Object getObject(ResourceLocation var1);
 }

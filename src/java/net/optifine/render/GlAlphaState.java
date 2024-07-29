@@ -1,80 +1,66 @@
 package net.optifine.render;
 
-public class GlAlphaState
-{
+public class GlAlphaState {
     private boolean enabled;
     private int func;
     private float ref;
 
-    public GlAlphaState()
-    {
+    public GlAlphaState() {
         this(false, 519, 0.0F);
     }
 
-    public GlAlphaState(boolean enabled)
-    {
+    public GlAlphaState(boolean enabled) {
         this(enabled, 519, 0.0F);
     }
 
-    public GlAlphaState(boolean enabled, int func, float ref)
-    {
+    public GlAlphaState(boolean enabled, int func, float ref) {
         this.enabled = enabled;
         this.func = func;
         this.ref = ref;
     }
 
-    public void setState(boolean enabled, int func, float ref)
-    {
+    public void setState(boolean enabled, int func, float ref) {
         this.enabled = enabled;
         this.func = func;
         this.ref = ref;
     }
 
-    public void setState(GlAlphaState state)
-    {
+    public void setState(GlAlphaState state) {
         this.enabled = state.enabled;
         this.func = state.func;
         this.ref = state.ref;
     }
 
-    public void setFuncRef(int func, float ref)
-    {
+    public void setFuncRef(int func, float ref) {
         this.func = func;
         this.ref = ref;
     }
 
-    public void setEnabled(boolean enabled)
-    {
-        this.enabled = enabled;
-    }
-
-    public void setEnabled()
-    {
+    public void setEnabled() {
         this.enabled = true;
     }
 
-    public void setDisabled()
-    {
+    public void setDisabled() {
         this.enabled = false;
     }
 
-    public boolean isEnabled()
-    {
+    public boolean isEnabled() {
         return this.enabled;
     }
 
-    public int getFunc()
-    {
+    public void setEnabled(boolean enabled) {
+        this.enabled = enabled;
+    }
+
+    public int getFunc() {
         return this.func;
     }
 
-    public float getRef()
-    {
+    public float getRef() {
         return this.ref;
     }
 
-    public String toString()
-    {
+    public String toString() {
         return "enabled: " + this.enabled + ", func: " + this.func + ", ref: " + this.ref;
     }
 }

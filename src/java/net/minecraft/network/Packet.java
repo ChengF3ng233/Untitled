@@ -2,8 +2,7 @@ package net.minecraft.network;
 
 import java.io.IOException;
 
-public interface Packet<T extends INetHandler>
-{
+public interface Packet<T extends INetHandler> {
     /**
      * Reads the raw packet data from the data stream.
      */

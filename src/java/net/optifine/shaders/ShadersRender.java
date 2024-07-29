@@ -1,15 +1,7 @@
 package net.optifine.shaders;
 
-import java.nio.IntBuffer;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.EntityRenderer;
-import net.minecraft.client.renderer.GlStateManager;
-import net.minecraft.client.renderer.ItemRenderer;
-import net.minecraft.client.renderer.OpenGlHelper;
-import net.minecraft.client.renderer.RenderGlobal;
-import net.minecraft.client.renderer.RenderHelper;
-import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.client.renderer.WorldRenderer;
+import net.minecraft.client.renderer.*;
 import net.minecraft.client.renderer.culling.ClippingHelper;
 import net.minecraft.client.renderer.culling.Frustum;
 import net.minecraft.client.renderer.culling.ICamera;
@@ -26,59 +18,47 @@ import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL20;
 import org.lwjgl.opengl.GL30;
 
-public class ShadersRender
-{
+import java.nio.IntBuffer;
+
+public class ShadersRender {
     private static final ResourceLocation END_PORTAL_TEXTURE = new ResourceLocation("textures/entity/end_portal.png");
 
-    public static void setFrustrumPosition(ICamera frustum, double x, double y, double z)
-    {
+    public static void setFrustrumPosition(ICamera frustum, double x, double y, double z) {
         frustum.setPosition(x, y, z);
     }
 
-    public static void setupTerrain(RenderGlobal renderGlobal, Entity viewEntity, double partialTicks, ICamera camera, int frameCount, boolean playerSpectator)
-    {
+    public static void setupTerrain(RenderGlobal renderGlobal, Entity viewEntity, double partialTicks, ICamera camera, int frameCount, boolean playerSpectator) {
         renderGlobal.setupTerrain(viewEntity, partialTicks, camera, frameCount, playerSpectator);
     }
 
-    public static void beginTerrainSolid()
-    {
-        if (Shaders.isRenderingWorld)
-        {
+    public static void beginTerrainSolid() {
+        if (Shaders.isRenderingWorld) {
             Shaders.fogEnabled = true;
             Shaders.useProgram(Shaders.ProgramTerrain);
         }
     }
 
-    public static void beginTerrainCutoutMipped()
-    {
-        if (Shaders.isRenderingWorld)
-        {
+    public static void beginTerrainCutoutMipped() {
+        if (Shaders.isRenderingWorld) {
             Shaders.useProgram(Shaders.ProgramTerrain);
         }
     }
 
-    public static void beginTerrainCutout()
-    {
-        if (Shaders.isRenderingWorld)
-        {
+    public static void beginTerrainCutout() {
+        if (Shaders.isRenderingWorld) {
             Shaders.useProgram(Shaders.ProgramTerrain);
         }
     }
 
-    public static void endTerrain()
-    {
-        if (Shaders.isRenderingWorld)
-        {
+    public static void endTerrain() {
+        if (Shaders.isRenderingWorld) {
             Shaders.useProgram(Shaders.ProgramTexturedLit);
         }
     }
 
-    public static void beginTranslucent()
-    {
-        if (Shaders.isRenderingWorld)
-        {
-            if (Shaders.usedDepthBuffers >= 2)
-            {
+    public static void beginTranslucent() {
+        if (Shaders.isRenderingWorld) {
+            if (Shaders.usedDepthBuffers >= 2) {
                 GlStateManager.setActiveTexture(33995);
                 Shaders.checkGLError("pre copy depth");
                 GL11.glCopyTexSubImage2D(GL11.GL_TEXTURE_2D, 0, 0, 0, 0, 0, Shaders.renderWidth, Shaders.renderHeight);
@@ -90,23 +70,18 @@ public class ShadersRender
         }
     }
 
-    public static void endTranslucent()
-    {
-        if (Shaders.isRenderingWorld)
-        {
+    public static void endTranslucent() {
+        if (Shaders.isRenderingWorld) {
             Shaders.useProgram(Shaders.ProgramTexturedLit);
         }
     }
 
-    public static void renderHand0(EntityRenderer er, float par1, int par2)
-    {
-        if (!Shaders.isShadowPass)
-        {
+    public static void renderHand0(EntityRenderer er, float par1, int par2) {
+        if (!Shaders.isShadowPass) {
             boolean flag = Shaders.isItemToRenderMainTranslucent();
             boolean flag1 = Shaders.isItemToRenderOffTranslucent();
 
-            if (!flag || !flag1)
-            {
+            if (!flag || !flag1) {
                 Shaders.readCenterDepth();
                 Shaders.beginHand(false);
                 GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
@@ -119,10 +94,8 @@ public class ShadersRender
         }
     }
 
-    public static void renderHand1(EntityRenderer er, float par1, int par2)
-    {
-        if (!Shaders.isShadowPass && !Shaders.isBothHandsRendered())
-        {
+    public static void renderHand1(EntityRenderer er, float par1, int par2) {
+        if (!Shaders.isShadowPass && !Shaders.isBothHandsRendered()) {
             Shaders.readCenterDepth();
             GlStateManager.enableBlend();
             Shaders.beginHand(true);
@@ -135,13 +108,11 @@ public class ShadersRender
         }
     }
 
-    public static void renderItemFP(ItemRenderer itemRenderer, float par1, boolean renderTranslucent)
-    {
+    public static void renderItemFP(ItemRenderer itemRenderer, float par1, boolean renderTranslucent) {
         Shaders.setRenderingFirstPersonHand(true);
         GlStateManager.depthMask(true);
 
-        if (renderTranslucent)
-        {
+        if (renderTranslucent) {
             GlStateManager.depthFunc(519);
             GL11.glPushMatrix();
             IntBuffer intbuffer = Shaders.activeDrawBuffers;
@@ -159,43 +130,34 @@ public class ShadersRender
         Shaders.setRenderingFirstPersonHand(false);
     }
 
-    public static void renderFPOverlay(EntityRenderer er, float par1, int par2)
-    {
-        if (!Shaders.isShadowPass)
-        {
+    public static void renderFPOverlay(EntityRenderer er, float par1, int par2) {
+        if (!Shaders.isShadowPass) {
             Shaders.beginFPOverlay();
             er.renderHand(par1, par2, false, true, false);
             Shaders.endFPOverlay();
         }
     }
 
-    public static void beginBlockDamage()
-    {
-        if (Shaders.isRenderingWorld)
-        {
+    public static void beginBlockDamage() {
+        if (Shaders.isRenderingWorld) {
             Shaders.useProgram(Shaders.ProgramDamagedBlock);
 
-            if (Shaders.ProgramDamagedBlock.getId() == Shaders.ProgramTerrain.getId())
-            {
+            if (Shaders.ProgramDamagedBlock.getId() == Shaders.ProgramTerrain.getId()) {
                 Shaders.setDrawBuffers(Shaders.drawBuffersColorAtt0);
                 GlStateManager.depthMask(false);
             }
         }
     }
 
-    public static void endBlockDamage()
-    {
-        if (Shaders.isRenderingWorld)
-        {
+    public static void endBlockDamage() {
+        if (Shaders.isRenderingWorld) {
             GlStateManager.depthMask(true);
             Shaders.useProgram(Shaders.ProgramTexturedLit);
         }
     }
 
-    public static void renderShadowMap(EntityRenderer entityRenderer, int pass, float partialTicks, long finishTimeNano)
-    {
-        if (Shaders.usedShadowDepthBuffers > 0 && --Shaders.shadowPassCounter <= 0)
-        {
+    public static void renderShadowMap(EntityRenderer entityRenderer, int pass, float partialTicks, long finishTimeNano) {
+        if (Shaders.usedShadowDepthBuffers > 0 && --Shaders.shadowPassCounter <= 0) {
             Minecraft minecraft = Minecraft.getMinecraft();
             minecraft.mcProfiler.endStartSection("shadow pass");
             RenderGlobal renderglobal = minecraft.renderGlobal;
@@ -222,8 +184,7 @@ public class ShadersRender
             Shaders.checkGLError("shadow readbuffer");
             EXTFramebufferObject.glFramebufferTexture2DEXT(36160, 36096, 3553, Shaders.sfbDepthTextures.get(0), 0);
 
-            if (Shaders.usedShadowColorBuffers != 0)
-            {
+            if (Shaders.usedShadowColorBuffers != 0) {
                 EXTFramebufferObject.glFramebufferTexture2DEXT(36160, 36064, 3553, Shaders.sfbColorTextures.get(0), 0);
             }
 
@@ -236,9 +197,9 @@ public class ShadersRender
             minecraft.mcProfiler.endStartSection("shadow culling");
             Frustum frustum = new Frustum(clippinghelper);
             Entity entity = minecraft.getRenderViewEntity();
-            double d0 = entity.lastTickPosX + (entity.posX - entity.lastTickPosX) * (double)partialTicks;
-            double d1 = entity.lastTickPosY + (entity.posY - entity.lastTickPosY) * (double)partialTicks;
-            double d2 = entity.lastTickPosZ + (entity.posZ - entity.lastTickPosZ) * (double)partialTicks;
+            double d0 = entity.lastTickPosX + (entity.posX - entity.lastTickPosX) * (double) partialTicks;
+            double d1 = entity.lastTickPosY + (entity.posY - entity.lastTickPosY) * (double) partialTicks;
+            double d2 = entity.lastTickPosZ + (entity.posZ - entity.lastTickPosZ) * (double) partialTicks;
             frustum.setPosition(d0, d1, d2);
             GlStateManager.shadeModel(7425);
             GlStateManager.enableDepth();
@@ -252,19 +213,19 @@ public class ShadersRender
             int i = 0;
             i = entityRenderer.frameCount;
             entityRenderer.frameCount = i + 1;
-            renderglobal.setupTerrain(entity, (double)partialTicks, frustum, i, minecraft.thePlayer.isSpectator());
+            renderglobal.setupTerrain(entity, partialTicks, frustum, i, minecraft.thePlayer.isSpectator());
             minecraft.mcProfiler.endStartSection("shadow updatechunks");
             minecraft.mcProfiler.endStartSection("shadow terrain");
             GlStateManager.matrixMode(5888);
             GlStateManager.pushMatrix();
             GlStateManager.disableAlpha();
-            renderglobal.renderBlockLayer(EnumWorldBlockLayer.SOLID, (double)partialTicks, 2, entity);
+            renderglobal.renderBlockLayer(EnumWorldBlockLayer.SOLID, partialTicks, 2, entity);
             Shaders.checkGLError("shadow terrain solid");
             GlStateManager.enableAlpha();
-            renderglobal.renderBlockLayer(EnumWorldBlockLayer.CUTOUT_MIPPED, (double)partialTicks, 2, entity);
+            renderglobal.renderBlockLayer(EnumWorldBlockLayer.CUTOUT_MIPPED, partialTicks, 2, entity);
             Shaders.checkGLError("shadow terrain cutoutmipped");
             minecraft.getTextureManager().getTexture(TextureMap.locationBlocksTexture).setBlurMipmap(false, false);
-            renderglobal.renderBlockLayer(EnumWorldBlockLayer.CUTOUT, (double)partialTicks, 2, entity);
+            renderglobal.renderBlockLayer(EnumWorldBlockLayer.CUTOUT, partialTicks, 2, entity);
             Shaders.checkGLError("shadow terrain cutout");
             minecraft.getTextureManager().getTexture(TextureMap.locationBlocksTexture).restoreLastBlurMipmap();
             GlStateManager.shadeModel(7424);
@@ -274,9 +235,8 @@ public class ShadersRender
             GlStateManager.pushMatrix();
             minecraft.mcProfiler.endStartSection("shadow entities");
 
-            if (Reflector.ForgeHooksClient_setRenderPass.exists())
-            {
-                Reflector.callVoid(Reflector.ForgeHooksClient_setRenderPass, new Object[] {Integer.valueOf(0)});
+            if (Reflector.ForgeHooksClient_setRenderPass.exists()) {
+                Reflector.callVoid(Reflector.ForgeHooksClient_setRenderPass, Integer.valueOf(0));
             }
 
             renderglobal.renderEntities(entity, frustum, partialTicks);
@@ -289,8 +249,7 @@ public class ShadersRender
             GlStateManager.tryBlendFuncSeparate(770, 771, 1, 0);
             GlStateManager.alphaFunc(516, 0.1F);
 
-            if (Shaders.usedShadowDepthBuffers >= 2)
-            {
+            if (Shaders.usedShadowDepthBuffers >= 2) {
                 GlStateManager.setActiveTexture(33989);
                 Shaders.checkGLError("pre copy shadow depth");
                 GL11.glCopyTexSubImage2D(GL11.GL_TEXTURE_2D, 0, 0, 0, 0, 0, Shaders.shadowMapWidth, Shaders.shadowMapHeight);
@@ -307,19 +266,17 @@ public class ShadersRender
             Shaders.checkGLError("shadow drawbuffers pre-translucent");
             Shaders.checkFramebufferStatus("shadow pre-translucent");
 
-            if (Shaders.isRenderShadowTranslucent())
-            {
+            if (Shaders.isRenderShadowTranslucent()) {
                 minecraft.mcProfiler.endStartSection("shadow translucent");
-                renderglobal.renderBlockLayer(EnumWorldBlockLayer.TRANSLUCENT, (double)partialTicks, 2, entity);
+                renderglobal.renderBlockLayer(EnumWorldBlockLayer.TRANSLUCENT, partialTicks, 2, entity);
                 Shaders.checkGLError("shadow translucent");
             }
 
-            if (Reflector.ForgeHooksClient_setRenderPass.exists())
-            {
+            if (Reflector.ForgeHooksClient_setRenderPass.exists()) {
                 RenderHelper.enableStandardItemLighting();
-                Reflector.call(Reflector.ForgeHooksClient_setRenderPass, new Object[] {Integer.valueOf(1)});
+                Reflector.call(Reflector.ForgeHooksClient_setRenderPass, Integer.valueOf(1));
                 renderglobal.renderEntities(entity, frustum, partialTicks);
-                Reflector.call(Reflector.ForgeHooksClient_setRenderPass, new Object[] {Integer.valueOf(-1)});
+                Reflector.call(Reflector.ForgeHooksClient_setRenderPass, Integer.valueOf(-1));
                 RenderHelper.disableStandardItemLighting();
                 Shaders.checkGLError("shadow entities 1");
             }
@@ -334,20 +291,16 @@ public class ShadersRender
             minecraft.gameSettings.thirdPersonView = Shaders.preShadowPassThirdPersonView;
             minecraft.mcProfiler.endStartSection("shadow postprocess");
 
-            if (Shaders.hasGlGenMipmap)
-            {
-                if (Shaders.usedShadowDepthBuffers >= 1)
-                {
-                    if (Shaders.shadowMipmapEnabled[0])
-                    {
+            if (Shaders.hasGlGenMipmap) {
+                if (Shaders.usedShadowDepthBuffers >= 1) {
+                    if (Shaders.shadowMipmapEnabled[0]) {
                         GlStateManager.setActiveTexture(33988);
                         GlStateManager.bindTexture(Shaders.sfbDepthTextures.get(0));
                         GL30.glGenerateMipmap(3553);
                         GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MIN_FILTER, Shaders.shadowFilterNearest[0] ? GL11.GL_NEAREST_MIPMAP_NEAREST : GL11.GL_LINEAR_MIPMAP_LINEAR);
                     }
 
-                    if (Shaders.usedShadowDepthBuffers >= 2 && Shaders.shadowMipmapEnabled[1])
-                    {
+                    if (Shaders.usedShadowDepthBuffers >= 2 && Shaders.shadowMipmapEnabled[1]) {
                         GlStateManager.setActiveTexture(33989);
                         GlStateManager.bindTexture(Shaders.sfbDepthTextures.get(1));
                         GL30.glGenerateMipmap(3553);
@@ -357,18 +310,15 @@ public class ShadersRender
                     GlStateManager.setActiveTexture(33984);
                 }
 
-                if (Shaders.usedShadowColorBuffers >= 1)
-                {
-                    if (Shaders.shadowColorMipmapEnabled[0])
-                    {
+                if (Shaders.usedShadowColorBuffers >= 1) {
+                    if (Shaders.shadowColorMipmapEnabled[0]) {
                         GlStateManager.setActiveTexture(33997);
                         GlStateManager.bindTexture(Shaders.sfbColorTextures.get(0));
                         GL30.glGenerateMipmap(3553);
                         GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MIN_FILTER, Shaders.shadowColorFilterNearest[0] ? GL11.GL_NEAREST_MIPMAP_NEAREST : GL11.GL_LINEAR_MIPMAP_LINEAR);
                     }
 
-                    if (Shaders.usedShadowColorBuffers >= 2 && Shaders.shadowColorMipmapEnabled[1])
-                    {
+                    if (Shaders.usedShadowColorBuffers >= 2 && Shaders.shadowColorMipmapEnabled[1]) {
                         GlStateManager.setActiveTexture(33998);
                         GlStateManager.bindTexture(Shaders.sfbColorTextures.get(1));
                         GL30.glGenerateMipmap(3553);
@@ -394,15 +344,12 @@ public class ShadersRender
         }
     }
 
-    public static void preRenderChunkLayer(EnumWorldBlockLayer blockLayerIn)
-    {
-        if (Shaders.isRenderBackFace(blockLayerIn))
-        {
+    public static void preRenderChunkLayer(EnumWorldBlockLayer blockLayerIn) {
+        if (Shaders.isRenderBackFace(blockLayerIn)) {
             GlStateManager.disableCull();
         }
 
-        if (OpenGlHelper.useVbo())
-        {
+        if (OpenGlHelper.useVbo()) {
             GL11.glEnableClientState(GL11.GL_NORMAL_ARRAY);
             GL20.glEnableVertexAttribArray(Shaders.midTexCoordAttrib);
             GL20.glEnableVertexAttribArray(Shaders.tangentAttrib);
@@ -410,24 +357,20 @@ public class ShadersRender
         }
     }
 
-    public static void postRenderChunkLayer(EnumWorldBlockLayer blockLayerIn)
-    {
-        if (OpenGlHelper.useVbo())
-        {
+    public static void postRenderChunkLayer(EnumWorldBlockLayer blockLayerIn) {
+        if (OpenGlHelper.useVbo()) {
             GL11.glDisableClientState(GL11.GL_NORMAL_ARRAY);
             GL20.glDisableVertexAttribArray(Shaders.midTexCoordAttrib);
             GL20.glDisableVertexAttribArray(Shaders.tangentAttrib);
             GL20.glDisableVertexAttribArray(Shaders.entityAttrib);
         }
 
-        if (Shaders.isRenderBackFace(blockLayerIn))
-        {
+        if (Shaders.isRenderBackFace(blockLayerIn)) {
             GlStateManager.enableCull();
         }
     }
 
-    public static void setupArrayPointersVbo()
-    {
+    public static void setupArrayPointersVbo() {
         int i = 14;
         GL11.glVertexPointer(3, GL11.GL_FLOAT, 56, 0L);
         GL11.glColorPointer(4, GL11.GL_UNSIGNED_BYTE, 56, 12L);
@@ -441,60 +384,43 @@ public class ShadersRender
         GL20.glVertexAttribPointer(Shaders.entityAttrib, 3, GL11.GL_SHORT, false, 56, 48L);
     }
 
-    public static void beaconBeamBegin()
-    {
+    public static void beaconBeamBegin() {
         Shaders.useProgram(Shaders.ProgramBeaconBeam);
     }
 
-    public static void beaconBeamStartQuad1()
-    {
+    public static void beaconBeamStartQuad1() {
     }
 
-    public static void beaconBeamStartQuad2()
-    {
+    public static void beaconBeamStartQuad2() {
     }
 
-    public static void beaconBeamDraw1()
-    {
+    public static void beaconBeamDraw1() {
     }
 
-    public static void beaconBeamDraw2()
-    {
+    public static void beaconBeamDraw2() {
         GlStateManager.disableBlend();
     }
 
-    public static void renderEnchantedGlintBegin()
-    {
+    public static void renderEnchantedGlintBegin() {
         Shaders.useProgram(Shaders.ProgramArmorGlint);
     }
 
-    public static void renderEnchantedGlintEnd()
-    {
-        if (Shaders.isRenderingWorld)
-        {
-            if (Shaders.isRenderingFirstPersonHand() && Shaders.isRenderBothHands())
-            {
+    public static void renderEnchantedGlintEnd() {
+        if (Shaders.isRenderingWorld) {
+            if (Shaders.isRenderingFirstPersonHand() && Shaders.isRenderBothHands()) {
                 Shaders.useProgram(Shaders.ProgramHand);
-            }
-            else
-            {
+            } else {
                 Shaders.useProgram(Shaders.ProgramEntities);
             }
-        }
-        else
-        {
+        } else {
             Shaders.useProgram(Shaders.ProgramNone);
         }
     }
 
-    public static boolean renderEndPortal(TileEntityEndPortal te, double x, double y, double z, float partialTicks, int destroyStage, float offset)
-    {
-        if (!Shaders.isShadowPass && Shaders.activeProgram.getId() == 0)
-        {
+    public static boolean renderEndPortal(TileEntityEndPortal te, double x, double y, double z, float partialTicks, int destroyStage, float offset) {
+        if (!Shaders.isShadowPass && Shaders.activeProgram.getId() == 0) {
             return false;
-        }
-        else
-        {
+        } else {
             GlStateManager.disableLighting();
             Config.getTextureManager().bindTexture(END_PORTAL_TEXTURE);
             Tessellator tessellator = Tessellator.getInstance();
@@ -506,12 +432,12 @@ public class ShadersRender
             float f3 = f * 0.4F;
             float f4 = 0.0F;
             float f5 = 0.2F;
-            float f6 = (float)(System.currentTimeMillis() % 100000L) / 100000.0F;
+            float f6 = (float) (System.currentTimeMillis() % 100000L) / 100000.0F;
             int i = 240;
-            worldrenderer.pos(x, y + (double)offset, z + 1.0D).color(f1, f2, f3, 1.0F).tex((double)(f4 + f6), (double)(f4 + f6)).lightmap(i, i).endVertex();
-            worldrenderer.pos(x + 1.0D, y + (double)offset, z + 1.0D).color(f1, f2, f3, 1.0F).tex((double)(f4 + f6), (double)(f5 + f6)).lightmap(i, i).endVertex();
-            worldrenderer.pos(x + 1.0D, y + (double)offset, z).color(f1, f2, f3, 1.0F).tex((double)(f5 + f6), (double)(f5 + f6)).lightmap(i, i).endVertex();
-            worldrenderer.pos(x, y + (double)offset, z).color(f1, f2, f3, 1.0F).tex((double)(f5 + f6), (double)(f4 + f6)).lightmap(i, i).endVertex();
+            worldrenderer.pos(x, y + (double) offset, z + 1.0D).color(f1, f2, f3, 1.0F).tex(f4 + f6, f4 + f6).lightmap(i, i).endVertex();
+            worldrenderer.pos(x + 1.0D, y + (double) offset, z + 1.0D).color(f1, f2, f3, 1.0F).tex(f4 + f6, f5 + f6).lightmap(i, i).endVertex();
+            worldrenderer.pos(x + 1.0D, y + (double) offset, z).color(f1, f2, f3, 1.0F).tex(f5 + f6, f5 + f6).lightmap(i, i).endVertex();
+            worldrenderer.pos(x, y + (double) offset, z).color(f1, f2, f3, 1.0F).tex(f5 + f6, f4 + f6).lightmap(i, i).endVertex();
             tessellator.draw();
             GlStateManager.enableLighting();
             return true;

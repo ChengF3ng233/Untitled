@@ -1,10 +1,5 @@
 package net.optifine;
 
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.Map;
-import java.util.Properties;
 import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.client.renderer.texture.ITextureObject;
 import net.minecraft.client.renderer.texture.SimpleTexture;
@@ -13,8 +8,15 @@ import net.minecraft.src.Config;
 import net.minecraft.util.ResourceLocation;
 import net.optifine.util.PropertiesOrdered;
 
-public class EmissiveTextures
-{
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.Map;
+import java.util.Properties;
+
+public class EmissiveTextures {
+    private static final String SUFFIX_PNG = ".png";
+    private static final ResourceLocation LOCATION_EMPTY = new ResourceLocation("mcpatcher/ctm/default/empty.png");
     private static String suffixEmissive = null;
     private static String suffixEmissivePng = null;
     private static boolean active = false;
@@ -23,60 +25,42 @@ public class EmissiveTextures
     private static boolean renderEmissive = false;
     private static float lightMapX;
     private static float lightMapY;
-    private static final String SUFFIX_PNG = ".png";
-    private static final ResourceLocation LOCATION_EMPTY = new ResourceLocation("mcpatcher/ctm/default/empty.png");
 
-    public static boolean isActive()
-    {
+    public static boolean isActive() {
         return active;
     }
 
-    public static String getSuffixEmissive()
-    {
+    public static String getSuffixEmissive() {
         return suffixEmissive;
     }
 
-    public static void beginRender()
-    {
+    public static void beginRender() {
         render = true;
         hasEmissive = false;
     }
 
-    public static ITextureObject getEmissiveTexture(ITextureObject texture, Map<ResourceLocation, ITextureObject> mapTextures)
-    {
-        if (!render)
-        {
+    public static ITextureObject getEmissiveTexture(ITextureObject texture, Map<ResourceLocation, ITextureObject> mapTextures) {
+        if (!render) {
             return texture;
-        }
-        else if (!(texture instanceof SimpleTexture))
-        {
+        } else if (!(texture instanceof SimpleTexture simpletexture)) {
             return texture;
-        }
-        else
-        {
-            SimpleTexture simpletexture = (SimpleTexture)texture;
+        } else {
             ResourceLocation resourcelocation = simpletexture.locationEmissive;
 
-            if (!renderEmissive)
-            {
-                if (resourcelocation != null)
-                {
+            if (!renderEmissive) {
+                if (resourcelocation != null) {
                     hasEmissive = true;
                 }
 
                 return texture;
-            }
-            else
-            {
-                if (resourcelocation == null)
-                {
+            } else {
+                if (resourcelocation == null) {
                     resourcelocation = LOCATION_EMPTY;
                 }
 
-                ITextureObject itextureobject = (ITextureObject)mapTextures.get(resourcelocation);
+                ITextureObject itextureobject = mapTextures.get(resourcelocation);
 
-                if (itextureobject == null)
-                {
+                if (itextureobject == null) {
                     itextureobject = new SimpleTexture(resourcelocation);
                     TextureManager texturemanager = Config.getTextureManager();
                     texturemanager.loadTexture(resourcelocation, itextureobject);
@@ -87,47 +71,39 @@ public class EmissiveTextures
         }
     }
 
-    public static boolean hasEmissive()
-    {
+    public static boolean hasEmissive() {
         return hasEmissive;
     }
 
-    public static void beginRenderEmissive()
-    {
+    public static void beginRenderEmissive() {
         lightMapX = OpenGlHelper.lastBrightnessX;
         lightMapY = OpenGlHelper.lastBrightnessY;
         OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, 240.0F, lightMapY);
         renderEmissive = true;
     }
 
-    public static void endRenderEmissive()
-    {
+    public static void endRenderEmissive() {
         renderEmissive = false;
         OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, lightMapX, lightMapY);
     }
 
-    public static void endRender()
-    {
+    public static void endRender() {
         render = false;
         hasEmissive = false;
     }
 
-    public static void update()
-    {
+    public static void update() {
         active = false;
         suffixEmissive = null;
         suffixEmissivePng = null;
 
-        if (Config.isEmissiveTextures())
-        {
-            try
-            {
+        if (Config.isEmissiveTextures()) {
+            try {
                 String s = "optifine/emissive.properties";
                 ResourceLocation resourcelocation = new ResourceLocation(s);
                 InputStream inputstream = Config.getResourceStream(resourcelocation);
 
-                if (inputstream == null)
-                {
+                if (inputstream == null) {
                     return;
                 }
 
@@ -137,63 +113,46 @@ public class EmissiveTextures
                 inputstream.close();
                 suffixEmissive = properties.getProperty("suffix.emissive");
 
-                if (suffixEmissive != null)
-                {
+                if (suffixEmissive != null) {
                     suffixEmissivePng = suffixEmissive + ".png";
                 }
 
                 active = suffixEmissive != null;
-            }
-            catch (FileNotFoundException var4)
-            {
-                return;
-            }
-            catch (IOException ioexception)
-            {
+            } catch (FileNotFoundException var4) {
+            } catch (IOException ioexception) {
                 ioexception.printStackTrace();
             }
         }
     }
 
-    private static void dbg(String str)
-    {
+    private static void dbg(String str) {
         Config.dbg("EmissiveTextures: " + str);
     }
 
-    private static void warn(String str)
-    {
+    private static void warn(String str) {
         Config.warn("EmissiveTextures: " + str);
     }
 
-    public static boolean isEmissive(ResourceLocation loc)
-    {
-        return suffixEmissivePng == null ? false : loc.getResourcePath().endsWith(suffixEmissivePng);
+    public static boolean isEmissive(ResourceLocation loc) {
+        return suffixEmissivePng != null && loc.getResourcePath().endsWith(suffixEmissivePng);
     }
 
-    public static void loadTexture(ResourceLocation loc, SimpleTexture tex)
-    {
-        if (loc != null && tex != null)
-        {
+    public static void loadTexture(ResourceLocation loc, SimpleTexture tex) {
+        if (loc != null && tex != null) {
             tex.isEmissive = false;
             tex.locationEmissive = null;
 
-            if (suffixEmissivePng != null)
-            {
+            if (suffixEmissivePng != null) {
                 String s = loc.getResourcePath();
 
-                if (s.endsWith(".png"))
-                {
-                    if (s.endsWith(suffixEmissivePng))
-                    {
+                if (s.endsWith(".png")) {
+                    if (s.endsWith(suffixEmissivePng)) {
                         tex.isEmissive = true;
-                    }
-                    else
-                    {
+                    } else {
                         String s1 = s.substring(0, s.length() - ".png".length()) + suffixEmissivePng;
                         ResourceLocation resourcelocation = new ResourceLocation(loc.getResourceDomain(), s1);
 
-                        if (Config.hasResource(resourcelocation))
-                        {
+                        if (Config.hasResource(resourcelocation)) {
                             tex.locationEmissive = resourcelocation;
                         }
                     }

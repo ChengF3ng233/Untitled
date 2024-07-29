@@ -1,34 +1,23 @@
 package net.minecraft.entity.boss;
 
 import com.google.common.collect.Lists;
-import java.util.Iterator;
-import java.util.List;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockTorch;
 import net.minecraft.block.material.Material;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLiving;
-import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.IEntityMultiPart;
-import net.minecraft.entity.SharedMonsterAttributes;
+import net.minecraft.entity.*;
 import net.minecraft.entity.item.EntityEnderCrystal;
 import net.minecraft.entity.item.EntityXPOrb;
 import net.minecraft.entity.monster.IMob;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
-import net.minecraft.util.AxisAlignedBB;
-import net.minecraft.util.BlockPos;
-import net.minecraft.util.DamageSource;
-import net.minecraft.util.EntityDamageSource;
-import net.minecraft.util.EnumFacing;
-import net.minecraft.util.EnumParticleTypes;
-import net.minecraft.util.MathHelper;
-import net.minecraft.util.Vec3;
+import net.minecraft.util.*;
 import net.minecraft.world.Explosion;
 import net.minecraft.world.World;
 
-public class EntityDragon extends EntityLiving implements IBossDisplayData, IEntityMultiPart, IMob
-{
+import java.util.Iterator;
+import java.util.List;
+
+public class EntityDragon extends EntityLiving implements IBossDisplayData, IEntityMultiPart, IMob {
     public double targetX;
     public double targetY;
     public double targetZ;
@@ -43,13 +32,19 @@ public class EntityDragon extends EntityLiving implements IBossDisplayData, IEnt
      */
     public int ringBufferIndex = -1;
 
-    /** An array containing all body parts of this dragon */
+    /**
+     * An array containing all body parts of this dragon
+     */
     public EntityDragonPart[] dragonPartArray;
 
-    /** The head bounding box of a dragon */
+    /**
+     * The head bounding box of a dragon
+     */
     public EntityDragonPart dragonPartHead;
 
-    /** The body bounding box of a dragon */
+    /**
+     * The body bounding box of a dragon
+     */
     public EntityDragonPart dragonPartBody;
     public EntityDragonPart dragonPartTail1;
     public EntityDragonPart dragonPartTail2;
@@ -57,7 +52,9 @@ public class EntityDragon extends EntityLiving implements IBossDisplayData, IEnt
     public EntityDragonPart dragonPartWing1;
     public EntityDragonPart dragonPartWing2;
 
-    /** Animation time at previous tick. */
+    /**
+     * Animation time at previous tick.
+     */
     public float prevAnimTime;
 
     /**
@@ -65,23 +62,25 @@ public class EntityDragon extends EntityLiving implements IBossDisplayData, IEnt
      */
     public float animTime;
 
-    /** Force selecting a new flight target at next tick if set to true. */
+    /**
+     * Force selecting a new flight target at next tick if set to true.
+     */
     public boolean forceNewTarget;
 
     /**
      * Activated if the dragon is flying though obsidian, white stone or bedrock. Slows movement and animation speed.
      */
     public boolean slowed;
-    private Entity target;
     public int deathTicks;
-
-    /** The current endercrystal that is healing this dragon */
+    /**
+     * The current endercrystal that is healing this dragon
+     */
     public EntityEnderCrystal healingEnderCrystal;
+    private Entity target;
 
-    public EntityDragon(World worldIn)
-    {
+    public EntityDragon(World worldIn) {
         super(worldIn);
-        this.dragonPartArray = new EntityDragonPart[] {this.dragonPartHead = new EntityDragonPart(this, "head", 6.0F, 6.0F), this.dragonPartBody = new EntityDragonPart(this, "body", 8.0F, 8.0F), this.dragonPartTail1 = new EntityDragonPart(this, "tail", 4.0F, 4.0F), this.dragonPartTail2 = new EntityDragonPart(this, "tail", 4.0F, 4.0F), this.dragonPartTail3 = new EntityDragonPart(this, "tail", 4.0F, 4.0F), this.dragonPartWing1 = new EntityDragonPart(this, "wing", 4.0F, 4.0F), this.dragonPartWing2 = new EntityDragonPart(this, "wing", 4.0F, 4.0F)};
+        this.dragonPartArray = new EntityDragonPart[]{this.dragonPartHead = new EntityDragonPart(this, "head", 6.0F, 6.0F), this.dragonPartBody = new EntityDragonPart(this, "body", 8.0F, 8.0F), this.dragonPartTail1 = new EntityDragonPart(this, "tail", 4.0F, 4.0F), this.dragonPartTail2 = new EntityDragonPart(this, "tail", 4.0F, 4.0F), this.dragonPartTail3 = new EntityDragonPart(this, "tail", 4.0F, 4.0F), this.dragonPartWing1 = new EntityDragonPart(this, "wing", 4.0F, 4.0F), this.dragonPartWing2 = new EntityDragonPart(this, "wing", 4.0F, 4.0F)};
         this.setHealth(this.getMaxHealth());
         this.setSize(16.0F, 8.0F);
         this.noClip = true;
@@ -90,14 +89,12 @@ public class EntityDragon extends EntityLiving implements IBossDisplayData, IEnt
         this.ignoreFrustumCheck = true;
     }
 
-    protected void applyEntityAttributes()
-    {
+    protected void applyEntityAttributes() {
         super.applyEntityAttributes();
         this.getEntityAttribute(SharedMonsterAttributes.maxHealth).setBaseValue(200.0D);
     }
 
-    protected void entityInit()
-    {
+    protected void entityInit() {
         super.entityInit();
     }
 
@@ -105,24 +102,22 @@ public class EntityDragon extends EntityLiving implements IBossDisplayData, IEnt
      * Returns a double[3] array with movement offsets, used to calculate trailing tail/neck positions. [0] = yaw
      * offset, [1] = y offset, [2] = unused, always 0. Parameters: buffer index offset, partial ticks.
      */
-    public double[] getMovementOffsets(int p_70974_1_, float p_70974_2_)
-    {
-        if (this.getHealth() <= 0.0F)
-        {
+    public double[] getMovementOffsets(int p_70974_1_, float p_70974_2_) {
+        if (this.getHealth() <= 0.0F) {
             p_70974_2_ = 0.0F;
         }
 
         p_70974_2_ = 1.0F - p_70974_2_;
-        int i = this.ringBufferIndex - p_70974_1_ * 1 & 63;
-        int j = this.ringBufferIndex - p_70974_1_ * 1 - 1 & 63;
+        int i = this.ringBufferIndex - p_70974_1_ & 63;
+        int j = this.ringBufferIndex - p_70974_1_ - 1 & 63;
         double[] adouble = new double[3];
         double d0 = this.ringBuffer[i][0];
         double d1 = MathHelper.wrapAngleTo180_double(this.ringBuffer[j][0] - d0);
-        adouble[0] = d0 + d1 * (double)p_70974_2_;
+        adouble[0] = d0 + d1 * (double) p_70974_2_;
         d0 = this.ringBuffer[i][1];
         d1 = this.ringBuffer[j][1] - d0;
-        adouble[1] = d0 + d1 * (double)p_70974_2_;
-        adouble[2] = this.ringBuffer[i][2] + (this.ringBuffer[j][2] - this.ringBuffer[i][2]) * (double)p_70974_2_;
+        adouble[1] = d0 + d1 * (double) p_70974_2_;
+        adouble[2] = this.ringBuffer[i][2] + (this.ringBuffer[j][2] - this.ringBuffer[i][2]) * (double) p_70974_2_;
         return adouble;
     }
 
@@ -130,92 +125,72 @@ public class EntityDragon extends EntityLiving implements IBossDisplayData, IEnt
      * Called frequently so the entity can update its state every tick as required. For example, zombies and skeletons
      * use this to react to sunlight and start to burn.
      */
-    public void onLivingUpdate()
-    {
-        if (this.worldObj.isRemote)
-        {
-            float f = MathHelper.cos(this.animTime * (float)Math.PI * 2.0F);
-            float f1 = MathHelper.cos(this.prevAnimTime * (float)Math.PI * 2.0F);
+    public void onLivingUpdate() {
+        if (this.worldObj.isRemote) {
+            float f = MathHelper.cos(this.animTime * (float) Math.PI * 2.0F);
+            float f1 = MathHelper.cos(this.prevAnimTime * (float) Math.PI * 2.0F);
 
-            if (f1 <= -0.3F && f >= -0.3F && !this.isSilent())
-            {
+            if (f1 <= -0.3F && f >= -0.3F && !this.isSilent()) {
                 this.worldObj.playSound(this.posX, this.posY, this.posZ, "mob.enderdragon.wings", 5.0F, 0.8F + this.rand.nextFloat() * 0.3F, false);
             }
         }
 
         this.prevAnimTime = this.animTime;
 
-        if (this.getHealth() <= 0.0F)
-        {
+        if (this.getHealth() <= 0.0F) {
             float f11 = (this.rand.nextFloat() - 0.5F) * 8.0F;
             float f13 = (this.rand.nextFloat() - 0.5F) * 4.0F;
             float f14 = (this.rand.nextFloat() - 0.5F) * 8.0F;
-            this.worldObj.spawnParticle(EnumParticleTypes.EXPLOSION_LARGE, this.posX + (double)f11, this.posY + 2.0D + (double)f13, this.posZ + (double)f14, 0.0D, 0.0D, 0.0D, new int[0]);
-        }
-        else
-        {
+            this.worldObj.spawnParticle(EnumParticleTypes.EXPLOSION_LARGE, this.posX + (double) f11, this.posY + 2.0D + (double) f13, this.posZ + (double) f14, 0.0D, 0.0D, 0.0D);
+        } else {
             this.updateDragonEnderCrystal();
             float f10 = 0.2F / (MathHelper.sqrt_double(this.motionX * this.motionX + this.motionZ * this.motionZ) * 10.0F + 1.0F);
-            f10 = f10 * (float)Math.pow(2.0D, this.motionY);
+            f10 = f10 * (float) Math.pow(2.0D, this.motionY);
 
-            if (this.slowed)
-            {
+            if (this.slowed) {
                 this.animTime += f10 * 0.5F;
-            }
-            else
-            {
+            } else {
                 this.animTime += f10;
             }
 
             this.rotationYaw = MathHelper.wrapAngleTo180_float(this.rotationYaw);
 
-            if (this.isAIDisabled())
-            {
+            if (this.isAIDisabled()) {
                 this.animTime = 0.5F;
-            }
-            else
-            {
-                if (this.ringBufferIndex < 0)
-                {
-                    for (int i = 0; i < this.ringBuffer.length; ++i)
-                    {
-                        this.ringBuffer[i][0] = (double)this.rotationYaw;
+            } else {
+                if (this.ringBufferIndex < 0) {
+                    for (int i = 0; i < this.ringBuffer.length; ++i) {
+                        this.ringBuffer[i][0] = this.rotationYaw;
                         this.ringBuffer[i][1] = this.posY;
                     }
                 }
 
-                if (++this.ringBufferIndex == this.ringBuffer.length)
-                {
+                if (++this.ringBufferIndex == this.ringBuffer.length) {
                     this.ringBufferIndex = 0;
                 }
 
-                this.ringBuffer[this.ringBufferIndex][0] = (double)this.rotationYaw;
+                this.ringBuffer[this.ringBufferIndex][0] = this.rotationYaw;
                 this.ringBuffer[this.ringBufferIndex][1] = this.posY;
 
-                if (this.worldObj.isRemote)
-                {
-                    if (this.newPosRotationIncrements > 0)
-                    {
-                        double d10 = this.posX + (this.newPosX - this.posX) / (double)this.newPosRotationIncrements;
-                        double d0 = this.posY + (this.newPosY - this.posY) / (double)this.newPosRotationIncrements;
-                        double d1 = this.posZ + (this.newPosZ - this.posZ) / (double)this.newPosRotationIncrements;
-                        double d2 = MathHelper.wrapAngleTo180_double(this.newRotationYaw - (double)this.rotationYaw);
-                        this.rotationYaw = (float)((double)this.rotationYaw + d2 / (double)this.newPosRotationIncrements);
-                        this.rotationPitch = (float)((double)this.rotationPitch + (this.newRotationPitch - (double)this.rotationPitch) / (double)this.newPosRotationIncrements);
+                if (this.worldObj.isRemote) {
+                    if (this.newPosRotationIncrements > 0) {
+                        double d10 = this.posX + (this.newPosX - this.posX) / (double) this.newPosRotationIncrements;
+                        double d0 = this.posY + (this.newPosY - this.posY) / (double) this.newPosRotationIncrements;
+                        double d1 = this.posZ + (this.newPosZ - this.posZ) / (double) this.newPosRotationIncrements;
+                        double d2 = MathHelper.wrapAngleTo180_double(this.newRotationYaw - (double) this.rotationYaw);
+                        this.rotationYaw = (float) ((double) this.rotationYaw + d2 / (double) this.newPosRotationIncrements);
+                        this.rotationPitch = (float) ((double) this.rotationPitch + (this.newRotationPitch - (double) this.rotationPitch) / (double) this.newPosRotationIncrements);
                         --this.newPosRotationIncrements;
                         this.setPosition(d10, d0, d1);
                         this.setRotation(this.rotationYaw, this.rotationPitch);
                     }
-                }
-                else
-                {
+                } else {
                     double d11 = this.targetX - this.posX;
                     double d12 = this.targetY - this.posY;
                     double d13 = this.targetZ - this.posZ;
                     double d14 = d11 * d11 + d12 * d12 + d13 * d13;
 
-                    if (this.target != null)
-                    {
+                    if (this.target != null) {
                         this.targetX = this.target.posX;
                         this.targetZ = this.target.posZ;
                         double d3 = this.targetX - this.posX;
@@ -223,81 +198,70 @@ public class EntityDragon extends EntityLiving implements IBossDisplayData, IEnt
                         double d7 = Math.sqrt(d3 * d3 + d5 * d5);
                         double d8 = 0.4000000059604645D + d7 / 80.0D - 1.0D;
 
-                        if (d8 > 10.0D)
-                        {
+                        if (d8 > 10.0D) {
                             d8 = 10.0D;
                         }
 
                         this.targetY = this.target.getEntityBoundingBox().minY + d8;
-                    }
-                    else
-                    {
+                    } else {
                         this.targetX += this.rand.nextGaussian() * 2.0D;
                         this.targetZ += this.rand.nextGaussian() * 2.0D;
                     }
 
-                    if (this.forceNewTarget || d14 < 100.0D || d14 > 22500.0D || this.isCollidedHorizontally || this.isCollidedVertically)
-                    {
+                    if (this.forceNewTarget || d14 < 100.0D || d14 > 22500.0D || this.isCollidedHorizontally || this.isCollidedVertically) {
                         this.setNewTarget();
                     }
 
-                    d12 = d12 / (double)MathHelper.sqrt_double(d11 * d11 + d13 * d13);
+                    d12 = d12 / (double) MathHelper.sqrt_double(d11 * d11 + d13 * d13);
                     float f17 = 0.6F;
-                    d12 = MathHelper.clamp_double(d12, (double)(-f17), (double)f17);
+                    d12 = MathHelper.clamp_double(d12, -f17, f17);
                     this.motionY += d12 * 0.10000000149011612D;
                     this.rotationYaw = MathHelper.wrapAngleTo180_float(this.rotationYaw);
                     double d4 = 180.0D - MathHelper.atan2(d11, d13) * 180.0D / Math.PI;
-                    double d6 = MathHelper.wrapAngleTo180_double(d4 - (double)this.rotationYaw);
+                    double d6 = MathHelper.wrapAngleTo180_double(d4 - (double) this.rotationYaw);
 
-                    if (d6 > 50.0D)
-                    {
+                    if (d6 > 50.0D) {
                         d6 = 50.0D;
                     }
 
-                    if (d6 < -50.0D)
-                    {
+                    if (d6 < -50.0D) {
                         d6 = -50.0D;
                     }
 
                     Vec3 vec3 = (new Vec3(this.targetX - this.posX, this.targetY - this.posY, this.targetZ - this.posZ)).normalize();
-                    double d15 = (double)(-MathHelper.cos(this.rotationYaw * (float)Math.PI / 180.0F));
-                    Vec3 vec31 = (new Vec3((double)MathHelper.sin(this.rotationYaw * (float)Math.PI / 180.0F), this.motionY, d15)).normalize();
-                    float f5 = ((float)vec31.dotProduct(vec3) + 0.5F) / 1.5F;
+                    double d15 = -MathHelper.cos(this.rotationYaw * (float) Math.PI / 180.0F);
+                    Vec3 vec31 = (new Vec3(MathHelper.sin(this.rotationYaw * (float) Math.PI / 180.0F), this.motionY, d15)).normalize();
+                    float f5 = ((float) vec31.dotProduct(vec3) + 0.5F) / 1.5F;
 
-                    if (f5 < 0.0F)
-                    {
+                    if (f5 < 0.0F) {
                         f5 = 0.0F;
                     }
 
                     this.randomYawVelocity *= 0.8F;
-                    float f6 = MathHelper.sqrt_double(this.motionX * this.motionX + this.motionZ * this.motionZ) * 1.0F + 1.0F;
-                    double d9 = Math.sqrt(this.motionX * this.motionX + this.motionZ * this.motionZ) * 1.0D + 1.0D;
+                    float f6 = MathHelper.sqrt_double(this.motionX * this.motionX + this.motionZ * this.motionZ) + 1.0F;
+                    double d9 = Math.sqrt(this.motionX * this.motionX + this.motionZ * this.motionZ) + 1.0D;
 
-                    if (d9 > 40.0D)
-                    {
+                    if (d9 > 40.0D) {
                         d9 = 40.0D;
                     }
 
-                    this.randomYawVelocity = (float)((double)this.randomYawVelocity + d6 * (0.699999988079071D / d9 / (double)f6));
+                    this.randomYawVelocity = (float) ((double) this.randomYawVelocity + d6 * (0.699999988079071D / d9 / (double) f6));
                     this.rotationYaw += this.randomYawVelocity * 0.1F;
-                    float f7 = (float)(2.0D / (d9 + 1.0D));
+                    float f7 = (float) (2.0D / (d9 + 1.0D));
                     float f8 = 0.06F;
                     this.moveFlying(0.0F, -1.0F, f8 * (f5 * f7 + (1.0F - f7)));
 
-                    if (this.slowed)
-                    {
+                    if (this.slowed) {
                         this.moveEntity(this.motionX * 0.800000011920929D, this.motionY * 0.800000011920929D, this.motionZ * 0.800000011920929D);
-                    }
-                    else
-                    {
+                    } else {
                         this.moveEntity(this.motionX, this.motionY, this.motionZ);
                     }
 
                     Vec3 vec32 = (new Vec3(this.motionX, this.motionY, this.motionZ)).normalize();
-                    float f9 = ((float)vec32.dotProduct(vec31) + 1.0F) / 2.0F;
+                    float f9 = ((float) vec32.dotProduct(vec31) + 1.0F) / 2.0F;
                     f9 = 0.8F + 0.15F * f9;
-                    this.motionX *= (double)f9;
-                    this.motionZ *= (double)f9;
+                    this.motionX *= f9;
+                    this.motionZ *= f9;
                     this.motionY *= 0.9100000262260437D;
                 }
 
@@ -312,21 +276,20 @@ public class EntityDragon extends EntityLiving implements IBossDisplayData, IEnt
                 this.dragonPartWing1.width = 4.0F;
                 this.dragonPartWing2.height = 3.0F;
                 this.dragonPartWing2.width = 4.0F;
-                float f12 = (float)(this.getMovementOffsets(5, 1.0F)[1] - this.getMovementOffsets(10, 1.0F)[1]) * 10.0F / 180.0F * (float)Math.PI;
+                float f12 = (float) (this.getMovementOffsets(5, 1.0F)[1] - this.getMovementOffsets(10, 1.0F)[1]) * 10.0F / 180.0F * (float) Math.PI;
                 float f2 = MathHelper.cos(f12);
                 float f15 = -MathHelper.sin(f12);
-                float f3 = this.rotationYaw * (float)Math.PI / 180.0F;
+                float f3 = this.rotationYaw * (float) Math.PI / 180.0F;
                 float f16 = MathHelper.sin(f3);
                 float f4 = MathHelper.cos(f3);
                 this.dragonPartBody.onUpdate();
-                this.dragonPartBody.setLocationAndAngles(this.posX + (double)(f16 * 0.5F), this.posY, this.posZ - (double)(f4 * 0.5F), 0.0F, 0.0F);
+                this.dragonPartBody.setLocationAndAngles(this.posX + (double) (f16 * 0.5F), this.posY, this.posZ - (double) (f4 * 0.5F), 0.0F, 0.0F);
                 this.dragonPartWing1.onUpdate();
-                this.dragonPartWing1.setLocationAndAngles(this.posX + (double)(f4 * 4.5F), this.posY + 2.0D, this.posZ + (double)(f16 * 4.5F), 0.0F, 0.0F);
+                this.dragonPartWing1.setLocationAndAngles(this.posX + (double) (f4 * 4.5F), this.posY + 2.0D, this.posZ + (double) (f16 * 4.5F), 0.0F, 0.0F);
                 this.dragonPartWing2.onUpdate();
-                this.dragonPartWing2.setLocationAndAngles(this.posX - (double)(f4 * 4.5F), this.posY + 2.0D, this.posZ - (double)(f16 * 4.5F), 0.0F, 0.0F);
+                this.dragonPartWing2.setLocationAndAngles(this.posX - (double) (f4 * 4.5F), this.posY + 2.0D, this.posZ - (double) (f16 * 4.5F), 0.0F, 0.0F);
 
-                if (!this.worldObj.isRemote && this.hurtTime == 0)
-                {
+                if (!this.worldObj.isRemote && this.hurtTime == 0) {
                     this.collideWithEntities(this.worldObj.getEntitiesWithinAABBExcludingEntity(this, this.dragonPartWing1.getEntityBoundingBox().expand(4.0D, 2.0D, 4.0D).offset(0.0D, -2.0D, 0.0D)));
                     this.collideWithEntities(this.worldObj.getEntitiesWithinAABBExcludingEntity(this, this.dragonPartWing2.getEntityBoundingBox().expand(4.0D, 2.0D, 4.0D).offset(0.0D, -2.0D, 0.0D)));
                     this.attackEntitiesInList(this.worldObj.getEntitiesWithinAABBExcludingEntity(this, this.dragonPartHead.getEntityBoundingBox().expand(1.0D, 1.0D, 1.0D)));
@@ -334,42 +297,37 @@ public class EntityDragon extends EntityLiving implements IBossDisplayData, IEnt
 
                 double[] adouble1 = this.getMovementOffsets(5, 1.0F);
                 double[] adouble = this.getMovementOffsets(0, 1.0F);
-                float f18 = MathHelper.sin(this.rotationYaw * (float)Math.PI / 180.0F - this.randomYawVelocity * 0.01F);
-                float f19 = MathHelper.cos(this.rotationYaw * (float)Math.PI / 180.0F - this.randomYawVelocity * 0.01F);
+                float f18 = MathHelper.sin(this.rotationYaw * (float) Math.PI / 180.0F - this.randomYawVelocity * 0.01F);
+                float f19 = MathHelper.cos(this.rotationYaw * (float) Math.PI / 180.0F - this.randomYawVelocity * 0.01F);
                 this.dragonPartHead.onUpdate();
-                this.dragonPartHead.setLocationAndAngles(this.posX + (double)(f18 * 5.5F * f2), this.posY + (adouble[1] - adouble1[1]) * 1.0D + (double)(f15 * 5.5F), this.posZ - (double)(f19 * 5.5F * f2), 0.0F, 0.0F);
+                this.dragonPartHead.setLocationAndAngles(this.posX + (double) (f18 * 5.5F * f2), this.posY + (adouble[1] - adouble1[1]) + (double) (f15 * 5.5F), this.posZ - (double) (f19 * 5.5F * f2), 0.0F, 0.0F);
 
-                for (int j = 0; j < 3; ++j)
-                {
+                for (int j = 0; j < 3; ++j) {
                     EntityDragonPart entitydragonpart = null;
 
-                    if (j == 0)
-                    {
+                    if (j == 0) {
                         entitydragonpart = this.dragonPartTail1;
                     }
 
-                    if (j == 1)
-                    {
+                    if (j == 1) {
                         entitydragonpart = this.dragonPartTail2;
                     }
 
-                    if (j == 2)
-                    {
+                    if (j == 2) {
                         entitydragonpart = this.dragonPartTail3;
                     }
 
                     double[] adouble2 = this.getMovementOffsets(12 + j * 2, 1.0F);
-                    float f20 = this.rotationYaw * (float)Math.PI / 180.0F + this.simplifyAngle(adouble2[0] - adouble1[0]) * (float)Math.PI / 180.0F * 1.0F;
+                    float f20 = this.rotationYaw * (float) Math.PI / 180.0F + this.simplifyAngle(adouble2[0] - adouble1[0]) * (float) Math.PI / 180.0F;
                     float f21 = MathHelper.sin(f20);
                     float f22 = MathHelper.cos(f20);
                     float f23 = 1.5F;
-                    float f24 = (float)(j + 1) * 2.0F;
+                    float f24 = (float) (j + 1) * 2.0F;
                     entitydragonpart.onUpdate();
-                    entitydragonpart.setLocationAndAngles(this.posX - (double)((f16 * f23 + f21 * f24) * f2), this.posY + (adouble2[1] - adouble1[1]) * 1.0D - (double)((f24 + f23) * f15) + 1.5D, this.posZ + (double)((f4 * f23 + f22 * f24) * f2), 0.0F, 0.0F);
+                    entitydragonpart.setLocationAndAngles(this.posX - (double) ((f16 * f23 + f21 * f24) * f2), this.posY + (adouble2[1] - adouble1[1]) - (double) ((f24 + f23) * f15) + 1.5D, this.posZ + (double) ((f4 * f23 + f22 * f24) * f2), 0.0F, 0.0F);
                 }
 
-                if (!this.worldObj.isRemote)
-                {
+                if (!this.worldObj.isRemote) {
                     this.slowed = this.destroyBlocksInAABB(this.dragonPartHead.getEntityBoundingBox()) | this.destroyBlocksInAABB(this.dragonPartBody.getEntityBoundingBox());
                 }
             }
@@ -379,38 +337,29 @@ public class EntityDragon extends EntityLiving implements IBossDisplayData, IEnt
     /**
      * Updates the state of the enderdragon's current endercrystal.
      */
-    private void updateDragonEnderCrystal()
-    {
-        if (this.healingEnderCrystal != null)
-        {
-            if (this.healingEnderCrystal.isDead)
-            {
-                if (!this.worldObj.isRemote)
-                {
-                    this.attackEntityFromPart(this.dragonPartHead, DamageSource.setExplosionSource((Explosion)null), 10.0F);
+    private void updateDragonEnderCrystal() {
+        if (this.healingEnderCrystal != null) {
+            if (this.healingEnderCrystal.isDead) {
+                if (!this.worldObj.isRemote) {
+                    this.attackEntityFromPart(this.dragonPartHead, DamageSource.setExplosionSource(null), 10.0F);
                 }
 
                 this.healingEnderCrystal = null;
-            }
-            else if (this.ticksExisted % 10 == 0 && this.getHealth() < this.getMaxHealth())
-            {
+            } else if (this.ticksExisted % 10 == 0 && this.getHealth() < this.getMaxHealth()) {
                 this.setHealth(this.getHealth() + 1.0F);
             }
         }
 
-        if (this.rand.nextInt(10) == 0)
-        {
+        if (this.rand.nextInt(10) == 0) {
             float f = 32.0F;
-            List<EntityEnderCrystal> list = this.worldObj.<EntityEnderCrystal>getEntitiesWithinAABB(EntityEnderCrystal.class, this.getEntityBoundingBox().expand((double)f, (double)f, (double)f));
+            List<EntityEnderCrystal> list = this.worldObj.getEntitiesWithinAABB(EntityEnderCrystal.class, this.getEntityBoundingBox().expand(f, f, f));
             EntityEnderCrystal entityendercrystal = null;
             double d0 = Double.MAX_VALUE;
 
-            for (EntityEnderCrystal entityendercrystal1 : list)
-            {
+            for (EntityEnderCrystal entityendercrystal1 : list) {
                 double d1 = entityendercrystal1.getDistanceSqToEntity(this);
 
-                if (d1 < d0)
-                {
+                if (d1 < d0) {
                     d0 = d1;
                     entityendercrystal = entityendercrystal1;
                 }
@@ -423,15 +372,12 @@ public class EntityDragon extends EntityLiving implements IBossDisplayData, IEnt
     /**
      * Pushes all entities inside the list away from the enderdragon.
      */
-    private void collideWithEntities(List<Entity> p_70970_1_)
-    {
+    private void collideWithEntities(List<Entity> p_70970_1_) {
         double d0 = (this.dragonPartBody.getEntityBoundingBox().minX + this.dragonPartBody.getEntityBoundingBox().maxX) / 2.0D;
         double d1 = (this.dragonPartBody.getEntityBoundingBox().minZ + this.dragonPartBody.getEntityBoundingBox().maxZ) / 2.0D;
 
-        for (Entity entity : p_70970_1_)
-        {
-            if (entity instanceof EntityLivingBase)
-            {
+        for (Entity entity : p_70970_1_) {
+            if (entity instanceof EntityLivingBase) {
                 double d2 = entity.posX - d0;
                 double d3 = entity.posZ - d1;
                 double d4 = d2 * d2 + d3 * d3;
@@ -443,14 +389,11 @@ public class EntityDragon extends EntityLiving implements IBossDisplayData, IEnt
     /**
      * Attacks all entities inside this list, dealing 5 hearts of damage.
      */
-    private void attackEntitiesInList(List<Entity> p_70971_1_)
-    {
-        for (int i = 0; i < p_70971_1_.size(); ++i)
-        {
-            Entity entity = (Entity)p_70971_1_.get(i);
+    private void attackEntitiesInList(List<Entity> p_70971_1_) {
+        for (int i = 0; i < p_70971_1_.size(); ++i) {
+            Entity entity = p_70971_1_.get(i);
 
-            if (entity instanceof EntityLivingBase)
-            {
+            if (entity instanceof EntityLivingBase) {
                 entity.attackEntityFrom(DamageSource.causeMobDamage(this), 10.0F);
                 this.applyEnchantments(this, entity);
             }
@@ -460,40 +403,32 @@ public class EntityDragon extends EntityLiving implements IBossDisplayData, IEnt
     /**
      * Sets a new target for the flight AI. It can be a random coordinate or a nearby player.
      */
-    private void setNewTarget()
-    {
+    private void setNewTarget() {
         this.forceNewTarget = false;
         List<EntityPlayer> list = Lists.newArrayList(this.worldObj.playerEntities);
         Iterator<EntityPlayer> iterator = list.iterator();
 
-        while (iterator.hasNext())
-        {
-            if (((EntityPlayer)iterator.next()).isSpectator())
-            {
+        while (iterator.hasNext()) {
+            if (iterator.next().isSpectator()) {
                 iterator.remove();
             }
         }
 
-        if (this.rand.nextInt(2) == 0 && !list.isEmpty())
-        {
-            this.target = (Entity)list.get(this.rand.nextInt(list.size()));
-        }
-        else
-        {
-            while (true)
-            {
+        if (this.rand.nextInt(2) == 0 && !list.isEmpty()) {
+            this.target = list.get(this.rand.nextInt(list.size()));
+        } else {
+            while (true) {
                 this.targetX = 0.0D;
-                this.targetY = (double)(70.0F + this.rand.nextFloat() * 50.0F);
+                this.targetY = 70.0F + this.rand.nextFloat() * 50.0F;
                 this.targetZ = 0.0D;
-                this.targetX += (double)(this.rand.nextFloat() * 120.0F - 60.0F);
-                this.targetZ += (double)(this.rand.nextFloat() * 120.0F - 60.0F);
+                this.targetX += this.rand.nextFloat() * 120.0F - 60.0F;
+                this.targetZ += this.rand.nextFloat() * 120.0F - 60.0F;
                 double d0 = this.posX - this.targetX;
                 double d1 = this.posY - this.targetY;
                 double d2 = this.posZ - this.targetZ;
                 boolean flag = d0 * d0 + d1 * d1 + d2 * d2 > 100.0D;
 
-                if (flag)
-                {
+                if (flag) {
                     break;
                 }
             }
@@ -505,16 +440,14 @@ public class EntityDragon extends EntityLiving implements IBossDisplayData, IEnt
     /**
      * Simplifies the value of a number by adding/subtracting 180 to the point that the number is between -180 and 180.
      */
-    private float simplifyAngle(double p_70973_1_)
-    {
-        return (float)MathHelper.wrapAngleTo180_double(p_70973_1_);
+    private float simplifyAngle(double p_70973_1_) {
+        return (float) MathHelper.wrapAngleTo180_double(p_70973_1_);
     }
 
     /**
      * Destroys all blocks that aren't associated with 'The End' inside the given bounding box.
      */
-    private boolean destroyBlocksInAABB(AxisAlignedBB p_70972_1_)
-    {
+    private boolean destroyBlocksInAABB(AxisAlignedBB p_70972_1_) {
         int i = MathHelper.floor_double(p_70972_1_.minX);
         int j = MathHelper.floor_double(p_70972_1_.minY);
         int k = MathHelper.floor_double(p_70972_1_.minZ);
@@ -524,23 +457,16 @@ public class EntityDragon extends EntityLiving implements IBossDisplayData, IEnt
         boolean flag = false;
         boolean flag1 = false;
 
-        for (int k1 = i; k1 <= l; ++k1)
-        {
-            for (int l1 = j; l1 <= i1; ++l1)
-            {
-                for (int i2 = k; i2 <= j1; ++i2)
-                {
+        for (int k1 = i; k1 <= l; ++k1) {
+            for (int l1 = j; l1 <= i1; ++l1) {
+                for (int i2 = k; i2 <= j1; ++i2) {
                     BlockPos blockpos = new BlockPos(k1, l1, i2);
                     Block block = this.worldObj.getBlockState(blockpos).getBlock();
 
-                    if (block.getMaterial() != Material.air)
-                    {
-                        if (block != Blocks.barrier && block != Blocks.obsidian && block != Blocks.end_stone && block != Blocks.bedrock && block != Blocks.command_block && this.worldObj.getGameRules().getBoolean("mobGriefing"))
-                        {
+                    if (block.getMaterial() != Material.air) {
+                        if (block != Blocks.barrier && block != Blocks.obsidian && block != Blocks.end_stone && block != Blocks.bedrock && block != Blocks.command_block && this.worldObj.getGameRules().getBoolean("mobGriefing")) {
                             flag1 = this.worldObj.setBlockToAir(blockpos) || flag1;
-                        }
-                        else
-                        {
+                        } else {
                             flag = true;
                         }
                     }
@@ -548,34 +474,30 @@ public class EntityDragon extends EntityLiving implements IBossDisplayData, IEnt
             }
         }
 
-        if (flag1)
-        {
-            double d0 = p_70972_1_.minX + (p_70972_1_.maxX - p_70972_1_.minX) * (double)this.rand.nextFloat();
-            double d1 = p_70972_1_.minY + (p_70972_1_.maxY - p_70972_1_.minY) * (double)this.rand.nextFloat();
-            double d2 = p_70972_1_.minZ + (p_70972_1_.maxZ - p_70972_1_.minZ) * (double)this.rand.nextFloat();
-            this.worldObj.spawnParticle(EnumParticleTypes.EXPLOSION_LARGE, d0, d1, d2, 0.0D, 0.0D, 0.0D, new int[0]);
+        if (flag1) {
+            double d0 = p_70972_1_.minX + (p_70972_1_.maxX - p_70972_1_.minX) * (double) this.rand.nextFloat();
+            double d1 = p_70972_1_.minY + (p_70972_1_.maxY - p_70972_1_.minY) * (double) this.rand.nextFloat();
+            double d2 = p_70972_1_.minZ + (p_70972_1_.maxZ - p_70972_1_.minZ) * (double) this.rand.nextFloat();
+            this.worldObj.spawnParticle(EnumParticleTypes.EXPLOSION_LARGE, d0, d1, d2, 0.0D, 0.0D, 0.0D);
         }
 
         return flag;
     }
 
-    public boolean attackEntityFromPart(EntityDragonPart dragonPart, DamageSource source, float p_70965_3_)
-    {
-        if (dragonPart != this.dragonPartHead)
-        {
+    public boolean attackEntityFromPart(EntityDragonPart dragonPart, DamageSource source, float p_70965_3_) {
+        if (dragonPart != this.dragonPartHead) {
             p_70965_3_ = p_70965_3_ / 4.0F + 1.0F;
         }
 
-        float f = this.rotationYaw * (float)Math.PI / 180.0F;
+        float f = this.rotationYaw * (float) Math.PI / 180.0F;
         float f1 = MathHelper.sin(f);
         float f2 = MathHelper.cos(f);
-        this.targetX = this.posX + (double)(f1 * 5.0F) + (double)((this.rand.nextFloat() - 0.5F) * 2.0F);
-        this.targetY = this.posY + (double)(this.rand.nextFloat() * 3.0F) + 1.0D;
-        this.targetZ = this.posZ - (double)(f2 * 5.0F) + (double)((this.rand.nextFloat() - 0.5F) * 2.0F);
+        this.targetX = this.posX + (double) (f1 * 5.0F) + (double) ((this.rand.nextFloat() - 0.5F) * 2.0F);
+        this.targetY = this.posY + (double) (this.rand.nextFloat() * 3.0F) + 1.0D;
+        this.targetZ = this.posZ - (double) (f2 * 5.0F) + (double) ((this.rand.nextFloat() - 0.5F) * 2.0F);
         this.target = null;
 
-        if (source.getEntity() instanceof EntityPlayer || source.isExplosion())
-        {
+        if (source.getEntity() instanceof EntityPlayer || source.isExplosion()) {
             this.attackDragonFrom(source, p_70965_3_);
         }
 
@@ -585,10 +507,8 @@ public class EntityDragon extends EntityLiving implements IBossDisplayData, IEnt
     /**
      * Called when the entity is attacked.
      */
-    public boolean attackEntityFrom(DamageSource source, float amount)
-    {
-        if (source instanceof EntityDamageSource && ((EntityDamageSource)source).getIsThornsDamage())
-        {
+    public boolean attackEntityFrom(DamageSource source, float amount) {
+        if (source instanceof EntityDamageSource && ((EntityDamageSource) source).getIsThornsDamage()) {
             this.attackDragonFrom(source, amount);
         }
 
@@ -598,52 +518,44 @@ public class EntityDragon extends EntityLiving implements IBossDisplayData, IEnt
     /**
      * Provides a way to cause damage to an ender dragon.
      */
-    protected boolean attackDragonFrom(DamageSource source, float amount)
-    {
+    protected boolean attackDragonFrom(DamageSource source, float amount) {
         return super.attackEntityFrom(source, amount);
     }
 
     /**
      * Called by the /kill command.
      */
-    public void onKillCommand()
-    {
+    public void onKillCommand() {
         this.setDead();
     }
 
     /**
      * handles entity death timer, experience orb and particle creation
      */
-    protected void onDeathUpdate()
-    {
+    protected void onDeathUpdate() {
         ++this.deathTicks;
 
-        if (this.deathTicks >= 180 && this.deathTicks <= 200)
-        {
+        if (this.deathTicks >= 180 && this.deathTicks <= 200) {
             float f = (this.rand.nextFloat() - 0.5F) * 8.0F;
             float f1 = (this.rand.nextFloat() - 0.5F) * 4.0F;
             float f2 = (this.rand.nextFloat() - 0.5F) * 8.0F;
-            this.worldObj.spawnParticle(EnumParticleTypes.EXPLOSION_HUGE, this.posX + (double)f, this.posY + 2.0D + (double)f1, this.posZ + (double)f2, 0.0D, 0.0D, 0.0D, new int[0]);
+            this.worldObj.spawnParticle(EnumParticleTypes.EXPLOSION_HUGE, this.posX + (double) f, this.posY + 2.0D + (double) f1, this.posZ + (double) f2, 0.0D, 0.0D, 0.0D);
         }
 
         boolean flag = this.worldObj.getGameRules().getBoolean("doMobLoot");
 
-        if (!this.worldObj.isRemote)
-        {
-            if (this.deathTicks > 150 && this.deathTicks % 5 == 0 && flag)
-            {
+        if (!this.worldObj.isRemote) {
+            if (this.deathTicks > 150 && this.deathTicks % 5 == 0 && flag) {
                 int i = 1000;
 
-                while (i > 0)
-                {
+                while (i > 0) {
                     int k = EntityXPOrb.getXPSplit(i);
                     i -= k;
                     this.worldObj.spawnEntityInWorld(new EntityXPOrb(this.worldObj, this.posX, this.posY, this.posZ, k));
                 }
             }
 
-            if (this.deathTicks == 1)
-            {
+            if (this.deathTicks == 1) {
                 this.worldObj.playBroadcastSound(1018, new BlockPos(this), 0);
             }
         }
@@ -651,14 +563,11 @@ public class EntityDragon extends EntityLiving implements IBossDisplayData, IEnt
         this.moveEntity(0.0D, 0.10000000149011612D, 0.0D);
         this.renderYawOffset = this.rotationYaw += 20.0F;
 
-        if (this.deathTicks == 200 && !this.worldObj.isRemote)
-        {
-            if (flag)
-            {
+        if (this.deathTicks == 200 && !this.worldObj.isRemote) {
+            if (flag) {
                 int j = 2000;
 
-                while (j > 0)
-                {
+                while (j > 0) {
                     int l = EntityXPOrb.getXPSplit(j);
                     j -= l;
                     this.worldObj.spawnEntityInWorld(new EntityXPOrb(this.worldObj, this.posX, this.posY, this.posZ, l));
@@ -673,41 +582,28 @@ public class EntityDragon extends EntityLiving implements IBossDisplayData, IEnt
     /**
      * Generate the portal when the dragon dies
      */
-    private void generatePortal(BlockPos pos)
-    {
+    private void generatePortal(BlockPos pos) {
         int i = 4;
         double d0 = 12.25D;
         double d1 = 6.25D;
 
-        for (int j = -1; j <= 32; ++j)
-        {
-            for (int k = -4; k <= 4; ++k)
-            {
-                for (int l = -4; l <= 4; ++l)
-                {
-                    double d2 = (double)(k * k + l * l);
+        for (int j = -1; j <= 32; ++j) {
+            for (int k = -4; k <= 4; ++k) {
+                for (int l = -4; l <= 4; ++l) {
+                    double d2 = k * k + l * l;
 
-                    if (d2 <= 12.25D)
-                    {
+                    if (d2 <= 12.25D) {
                         BlockPos blockpos = pos.add(k, j, l);
 
-                        if (j < 0)
-                        {
-                            if (d2 <= 6.25D)
-                            {
+                        if (j < 0) {
+                            if (d2 <= 6.25D) {
                                 this.worldObj.setBlockState(blockpos, Blocks.bedrock.getDefaultState());
                             }
-                        }
-                        else if (j > 0)
-                        {
+                        } else if (j > 0) {
                             this.worldObj.setBlockState(blockpos, Blocks.air.getDefaultState());
-                        }
-                        else if (d2 > 6.25D)
-                        {
+                        } else if (d2 > 6.25D) {
                             this.worldObj.setBlockState(blockpos, Blocks.bedrock.getDefaultState());
-                        }
-                        else
-                        {
+                        } else {
                             this.worldObj.setBlockState(blockpos, Blocks.end_portal.getDefaultState());
                         }
                     }
@@ -730,52 +626,45 @@ public class EntityDragon extends EntityLiving implements IBossDisplayData, IEnt
     /**
      * Makes the entity despawn if requirements are reached
      */
-    protected void despawnEntity()
-    {
+    protected void despawnEntity() {
     }
 
     /**
      * Return the Entity parts making up this Entity (currently only for dragons)
      */
-    public Entity[] getParts()
-    {
+    public Entity[] getParts() {
         return this.dragonPartArray;
     }
 
     /**
      * Returns true if other Entities should be prevented from moving through this Entity.
      */
-    public boolean canBeCollidedWith()
-    {
+    public boolean canBeCollidedWith() {
         return false;
     }
 
-    public World getWorld()
-    {
+    public World getWorld() {
         return this.worldObj;
     }
 
     /**
      * Returns the sound this mob makes while it's alive.
      */
-    protected String getLivingSound()
-    {
+    protected String getLivingSound() {
         return "mob.enderdragon.growl";
     }
 
     /**
      * Returns the sound this mob makes when it is hurt.
      */
-    protected String getHurtSound()
-    {
+    protected String getHurtSound() {
         return "mob.enderdragon.hit";
     }
 
     /**
      * Returns the volume for the sounds this mob makes.
      */
-    protected float getSoundVolume()
-    {
+    protected float getSoundVolume() {
         return 5.0F;
     }
 }

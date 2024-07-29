@@ -1,13 +1,13 @@
 package net.minecraft.network.play.server;
 
-import java.io.IOException;
 import net.minecraft.network.Packet;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.network.play.INetHandlerPlayClient;
 import net.minecraft.world.border.WorldBorder;
 
-public class S44PacketWorldBorder implements Packet<INetHandlerPlayClient>
-{
+import java.io.IOException;
+
+public class S44PacketWorldBorder implements Packet<INetHandlerPlayClient> {
     private S44PacketWorldBorder.Action action;
     private int size;
     private double centerX;
@@ -18,12 +18,10 @@ public class S44PacketWorldBorder implements Packet<INetHandlerPlayClient>
     private int warningTime;
     private int warningDistance;
 
-    public S44PacketWorldBorder()
-    {
+    public S44PacketWorldBorder() {
     }
 
-    public S44PacketWorldBorder(WorldBorder border, S44PacketWorldBorder.Action actionIn)
-    {
+    public S44PacketWorldBorder(WorldBorder border, S44PacketWorldBorder.Action actionIn) {
         this.action = actionIn;
         this.centerX = border.getCenterX();
         this.centerZ = border.getCenterZ();
@@ -38,12 +36,10 @@ public class S44PacketWorldBorder implements Packet<INetHandlerPlayClient>
     /**
      * Reads the raw packet data from the data stream.
      */
-    public void readPacketData(PacketBuffer buf) throws IOException
-    {
-        this.action = (S44PacketWorldBorder.Action)buf.readEnumValue(S44PacketWorldBorder.Action.class);
+    public void readPacketData(PacketBuffer buf) throws IOException {
+        this.action = buf.readEnumValue(Action.class);
 
-        switch (this.action)
-        {
+        switch (this.action) {
             case SET_SIZE:
                 this.targetSize = buf.readDouble();
                 break;
@@ -82,12 +78,10 @@ public class S44PacketWorldBorder implements Packet<INetHandlerPlayClient>
     /**
      * Writes the raw packet data to the data stream.
      */
-    public void writePacketData(PacketBuffer buf) throws IOException
-    {
+    public void writePacketData(PacketBuffer buf) throws IOException {
         buf.writeEnumValue(this.action);
 
-        switch (this.action)
-        {
+        switch (this.action) {
             case SET_SIZE:
                 buf.writeDouble(this.targetSize);
                 break;
@@ -126,15 +120,12 @@ public class S44PacketWorldBorder implements Packet<INetHandlerPlayClient>
     /**
      * Passes this Packet on to the NetHandler for processing.
      */
-    public void processPacket(INetHandlerPlayClient handler)
-    {
+    public void processPacket(INetHandlerPlayClient handler) {
         handler.handleWorldBorder(this);
     }
 
-    public void func_179788_a(WorldBorder border)
-    {
-        switch (this.action)
-        {
+    public void func_179788_a(WorldBorder border) {
+        switch (this.action) {
             case SET_SIZE:
                 border.setTransition(this.targetSize);
                 break;
@@ -158,12 +149,9 @@ public class S44PacketWorldBorder implements Packet<INetHandlerPlayClient>
             case INITIALIZE:
                 border.setCenter(this.centerX, this.centerZ);
 
-                if (this.timeUntilTarget > 0L)
-                {
+                if (this.timeUntilTarget > 0L) {
                     border.setTransition(this.diameter, this.targetSize, this.timeUntilTarget);
-                }
-                else
-                {
+                } else {
                     border.setTransition(this.targetSize);
                 }
 
@@ -173,13 +161,12 @@ public class S44PacketWorldBorder implements Packet<INetHandlerPlayClient>
         }
     }
 
-    public static enum Action
-    {
+    public enum Action {
         SET_SIZE,
         LERP_SIZE,
         SET_CENTER,
         INITIALIZE,
         SET_WARNING_TIME,
-        SET_WARNING_BLOCKS;
+        SET_WARNING_BLOCKS
     }
 }

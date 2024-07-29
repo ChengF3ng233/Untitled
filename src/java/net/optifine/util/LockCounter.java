@@ -1,40 +1,31 @@
 package net.optifine.util;
 
-public class LockCounter
-{
+public class LockCounter {
     private int lockCount;
 
-    public boolean lock()
-    {
+    public boolean lock() {
         ++this.lockCount;
         return this.lockCount == 1;
     }
 
-    public boolean unlock()
-    {
-        if (this.lockCount <= 0)
-        {
+    public boolean unlock() {
+        if (this.lockCount <= 0) {
             return false;
-        }
-        else
-        {
+        } else {
             --this.lockCount;
             return this.lockCount == 0;
         }
     }
 
-    public boolean isLocked()
-    {
+    public boolean isLocked() {
         return this.lockCount > 0;
     }
 
-    public int getLockCount()
-    {
+    public int getLockCount() {
         return this.lockCount;
     }
 
-    public String toString()
-    {
+    public String toString() {
         return "lockCount: " + this.lockCount;
     }
 }

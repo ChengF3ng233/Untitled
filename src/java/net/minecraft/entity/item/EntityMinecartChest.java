@@ -12,24 +12,19 @@ import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.world.World;
 
-public class EntityMinecartChest extends EntityMinecartContainer
-{
-    public EntityMinecartChest(World worldIn)
-    {
+public class EntityMinecartChest extends EntityMinecartContainer {
+    public EntityMinecartChest(World worldIn) {
         super(worldIn);
     }
 
-    public EntityMinecartChest(World worldIn, double x, double y, double z)
-    {
+    public EntityMinecartChest(World worldIn, double x, double y, double z) {
         super(worldIn, x, y, z);
     }
 
-    public void killMinecart(DamageSource source)
-    {
+    public void killMinecart(DamageSource source) {
         super.killMinecart(source);
 
-        if (this.worldObj.getGameRules().getBoolean("doEntityDrops"))
-        {
+        if (this.worldObj.getGameRules().getBoolean("doEntityDrops")) {
             this.dropItemWithOffset(Item.getItemFromBlock(Blocks.chest), 1, 0.0F);
         }
     }
@@ -37,33 +32,27 @@ public class EntityMinecartChest extends EntityMinecartContainer
     /**
      * Returns the number of slots in the inventory.
      */
-    public int getSizeInventory()
-    {
+    public int getSizeInventory() {
         return 27;
     }
 
-    public EntityMinecart.EnumMinecartType getMinecartType()
-    {
+    public EntityMinecart.EnumMinecartType getMinecartType() {
         return EntityMinecart.EnumMinecartType.CHEST;
     }
 
-    public IBlockState getDefaultDisplayTile()
-    {
+    public IBlockState getDefaultDisplayTile() {
         return Blocks.chest.getDefaultState().withProperty(BlockChest.FACING, EnumFacing.NORTH);
     }
 
-    public int getDefaultDisplayTileOffset()
-    {
+    public int getDefaultDisplayTileOffset() {
         return 8;
     }
 
-    public String getGuiID()
-    {
+    public String getGuiID() {
         return "minecraft:chest";
     }
 
-    public Container createContainer(InventoryPlayer playerInventory, EntityPlayer playerIn)
-    {
+    public Container createContainer(InventoryPlayer playerInventory, EntityPlayer playerIn) {
         return new ContainerChest(playerInventory, this, playerIn);
     }
 }

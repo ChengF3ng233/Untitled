@@ -1,9 +1,7 @@
 package net.minecraft.client.model;
 
-public class ModelCow extends ModelQuadruped
-{
-    public ModelCow()
-    {
+public class ModelCow extends ModelQuadruped {
+    public ModelCow() {
         super(12, 0.0F);
         this.head = new ModelRenderer(this, 0, 0);
         this.head.addBox(-4.0F, -4.0F, -6.0F, 8, 8, 6, 0.0F);

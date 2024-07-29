@@ -14,6 +14,7 @@ import java.util.List;
 
 public class GuiChat extends GuiScreen {
     private static final Logger logger = LogManager.getLogger();
+    private final List<String> foundPlayerNames = Lists.newArrayList();
     /**
      * Chat entry field
      */
@@ -27,7 +28,6 @@ public class GuiChat extends GuiScreen {
     private boolean playerNamesFound;
     private boolean waitingOnAutocomplete;
     private int autocompleteIndex;
-    private final List<String> foundPlayerNames = Lists.newArrayList();
     /**
      * is the text that appears when you press the chat key and the input box appears pre-filled
      */

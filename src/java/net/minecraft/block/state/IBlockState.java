@@ -1,12 +1,12 @@
 package net.minecraft.block.state;
 
 import com.google.common.collect.ImmutableMap;
-import java.util.Collection;
 import net.minecraft.block.Block;
 import net.minecraft.block.properties.IProperty;
 
-public interface IBlockState
-{
+import java.util.Collection;
+
+public interface IBlockState {
     Collection<IProperty> getPropertyNames();
 
     <T extends Comparable<T>> T getValue(IProperty<T> property);

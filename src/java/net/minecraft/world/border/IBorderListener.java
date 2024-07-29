@@ -1,7 +1,6 @@
 package net.minecraft.world.border;
 
-public interface IBorderListener
-{
+public interface IBorderListener {
     void onSizeChanged(WorldBorder border, double newSize);
 
     void onTransitionStarted(WorldBorder border, double oldSize, double newSize, long time);

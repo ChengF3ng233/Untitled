@@ -9,14 +9,14 @@ import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldProviderEnd;
 
-public class EntityEnderCrystal extends Entity
-{
-    /** Used to create the rotation animation when rendering the crystal. */
+public class EntityEnderCrystal extends Entity {
+    /**
+     * Used to create the rotation animation when rendering the crystal.
+     */
     public int innerRotation;
     public int health;
 
-    public EntityEnderCrystal(World worldIn)
-    {
+    public EntityEnderCrystal(World worldIn) {
         super(worldIn);
         this.preventEntitySpawning = true;
         this.setSize(2.0F, 2.0F);
@@ -24,8 +24,7 @@ public class EntityEnderCrystal extends Entity
         this.innerRotation = this.rand.nextInt(100000);
     }
 
-    public EntityEnderCrystal(World worldIn, double x, double y, double z)
-    {
+    public EntityEnderCrystal(World worldIn, double x, double y, double z) {
         this(worldIn);
         this.setPosition(x, y, z);
     }
@@ -34,21 +33,18 @@ public class EntityEnderCrystal extends Entity
      * returns if this entity triggers Block.onEntityWalking on the blocks they walk on. used for spiders and wolves to
      * prevent them from trampling crops
      */
-    protected boolean canTriggerWalking()
-    {
+    protected boolean canTriggerWalking() {
         return false;
     }
 
-    protected void entityInit()
-    {
+    protected void entityInit() {
         this.dataWatcher.addObject(8, Integer.valueOf(this.health));
     }
 
     /**
      * Called to update the entity's position/logic.
      */
-    public void onUpdate()
-    {
+    public void onUpdate() {
         this.prevPosX = this.posX;
         this.prevPosY = this.posY;
         this.prevPosZ = this.posZ;
@@ -58,8 +54,7 @@ public class EntityEnderCrystal extends Entity
         int j = MathHelper.floor_double(this.posY);
         int k = MathHelper.floor_double(this.posZ);
 
-        if (this.worldObj.provider instanceof WorldProviderEnd && this.worldObj.getBlockState(new BlockPos(i, j, k)).getBlock() != Blocks.fire)
-        {
+        if (this.worldObj.provider instanceof WorldProviderEnd && this.worldObj.getBlockState(new BlockPos(i, j, k)).getBlock() != Blocks.fire) {
             this.worldObj.setBlockState(new BlockPos(i, j, k), Blocks.fire.getDefaultState());
         }
     }
@@ -67,47 +62,37 @@ public class EntityEnderCrystal extends Entity
     /**
      * (abstract) Protected helper method to write subclass entity data to NBT.
      */
-    protected void writeEntityToNBT(NBTTagCompound tagCompound)
-    {
+    protected void writeEntityToNBT(NBTTagCompound tagCompound) {
     }
 
     /**
      * (abstract) Protected helper method to read subclass entity data from NBT.
      */
-    protected void readEntityFromNBT(NBTTagCompound tagCompund)
-    {
+    protected void readEntityFromNBT(NBTTagCompound tagCompund) {
     }
 
     /**
      * Returns true if other Entities should be prevented from moving through this Entity.
      */
-    public boolean canBeCollidedWith()
-    {
+    public boolean canBeCollidedWith() {
         return true;
     }
 
     /**
      * Called when the entity is attacked.
      */
-    public boolean attackEntityFrom(DamageSource source, float amount)
-    {
-        if (this.isEntityInvulnerable(source))
-        {
+    public boolean attackEntityFrom(DamageSource source, float amount) {
+        if (this.isEntityInvulnerable(source)) {
             return false;
-        }
-        else
-        {
-            if (!this.isDead && !this.worldObj.isRemote)
-            {
+        } else {
+            if (!this.isDead && !this.worldObj.isRemote) {
                 this.health = 0;
 
-                if (this.health <= 0)
-                {
+                if (this.health <= 0) {
                     this.setDead();
 
-                    if (!this.worldObj.isRemote)
-                    {
-                        this.worldObj.createExplosion((Entity)null, this.posX, this.posY, this.posZ, 6.0F, true);
+                    if (!this.worldObj.isRemote) {
+                        this.worldObj.createExplosion(null, this.posX, this.posY, this.posZ, 6.0F, true);
                     }
                 }
             }

@@ -7,15 +7,15 @@ import net.minecraft.entity.item.EntityBoat;
 import net.minecraft.util.MathHelper;
 import net.minecraft.util.ResourceLocation;
 
-public class RenderBoat extends Render<EntityBoat>
-{
+public class RenderBoat extends Render<EntityBoat> {
     private static final ResourceLocation boatTextures = new ResourceLocation("textures/entity/boat.png");
 
-    /** instance of ModelBoat for rendering */
+    /**
+     * instance of ModelBoat for rendering
+     */
     protected ModelBase modelBoat = new ModelBoat();
 
-    public RenderBoat(RenderManager renderManagerIn)
-    {
+    public RenderBoat(RenderManager renderManagerIn) {
         super(renderManagerIn);
         this.shadowSize = 0.5F;
     }
@@ -23,22 +23,19 @@ public class RenderBoat extends Render<EntityBoat>
     /**
      * Renders the desired {@code T} type Entity.
      */
-    public void doRender(EntityBoat entity, double x, double y, double z, float entityYaw, float partialTicks)
-    {
+    public void doRender(EntityBoat entity, double x, double y, double z, float entityYaw, float partialTicks) {
         GlStateManager.pushMatrix();
-        GlStateManager.translate((float)x, (float)y + 0.25F, (float)z);
+        GlStateManager.translate((float) x, (float) y + 0.25F, (float) z);
         GlStateManager.rotate(180.0F - entityYaw, 0.0F, 1.0F, 0.0F);
-        float f = (float)entity.getTimeSinceHit() - partialTicks;
+        float f = (float) entity.getTimeSinceHit() - partialTicks;
         float f1 = entity.getDamageTaken() - partialTicks;
 
-        if (f1 < 0.0F)
-        {
+        if (f1 < 0.0F) {
             f1 = 0.0F;
         }
 
-        if (f > 0.0F)
-        {
-            GlStateManager.rotate(MathHelper.sin(f) * f * f1 / 10.0F * (float)entity.getForwardDirection(), 1.0F, 0.0F, 0.0F);
+        if (f > 0.0F) {
+            GlStateManager.rotate(MathHelper.sin(f) * f * f1 / 10.0F * (float) entity.getForwardDirection(), 1.0F, 0.0F, 0.0F);
         }
 
         float f2 = 0.75F;
@@ -54,8 +51,7 @@ public class RenderBoat extends Render<EntityBoat>
     /**
      * Returns the location of an entity's texture. Doesn't seem to be called unless you call Render.bindEntityTexture.
      */
-    protected ResourceLocation getEntityTexture(EntityBoat entity)
-    {
+    protected ResourceLocation getEntityTexture(EntityBoat entity) {
         return boatTextures;
     }
 }

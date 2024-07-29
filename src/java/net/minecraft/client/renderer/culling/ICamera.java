@@ -2,8 +2,7 @@ package net.minecraft.client.renderer.culling;
 
 import net.minecraft.util.AxisAlignedBB;
 
-public interface ICamera
-{
+public interface ICamera {
     /**
      * Returns true if the bounding box is inside all 6 clipping planes, otherwise returns false.
      */
