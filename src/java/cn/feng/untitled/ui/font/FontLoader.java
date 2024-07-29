@@ -35,7 +35,7 @@ public class FontLoader {
 
     private static Font get(Map<Integer, Font> map, int size, String name, boolean international) {
         if (!map.containsKey(size)) {
-            Logger.info("Registering font: " + name);
+            Logger.info("Registering font: " + name + "." + (international? " This may take much time because the number of the characters is large." : ""));
             java.awt.Font font = FontUtil.getResource("untitled/font/" + name + ".ttf", size);
             if (font != null) {
                 map.put(size, new FontRenderer(font, true, true, international));

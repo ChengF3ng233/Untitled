@@ -579,7 +579,7 @@ public class GuiTextField extends Gui
                 }
                 else
                 {
-                    this.fontRendererInstance.drawStringWithShadow("_", (float)k1, (float)i1, i);
+                    this.fontRendererInstance.drawStringWithShadow("_", this.xPosition + this.fontRendererInstance.getStringWidth(text) * 1.25f, (float)i1, i);
                 }
             }
 

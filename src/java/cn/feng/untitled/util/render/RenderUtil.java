@@ -106,7 +106,7 @@ public class RenderUtil extends MinecraftInstance {
     }
 
     /**
-     This method colors the next avalible texture with a specified alpha value ranging from 0-1
+     This method colors the next available texture with a specified alpha value ranging from 0-1
       */
     public static void color(int color, float alpha) {
         float r = (float) (color >> 16 & 255) / 255.0F;

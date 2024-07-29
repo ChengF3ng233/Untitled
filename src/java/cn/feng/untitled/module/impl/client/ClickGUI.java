@@ -1,4 +1,4 @@
-package cn.feng.untitled.module.impl.render;
+package cn.feng.untitled.module.impl.client;
 
 import cn.feng.untitled.Client;
 import cn.feng.untitled.module.Module;
@@ -15,7 +15,7 @@ public class ClickGUI extends Module {
     public ModeValue mode = new ModeValue("Mode", "NeverLose", new String[]{"NeverLose", "Dropdown"});
 
     public ClickGUI() {
-        super("ClickGUI", ModuleCategory.RENDER, Keyboard.KEY_RSHIFT);
+        super("ClickGUI", ModuleCategory.CLIENT, Keyboard.KEY_RSHIFT);
     }
 
     @Override

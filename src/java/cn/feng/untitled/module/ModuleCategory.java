@@ -6,5 +6,6 @@ public enum ModuleCategory {
     PLAYER,
     MOVEMENT,
     RENDER,
-    WORLD;
+    WORLD,
+    CLIENT
 }

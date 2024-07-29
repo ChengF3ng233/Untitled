@@ -7,7 +7,7 @@ import cn.feng.untitled.value.Value;
  * @since 2024/7/28
  **/
 public class BoolValue extends Value<Boolean> {
-    public BoolValue(String name, boolean defaultValue, boolean value) {
-        super(name, defaultValue, value);
+    public BoolValue(String name, boolean defaultValue) {
+        super(name, defaultValue, defaultValue);
     }
 }

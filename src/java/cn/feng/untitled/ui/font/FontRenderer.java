@@ -1,7 +1,6 @@
 package cn.feng.untitled.ui.font;
 
 import cn.feng.untitled.util.misc.Logger;
-import cn.feng.untitled.util.render.RenderUtil;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.util.MathHelper;
 import org.lwjgl.BufferUtils;
@@ -118,7 +117,6 @@ public class FontRenderer extends Font {
             this.uploadTexture(charTexture, charImage, width, height);
             characters[i] = new FontCharacter(charTexture, (float) width, (float) height);
         }
-
     }
 
     private void setRenderHints(Graphics2D graphics) {
@@ -226,7 +224,7 @@ public class FontRenderer extends Font {
     }
 
     public int drawString(String text, double x, double y, int color) {
-        return this.drawString(text, x, y, color, false);
+        return this.renderString(text, x, y, color, false);
     }
 
     public int drawCenteredString(String text, double x, double y, int color) {
@@ -234,20 +232,25 @@ public class FontRenderer extends Font {
     }
 
     public int drawRightString(String text, double x, double y, int color) {
-        return this.drawString(text, x - (double) this.getStringWidth(text), y, color, false);
+        return this.renderString(text, x - (double) this.getStringWidth(text), y, color, false);
     }
 
     public int drawStringWithShadow(String text, double x, double y, int color) {
-        this.drawString(text, x + 0.25D, y + 0.25D, color, true);
-        return this.drawString(text, x, y, color, false);
+        this.renderString(text, x + 0.25D, y + 0.25D, color, true);
+        return this.renderString(text, x, y, color, false);
     }
 
     public void drawCenteredStringWithShadow(String text, float x, float y, int color) {
-        this.drawString(text, (double) (x - (float) (this.getStringWidth(text) >> 1)) + 0.25D, (double) y + 0.25D, (new Color(color, true)).getRGB(), true);
-        this.drawString(text, x - (float) (this.getStringWidth(text) >> 1), y, color, false);
+        this.renderString(text, (double) (x - (float) (this.getStringWidth(text) >> 1)) + 0.25D, (double) y + 0.25D, (new Color(color, true)).getRGB(), true);
+        this.renderString(text, x - (float) (this.getStringWidth(text) >> 1), y, color, false);
     }
 
     public int drawString(String text, double x, double y, int color, boolean shadow) {
+        this.renderString(text, x + 0.5, y + 0.5, color, true);
+        return this.renderString(text, x, y, color, false);
+    }
+
+    private int renderString(String text, double x, double y, int color, boolean shadow) {
         if (!this.international && this.isInternational(text)) {
             return FontLoader.miSans(this.font.getSize()).drawString(text, x, y, color);
         } else {
@@ -266,8 +269,22 @@ public class FontRenderer extends Font {
             y -= this.fontHeight / 5.0F;
             double startX = x;
             int length = text.length();
-            RenderUtil.color(shadow ? 50 : color);
+
+            // Change zero alpha to 255
+            if ((color & -67108864) == 0) {
+                color |= -16777216;
+            }
+
+            if (shadow) {
+                color = 50;
+            }
+
+            float red = (float) (color >> 16 & 255) / 255.0F;
+            float blue = (float) (color >> 8 & 255) / 255.0F;
+            float green = (float) (color & 255) / 255.0F;
             float alpha = (float) (color >> 24 & 255) / 255.0F;
+
+            GlStateManager.color(red, blue, green, alpha);
 
             for (int i = 0; i < length; ++i) {
                 char character = text.charAt(i);

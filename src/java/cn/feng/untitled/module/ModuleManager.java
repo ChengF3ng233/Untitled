@@ -3,7 +3,7 @@ package cn.feng.untitled.module;
 import cn.feng.untitled.event.api.SubscribeEvent;
 import cn.feng.untitled.event.impl.KeyEvent;
 import cn.feng.untitled.module.impl.movement.ToggleSprint;
-import cn.feng.untitled.module.impl.render.ClickGUI;
+import cn.feng.untitled.module.impl.client.ClickGUI;
 import cn.feng.untitled.util.exception.ModuleNotFoundException;
 import cn.feng.untitled.util.exception.ValueLoadException;
 import cn.feng.untitled.value.Value;
