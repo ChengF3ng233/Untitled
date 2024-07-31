@@ -11,7 +11,7 @@ import cn.feng.untitled.value.impl.BoolValue;
  **/
 public class HUD extends Module {
     public HUD() {
-        super("HUD", ModuleCategory.CLIENT, true);
+        super("HUD", ModuleCategory.Client, true);
     }
 
     public static final BoolValue fancyFont = new BoolValue("FancyFont", true);

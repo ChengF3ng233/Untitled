@@ -1,7 +1,13 @@
 package cn.feng.untitled.ui.clickgui.window;
 
+import cn.feng.untitled.module.ModuleCategory;
+import cn.feng.untitled.ui.clickgui.window.panel.impl.CategoryPanel;
+import cn.feng.untitled.ui.clickgui.window.panel.impl.ModulePanel;
+import cn.feng.untitled.ui.font.FontLoader;
+import cn.feng.untitled.ui.font.FontRenderer;
 import cn.feng.untitled.util.animation.Animation;
 import cn.feng.untitled.util.animation.Direction;
+import cn.feng.untitled.util.animation.composed.CustomAnimation;
 import cn.feng.untitled.util.animation.impl.SmoothStepAnimation;
 import cn.feng.untitled.util.render.RenderUtil;
 import cn.feng.untitled.util.render.RoundedUtil;
@@ -12,16 +18,24 @@ import org.lwjgl.input.Keyboard;
 
 import java.awt.*;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author ChengFeng
  * @since 2024/7/28
  **/
 public class NeverLoseGUI extends GuiScreen {
-    private float x, y, width, height, leftWidth, topWidth, radius;
+    public static float width, height, leftWidth, topWidth, radius;
+    private float x, y;
     private boolean dragging;
     private float dragX, dragY;
+
     private Animation windowAnim;
+    private CustomAnimation panelAnim;
+
+    private List<CategoryPanel> categoryPanelList;
+    private CategoryPanel currentPanel;
 
     @Override
     public void initGui() {
@@ -31,11 +45,19 @@ public class NeverLoseGUI extends GuiScreen {
         topWidth = 35f;
         radius = 4f;
         dragging = false;
+        categoryPanelList = new ArrayList<>();
+
+        for (ModuleCategory value : ModuleCategory.values()) {
+            categoryPanelList.add(new CategoryPanel(value));
+        }
+
+        currentPanel = categoryPanelList.get(0);
 
         ScaledResolution sr = new ScaledResolution(mc);
         x = sr.getScaledWidth() / 2f - width / 2f;
         y = sr.getScaledHeight() / 2f - height / 2f;
         windowAnim = new SmoothStepAnimation(150, 1d);
+        panelAnim = new CustomAnimation(SmoothStepAnimation.class, 200, 0f, 0f);
     }
 
     @Override
@@ -74,7 +96,39 @@ public class NeverLoseGUI extends GuiScreen {
         StencilUtil.uninitStencilBuffer();
 
         //Title
-        float gap = 2f;
+        FontRenderer font = FontLoader.rubik(28);
+        float centerX = x + leftWidth / 2f;
+        font.drawCenteredString("§lNEVERLOSE", centerX + 0.5f, y + 13.5f, ThemeColor.focusedColor.getRGB());
+        font.drawCenteredString("§lNEVERLOSE", centerX, y + 13f, Color.WHITE.getRGB());
+
+        // Category
+        float categoryX = centerX - font.getStringWidth("§lNEVERLOSE") / 2f + 5f;
+        float categoryY = y + font.height() + 35f;
+
+        RoundedUtil.drawRound(categoryX - 2f,   categoryY + panelAnim.getOutput().floatValue() - 4f, leftWidth - 14f, currentPanel.height + 4f, 4f, ThemeColor.barColor);
+
+        for (CategoryType type : CategoryType.values()) {
+            FontLoader.greyCliff(15).drawString(type.toString(), categoryX, categoryY - 15f, ThemeColor.grayColor.getRGB());
+            for (CategoryPanel panel : categoryPanelList) {
+                if (!CategoryType.getType(panel.category).equals(type)) continue;
+
+                panel.draw(categoryX, categoryY, mouseX, mouseY);
+                categoryY += panel.height + 10f;
+            }
+            categoryY += 20f;
+        }
+
+        // Module
+        float moduleX;
+        float leftY = y + topWidth + 10f, rightY = y + topWidth + 10f;
+        int panelIndex = 0;
+        for (ModulePanel panel : currentPanel.modulePanelList) {
+            boolean isLeft = panelIndex % 2 == 0;
+            moduleX = x + leftWidth + 10f + (isLeft? 0 : panel.width + 10);
+            panel.draw(moduleX, isLeft? leftY : rightY, mouseX, mouseY);
+            if (isLeft) leftY += panel.height + 10; else rightY += panel.height + 10;
+            panelIndex++;
+        }
 
         RenderUtil.scaleEnd();
     }
@@ -92,6 +146,18 @@ public class NeverLoseGUI extends GuiScreen {
             dragging = true;
             dragX = mouseX;
             dragY = mouseY;
+        }
+
+
+        for (CategoryPanel panel : categoryPanelList) {
+            if (RenderUtil.hovering(mouseX, mouseY, panel.x, panel.y, panel.width, panel.height) && mouseButton == 0) {
+                float categoryY = y + FontLoader.rubik(28).height() + 35f;
+                panelAnim.setStartPoint(currentPanel.y - categoryY);
+                currentPanel = panel;
+                panelAnim.setEndPoint(panel.y - categoryY);
+                panelAnim.getAnimation().reset();
+                break;
+            }
         }
     }
 

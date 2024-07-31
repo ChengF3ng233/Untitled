@@ -5,6 +5,8 @@ import cn.feng.untitled.event.impl.KeyEvent;
 import cn.feng.untitled.module.impl.movement.ToggleSprint;
 import cn.feng.untitled.module.impl.client.ClickGUI;
 import cn.feng.untitled.ui.hud.Widget;
+import cn.feng.untitled.util.data.compare.CompareMode;
+import cn.feng.untitled.util.data.compare.ModuleComparator;
 import cn.feng.untitled.util.exception.ModuleNotFoundException;
 import cn.feng.untitled.util.exception.ValueLoadException;
 import cn.feng.untitled.value.Value;
@@ -37,7 +39,7 @@ public class ModuleManager {
      * @param widget widget
      */
     public void register(Widget widget) {
-        Module widgetModule = new Module(widget.name, ModuleCategory.WIDGET);
+        Module widgetModule = new Module(widget.name, ModuleCategory.Widget);
         widgetModule.enabled = widget.defaultOn;
         register(widgetModule, widget.getClass().getDeclaredFields());
     }
@@ -68,6 +70,14 @@ public class ModuleManager {
         }
 
         throw new ModuleNotFoundException(klass.getName());
+    }
+
+    public List<Module> getModuleByCategory(ModuleCategory category) {
+        List<Module> list = new ArrayList<>(moduleList.stream().filter(it -> it.category == category).toList());
+        if (!list.isEmpty()) {
+            list.sort(new ModuleComparator(CompareMode.Alphabet));
+        }
+        return list;
     }
 
     public Module getModule(Widget widget) {

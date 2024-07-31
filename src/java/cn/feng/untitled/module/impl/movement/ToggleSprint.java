@@ -13,7 +13,7 @@ import org.lwjgl.input.Keyboard;
  **/
 public class ToggleSprint extends Module {
     public ToggleSprint() {
-        super("ToggleSprint", ModuleCategory.MOVEMENT, Keyboard.getKeyIndex("V"));
+        super("ToggleSprint", ModuleCategory.Movement, Keyboard.getKeyIndex("V"));
     }
 
     @SubscribeEvent

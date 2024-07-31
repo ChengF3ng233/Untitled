@@ -19,8 +19,7 @@
 
 ---
 ## 开发指南
-在`File--Settings--Build,Execution,Deployment--Compiler--Java Compiler--Override compiler parameters per module`
-添加`Untitled-main`(Module名称)，并添加如下jvm参数:
+添加如下jvm参数:
 - `--add-opens
 java.base/jdk.internal.access=ALL-UNNAMED`
 
@@ -29,6 +28,3 @@ java.base/java.nio=ALL-UNNAMED`
 
 - `--add-opens
 java.base/jdk.internal.misc=ALL-UNNAMED`
-
-在运行配置中添加如下jvm参数:
-- `-Djava.library.path=native`(自行配置运行环境，native可替换为你自己存放dll的文件夹)

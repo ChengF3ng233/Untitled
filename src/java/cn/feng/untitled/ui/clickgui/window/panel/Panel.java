@@ -6,5 +6,11 @@ package cn.feng.untitled.ui.clickgui.window.panel;
  **/
 public abstract class Panel {
     public float x, y, width, height;
+    public void init() {
+
+    }
     public abstract void draw(float x, float y, int mouseX, int mouseY);
+    public void onMouseClick(int mouseX, int mouseY, int button) {
+
+    }
 }

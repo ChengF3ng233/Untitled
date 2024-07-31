@@ -24,6 +24,11 @@ public class CustomAnimation extends ComposedAnimation<Double> {
         this.duration = ms;
     }
 
+    public CustomAnimation(Class<? extends Animation> animationClass, int duration) {
+        this.createAnimation(animationClass, duration, startPoint, endPoint);
+        this.duration = duration;
+    }
+
     public void setStartPoint(double startPoint) {
         this.startPoint = startPoint;
         this.animation.endPoint = this.endPoint - this.startPoint;

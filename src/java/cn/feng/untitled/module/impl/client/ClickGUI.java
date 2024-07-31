@@ -15,7 +15,7 @@ public class ClickGUI extends Module {
     public ModeValue mode = new ModeValue("Mode", "NeverLose", new String[]{"NeverLose", "Dropdown"});
 
     public ClickGUI() {
-        super("ClickGUI", ModuleCategory.CLIENT, Keyboard.KEY_RSHIFT);
+        super("ClickGUI", ModuleCategory.Client, Keyboard.KEY_RSHIFT);
     }
 
     @Override
