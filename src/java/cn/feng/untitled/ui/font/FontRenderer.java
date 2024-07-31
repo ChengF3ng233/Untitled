@@ -249,6 +249,7 @@ public class FontRenderer extends Font {
         y -= this.fontHeight / 5.0F;
 
         // 处理颜色
+
         if ((color & -67108864) == 0) {
             color |= -16777216;
         }
@@ -261,6 +262,9 @@ public class FontRenderer extends Font {
         float blue = (float) (color >> 8 & 255) / 255.0F;
         float green = (float) (color & 255) / 255.0F;
         float alpha = (float) (color >> 24 & 255) / 255.0F;
+
+        // 先上一遍色，防止之前渲染的遗留问题
+        GlStateManager.color(red, blue, green, alpha);
 
         boolean bold = false;
         boolean specialColor = false;
@@ -321,6 +325,7 @@ public class FontRenderer extends Font {
         GL11.glDisable(3042);
         GL11.glDisable(3553);
         GlStateManager.bindTexture(0);
+        GlStateManager.resetColor();
         GL11.glPopAttrib();
         GL11.glPopMatrix();
         return (int) (x - startX);

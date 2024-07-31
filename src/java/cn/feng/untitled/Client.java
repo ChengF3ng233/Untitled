@@ -9,6 +9,7 @@ import cn.feng.untitled.ui.UIManager;
 import cn.feng.untitled.ui.font.FontLoader;
 import cn.feng.untitled.util.misc.Logger;
 import de.florianmichael.viamcp.ViaMCP;
+import org.lwjgl.Sys;
 import org.lwjgl.opengl.Display;
 
 public enum Client {
@@ -57,7 +58,7 @@ public enum Client {
         configManager.loadConfigs();
         uiManager.initGUI();
 
-        Display.setTitle(CLIENT_NAME);
+        Display.setTitle(CLIENT_NAME + " | LWJGL Version " + Sys.getVersion());
         Logger.info("Done.");
     }
 
