@@ -35,7 +35,7 @@ public class FontLoader {
 
     private static FontRenderer get(Map<Integer, FontRenderer> map, int size, String name, boolean chinese) {
         if (!map.containsKey(size)) {
-            Logger.info("Registering font: " + name + (chinese ? " within Chinese." : "."));
+            Logger.info("Registering font: " + name + (chinese ? " including Chinese." : "."));
             java.awt.Font font = FontUtil.getResource("untitled/font/" + name + ".ttf", size);
             if (font != null) {
                 map.put(size, new FontRenderer(font, chinese));

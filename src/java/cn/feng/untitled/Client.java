@@ -40,7 +40,9 @@ public enum Client {
         configManager = new ConfigManager();
 
         Logger.info("Loading fonts...");
+        long start = System.currentTimeMillis();
         FontLoader.registerFonts();
+        Logger.info("Finished loading fonts within " + (System.currentTimeMillis() - start) / 1000 + " seconds.");
 
         Logger.info("Registering...");
         eventBus.register(moduleManager);
