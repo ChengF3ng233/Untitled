@@ -1480,7 +1480,15 @@ public class Config {
             DisplayMode displaymode = Display.getDisplayMode();
             dbg("FSAA Samples: " + i);
 
-            try {
+            Display.setDisplayMode(displaymode);
+            Display.create();
+
+            if (Util.getOSType() == Util.EnumOS.WINDOWS) {
+                Display.setResizable(false);
+                Display.setResizable(true);
+            }
+
+/*            try {
                 Display.destroy();
                 Display.setDisplayMode(displaymode);
                 Display.create((new PixelFormat()).withDepthBits(24).withSamples(i));
@@ -1502,9 +1510,9 @@ public class Config {
                         Display.setResizable(true);
                     }
                 } catch (LWJGLException lwjglexception1) {
-                    lwjglexception1.printStackTrace();
-
                     try {
+                        lwjglexception1.printStackTrace();
+
                         Display.setDisplayMode(displaymode);
                         Display.create();
 
@@ -1516,7 +1524,7 @@ public class Config {
                         lwjglexception.printStackTrace();
                     }
                 }
-            }
+            }*/
 
             if (!Minecraft.isRunningOnMac && getDefaultResourcePack() != null) {
                 InputStream inputstream = null;

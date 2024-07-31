@@ -68,7 +68,7 @@ public class ActiveRenderInfo {
     public static void updateRenderInfo(EntityPlayer entityplayerIn, boolean p_74583_1_) {
         GlStateManager.getFloat(2982, MODELVIEW);
         GlStateManager.getFloat(2983, PROJECTION);
-        GL11.glGetInteger(GL11.GL_VIEWPORT, VIEWPORT);
+        GL11.glGetIntegerv(GL11.GL_VIEWPORT, VIEWPORT);
         float f = (float) ((VIEWPORT.get(0) + VIEWPORT.get(2)) / 2);
         float f1 = (float) ((VIEWPORT.get(1) + VIEWPORT.get(3)) / 2);
         GLU.gluUnProject(f, f1, 0.0F, MODELVIEW, PROJECTION, VIEWPORT, OBJECTCOORDS);

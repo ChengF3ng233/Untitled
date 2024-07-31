@@ -2618,7 +2618,7 @@ public class Shaders {
 
     private static boolean printLogInfo(int obj, String name) {
         IntBuffer intbuffer = BufferUtils.createIntBuffer(1);
-        ARBShaderObjects.glGetObjectParameterARB(obj, ARBShaderObjects.GL_OBJECT_INFO_LOG_LENGTH_ARB, intbuffer);
+        ARBShaderObjects.glGetObjectParameterivARB(obj, ARBShaderObjects.GL_OBJECT_INFO_LOG_LENGTH_ARB, intbuffer);
         int i = intbuffer.get();
 
         if (i > 1) {
@@ -3607,11 +3607,11 @@ public class Shaders {
         cameraPositionX = d0 - (double) cameraOffsetX;
         cameraPositionY = d1;
         cameraPositionZ = d2 - (double) cameraOffsetZ;
-        GL11.glGetFloat(GL11.GL_PROJECTION_MATRIX, projection.position(0));
+        GL11.glGetFloatv(GL11.GL_PROJECTION_MATRIX, projection.position(0));
         SMath.invertMat4FBFA(projectionInverse.position(0), projection.position(0), faProjectionInverse, faProjection);
         projection.position(0);
         projectionInverse.position(0);
-        GL11.glGetFloat(GL11.GL_MODELVIEW_MATRIX, modelView.position(0));
+        GL11.glGetFloatv(GL11.GL_MODELVIEW_MATRIX, modelView.position(0));
         SMath.invertMat4FBFA(modelViewInverse.position(0), modelView.position(0), faModelViewInverse, faModelView);
         modelView.position(0);
         modelViewInverse.position(0);
@@ -3648,11 +3648,11 @@ public class Shaders {
         cameraPositionX = d0 - (double) cameraOffsetX;
         cameraPositionY = d1;
         cameraPositionZ = d2 - (double) cameraOffsetZ;
-        GL11.glGetFloat(GL11.GL_PROJECTION_MATRIX, projection.position(0));
+        GL11.glGetFloatv(GL11.GL_PROJECTION_MATRIX, projection.position(0));
         SMath.invertMat4FBFA(projectionInverse.position(0), projection.position(0), faProjectionInverse, faProjection);
         projection.position(0);
         projectionInverse.position(0);
-        GL11.glGetFloat(GL11.GL_MODELVIEW_MATRIX, modelView.position(0));
+        GL11.glGetFloatv(GL11.GL_MODELVIEW_MATRIX, modelView.position(0));
         SMath.invertMat4FBFA(modelViewInverse.position(0), modelView.position(0), faModelViewInverse, faModelView);
         modelView.position(0);
         modelViewInverse.position(0);
@@ -3709,11 +3709,11 @@ public class Shaders {
         shadowLightPositionVector[1] = f7;
         shadowLightPositionVector[2] = f8;
         shadowLightPositionVector[3] = 0.0F;
-        GL11.glGetFloat(GL11.GL_PROJECTION_MATRIX, shadowProjection.position(0));
+        GL11.glGetFloatv(GL11.GL_PROJECTION_MATRIX, shadowProjection.position(0));
         SMath.invertMat4FBFA(shadowProjectionInverse.position(0), shadowProjection.position(0), faShadowProjectionInverse, faShadowProjection);
         shadowProjection.position(0);
         shadowProjectionInverse.position(0);
-        GL11.glGetFloat(GL11.GL_MODELVIEW_MATRIX, shadowModelView.position(0));
+        GL11.glGetFloatv(GL11.GL_MODELVIEW_MATRIX, shadowModelView.position(0));
         SMath.invertMat4FBFA(shadowModelViewInverse.position(0), shadowModelView.position(0), faShadowModelViewInverse, faShadowModelView);
         shadowModelView.position(0);
         shadowModelViewInverse.position(0);
@@ -3739,7 +3739,7 @@ public class Shaders {
     public static void postCelestialRotate() {
         FloatBuffer floatbuffer = tempMatrixDirectBuffer;
         floatbuffer.clear();
-        GL11.glGetFloat(GL11.GL_MODELVIEW_MATRIX, floatbuffer);
+        GL11.glGetFloatv(GL11.GL_MODELVIEW_MATRIX, floatbuffer);
         floatbuffer.get(tempMat, 0, 16);
         SMath.multiplyMat4xVec4(sunPosition, tempMat, sunPosModelView);
         SMath.multiplyMat4xVec4(moonPosition, tempMat, moonPosModelView);
@@ -3758,7 +3758,7 @@ public class Shaders {
     public static void setUpPosition() {
         FloatBuffer floatbuffer = tempMatrixDirectBuffer;
         floatbuffer.clear();
-        GL11.glGetFloat(GL11.GL_MODELVIEW_MATRIX, floatbuffer);
+        GL11.glGetFloatv(GL11.GL_MODELVIEW_MATRIX, floatbuffer);
         floatbuffer.get(tempMat, 0, 16);
         SMath.multiplyMat4xVec4(upPosition, tempMat, upPosModelView);
         setProgramUniform3f(uniform_upPosition, upPosition[0], upPosition[1], upPosition[2]);

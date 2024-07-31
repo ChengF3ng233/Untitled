@@ -611,8 +611,8 @@ public class Minecraft implements IThreadListener, IPlayerUsage {
     private void createDisplay() throws LWJGLException {
         Display.setResizable(true);
         Display.setTitle("Minecraft 1.8.9");
-
-        try {
+        Display.create();
+/*        try {
             Display.create((new PixelFormat()).withDepthBits(24));
         } catch (LWJGLException lwjglexception) {
             logger.error("Couldn't set pixel format", lwjglexception);
@@ -627,7 +627,7 @@ public class Minecraft implements IThreadListener, IPlayerUsage {
             }
 
             Display.create();
-        }
+        }*/
     }
 
     private void setInitialDisplayMode() throws LWJGLException {
