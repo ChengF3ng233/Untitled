@@ -1,11 +1,11 @@
 package cn.feng.untitled.module;
 
 public enum ModuleCategory {
-    RAGE,
-    LEGIT,
+    COMBAT,
     PLAYER,
     MOVEMENT,
     RENDER,
     WORLD,
+    WIDGET,
     CLIENT
 }

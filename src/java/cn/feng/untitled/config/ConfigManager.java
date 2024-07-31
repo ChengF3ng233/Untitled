@@ -14,12 +14,14 @@ import java.util.List;
  * @since 2024/7/29
  **/
 public class ConfigManager extends MinecraftInstance {
-    public File rootDir = new File(mc.mcDataDir, Client.instance.CLIENT_NAME);
+    public static final File rootDir = new File(mc.mcDataDir, Client.instance.CLIENT_NAME);
+    public static final File fontDir = new File(rootDir, "font");
     private final List<Config> configList;
 
     public ConfigManager() {
         configList = new ArrayList<>();
         if (!rootDir.exists()) rootDir.mkdir();
+        if (!fontDir.exists()) fontDir.mkdir();
     }
 
     public Config getConfig(String name) {

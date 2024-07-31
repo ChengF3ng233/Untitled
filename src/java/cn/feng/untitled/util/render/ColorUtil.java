@@ -1,12 +1,29 @@
 package cn.feng.untitled.util.render;
 
+import net.minecraft.client.renderer.GlStateManager;
+
 import java.awt.*;
 import java.awt.image.BufferedImage;
 
-import static cn.feng.untitled.util.misc.MathUtil.interpolateFloat;
-import static cn.feng.untitled.util.misc.MathUtil.interpolateInt;
+import static cn.feng.untitled.util.data.MathUtil.interpolateFloat;
+import static cn.feng.untitled.util.data.MathUtil.interpolateInt;
 
 public class ColorUtil {
+    public static void glColor(int hex) {
+        float a = (float)(hex >> 24 & 255) / 255.0F;
+        float r = (float)(hex >> 16 & 255) / 255.0F;
+        float g = (float)(hex >> 8 & 255) / 255.0F;
+        float b = (float)(hex & 255) / 255.0F;
+        GlStateManager.color(r, g, b, a);
+    }
+
+    public static Color cAlpha(Color c, int alpha) {
+        return new Color(c.getRed(), c.getGreen(), c.getBlue(), alpha);
+    }
+
+    public static Color dAlpha(Color c) {
+        return new Color(c.getRed(), c.getGreen(), c.getBlue());
+    }
 
     public static Color tripleColor(int rgbValue) {
         return tripleColor(rgbValue, 1);

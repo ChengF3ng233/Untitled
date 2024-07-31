@@ -14,5 +14,5 @@ public class HUD extends Module {
         super("HUD", ModuleCategory.CLIENT, true);
     }
 
-    public static final BoolValue fancyFont = new BoolValue("FancyFont", false);
+    public static final BoolValue fancyFont = new BoolValue("FancyFont", true);
 }

@@ -9,10 +9,10 @@ public class Value<T> {
     public T defaultValue;
     public T value;
 
-    public Value(String name, T defaultValue, T value) {
+    public Value(String name, T defaultValue) {
         this.name = name;
         this.defaultValue = defaultValue;
-        this.value = value;
+        this.value = defaultValue;
     }
 
     public void reset() {

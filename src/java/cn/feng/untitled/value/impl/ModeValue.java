@@ -1,6 +1,6 @@
 package cn.feng.untitled.value.impl;
 
-import cn.feng.untitled.util.misc.StringUtil;
+import cn.feng.untitled.util.data.StringUtil;
 import cn.feng.untitled.value.Value;
 
 /**
@@ -11,7 +11,7 @@ public class ModeValue extends Value<String> {
     public String[] values;
 
     public ModeValue(String name, String defaultValue, String[] values) {
-        super(name, defaultValue, defaultValue);
+        super(name, defaultValue);
         this.values = values;
     }
 

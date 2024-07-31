@@ -1,4 +1,4 @@
-package cn.feng.untitled.util.misc;
+package cn.feng.untitled.util.data;
 
 import java.util.Map;
 

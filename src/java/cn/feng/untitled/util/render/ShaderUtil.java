@@ -1,6 +1,6 @@
 package cn.feng.untitled.util.render;
 
-import cn.feng.untitled.util.misc.FileUtil;
+import cn.feng.untitled.util.data.FileUtil;
 import cn.feng.untitled.util.MinecraftInstance;
 import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.util.ResourceLocation;

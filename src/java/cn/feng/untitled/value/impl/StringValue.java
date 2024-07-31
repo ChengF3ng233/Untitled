@@ -7,7 +7,7 @@ import cn.feng.untitled.value.Value;
  * @since 2024/7/28
  **/
 public class StringValue extends Value<String> {
-    public StringValue(String name, String defaultValue, String value) {
-        super(name, defaultValue, value);
+    public StringValue(String name, String defaultValue) {
+        super(name, defaultValue);
     }
 }

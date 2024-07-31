@@ -1,4 +1,4 @@
-package cn.feng.untitled.util.misc;
+package cn.feng.untitled.util.data;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.util.MathHelper;

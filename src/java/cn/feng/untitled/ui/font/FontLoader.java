@@ -10,35 +10,35 @@ import java.util.Map;
  * @since 2024/7/29
  **/
 public class FontLoader {
-    private static final Map<Integer, Font> greyCliff = new HashMap<>();
-    private static final Map<Integer, Font> rubik = new HashMap<>();
-    public static Map<Integer, Font> miSans = new HashMap<>();
+    private static final Map<Integer, FontRenderer> greyCliff = new HashMap<>();
+    private static final Map<Integer, FontRenderer> rubik = new HashMap<>();
+    public static Map<Integer, FontRenderer> miSans = new HashMap<>();
 
     /**
      * Register international font MiSans
      */
     public static void registerFonts() {
-       // miSans(18);
+        miSans(18);
     }
 
-    public static Font greyCliff(int size) {
+    public static FontRenderer greyCliff(int size) {
         return get(greyCliff, size, "greycliff", false);
     }
 
-    public static Font rubik(int size) {
+    public static FontRenderer rubik(int size) {
         return get(rubik, size, "rubik", false);
     }
 
-    public static Font miSans(int size) {
+    public static FontRenderer miSans(int size) {
         return get(miSans, size, "misans", true);
     }
 
-    private static Font get(Map<Integer, Font> map, int size, String name, boolean international) {
+    private static FontRenderer get(Map<Integer, FontRenderer> map, int size, String name, boolean chinese) {
         if (!map.containsKey(size)) {
-            Logger.info("Registering font: " + name + "." + (international? " This may be EXTREMELY SLOW on low-end PCs." : ""));
+            Logger.info("Registering font: " + name + (chinese ? " within Chinese." : "."));
             java.awt.Font font = FontUtil.getResource("untitled/font/" + name + ".ttf", size);
             if (font != null) {
-                map.put(size, new FontRenderer(font, true, true, international));
+                map.put(size, new FontRenderer(font, chinese));
             }
         }
 

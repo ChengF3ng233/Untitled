@@ -5,7 +5,7 @@ import cn.feng.untitled.event.api.SubscribeEvent;
 import cn.feng.untitled.event.impl.ChatEvent;
 import cn.feng.untitled.event.type.PacketType;
 import cn.feng.untitled.util.misc.ChatUtil;
-import cn.feng.untitled.util.misc.StringUtil;
+import cn.feng.untitled.util.data.StringUtil;
 
 import java.util.ArrayList;
 import java.util.List;

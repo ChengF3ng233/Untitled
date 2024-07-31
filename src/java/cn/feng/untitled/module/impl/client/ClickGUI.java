@@ -23,11 +23,11 @@ public class ClickGUI extends Module {
         GuiScreen gui;
         switch (mode.value) {
             case "Dropdown":
-                mc.displayGuiScreen(Client.instance.hudManager.dropdownGUI);
+                mc.displayGuiScreen(Client.instance.uiManager.dropdownGUI);
                 break;
             case "Window":
             default:
-                mc.displayGuiScreen(Client.instance.hudManager.neverLoseGUI);
+                mc.displayGuiScreen(Client.instance.uiManager.neverLoseGUI);
                 break;
         }
         enabled = false;

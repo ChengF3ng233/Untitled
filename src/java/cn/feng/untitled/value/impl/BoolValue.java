@@ -8,6 +8,6 @@ import cn.feng.untitled.value.Value;
  **/
 public class BoolValue extends Value<Boolean> {
     public BoolValue(String name, boolean defaultValue) {
-        super(name, defaultValue, defaultValue);
+        super(name, defaultValue);
     }
 }

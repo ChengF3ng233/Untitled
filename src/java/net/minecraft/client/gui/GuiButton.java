@@ -14,6 +14,10 @@ import java.awt.*;
 public class GuiButton extends Gui {
     protected static final ResourceLocation buttonTextures = new ResourceLocation("textures/gui/widgets.png");
     /**
+     * Outline color animation.
+     */
+    private final ColorAnimation colorAnim;
+    /**
      * The x position of this control.
      */
     public int xPosition;
@@ -43,11 +47,6 @@ public class GuiButton extends Gui {
      */
     protected int height;
     protected boolean hovered;
-
-    /**
-     * Outline color animation.
-     */
-    private final ColorAnimation colorAnim;
 
     public GuiButton(int buttonId, int x, int y, String buttonText) {
         this(buttonId, x, y, 200, 20, buttonText);
@@ -95,7 +94,7 @@ public class GuiButton extends Gui {
 
             this.mouseDragged(mc, mouseX, mouseY);
             RoundedUtil.drawRoundOutline(this.xPosition, this.yPosition, this.width, this.height, 2f, 0.1f, new Color(0, 0, 0, 100), enabled ? colorAnim.getOutput() : new Color(50, 50, 50, 255));
-            FontLoader.greyCliff(18).drawCenteredString(displayString, this.xPosition + this.width / 2f, this.yPosition + this.height / 2f - 3f, Color.WHITE.getRGB());
+            FontLoader.greyCliff(18).drawCenteredString(displayString, this.xPosition + this.width / 2f, this.yPosition + this.height / 2f - 2f, Color.WHITE.getRGB());
         }
     }
 

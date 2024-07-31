@@ -15,7 +15,7 @@ public abstract class Config {
 
     public Config(String  configName, String fileName) {
         this.name = configName;
-        this.configFile = new File(Client.instance.configManager.rootDir, fileName);
+        this.configFile = new File(ConfigManager.rootDir, fileName);
     }
 
     public abstract void loadConfig();

@@ -13,8 +13,9 @@ public class ColorValue extends Value<Color> {
     public float saturation = 1;
     public float brightness = 1;
 
-    public ColorValue(String name, Color defaultValue, Color value) {
-        super(name, defaultValue, value);
+    public ColorValue(String name, Color defaultValue) {
+        super(name, defaultValue);
+        setValue(defaultValue);
     }
 
     public void setValue(Color color) {

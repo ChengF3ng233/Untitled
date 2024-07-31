@@ -23,10 +23,12 @@ import net.optifine.util.FontUtils;
 import org.apache.commons.io.IOUtils;
 import org.lwjgl.opengl.GL11;
 
+import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.*;
+import java.util.List;
 
 public class FontRenderer implements IResourceManagerReloadListener {
     private static final ResourceLocation[] unicodePageLocations = new ResourceLocation[256];
@@ -392,10 +394,6 @@ public class FontRenderer implements IResourceManagerReloadListener {
      * Draws the specified string.
      */
     public int drawString(String text, float x, float y, int color, boolean dropShadow) {
-        if (HUD.fancyFont.value) {
-            return FontLoader.miSans(18).drawString(text, x, y + 1f, color, dropShadow);
-        }
-
         this.enableAlpha();
 
         if (this.blend) {
@@ -603,6 +601,9 @@ public class FontRenderer implements IResourceManagerReloadListener {
      * Render single line string by setting GL color, current (posX,posY), and calling renderStringAtPos()
      */
     private int renderString(String text, float x, float y, int color, boolean dropShadow) {
+        if (HUD.fancyFont.value) {
+            return FontLoader.miSans(18).renderString(text, x, y + 1f, color, dropShadow);
+        }
         if (text == null) {
             return 0;
         } else {
