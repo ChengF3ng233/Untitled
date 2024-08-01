@@ -79,7 +79,7 @@ public class FontRenderer extends Font {
 
         // 如果需要加中文
         if (includeChinese) {
-            for (char c : CharUtil.getChineseCharArray()) {
+            for (char c : CharUtil.getChineseCharacters()) {
                 fillCharacter(c, map, fontGraphics, fontMetrics);
             }
         }
