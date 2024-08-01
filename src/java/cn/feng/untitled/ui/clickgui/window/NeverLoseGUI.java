@@ -34,17 +34,20 @@ public class NeverLoseGUI extends GuiScreen {
     private Animation windowAnim;
     private CustomAnimation panelAnim;
 
-    private List<CategoryPanel> categoryPanelList;
+    private final List<CategoryPanel> categoryPanelList;
     private CategoryPanel currentPanel;
 
-    @Override
-    public void initGui() {
+    public NeverLoseGUI() {
         width = 420f;
         height = 310f;
         leftWidth = 90f;
         topWidth = 35f;
         radius = 4f;
-        dragging = false;
+
+        ScaledResolution sr = new ScaledResolution(mc);
+        x = sr.getScaledWidth() / 2f - width / 2f;
+        y = sr.getScaledHeight() / 2f - height / 2f;
+
         categoryPanelList = new ArrayList<>();
 
         for (ModuleCategory value : ModuleCategory.values()) {
@@ -52,12 +55,17 @@ public class NeverLoseGUI extends GuiScreen {
         }
 
         currentPanel = categoryPanelList.get(0);
+    }
 
-        ScaledResolution sr = new ScaledResolution(mc);
-        x = sr.getScaledWidth() / 2f - width / 2f;
-        y = sr.getScaledHeight() / 2f - height / 2f;
+    @Override
+    public void initGui() {
+        dragging = false;
+        float categoryY = y + FontLoader.rubik(28).height() + 35f;
+
         windowAnim = new SmoothStepAnimation(150, 1d);
-        panelAnim = new CustomAnimation(SmoothStepAnimation.class, 200, 0f, 0f);
+        panelAnim = new CustomAnimation(SmoothStepAnimation.class, 200, currentPanel.y - categoryY, currentPanel.y - categoryY);
+
+        currentPanel.modulePanelList.forEach(ModulePanel::init);
     }
 
     @Override
@@ -71,6 +79,12 @@ public class NeverLoseGUI extends GuiScreen {
             dragX = mouseX;
             dragY = mouseY;
         }
+
+        ScaledResolution sr = new ScaledResolution(mc);
+        if (x < 10) x = 10;
+        if (y < 10) y = 10;
+        if (x + width > sr.getScaledWidth() - 10) x = sr.getScaledWidth() - 10 - width;
+        if (y + height > sr.getScaledHeight() - 10) y = sr.getScaledHeight() - 10 - height;
 
         RenderUtil.scaleStart(x + width / 2, y + height / 2, windowAnim.getOutput().floatValue());
 
@@ -156,8 +170,14 @@ public class NeverLoseGUI extends GuiScreen {
                 currentPanel = panel;
                 panelAnim.setEndPoint(panel.y - categoryY);
                 panelAnim.getAnimation().reset();
+
+                currentPanel.modulePanelList.forEach(ModulePanel::init);
                 break;
             }
+        }
+
+        for (ModulePanel panel : currentPanel.modulePanelList) {
+            panel.onMouseClick(mouseX, mouseY, mouseButton);
         }
     }
 

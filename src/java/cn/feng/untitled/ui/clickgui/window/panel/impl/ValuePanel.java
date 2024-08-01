@@ -41,19 +41,20 @@ public class ValuePanel extends Panel {
 
     @Override
     public void init() {
-        if (!(value instanceof BoolValue)) return;
+        if (!(component instanceof ButtonComponent)) return;
         component.init();
     }
 
     @Override
     public void draw(float x, float y, int mouseX, int mouseY) {
-        if (!(value instanceof BoolValue)) return;
+        if (!(component instanceof ButtonComponent)) return;
         int textColor = Color.WHITE.getRGB();
         if (component instanceof ButtonComponent bc) {
             textColor = bc.textColAnim.getOutput().getRGB();
         }
         FontLoader.greyCliff(16).drawString(value.name, x, y, textColor);
         component.draw(x, y, mouseX, mouseY);
+        height = component.height;
     }
 
     @Override

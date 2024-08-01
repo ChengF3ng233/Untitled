@@ -2,9 +2,10 @@ package cn.feng.untitled.module;
 
 import cn.feng.untitled.event.api.SubscribeEvent;
 import cn.feng.untitled.event.impl.KeyEvent;
+import cn.feng.untitled.module.impl.client.HUD;
 import cn.feng.untitled.module.impl.movement.ToggleSprint;
 import cn.feng.untitled.module.impl.client.ClickGUI;
-import cn.feng.untitled.ui.hud.Widget;
+import cn.feng.untitled.ui.widget.Widget;
 import cn.feng.untitled.util.data.compare.CompareMode;
 import cn.feng.untitled.util.data.compare.ModuleComparator;
 import cn.feng.untitled.util.exception.ModuleNotFoundException;
@@ -62,6 +63,7 @@ public class ModuleManager {
     public void registerModules() {
         register(new ToggleSprint());
         register(new ClickGUI());
+        register(new HUD());
     }
 
     public Module getModule(Class<? extends Module> klass) {
@@ -76,6 +78,14 @@ public class ModuleManager {
         List<Module> list = new ArrayList<>(moduleList.stream().filter(it -> it.category == category).toList());
         if (!list.isEmpty()) {
             list.sort(new ModuleComparator(CompareMode.Alphabet));
+        }
+        return list;
+    }
+
+    public List<Module> getModuleByState(boolean enabled) {
+        List<Module> list = new ArrayList<>(moduleList.stream().filter(it -> it.enabled = enabled).toList());
+        if (!list.isEmpty()) {
+            list.sort(new ModuleComparator(CompareMode.Length));
         }
         return list;
     }

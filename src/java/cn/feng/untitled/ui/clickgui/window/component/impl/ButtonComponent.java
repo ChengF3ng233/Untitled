@@ -1,11 +1,13 @@
 package cn.feng.untitled.ui.clickgui.window.component.impl;
 
 import cn.feng.untitled.module.Module;
+import cn.feng.untitled.ui.clickgui.window.NeverLoseGUI;
 import cn.feng.untitled.ui.clickgui.window.ThemeColor;
 import cn.feng.untitled.ui.clickgui.window.component.Component;
 import cn.feng.untitled.util.animation.composed.ColorAnimation;
 import cn.feng.untitled.util.animation.composed.CustomAnimation;
 import cn.feng.untitled.util.animation.impl.SmoothStepAnimation;
+import cn.feng.untitled.util.misc.ChatUtil;
 import cn.feng.untitled.util.render.RenderUtil;
 import cn.feng.untitled.util.render.RoundedUtil;
 import cn.feng.untitled.value.impl.BoolValue;
@@ -29,7 +31,7 @@ public class ButtonComponent extends Component<Boolean> {
     }
 
     private Module module;
-    private boolean moduleMode;
+    private final boolean moduleMode;
 
     public ColorAnimation textColAnim;
     public ColorAnimation bgColAnim;
@@ -41,22 +43,23 @@ public class ButtonComponent extends Component<Boolean> {
         textColAnim = new ColorAnimation(isEnabled()? ThemeColor.grayColor : Color.WHITE, isEnabled()? Color.WHITE : ThemeColor.grayColor, 200);
         bgColAnim = new ColorAnimation(isEnabled()? Color.BLACK : ThemeColor.barBgColor, isEnabled()? ThemeColor.barBgColor : Color.BLACK, 200);
         circColAnim = new ColorAnimation(isEnabled()? ThemeColor.grayColor : ThemeColor.focusedColor, isEnabled()? ThemeColor.focusedColor : ThemeColor.grayColor, 200);
-        circXAnim = new CustomAnimation(SmoothStepAnimation.class, 200, 0f, 10f);
+        circXAnim = new CustomAnimation(SmoothStepAnimation.class, 200, isEnabled()? 0f : 11f, isEnabled()? 11f : 0f);
         width = 14f;
         height = 12f;
-        if (!isEnabled()) circXAnim.changeDirection();
     }
 
     @Override
     public void draw(float x, float y, int mouseX, int mouseY) {
-        float bgWidth = 10f;
-        float bgHeight = 5f;
-        float circRadius = 6f;
-        float radius = 4f;
-        this.x = x + width - 10f - bgWidth;
+        float bgWidth = 20f;
+        float bgHeight = 7f;
+        float circRadius = 9f;
+        float bgY = this.y - 1f;
+        this.x = x + (NeverLoseGUI.width - NeverLoseGUI.leftWidth - 30f) / 2f - 6f - bgWidth;
         this.y = y;
-        RoundedUtil.drawRound(this.x, this.y, bgWidth, bgHeight, radius, bgColAnim.getOutput());
-        RoundedUtil.drawRound(this.x - circRadius + circXAnim.getOutput().floatValue(), this.y - circRadius, circRadius, circRadius, radius, circColAnim.getOutput());
+        this.width = bgWidth + 6f;
+        this.height = bgHeight + 6f;
+        RoundedUtil.drawRound(this.x, bgY, bgWidth, bgHeight, 3f, bgColAnim.getOutput());
+        RoundedUtil.drawRound(this.x + circXAnim.getOutput().floatValue(), bgY - 1f, circRadius, circRadius, 4f, circColAnim.getOutput());
     }
 
     private void toggle() {
@@ -75,7 +78,7 @@ public class ButtonComponent extends Component<Boolean> {
 
     @Override
     public void onMouseClick(int mouseX, int mouseY, int button) {
-        if (RenderUtil.hovering(mouseX, mouseY, x, y, width, height) && button == 0) {
+        if (RenderUtil.hovering(mouseX, mouseY, x - 3f, y - 3f, width, height) && button == 0) {
             toggle();
         }
     }

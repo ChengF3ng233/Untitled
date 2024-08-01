@@ -56,10 +56,15 @@ public enum Client {
 
         Logger.info("Miscellaneous...");
         configManager.loadConfigs();
-        uiManager.initGUI();
 
         Display.setTitle(CLIENT_NAME + " | LWJGL Version " + Sys.getVersion());
         Logger.info("Done.");
+    }
+
+    public void postStart() {
+        Logger.info("Client post start...");
+
+        uiManager.initGUI();
     }
 
     public void stop() {

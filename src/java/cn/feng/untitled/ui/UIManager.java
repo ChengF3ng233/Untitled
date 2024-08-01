@@ -5,8 +5,9 @@ import cn.feng.untitled.event.api.SubscribeEvent;
 import cn.feng.untitled.event.impl.Render2DEvent;
 import cn.feng.untitled.ui.clickgui.dropdown.DropdownGUI;
 import cn.feng.untitled.ui.clickgui.window.NeverLoseGUI;
-import cn.feng.untitled.ui.hud.Widget;
-import cn.feng.untitled.ui.hud.impl.TextWidget;
+import cn.feng.untitled.ui.widget.Widget;
+import cn.feng.untitled.ui.widget.impl.ArraylistWidget;
+import cn.feng.untitled.ui.widget.impl.TextWidget;
 import net.minecraft.client.gui.GuiScreen;
 
 import java.util.ArrayList;
@@ -28,6 +29,7 @@ public class UIManager {
 
     public void registerWidgets() {
         register(new TextWidget());
+        register(new ArraylistWidget());
     }
 
     private void register(Widget widget) {
