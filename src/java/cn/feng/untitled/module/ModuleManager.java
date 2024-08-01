@@ -10,7 +10,9 @@ import cn.feng.untitled.util.data.compare.CompareMode;
 import cn.feng.untitled.util.data.compare.ModuleComparator;
 import cn.feng.untitled.util.exception.ModuleNotFoundException;
 import cn.feng.untitled.util.exception.ValueLoadException;
+import cn.feng.untitled.util.misc.Logger;
 import cn.feng.untitled.value.Value;
+import cn.feng.untitled.value.impl.BoolValue;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
@@ -42,21 +44,29 @@ public class ModuleManager {
     public void register(Widget widget) {
         Module widgetModule = new Module(widget.name, ModuleCategory.Widget);
         widgetModule.enabled = widget.defaultOn;
-        register(widgetModule, widget.getClass().getDeclaredFields());
+        this.moduleList.add(widgetModule);
+
+        for (Field field : widget.getClass().getDeclaredFields()) {
+            addValue(field, widgetModule, widget);
+        }
+    }
+
+    private void addValue(Field field, Module module, Object obj) {
+        field.setAccessible(true);
+        if (field.getType().getSuperclass() == Value.class) {
+            try {
+                module.valueList.add((Value<?>) field.get(obj));
+            } catch (IllegalAccessException e) {
+                throw new ValueLoadException("Failed to load " + module.name + ", " + field.getName());
+            }
+        }
     }
 
     private void register(Module module, Field[] classFields) {
         this.moduleList.add(module);
 
         for (Field field : classFields) {
-            field.setAccessible(true);
-            if (field.getType() == Value.class) {
-                try {
-                    module.valueList.add((Value<?>) field.get(module));
-                } catch (IllegalAccessException e) {
-                    throw new ValueLoadException("Failed to load " + module.name + ", " + field.getName());
-                }
-            }
+            addValue(field, module, module);
         }
     }
 
@@ -64,6 +74,14 @@ public class ModuleManager {
         register(new ToggleSprint());
         register(new ClickGUI());
         register(new HUD());
+
+        for (int i = 0; i < 10; i++) {
+            Module test = new Module("Test" + i, ModuleCategory.Client);
+            register(test);
+            for (int j = 0; j < 4; j++) {
+                test.valueList.add(new BoolValue("BoolValue" + j, false));
+            }
+        }
     }
 
     public Module getModule(Class<? extends Module> klass) {

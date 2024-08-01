@@ -237,7 +237,7 @@ public class FontRenderer extends Font {
     }
 
     public int renderString(String text, double x, double y, int color, boolean shadow) {
-        if (!chinese && isChinese(text)) return FontLoader.miSans(font.getSize()).renderString(text, x, y, color, shadow);
+        if (!chinese && isChinese(text)) return FontLoader.miSans(font.getSize() - 1).renderString(text, x, y, color, shadow);
 
         GL11.glPushMatrix();
         GL11.glPushAttrib(1048575);
@@ -357,7 +357,7 @@ public class FontRenderer extends Font {
 
     public int getStringWidth(String text) {
         if (!this.chinese && this.isChinese(text)) {
-            return FontLoader.miSans(font.getSize()).getStringWidth(text);
+            return FontLoader.miSans(font.getSize() - 1).getStringWidth(text);
         } else {
             Map<Character, FontCharacter> map = this.defaultCharacters;
 

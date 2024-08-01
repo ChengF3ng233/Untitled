@@ -8,7 +8,6 @@ import cn.feng.untitled.value.Value;
  **/
 public abstract class Component<T> {
     public float x, y, width, height;
-    protected final float gap = 10f;
     public Value<T> value;
     public Component(Value<T> value) {
         this.value = value;

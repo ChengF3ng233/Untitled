@@ -22,7 +22,6 @@ public class ValuePanel extends Panel {
 
     public ValuePanel(Value<?> value) {
         this.value = value;
-        if (!(value instanceof BoolValue)) return;
 
         if (value instanceof BoolValue bv) {
             component = new ButtonComponent(bv);
@@ -36,18 +35,19 @@ public class ValuePanel extends Panel {
             // ColorValue
         }
 
+        if (component == null) return;
         component.width = this.width;
     }
 
     @Override
     public void init() {
-        if (!(component instanceof ButtonComponent)) return;
+        if (component == null) return;
         component.init();
     }
 
     @Override
     public void draw(float x, float y, int mouseX, int mouseY) {
-        if (!(component instanceof ButtonComponent)) return;
+        if (component == null) return;
         int textColor = Color.WHITE.getRGB();
         if (component instanceof ButtonComponent bc) {
             textColor = bc.textColAnim.getOutput().getRGB();
@@ -59,6 +59,7 @@ public class ValuePanel extends Panel {
 
     @Override
     public void onMouseClick(int mouseX, int mouseY, int button) {
+        if (component == null) return;
         component.onMouseClick(mouseX, mouseY, button);
     }
 }

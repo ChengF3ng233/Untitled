@@ -18,7 +18,7 @@ public class FontLoader {
      * Register international font MiSans
      */
     public static void registerFonts() {
-        miSans(18);
+        miSans(17);
         greyCliff(15);
         greyCliff(16);
         greyCliff(17);
@@ -27,6 +27,7 @@ public class FontLoader {
         rubik(16);
         rubik(17);
         rubik(18);
+        rubik(28);
     }
 
     public static FontRenderer greyCliff(int size) {
@@ -43,7 +44,7 @@ public class FontLoader {
 
     private static FontRenderer get(Map<Integer, FontRenderer> map, int size, String name, boolean chinese) {
         if (!map.containsKey(size)) {
-            Logger.info("Registering font " + name + (chinese ? " including Chinese." : "."));
+            Logger.info("Registering font " + name + (chinese ? " including Chinese." : ".") + " Size: " + size);
             java.awt.Font font = FontUtil.getResource("untitled/font/" + name + ".ttf", size);
             if (font != null) {
                 map.put(size, new FontRenderer(font, chinese));

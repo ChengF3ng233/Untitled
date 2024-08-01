@@ -1,8 +1,11 @@
 package cn.feng.untitled.config;
 
 import cn.feng.untitled.Client;
+import cn.feng.untitled.config.impl.ModuleConfig;
 import cn.feng.untitled.util.MinecraftInstance;
 import cn.feng.untitled.util.exception.MemberNotFoundException;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
 import java.io.File;
 import java.io.IOException;
@@ -16,6 +19,7 @@ import java.util.List;
 public class ConfigManager extends MinecraftInstance {
     public static final File rootDir = new File(mc.mcDataDir, Client.instance.CLIENT_NAME);
     public static final File fontDir = new File(rootDir, "font");
+    public static final Gson gson = new GsonBuilder().setPrettyPrinting().create();
     private final List<Config> configList;
 
     public ConfigManager() {
@@ -32,8 +36,16 @@ public class ConfigManager extends MinecraftInstance {
         throw new MemberNotFoundException("Config not found: " + name);
     }
 
-    public void registerConfigs() {
+    public Config getConfig(Class<? extends Config> klass) {
+        for (Config config : configList) {
+            if (config.getClass() == klass) return config;
+        }
 
+        throw new MemberNotFoundException("Config not found: " + klass.getName());
+    }
+
+    public void registerConfigs() {
+        configList.add(new ModuleConfig());
     }
 
     public void loadConfigs() {

@@ -138,7 +138,7 @@ public class NeverLoseGUI extends GuiScreen {
             boolean isLeft = panelIndex % 2 == 0;
             moduleX = x + leftWidth + 10f + (isLeft? 0 : panel.width + 10);
             panel.draw(moduleX, isLeft? leftY : rightY, mouseX, mouseY);
-            if (isLeft) leftY += panel.height + 10; else rightY += panel.height + 10;
+            if (isLeft) leftY += panel.height + 20; else rightY += panel.height + 20;
             panelIndex++;
         }
 

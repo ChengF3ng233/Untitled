@@ -602,7 +602,7 @@ public class FontRenderer implements IResourceManagerReloadListener {
      */
     private int renderString(String text, float x, float y, int color, boolean dropShadow) {
         if (HUD.fancyFont.value) {
-            return FontLoader.miSans(18).renderString(text, x, y + 1f, color, dropShadow);
+            return FontLoader.miSans(17).renderString(text, x, y + 1f, color, dropShadow);
         }
         if (text == null) {
             return 0;
@@ -635,7 +635,7 @@ public class FontRenderer implements IResourceManagerReloadListener {
      * Returns the width of this string. Equivalent of FontMetrics.stringWidth(String s).
      */
     public int getStringWidth(String text) {
-        if (HUD.fancyFont.value) return FontLoader.miSans(18).getStringWidth(text);
+        if (HUD.fancyFont.value) return FontLoader.miSans(17).getStringWidth(text);
         if (text == null) {
             return 0;
         } else {

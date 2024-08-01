@@ -1,5 +1,6 @@
 package cn.feng.untitled.ui.clickgui.window.panel.impl;
 
+import cn.feng.untitled.Client;
 import cn.feng.untitled.module.Module;
 import cn.feng.untitled.ui.clickgui.window.NeverLoseGUI;
 import cn.feng.untitled.ui.clickgui.window.ThemeColor;
@@ -38,7 +39,7 @@ public class ModulePanel extends Panel {
     @Override
     public void init() {
         width = (NeverLoseGUI.width - NeverLoseGUI.leftWidth - 30f) / 2f;
-        height = 20f;
+        height = 50f;
         valuePanelList.forEach(ValuePanel::init);
         enableBtn.init();
     }
@@ -54,8 +55,6 @@ public class ModulePanel extends Panel {
         float contentX = x + 3f;
         float contentY = panelY + gap + 2f;
 
-        this.height = contentY - y;
-
         // Module name
         font.drawString(module.name, contentX, y, ThemeColor.grayColor.getRGB());
 
@@ -68,15 +67,17 @@ public class ModulePanel extends Panel {
 
         float valueY = contentY + enableBtn.height + gap;
         for (ValuePanel panel : valuePanelList) {
-            panel.draw(x, valueY, mouseX, mouseY);
-            valueY += panel.height + gap;
+            panel.draw(contentX, valueY, mouseX, mouseY);
+            if (panel.height != 0) valueY += panel.height + gap;
         }
-        height = valueY - y;
+
+        height = valueY - panelY - gap;
     }
 
     @Override
     public void onMouseClick(int mouseX, int mouseY, int button) {
         valuePanelList.forEach(it -> it.onMouseClick(mouseX, mouseY, button));
         enableBtn.onMouseClick(mouseX, mouseY, button);
+        Client.instance.configManager.saveConfigs();
     }
 }
