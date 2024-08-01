@@ -12,13 +12,14 @@ import java.util.Map;
 public class FontLoader {
     private static final Map<Integer, FontRenderer> greyCliff = new HashMap<>();
     private static final Map<Integer, FontRenderer> rubik = new HashMap<>();
-    public static Map<Integer, FontRenderer> miSans = new HashMap<>();
+    private static final Map<Integer, FontRenderer> miSans = new HashMap<>();
 
     /**
      * Register international font MiSans
      */
     public static void registerFonts() {
         miSans(17);
+        greyCliff(14);
         greyCliff(15);
         greyCliff(16);
         greyCliff(17);

@@ -1,9 +1,8 @@
-package cn.feng.untitled.util.animation.composed;
+package cn.feng.untitled.util.animation.advanced.composed;
 
-import cn.feng.untitled.util.animation.ComposedAnimation;
-import cn.feng.untitled.util.animation.Direction;
-import cn.feng.untitled.util.animation.impl.SmoothStepAnimation;
-import lombok.Getter;
+import cn.feng.untitled.util.animation.advanced.ComposedAnimation;
+import cn.feng.untitled.util.animation.advanced.Direction;
+import cn.feng.untitled.util.animation.advanced.impl.SmoothStepAnimation;
 
 import java.awt.*;
 

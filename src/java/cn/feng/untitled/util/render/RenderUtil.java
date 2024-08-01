@@ -1,10 +1,15 @@
 package cn.feng.untitled.util.render;
 
 import cn.feng.untitled.util.MinecraftInstance;
+import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.client.renderer.GlStateManager;
+import net.minecraft.util.ResourceLocation;
 import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.GL11;
+import org.lwjgl.opengl.GL13;
+
+import java.awt.*;
 
 import static org.lwjgl.opengl.GL11.*;
 
@@ -20,6 +25,31 @@ public class RenderUtil extends MinecraftInstance {
     public static void setAlphaLimit(float limit) {
         GlStateManager.enableAlpha();
         GlStateManager.alphaFunc(GL_GREATER, (float) (limit * .01));
+    }
+
+    public static void drawImage(ResourceLocation resourceLocation, float x, float y, float imgWidth, float imgHeight) {
+        GLUtil.startBlend();
+
+        // 绑定纹理并设置过滤参数
+        mc.getTextureManager().bindTexture(resourceLocation);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+
+        // 启用多重采样
+        glEnable(GL13.GL_MULTISAMPLE);
+
+        Gui.drawModalRectWithCustomSizedTexture(x, y, 0, 0, imgWidth, imgHeight, imgWidth, imgHeight);
+
+        // 禁用多重采样
+        glDisable(GL13.GL_MULTISAMPLE);
+
+        GLUtil.endBlend();
+    }
+
+    public static void drawImage(ResourceLocation resourceLocation, float x, float y, float imgWidth, float imgHeight, Color color) {
+        color(color.getRGB());
+        drawImage(resourceLocation, x, y, imgWidth, imgHeight);
+        resetColor();
     }
 
     /**

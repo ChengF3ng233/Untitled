@@ -9,6 +9,7 @@ import org.lwjgl.glfw.GLFW;
 import org.lwjgl.LWJGLException;
 import org.lwjgl.Sys;
 import org.lwjgl.opengl.Display;
+
 public class Mouse {
 
     // Fields for reflection compatibility with lwjgl2

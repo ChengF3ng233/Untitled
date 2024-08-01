@@ -16,7 +16,7 @@ public class Module extends MinecraftInstance {
     public ModuleCategory category;
     public int key;
     public boolean enabled;
-    public boolean splittable = true;
+    public boolean fixed = false;
     public List<Value<?>> valueList = new ArrayList<>();
 
     public Module(String name, ModuleCategory category, int key, boolean enabled) {

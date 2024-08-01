@@ -16,10 +16,12 @@ public class ClickGUI extends Module {
 
     public ClickGUI() {
         super("ClickGUI", ModuleCategory.Client, Keyboard.KEY_RSHIFT);
+        fixed = true;
     }
 
     @Override
     public void onEnable() {
+        enabled = false;
         switch (mode.value) {
             case "Dropdown":
                 mc.displayGuiScreen(Client.instance.uiManager.dropdownGUI);
@@ -29,6 +31,5 @@ public class ClickGUI extends Module {
                 mc.displayGuiScreen(Client.instance.uiManager.neverLoseGUI);
                 break;
         }
-        enabled = false;
     }
 }

@@ -2,6 +2,7 @@ package cn.feng.untitled.ui.clickgui.window.panel.impl;
 
 import cn.feng.untitled.ui.clickgui.window.component.Component;
 import cn.feng.untitled.ui.clickgui.window.component.impl.ButtonComponent;
+import cn.feng.untitled.ui.clickgui.window.component.impl.ModeComponent;
 import cn.feng.untitled.ui.clickgui.window.panel.Panel;
 import cn.feng.untitled.ui.font.FontLoader;
 import cn.feng.untitled.value.Value;
@@ -27,16 +28,13 @@ public class ValuePanel extends Panel {
             component = new ButtonComponent(bv);
         } else if (value instanceof NumberValue) {
 
-        } else if (value instanceof ModeValue) {
-
+        } else if (value instanceof ModeValue mv) {
+            component = new ModeComponent(mv);
         } else if (value instanceof StringValue) {
 
         } else {
             // ColorValue
         }
-
-        if (component == null) return;
-        component.width = this.width;
     }
 
     @Override
@@ -52,7 +50,7 @@ public class ValuePanel extends Panel {
         if (component instanceof ButtonComponent bc) {
             textColor = bc.textColAnim.getOutput().getRGB();
         }
-        FontLoader.greyCliff(16).drawString(value.name, x, y, textColor);
+        FontLoader.greyCliff(16).drawString(value.name, x, y + 1, textColor);
         component.draw(x, y, mouseX, mouseY);
         height = component.height;
     }

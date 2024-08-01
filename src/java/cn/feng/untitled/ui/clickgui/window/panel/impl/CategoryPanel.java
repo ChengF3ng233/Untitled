@@ -3,11 +3,12 @@ package cn.feng.untitled.ui.clickgui.window.panel.impl;
 import cn.feng.untitled.Client;
 import cn.feng.untitled.module.Module;
 import cn.feng.untitled.module.ModuleCategory;
-import cn.feng.untitled.ui.clickgui.window.CategoryType;
-import cn.feng.untitled.ui.clickgui.window.ThemeColor;
 import cn.feng.untitled.ui.clickgui.window.panel.Panel;
 import cn.feng.untitled.ui.font.FontLoader;
-import cn.feng.untitled.util.render.RenderUtil;
+import cn.feng.untitled.util.animation.advanced.composed.CustomAnimation;
+import cn.feng.untitled.util.animation.advanced.impl.SmoothStepAnimation;
+import cn.feng.untitled.util.animation.simple.SimpleAnimation;
+import org.lwjgl.input.Mouse;
 
 import java.awt.*;
 import java.util.ArrayList;
@@ -20,6 +21,8 @@ import java.util.List;
 public class CategoryPanel extends Panel {
     public ModuleCategory category;
     public List<ModulePanel> modulePanelList;
+    public SimpleAnimation scrollAnim;
+
 
     public CategoryPanel(ModuleCategory category) {
         this.category = category;
@@ -30,6 +33,8 @@ public class CategoryPanel extends Panel {
         for (Module module : Client.instance.moduleManager.getModuleByCategory(category)) {
             modulePanelList.add(new ModulePanel(module));
         }
+
+        scrollAnim = new SimpleAnimation(1);
     }
 
     @Override
@@ -37,7 +42,21 @@ public class CategoryPanel extends Panel {
         this.x = x;
         this.y = y;
         this.height = FontLoader.greyCliff(18).height();
+        scrollAnim.speed = 0.2f;
 
         FontLoader.greyCliff(18).drawString(category.name(), x, y, Color.WHITE.getRGB());
+    }
+
+    public void handleScroll() {
+        // Scroll
+        int wheel = Mouse.getDWheel();
+        if (wheel != 0) {
+            if (wheel > 0) {
+                scrollAnim.target += 20;
+            } else {
+                scrollAnim.target -= 20;
+            }
+            if (scrollAnim.target > 0) scrollAnim.target = 0f;
+        }
     }
 }

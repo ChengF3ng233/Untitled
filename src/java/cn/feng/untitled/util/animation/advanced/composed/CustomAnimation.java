@@ -1,7 +1,7 @@
-package cn.feng.untitled.util.animation.composed;
+package cn.feng.untitled.util.animation.advanced.composed;
 
-import cn.feng.untitled.util.animation.Animation;
-import cn.feng.untitled.util.animation.ComposedAnimation;
+import cn.feng.untitled.util.animation.advanced.Animation;
+import cn.feng.untitled.util.animation.advanced.ComposedAnimation;
 import lombok.Getter;
 
 import java.lang.reflect.InvocationTargetException;

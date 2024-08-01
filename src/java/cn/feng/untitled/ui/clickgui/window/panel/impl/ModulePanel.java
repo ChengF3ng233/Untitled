@@ -34,12 +34,12 @@ public class ModulePanel extends Panel {
         }
 
         enableBtn = new ButtonComponent(module);
+        height = 0f;
     }
 
     @Override
     public void init() {
         width = (NeverLoseGUI.width - NeverLoseGUI.leftWidth - 30f) / 2f;
-        height = 50f;
         valuePanelList.forEach(ValuePanel::init);
         enableBtn.init();
     }
@@ -59,16 +59,20 @@ public class ModulePanel extends Panel {
         font.drawString(module.name, contentX, y, ThemeColor.grayColor.getRGB());
 
         // Panel
-        RoundedUtil.drawRound(x, panelY, width, height, 3f, ThemeColor.panelColor);
+        RoundedUtil.drawRoundOutline(x, panelY, width, height, 3f, 0.2f, ThemeColor.panelColor, ThemeColor.outlineColor);
 
         FontRenderer font2 = FontLoader.greyCliff(16);
         font2.drawString("Enabled", contentX, contentY, Color.WHITE.getRGB());
         enableBtn.draw(contentX, contentY, mouseX, mouseY);
 
         float valueY = contentY + enableBtn.height + gap;
+
         for (ValuePanel panel : valuePanelList) {
             panel.draw(contentX, valueY, mouseX, mouseY);
             if (panel.height != 0) valueY += panel.height + gap;
+            if (valuePanelList.indexOf(panel) != valuePanelList.size() - 1) {
+                RoundedUtil.drawRound(contentX, valueY - gap - 2.5f, width - 6f, 0.15f, 0f, ThemeColor.grayColor);
+            }
         }
 
         height = valueY - panelY - gap;

@@ -1,5 +1,6 @@
 package cn.feng.untitled.ui.clickgui.window.component;
 
+import cn.feng.untitled.ui.clickgui.window.NeverLoseGUI;
 import cn.feng.untitled.value.Value;
 
 /**
@@ -9,6 +10,10 @@ import cn.feng.untitled.value.Value;
 public abstract class Component<T> {
     public float x, y, width, height;
     public Value<T> value;
+
+    protected float panelWidth = (NeverLoseGUI.width - NeverLoseGUI.leftWidth - 30f) / 2f;
+    protected float xGap = 3f;
+
     public Component(Value<T> value) {
         this.value = value;
     }

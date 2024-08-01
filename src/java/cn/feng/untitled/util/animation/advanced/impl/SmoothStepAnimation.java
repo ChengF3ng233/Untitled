@@ -1,8 +1,8 @@
-package cn.feng.untitled.util.animation.impl;
+package cn.feng.untitled.util.animation.advanced.impl;
 
 
-import cn.feng.untitled.util.animation.Animation;
-import cn.feng.untitled.util.animation.Direction;
+import cn.feng.untitled.util.animation.advanced.Animation;
+import cn.feng.untitled.util.animation.advanced.Direction;
 
 public class SmoothStepAnimation extends Animation {
 

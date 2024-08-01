@@ -26,6 +26,13 @@ public class MathUtil {
         return yawPos(Minecraft.getMinecraft().thePlayer.rotationYaw * MathHelper.deg2Rad, value);
     }
 
+    public static float[] calculateScale(float posX, float posY, float centerX, float centerY, float scale) {
+        float xDistance = centerX - posX;
+        float yDistance = centerY - posY;
+
+        return new float[]{centerX + scale * xDistance, centerY + scale * yDistance};
+    }
+
     public static double[] yawPos(float yaw, double value) {
         return new double[]{-MathHelper.sin(yaw) * value, MathHelper.cos(yaw) * value};
     }

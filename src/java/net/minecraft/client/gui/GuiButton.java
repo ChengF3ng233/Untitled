@@ -1,8 +1,8 @@
 package net.minecraft.client.gui;
 
 import cn.feng.untitled.ui.font.FontLoader;
-import cn.feng.untitled.util.animation.Direction;
-import cn.feng.untitled.util.animation.composed.ColorAnimation;
+import cn.feng.untitled.util.animation.advanced.Direction;
+import cn.feng.untitled.util.animation.advanced.composed.ColorAnimation;
 import cn.feng.untitled.util.render.RoundedUtil;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.audio.PositionedSoundRecord;
