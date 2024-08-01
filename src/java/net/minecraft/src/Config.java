@@ -1480,6 +1480,7 @@ public class Config {
             DisplayMode displaymode = Display.getDisplayMode();
             dbg("FSAA Samples: " + i);
 
+/*
             Display.setDisplayMode(displaymode);
             Display.create();
 
@@ -1487,42 +1488,27 @@ public class Config {
                 Display.setResizable(false);
                 Display.setResizable(true);
             }
+*/
+            Display.destroy();
+            Display.setDisplayMode(displaymode);
+            Display.create((new PixelFormat()).withDepthBits(24).withSamples(i));
+
+            if (Util.getOSType() == Util.EnumOS.WINDOWS) {
+                Display.setResizable(false);
+                Display.setResizable(true);
+            }
 
 /*            try {
-                Display.destroy();
-                Display.setDisplayMode(displaymode);
-                Display.create((new PixelFormat()).withDepthBits(24).withSamples(i));
-
-                if (Util.getOSType() == Util.EnumOS.WINDOWS) {
-                    Display.setResizable(false);
-                    Display.setResizable(true);
-                }
             } catch (LWJGLException lwjglexception2) {
                 warn("Error setting FSAA: " + i + "x");
                 lwjglexception2.printStackTrace();
 
-                try {
-                    Display.setDisplayMode(displaymode);
-                    Display.create((new PixelFormat()).withDepthBits(24));
+                Display.setDisplayMode(displaymode);
+                Display.create((new PixelFormat()).withDepthBits(24));
 
-                    if (Util.getOSType() == Util.EnumOS.WINDOWS) {
-                        Display.setResizable(false);
-                        Display.setResizable(true);
-                    }
-                } catch (LWJGLException lwjglexception1) {
-                    try {
-                        lwjglexception1.printStackTrace();
-
-                        Display.setDisplayMode(displaymode);
-                        Display.create();
-
-                        if (Util.getOSType() == Util.EnumOS.WINDOWS) {
-                            Display.setResizable(false);
-                            Display.setResizable(true);
-                        }
-                    } catch (LWJGLException lwjglexception) {
-                        lwjglexception.printStackTrace();
-                    }
+                if (Util.getOSType() == Util.EnumOS.WINDOWS) {
+                    Display.setResizable(false);
+                    Display.setResizable(true);
                 }
             }*/
 

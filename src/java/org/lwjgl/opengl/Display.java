@@ -20,7 +20,7 @@ public class Display {
     private static String windowTitle = "Game";
 
     private static boolean displayCreated = false;
-    private static boolean displayFocused = true;
+    private static boolean displayFocused = false;
     private static boolean displayVisible = true;
     private static boolean displayDirty = false;
     private static boolean displayResizable = false;
@@ -71,27 +71,27 @@ public class Display {
      * <p>
      * The window created will be set up in orthographic 2D projection, with 1:1 pixel ratio with GL coordinates.
      *
-     * @param pixel_format    Describes the minimum specifications the context must fulfill.
-     * @param shared_drawable The Drawable to share context with. (optional, may be null)
-     *
+     * @param pixelFormat    Describes the minimum specifications the context must fulfill.
+     * @param sharedDrawable The Drawable to share context with. (optional, may be null)
      * @throws org.lwjgl.LWJGLException
      */
-    public static void create(PixelFormat pixel_format, Drawable shared_drawable) {
-        System.out.println("TODO: Implement Display.create(PixelFormat, Drawable)"); // TODO
-        create();
-    }
-
-    public static void create(PixelFormat pixel_format, ContextAttribs attribs) {
-        System.out.println("TODO: Implement Display.create(PixelFormat, ContextAttribs)"); // TODO
-        create();
-    }
-
-    public static void create(PixelFormat pixel_format) {
-        System.out.println("TODO: Implement Display.create(PixelFormat)"); // TODO
-        create();
+    public static void create(PixelFormat pixelFormat, Drawable sharedDrawable) {
+        create(pixelFormat, null, sharedDrawable.getGlfwWindowId());
     }
 
     public static void create() {
+        create(null, (ContextAttribs) null);
+    }
+
+    public static void create(PixelFormat pixelFormat) {
+        create(pixelFormat, (ContextAttribs) null);
+    }
+
+    public static void create(PixelFormat pixelFormat, ContextAttribs attribs) {
+        create(pixelFormat, attribs, NULL);
+    }
+
+    public static void create(PixelFormat pixelFormat, ContextAttribs attribs, long sharedWindow) {
         if (displayCreated) {
             return;
         }
@@ -106,16 +106,42 @@ public class Display {
 
         desktopDisplayMode = new DisplayMode(monitorWidth, monitorHeight, monitorBitPerPixel, monitorRefreshRate);
 
+        final int ctxMajor = (attribs != null) ? attribs.getMajorVersion() : 2;
+        final int ctxMinor = (attribs != null) ? attribs.getMinorVersion() : 1;
+        final boolean ctxForwardCompat = attribs != null && attribs.isForwardCompatible();
+
         glfwDefaultWindowHints();
         glfwWindowHint(GLFW_VISIBLE, GLFW_TRUE);
         glfwWindowHint(GLFW_RESIZABLE, GLFW_TRUE);
-        glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 2);
-        glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 1);
+        glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, ctxMajor);
+        glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, ctxMinor);
+        glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, ctxForwardCompat ? GLFW_TRUE : GLFW_FALSE);
 
-        glfwWindowHint(GLFW_COCOA_RETINA_FRAMEBUFFER, GLFW_FALSE); // request a non-hidpi framebuffer on Retina displays
-                                                                   // on MacOS
+        if (attribs != null) {
+            if (attribs.isProfileCore()) {
+                glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+            } else if (attribs.isProfileCompatibility()) {
+                glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_COMPAT_PROFILE);
+            }
+        }
 
-        Window.handle = glfwCreateWindow(mode.getWidth(), mode.getHeight(), windowTitle, NULL, NULL);
+        glfwWindowHint(GLFW_MAXIMIZED, GLFW_FALSE);
+        glfwWindowHint(GLFW_FOCUSED, GLFW_TRUE);
+        displayFocused = true;
+        glfwWindowHint(GLFW_ICONIFIED, GLFW_FALSE);
+        displayVisible = true;
+        glfwWindowHint(GLFW_DECORATED, GLFW_TRUE);
+
+        glfwWindowHint(GLFW_SRGB_CAPABLE, GLFW_TRUE);
+        glfwWindowHint(GLFW_DOUBLEBUFFER, GLFW_TRUE);
+        glfwWindowHint(GLFW_CONTEXT_NO_ERROR, GLFW_FALSE);
+        glfwWindowHint(GLFW_OPENGL_DEBUG_CONTEXT, GLFW_TRUE);
+
+        glfwWindowHint(GLFW_POSITION_X, (monitorWidth - mode.getWidth()) / 2);
+        glfwWindowHint(GLFW_POSITION_Y, (monitorHeight - mode.getHeight()) / 2);
+
+        Window.handle = glfwCreateWindow(mode.getWidth(), mode.getHeight(), windowTitle, NULL, sharedWindow);
+
         if (Window.handle == 0L) {
             throw new IllegalStateException("Failed to create Display window");
         }
@@ -126,12 +152,12 @@ public class Display {
             public void invoke(long window, int key, int scancode, int action, int mods) {
                 cancelNextChar = false;
                 if (key > GLFW_KEY_SPACE && key <= GLFW_KEY_GRAVE_ACCENT) { // Handle keys have a char. Exclude space to
-                                                                            // avoid extra input when switching IME
+                    // avoid extra input when switching IME
                     if ((GLFW_MOD_CONTROL & mods) != 0 && (GLFW_MOD_ALT & mods) == 0) { // Handle ctrl + x/c/v.
                         Keyboard.addGlfwKeyEvent(window, key, scancode, action, mods, (char) (key & 0x1f));
                         cancelNextChar = true; // Cancel char event from ctrl key since its already handled here
                     } else if (action > 0) { // Delay press and repeat key event to actual char input. There is ALWAYS a
-                                             // char after them
+                        // char after them
                         ingredientKeyEvent = new Keyboard.KeyEvent(
                                 KeyCodes.glfwToLwjgl(key),
                                 '\0',
@@ -145,17 +171,16 @@ public class Display {
                     }
                 } else { // Other key with no char event associated
                     char mappedChar = key == GLFW_KEY_ENTER ? 0x0D:
-                        key == GLFW_KEY_ESCAPE ? 0x1B:
-                        key == GLFW_KEY_TAB ? 0x09:
-                        key == GLFW_KEY_BACKSPACE ? 0x08:
-                        '\0';
+                            key == GLFW_KEY_ESCAPE ? 0x1B:
+                                    key == GLFW_KEY_TAB ? 0x09:
+                                            key == GLFW_KEY_BACKSPACE ? 0x08:
+                                                    '\0';
                     Keyboard.addGlfwKeyEvent(window, key, scancode, action, mods, mappedChar);
                 }
             }
         };
 
         Window.charCallback = new GLFWCharCallback() {
-
             @Override
             public void invoke(long window, int codepoint) {
                 if (cancelNextChar) { // Char event being cancelled
@@ -204,9 +229,9 @@ public class Display {
             @Override
             public void invoke(long window, boolean focused) {
                 displayFocused = focused;
-                Logger.info("Window focused: " + focused);
             }
         };
+
 
         Window.windowIconifyCallback = new GLFWWindowIconifyCallback() {
 
@@ -270,12 +295,18 @@ public class Display {
         drawable = new DrawableGL();
         GL.createCapabilities();
 
-        setIcon(savedIcons);
-        savedIcons = null;
+        if (savedIcons != null) {
+            setIcon(savedIcons);
+            savedIcons = null;
+        }
 
         glfwSwapInterval(1);
 
         displayCreated = true;
+
+        if (isCreated() && GLFW.glfwRawMouseMotionSupported()) {
+            GLFW.glfwSetInputMode(Window.handle, GLFW_RAW_MOUSE_MOTION, GLFW_TRUE);
+        }
 
         if (startFullscreen) {
             setFullscreen(true);

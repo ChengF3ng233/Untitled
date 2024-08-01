@@ -611,9 +611,8 @@ public class Minecraft implements IThreadListener, IPlayerUsage {
     private void createDisplay() throws LWJGLException {
         Display.setResizable(true);
         Display.setTitle("Minecraft 1.8.9" + " | LWJGL Version " + Sys.getVersion());
-        Display.create();
+        Display.create((new PixelFormat()).withDepthBits(24));
 /*        try {
-            Display.create((new PixelFormat()).withDepthBits(24));
         } catch (LWJGLException lwjglexception) {
             logger.error("Couldn't set pixel format", lwjglexception);
 

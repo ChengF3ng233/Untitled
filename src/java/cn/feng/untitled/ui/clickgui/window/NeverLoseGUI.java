@@ -43,10 +43,8 @@ public class NeverLoseGUI extends GuiScreen {
         leftWidth = 90f;
         topWidth = 35f;
         radius = 4f;
-
-        ScaledResolution sr = new ScaledResolution(mc);
-        x = sr.getScaledWidth() / 2f - width / 2f;
-        y = sr.getScaledHeight() / 2f - height / 2f;
+        x = 10f;
+        y = 10f;
 
         categoryPanelList = new ArrayList<>();
 

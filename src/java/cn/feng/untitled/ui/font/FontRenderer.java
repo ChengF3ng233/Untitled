@@ -67,6 +67,7 @@ public class FontRenderer extends Font {
 
     private void fillCharacters(Map<Character, FontCharacter> map, int style, boolean includeChinese) {
         java.awt.Font font = this.font.deriveFont(style);
+
         BufferedImage fontImage = new BufferedImage(1, 1, 2);
         Graphics2D fontGraphics = (Graphics2D) fontImage.getGraphics();
         FontMetrics fontMetrics = fontGraphics.getFontMetrics(font);
@@ -86,13 +87,17 @@ public class FontRenderer extends Font {
 
     private void fillCharacter(char character, Map<Character, FontCharacter> map, Graphics2D fontGraphics, FontMetrics fontMetrics) {
         Rectangle2D charRectangle = fontMetrics.getStringBounds(character + "", fontGraphics);
+
         BufferedImage charImage = new BufferedImage(MathHelper.ceiling_float_int((float) charRectangle.getWidth()) + 8, MathHelper.ceiling_float_int((float) charRectangle.getHeight()), 2);
         Graphics2D charGraphics = (Graphics2D) charImage.getGraphics();
-        charGraphics.setFont(font);
         int width = charImage.getWidth();
         int height = charImage.getHeight();
+
+        // 绘制透明背景
         charGraphics.setColor(TRANSPARENT_COLOR);
         charGraphics.fillRect(0, 0, width, height);
+        charGraphics.setFont(font);
+
         this.preDraw(charGraphics);
         charGraphics.drawString(character + "", 4, font.getSize());
 
@@ -317,6 +322,8 @@ public class FontRenderer extends Font {
                     if (map.containsKey(character)) {
                         map.get(character).render((float) x, (float) y);
                         x += map.get(character).width() - 8.0F;
+                    } else {
+                        fillSingleChar(character, map, bold);
                     }
                 }
             }
@@ -331,11 +338,28 @@ public class FontRenderer extends Font {
         return (int) (x - startX);
     }
 
+    /**
+     * 填充单个字符，用于常用3000汉字之外的字
+     * @param character 字符
+     * @param map map
+     * @param bold 粗体
+     */
+    private void fillSingleChar(char character, Map<Character, FontCharacter> map, boolean bold) {
+        // 不是中文字体就算了，肯定画不出来
+        if (!this.chinese) return;
+        java.awt.Font font = this.font.deriveFont(bold? java.awt.Font.BOLD : java.awt.Font.PLAIN);
+
+        BufferedImage fontImage = new BufferedImage(1, 1, 2);
+        Graphics2D fontGraphics = (Graphics2D) fontImage.getGraphics();
+        FontMetrics fontMetrics = fontGraphics.getFontMetrics(font);
+        fillCharacter(character, map, fontGraphics, fontMetrics);
+    }
+
     public int getStringWidth(String text) {
         if (!this.chinese && this.isChinese(text)) {
             return FontLoader.miSans(font.getSize()).getStringWidth(text);
         } else {
-            Map<Character, FontCharacter> characterSet = this.defaultCharacters;
+            Map<Character, FontCharacter> map = this.defaultCharacters;
 
             int length = text.length();
             char previousCharacter = '.';
@@ -348,13 +372,15 @@ public class FontRenderer extends Font {
                         int index = "0123456789abcdefklmnor".indexOf(text.toLowerCase().charAt(i + 1));
                         if (index >= 16 && index != 21) {
                             if (index == 17) {
-                                characterSet = this.boldCharacters;
+                                map = this.boldCharacters;
                             }
                         } else {
-                            characterSet = this.defaultCharacters;
+                            map = this.defaultCharacters;
                         }
-                    } else if (characterSet.containsKey(character)) {
-                        width = (int) ((float) width + (characterSet.get(character).width() - 8.0F));
+                    } else if (map.containsKey(character)) {
+                        width = (int) ((float) width + (map.get(character).width() - 8.0F));
+                    } else {
+                        fillSingleChar(character, map, map == boldCharacters);
                     }
                 }
 
