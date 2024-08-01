@@ -24,4 +24,7 @@ public abstract class Component<T> {
     public void onMouseClick(int mouseX, int mouseY, int button) {
 
     }
+    public void onKeyTyped(char c, int keyCode) {
+
+    }
 }

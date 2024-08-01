@@ -13,6 +13,8 @@ import cn.feng.untitled.util.exception.ValueLoadException;
 import cn.feng.untitled.util.misc.Logger;
 import cn.feng.untitled.value.Value;
 import cn.feng.untitled.value.impl.BoolValue;
+import cn.feng.untitled.value.impl.ModeValue;
+import cn.feng.untitled.value.impl.StringValue;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
@@ -78,9 +80,9 @@ public class ModuleManager {
         for (int i = 0; i < 10; i++) {
             Module test = new Module("Test" + i, ModuleCategory.Client);
             register(test);
-            for (int j = 0; j < 4; j++) {
-                test.valueList.add(new BoolValue("BoolValue" + j, false));
-            }
+            test.valueList.add(new BoolValue("BoolValue" , false));
+            test.valueList.add(new ModeValue("ModeValue", "Mode0", new String[]{"Mode0", "Mode1", "Mode2", "Mode3"}));
+            test.valueList.add(new StringValue("StringValue", "Value"));
         }
     }
 

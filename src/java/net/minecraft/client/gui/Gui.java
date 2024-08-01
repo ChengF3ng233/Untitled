@@ -1,5 +1,7 @@
 package net.minecraft.client.gui;
 
+import cn.feng.untitled.util.render.GLUtil;
+import cn.feng.untitled.util.render.RenderUtil;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.WorldRenderer;
@@ -12,6 +14,22 @@ public class Gui {
     public static final ResourceLocation statIcons = new ResourceLocation("textures/gui/container/stats_icons.png");
     public static final ResourceLocation icons = new ResourceLocation("textures/gui/icons.png");
     protected float zLevel;
+
+    public static void drawRect2(double x, double y, double width, double height, int color) {
+        RenderUtil.resetColor();
+        RenderUtil.setAlphaLimit(0.0F);
+        GLUtil.setup2DRendering(true);
+        Tessellator tessellator = Tessellator.getInstance();
+        WorldRenderer worldrenderer = tessellator.getWorldRenderer();
+        worldrenderer.begin(7, DefaultVertexFormats.POSITION_COLOR);
+        worldrenderer.pos(x, y, 0.0D).color(color).endVertex();
+        worldrenderer.pos(x, y + height, 0.0D).color(color).endVertex();
+        worldrenderer.pos(x + width, y + height, 0.0D).color(color).endVertex();
+        worldrenderer.pos(x + width, y, 0.0D).color(color).endVertex();
+        tessellator.draw();
+        GLUtil.end2DRendering();
+    }
+
 
     /**
      * Draws a solid color rectangle with the specified coordinates and color (ARGB format). Args: x1, y1, x2, y2, color

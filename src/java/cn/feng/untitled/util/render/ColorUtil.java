@@ -9,6 +9,7 @@ import static cn.feng.untitled.util.data.MathUtil.interpolateFloat;
 import static cn.feng.untitled.util.data.MathUtil.interpolateInt;
 
 public class ColorUtil {
+    public static final Color TRANSPARENT_COLOR = new Color(255, 255, 255, 0);
     public static void glColor(int hex) {
         float a = (float)(hex >> 24 & 255) / 255.0F;
         float r = (float)(hex >> 16 & 255) / 255.0F;

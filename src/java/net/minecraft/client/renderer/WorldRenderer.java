@@ -58,6 +58,9 @@ public class WorldRenderer {
         this.rawFloatBuffer = this.byteBuffer.asFloatBuffer();
         SVertexBuilder.initVertexBuilder(this);
     }
+    public WorldRenderer color(int colorHex) {
+        return this.color(colorHex >> 16 & 255, colorHex >> 8 & 255, colorHex & 255, colorHex >> 24 & 255);
+    }
 
     private static float getDistanceSq(FloatBuffer p_181665_0_, float p_181665_1_, float p_181665_2_, float p_181665_3_, int p_181665_4_, int p_181665_5_) {
         float f = p_181665_0_.get(p_181665_5_);

@@ -8,7 +8,6 @@ import cn.feng.untitled.ui.clickgui.window.component.impl.ButtonComponent;
 import cn.feng.untitled.ui.clickgui.window.panel.Panel;
 import cn.feng.untitled.ui.font.FontLoader;
 import cn.feng.untitled.ui.font.FontRenderer;
-import cn.feng.untitled.util.misc.ChatUtil;
 import cn.feng.untitled.util.render.RoundedUtil;
 import cn.feng.untitled.value.Value;
 
@@ -83,5 +82,12 @@ public class ModulePanel extends Panel {
         valuePanelList.forEach(it -> it.onMouseClick(mouseX, mouseY, button));
         enableBtn.onMouseClick(mouseX, mouseY, button);
         Client.instance.configManager.saveConfigs();
+    }
+
+    @Override
+    public void onKeyTyped(char c, int keyCode) {
+        for (ValuePanel panel : valuePanelList) {
+            panel.onKeyTyped(c, keyCode);
+        }
     }
 }

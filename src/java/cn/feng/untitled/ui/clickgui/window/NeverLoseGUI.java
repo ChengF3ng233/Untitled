@@ -173,6 +173,10 @@ public class NeverLoseGUI extends GuiScreen {
         if (keyCode == Keyboard.KEY_ESCAPE) {
             windowAnim.changeDirection();
         }
+
+        for (ModulePanel panel : currentPanel.modulePanelList) {
+            panel.onKeyTyped(typedChar, keyCode);
+        }
     }
 
     @Override

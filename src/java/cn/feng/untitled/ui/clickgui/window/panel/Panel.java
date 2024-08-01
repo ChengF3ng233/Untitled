@@ -13,4 +13,7 @@ public abstract class Panel {
     public void onMouseClick(int mouseX, int mouseY, int button) {
 
     }
+    public void onKeyTyped(char c, int keyCode) {
+
+    }
 }

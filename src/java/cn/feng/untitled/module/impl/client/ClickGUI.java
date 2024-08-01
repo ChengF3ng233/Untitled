@@ -24,9 +24,9 @@ public class ClickGUI extends Module {
         enabled = false;
         switch (mode.value) {
             case "Dropdown":
-                mc.displayGuiScreen(Client.instance.uiManager.dropdownGUI);
+                mc.displayGuiScreen(Client.instance.uiManager.neverLoseGUI);
                 break;
-            case "Window":
+            case "NeverLose":
             default:
                 mc.displayGuiScreen(Client.instance.uiManager.neverLoseGUI);
                 break;

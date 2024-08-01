@@ -3,6 +3,7 @@ package cn.feng.untitled.ui.clickgui.window.panel.impl;
 import cn.feng.untitled.ui.clickgui.window.component.Component;
 import cn.feng.untitled.ui.clickgui.window.component.impl.ButtonComponent;
 import cn.feng.untitled.ui.clickgui.window.component.impl.ModeComponent;
+import cn.feng.untitled.ui.clickgui.window.component.impl.StringComponent;
 import cn.feng.untitled.ui.clickgui.window.panel.Panel;
 import cn.feng.untitled.ui.font.FontLoader;
 import cn.feng.untitled.value.Value;
@@ -30,8 +31,8 @@ public class ValuePanel extends Panel {
 
         } else if (value instanceof ModeValue mv) {
             component = new ModeComponent(mv);
-        } else if (value instanceof StringValue) {
-
+        } else if (value instanceof StringValue sv) {
+            component = new StringComponent(sv);
         } else {
             // ColorValue
         }
@@ -59,5 +60,10 @@ public class ValuePanel extends Panel {
     public void onMouseClick(int mouseX, int mouseY, int button) {
         if (component == null) return;
         component.onMouseClick(mouseX, mouseY, button);
+    }
+
+    @Override
+    public void onKeyTyped(char c, int keyCode) {
+        component.onKeyTyped(c, keyCode);
     }
 }

@@ -63,6 +63,10 @@ public class ColorAnimation extends ComposedAnimation<Color> {
         return new Color(redAnim.getOutput().intValue(), greenAnim.getOutput().intValue(), blueAnim.getOutput().intValue(), alphaAnim.getOutput().intValue());
     }
 
+    public boolean isFinished() {
+        return redAnim.getAnimation().finished(redAnim.getAnimation().getDirection());
+    }
+
     @Override
     public void changeDirection() {
         redAnim.changeDirection();
