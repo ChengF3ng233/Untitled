@@ -1,16 +1,11 @@
 package cn.feng.untitled.ui.clickgui.window.panel.impl;
 
 import cn.feng.untitled.ui.clickgui.window.component.Component;
-import cn.feng.untitled.ui.clickgui.window.component.impl.ButtonComponent;
-import cn.feng.untitled.ui.clickgui.window.component.impl.ModeComponent;
-import cn.feng.untitled.ui.clickgui.window.component.impl.StringComponent;
+import cn.feng.untitled.ui.clickgui.window.component.impl.*;
 import cn.feng.untitled.ui.clickgui.window.panel.Panel;
 import cn.feng.untitled.ui.font.FontLoader;
 import cn.feng.untitled.value.Value;
-import cn.feng.untitled.value.impl.BoolValue;
-import cn.feng.untitled.value.impl.ModeValue;
-import cn.feng.untitled.value.impl.NumberValue;
-import cn.feng.untitled.value.impl.StringValue;
+import cn.feng.untitled.value.impl.*;
 
 import java.awt.*;
 
@@ -27,26 +22,24 @@ public class ValuePanel extends Panel {
 
         if (value instanceof BoolValue bv) {
             component = new ButtonComponent(bv);
-        } else if (value instanceof NumberValue) {
-
+        } else if (value instanceof NumberValue nv) {
+            component = new NumberComponent(nv);
         } else if (value instanceof ModeValue mv) {
             component = new ModeComponent(mv);
         } else if (value instanceof StringValue sv) {
             component = new StringComponent(sv);
-        } else {
-            // ColorValue
+        } else if (value instanceof ColorValue cv){
+            component = new ColorComponent(cv);
         }
     }
 
     @Override
     public void init() {
-        if (component == null) return;
         component.init();
     }
 
     @Override
     public void draw(float x, float y, int mouseX, int mouseY) {
-        if (component == null) return;
         int textColor = Color.WHITE.getRGB();
         if (component instanceof ButtonComponent bc) {
             textColor = bc.textColAnim.getOutput().getRGB();
@@ -58,13 +51,16 @@ public class ValuePanel extends Panel {
 
     @Override
     public void onMouseClick(int mouseX, int mouseY, int button) {
-        if (component == null) return;
         component.onMouseClick(mouseX, mouseY, button);
     }
 
     @Override
     public void onKeyTyped(char c, int keyCode) {
-        if (component == null) return;
         component.onKeyTyped(c, keyCode);
+    }
+
+    @Override
+    public void onMouseRelease() {
+        component.onMouseRelease();
     }
 }

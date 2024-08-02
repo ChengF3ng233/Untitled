@@ -2,6 +2,7 @@ package cn.feng.untitled.ui.clickgui.window;
 
 import cn.feng.untitled.module.ModuleCategory;
 import cn.feng.untitled.ui.clickgui.window.gui.IconButton;
+import cn.feng.untitled.ui.clickgui.window.panel.Panel;
 import cn.feng.untitled.ui.clickgui.window.panel.impl.CategoryPanel;
 import cn.feng.untitled.ui.clickgui.window.panel.impl.ModulePanel;
 import cn.feng.untitled.ui.font.CenterType;
@@ -55,7 +56,7 @@ public class NeverLoseGUI extends GuiScreen {
             categoryPanelList.add(new CategoryPanel(value));
         }
         currentPanel = categoryPanelList.get(0);
-
+        panelAnim = new CustomAnimation(SmoothStepAnimation.class, 200,0, 0);
     }
 
     @Override
@@ -68,7 +69,6 @@ public class NeverLoseGUI extends GuiScreen {
         resetWidth = resetButton.width;
 
         currentPanel.modulePanelList.forEach(ModulePanel::init);
-        panelAnim = new CustomAnimation(SmoothStepAnimation.class, 200,0, 0);
     }
 
     @Override
@@ -146,8 +146,9 @@ public class NeverLoseGUI extends GuiScreen {
         int panelIndex = 0;
 
         StencilUtil.initStencilToWrite();
-        RoundedUtil.drawRound(x + leftWidth + 5f, originalY, width - leftWidth - 10f, height - topWidth - 10f, 0f, Color.BLACK);
+        RoundedUtil.drawRound(x + leftWidth + 5f, originalY, width - leftWidth - 10f, height - topWidth - 10f, 1f, Color.BLACK);
         StencilUtil.readStencilBuffer(1);
+        RenderUtil.scissorStart(x + leftWidth + 5f, originalY, width - leftWidth - 10f, height - topWidth - 10f);
         for (ModulePanel panel : currentPanel.modulePanelList) {
             boolean isLeft = panelIndex % 2 == 0;
             moduleX = x + leftWidth + 10f + (isLeft ? 0 : panel.width + 10);
@@ -156,6 +157,7 @@ public class NeverLoseGUI extends GuiScreen {
             else rightY += panel.height + 20;
             panelIndex++;
         }
+        RenderUtil.scissorEnd();
         StencilUtil.uninitStencilBuffer();
 
         // Scroll
@@ -216,6 +218,7 @@ public class NeverLoseGUI extends GuiScreen {
     @Override
     protected void mouseReleased(int mouseX, int mouseY, int state) {
         dragging = false;
+        currentPanel.modulePanelList.forEach(Panel::onMouseRelease);
     }
 
     @Override

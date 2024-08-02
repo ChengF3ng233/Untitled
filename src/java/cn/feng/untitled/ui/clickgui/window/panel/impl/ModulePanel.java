@@ -90,4 +90,9 @@ public class ModulePanel extends Panel {
             panel.onKeyTyped(c, keyCode);
         }
     }
+
+    @Override
+    public void onMouseRelease() {
+        valuePanelList.forEach(Panel::onMouseRelease);
+    }
 }

@@ -15,7 +15,8 @@ public class Icon {
     private final ResourceLocation resource;
     public float x, y;
     public final float size;
-    private final ColorAnimation colorAnim;
+    public final ColorAnimation colorAnim;
+    public boolean lock = false;
 
     public Icon(ResourceLocation resource, float size) {
         this.resource = resource;
@@ -27,9 +28,11 @@ public class Icon {
         this.x = x;
         this.y = y;
         boolean hovered = RenderUtil.hovering(mouseX, mouseY, this.x, this.y, size, size);
-        if (hovered) {
-            if (colorAnim.getDirection() == Direction.BACKWARDS) colorAnim.changeDirection();
-        } else if (colorAnim.getDirection() == Direction.FORWARDS) colorAnim.changeDirection();
+        if (!lock) {
+            if (hovered) {
+                if (colorAnim.getDirection() == Direction.BACKWARDS) colorAnim.changeDirection();
+            } else if (colorAnim.getDirection() == Direction.FORWARDS) colorAnim.changeDirection();
+        }
         RenderUtil.drawImage(resource, this.x, this.y, size, size, colorAnim.getOutput());
     }
 }

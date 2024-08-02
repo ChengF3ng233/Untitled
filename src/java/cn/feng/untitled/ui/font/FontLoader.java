@@ -65,6 +65,7 @@ public class FontLoader {
         greyCliff(16);
         greyCliff(17);
         greyCliff(18);
+        rubik(13);
         rubik(15);
         rubik(16);
         rubik(17);

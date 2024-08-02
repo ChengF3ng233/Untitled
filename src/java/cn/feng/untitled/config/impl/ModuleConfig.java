@@ -52,9 +52,10 @@ public class ModuleConfig extends Config {
                         sv.value = valueElement.getAsString();
                     } else if (value instanceof ColorValue cv) {
                         JsonObject colorObject = valueElement.getAsJsonObject();
-                        cv.setValue(colorObject.get("hue").getAsFloat(), colorObject.get("saturation").getAsFloat(), colorObject.get("brightness").getAsFloat());
+                        cv.rainbow.value = colorObject.get("rainbow").getAsBoolean();
+                        cv.setColor(colorObject.get("hue").getAsFloat(), colorObject.get("saturation").getAsFloat(), colorObject.get("brightness").getAsFloat(), colorObject.get("opacity").getAsFloat());
+                        cv.speed.value = colorObject.get("speed").getAsDouble();
                     }
-
                 }
             }
         } catch (FileNotFoundException e) {
@@ -84,9 +85,12 @@ public class ModuleConfig extends Config {
                     valueObject.addProperty(sv.name, sv.value);
                 } else if (value instanceof ColorValue cv) {
                     JsonObject colorObject = new JsonObject();
-                    colorObject.addProperty("hue", cv.hue);
-                    colorObject.addProperty("saturation", cv.saturation);
-                    colorObject.addProperty("brightness", cv.brightness);
+                    colorObject.addProperty("rainbow", cv.rainbow.value);
+                    colorObject.addProperty("hue", cv.hue.value);
+                    colorObject.addProperty("saturation", cv.saturation.value);
+                    colorObject.addProperty("brightness", cv.brightness.value);
+                    colorObject.addProperty("opacity", cv.opacity.value);
+                    colorObject.addProperty("speed", cv.speed.value);
                     valueObject.add(cv.name, colorObject);
                 }
             }
