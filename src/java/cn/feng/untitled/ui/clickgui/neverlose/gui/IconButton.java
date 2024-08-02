@@ -1,6 +1,6 @@
-package cn.feng.untitled.ui.clickgui.window.gui;
+package cn.feng.untitled.ui.clickgui.neverlose.gui;
 
-import cn.feng.untitled.ui.clickgui.window.ThemeColor;
+import cn.feng.untitled.ui.clickgui.neverlose.ThemeColor;
 import cn.feng.untitled.ui.font.CenterType;
 import cn.feng.untitled.ui.font.Font;
 import cn.feng.untitled.util.animation.advanced.Direction;

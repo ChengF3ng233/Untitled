@@ -4,7 +4,7 @@ import cn.feng.untitled.Client;
 import cn.feng.untitled.event.api.SubscribeEvent;
 import cn.feng.untitled.event.impl.Render2DEvent;
 import cn.feng.untitled.ui.clickgui.dropdown.DropdownGUI;
-import cn.feng.untitled.ui.clickgui.window.NeverLoseGUI;
+import cn.feng.untitled.ui.clickgui.neverlose.NeverLoseGUI;
 import cn.feng.untitled.ui.widget.Widget;
 import cn.feng.untitled.ui.widget.impl.ArraylistWidget;
 import cn.feng.untitled.ui.widget.impl.TextWidget;

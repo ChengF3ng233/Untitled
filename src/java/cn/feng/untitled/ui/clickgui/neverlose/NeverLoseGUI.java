@@ -1,17 +1,21 @@
-package cn.feng.untitled.ui.clickgui.window;
+package cn.feng.untitled.ui.clickgui.neverlose;
 
 import cn.feng.untitled.module.ModuleCategory;
-import cn.feng.untitled.ui.clickgui.window.gui.IconButton;
-import cn.feng.untitled.ui.clickgui.window.panel.Panel;
-import cn.feng.untitled.ui.clickgui.window.panel.impl.CategoryPanel;
-import cn.feng.untitled.ui.clickgui.window.panel.impl.ModulePanel;
+import cn.feng.untitled.ui.clickgui.neverlose.gui.TextField;
+import cn.feng.untitled.ui.clickgui.neverlose.panel.Panel;
+import cn.feng.untitled.ui.clickgui.neverlose.panel.impl.CategoryPanel;
+import cn.feng.untitled.ui.clickgui.neverlose.panel.impl.ModulePanel;
 import cn.feng.untitled.ui.font.CenterType;
 import cn.feng.untitled.ui.font.FontLoader;
 import cn.feng.untitled.ui.font.FontRenderer;
 import cn.feng.untitled.util.animation.advanced.Animation;
 import cn.feng.untitled.util.animation.advanced.Direction;
+import cn.feng.untitled.util.animation.advanced.composed.ColorAnimation;
 import cn.feng.untitled.util.animation.advanced.composed.CustomAnimation;
 import cn.feng.untitled.util.animation.advanced.impl.SmoothStepAnimation;
+import cn.feng.untitled.util.misc.ChatUtil;
+import cn.feng.untitled.util.misc.Logger;
+import cn.feng.untitled.util.render.ColorUtil;
 import cn.feng.untitled.util.render.RenderUtil;
 import cn.feng.untitled.util.render.RoundedUtil;
 import cn.feng.untitled.util.render.StencilUtil;
@@ -19,6 +23,7 @@ import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.util.ResourceLocation;
 import org.lwjgl.input.Keyboard;
+import org.lwjgl.input.Mouse;
 
 import java.awt.*;
 import java.io.IOException;
@@ -32,16 +37,19 @@ import java.util.Locale;
  **/
 public class NeverLoseGUI extends GuiScreen {
     public static float width, height, leftWidth, topWidth, radius;
-    private float x, y, resetX, resetY, resetWidth, resetHeight;
+    private float x, y;
     private boolean dragging;
     private float dragX, dragY;
 
     private Animation windowAnim;
-    private CustomAnimation panelAnim;
-    private IconButton resetButton;
+    private final CustomAnimation panelAnim;
+    private final Animation topOpacityAnim;
+    private final ColorAnimation topColorAnim;
+    private ColorAnimation iconColorAnim;
 
     private final List<CategoryPanel> categoryPanelList;
     private CategoryPanel currentPanel;
+    private final TextField searchField;
 
     public NeverLoseGUI() {
         width = 420f;
@@ -51,22 +59,29 @@ public class NeverLoseGUI extends GuiScreen {
         radius = 4f;
         x = 10f;
         y = 10f;
+
         categoryPanelList = new ArrayList<>();
         for (ModuleCategory value : ModuleCategory.values()) {
             categoryPanelList.add(new CategoryPanel(value));
         }
         currentPanel = categoryPanelList.get(0);
-        panelAnim = new CustomAnimation(SmoothStepAnimation.class, 200,0, 0);
+
+        float iconSize = 14f;
+        searchField = new TextField(60f, 20f, FontLoader.rubik(18), ThemeColor.titleColor, ThemeColor.grayColor);
+        searchField.radius = 5f;
+        searchField.offsetX = iconSize + 2f;
+
+        panelAnim = new CustomAnimation(SmoothStepAnimation.class, 200, 0, 0);
+        topOpacityAnim = new SmoothStepAnimation(100, 0.8d);
+        topOpacityAnim.changeDirection();
+        topColorAnim = new ColorAnimation(ThemeColor.barColor, ThemeColor.barBgColor, 100);
     }
 
     @Override
     public void initGui() {
         dragging = false;
         windowAnim = new SmoothStepAnimation(150, 1d);
-
-        resetHeight = 15f;
-        resetButton = new IconButton(FontLoader.rubik(16), resetHeight, "Reset Scroll", new ResourceLocation("untitled/icon/refresh.png"), 14, 1f);
-        resetWidth = resetButton.width;
+        iconColorAnim = new ColorAnimation(Color.WHITE, ThemeColor.grayColor, 100);
 
         currentPanel.modulePanelList.forEach(ModulePanel::init);
     }
@@ -140,16 +155,19 @@ public class NeverLoseGUI extends GuiScreen {
         float scroll = currentPanel.scrollAnim.animate();
 
         float moduleX;
-        float originalY = y + topWidth + 5f;
+        float originalY = y + topWidth + 8f;
         float leftY = originalY + scroll, rightY = originalY + scroll;
 
         int panelIndex = 0;
 
         StencilUtil.initStencilToWrite();
-        RoundedUtil.drawRound(x + leftWidth + 5f, originalY, width - leftWidth - 10f, height - topWidth - 10f, 1f, Color.BLACK);
+        RoundedUtil.drawRound(x + leftWidth + 5f, originalY - 3f, width - leftWidth - 10f, height - topWidth - 10f, 1f, Color.BLACK);
         StencilUtil.readStencilBuffer(1);
-        RenderUtil.scissorStart(x + leftWidth + 5f, originalY, width - leftWidth - 10f, height - topWidth - 10f);
+        RenderUtil.scissorStart(x + leftWidth + 5f, originalY - 3f, width - leftWidth - 10f, height - topWidth - 10f);
         for (ModulePanel panel : currentPanel.modulePanelList) {
+            if (!searchField.text.isEmpty()) {
+                if (!panel.module.name.toLowerCase(Locale.ROOT).contains(searchField.text.toLowerCase(Locale.ROOT))) continue;
+            }
             boolean isLeft = panelIndex % 2 == 0;
             moduleX = x + leftWidth + 10f + (isLeft ? 0 : panel.width + 10);
             panel.draw(moduleX, isLeft ? leftY : rightY, mouseX, mouseY);
@@ -163,23 +181,60 @@ public class NeverLoseGUI extends GuiScreen {
         // Scroll
         currentPanel.handleScroll();
 
-        resetX = x + width - 10f - resetWidth;
-        resetY = y + topWidth / 2 - resetHeight / 2 - 2f;
-        resetButton.draw(resetX, resetY, mouseX, mouseY);
+        if (currentPanel.scrollAnim.target < 0) {
+            if (topOpacityAnim.getDirection() == Direction.BACKWARDS) topOpacityAnim.changeDirection();
+        } else if (topOpacityAnim.getDirection() == Direction.FORWARDS) topOpacityAnim.changeDirection();
+
+        float opacity = topOpacityAnim.getOutput().floatValue();
+        if (opacity != 0) {
+            float size = 20f;
+            float gap = 5f;
+            float roundX = x + width - gap - size;
+            float roundY = y + height - gap - size;
+            boolean hovering = RenderUtil.hovering(mouseX, mouseY, roundX, roundY, size, size);
+
+            if (hovering && topColorAnim.getDirection() == Direction.FORWARDS) {
+                topColorAnim.changeDirection();
+            } else if (!hovering && topColorAnim.getDirection() == Direction.BACKWARDS) topColorAnim.changeDirection();
+
+            if (hovering && Mouse.isButtonDown(0)) currentPanel.scrollAnim.target = 0f;
+
+            RoundedUtil.drawRoundOutline(roundX, roundY, size, size, 10f, 0.2f, ColorUtil.applyOpacity(topColorAnim.getOutput(), opacity), ColorUtil.applyOpacity(ThemeColor.outlineColor, opacity));
+            RenderUtil.drawImage(new ResourceLocation("untitled/icon/top.png"), roundX + 2.6f, roundY + 2.9f, 14f, 14f, ColorUtil.applyOpacity(Color.WHITE, opacity));
+        }
+
+        // Search
+        float searchX = x + leftWidth + 10f;
+        float searchY = y + topWidth / 2 - 11f;
+        float iconSize = 14f;
+
+        searchField.outlineColor = iconColorAnim.getOutput();
+        searchField.draw(searchX, searchY, mouseX, mouseY);
+        RenderUtil.drawImage(new ResourceLocation("untitled/icon/search.png"), searchX + 3f, searchY + 3f, iconSize, iconSize, iconColorAnim.getOutput());
+
+        boolean selected = searchField.focused || RenderUtil.hovering(mouseX, mouseY, searchX, searchY, iconSize + searchField.width + 5f, iconSize);
+        if (selected && iconColorAnim.getDirection() == Direction.FORWARDS) {
+            iconColorAnim.changeDirection();
+        } else if (!selected && iconColorAnim.getDirection() == Direction.BACKWARDS) {
+            iconColorAnim.changeDirection();
+        }
 
         RenderUtil.scaleEnd();
     }
 
     @Override
     protected void keyTyped(char typedChar, int keyCode) throws IOException {
+        for (ModulePanel panel : currentPanel.modulePanelList) {
+            panel.onKeyTyped(typedChar, keyCode);
+            if (panel.listening) return;
+        }
+
         if (keyCode == Keyboard.KEY_ESCAPE && windowAnim.getDirection() == Direction.FORWARDS) {
             windowAnim.changeDirection();
             Keyboard.enableRepeatEvents(false);
         }
 
-        for (ModulePanel panel : currentPanel.modulePanelList) {
-            panel.onKeyTyped(typedChar, keyCode);
-        }
+        searchField.onKeyTyped(typedChar, keyCode);
     }
 
     @Override
@@ -187,14 +242,9 @@ public class NeverLoseGUI extends GuiScreen {
         if (!RenderUtil.hovering(mouseX, mouseY, x, y, width, height)) return;
 
         if (RenderUtil.hovering(mouseX, mouseY, x, y, width, topWidth)) {
-
-            if (RenderUtil.hovering(mouseX, mouseY, resetX, resetY, resetWidth, resetHeight)) {
-                currentPanel.scrollAnim.target = 0f;
-            } else {
-                dragging = true;
-                dragX = mouseX;
-                dragY = mouseY;
-            }
+            dragging = true;
+            dragX = mouseX;
+            dragY = mouseY;
         }
 
         for (CategoryPanel panel : categoryPanelList) {
@@ -213,6 +263,8 @@ public class NeverLoseGUI extends GuiScreen {
         for (ModulePanel panel : currentPanel.modulePanelList) {
             panel.onMouseClick(mouseX, mouseY, mouseButton);
         }
+
+        searchField.onMouseClick(mouseX, mouseY, mouseButton);
     }
 
     @Override

@@ -1,6 +1,6 @@
-package cn.feng.untitled.ui.clickgui.window.component;
+package cn.feng.untitled.ui.clickgui.neverlose.component;
 
-import cn.feng.untitled.ui.clickgui.window.NeverLoseGUI;
+import cn.feng.untitled.ui.clickgui.neverlose.NeverLoseGUI;
 import cn.feng.untitled.value.Value;
 
 /**

@@ -1,8 +1,8 @@
-package cn.feng.untitled.ui.clickgui.window.component.impl;
+package cn.feng.untitled.ui.clickgui.neverlose.component.impl;
 
-import cn.feng.untitled.ui.clickgui.window.ThemeColor;
-import cn.feng.untitled.ui.clickgui.window.component.Component;
-import cn.feng.untitled.ui.clickgui.window.gui.Icon;
+import cn.feng.untitled.ui.clickgui.neverlose.ThemeColor;
+import cn.feng.untitled.ui.clickgui.neverlose.component.Component;
+import cn.feng.untitled.ui.clickgui.neverlose.gui.Icon;
 import cn.feng.untitled.ui.font.Font;
 import cn.feng.untitled.ui.font.FontLoader;
 import cn.feng.untitled.util.animation.advanced.Direction;

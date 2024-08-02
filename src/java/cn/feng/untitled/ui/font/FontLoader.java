@@ -58,8 +58,8 @@ public class FontLoader {
      * Register international font MiSans
      */
     public static void registerFonts() {
-        miSans(17);
         miSans(15);
+        miSans(17);
         greyCliff(14);
         greyCliff(15);
         greyCliff(16);

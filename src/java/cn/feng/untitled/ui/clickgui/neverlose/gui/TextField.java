@@ -1,11 +1,10 @@
-package cn.feng.untitled.ui.clickgui.window.gui;
+package cn.feng.untitled.ui.clickgui.neverlose.gui;
 
-import cn.feng.untitled.ui.clickgui.window.ThemeColor;
+import cn.feng.untitled.ui.clickgui.neverlose.ThemeColor;
 import cn.feng.untitled.ui.font.CenterType;
 import cn.feng.untitled.ui.font.Font;
 import cn.feng.untitled.util.animation.advanced.Direction;
 import cn.feng.untitled.util.animation.advanced.composed.ColorAnimation;
-import cn.feng.untitled.util.misc.Logger;
 import cn.feng.untitled.util.render.ColorUtil;
 import cn.feng.untitled.util.render.RenderUtil;
 import cn.feng.untitled.util.render.RoundedUtil;
@@ -20,16 +19,18 @@ import java.awt.*;
  **/
 public class TextField {
     private float posX, posY;
-    private final float width, height, textMaxWidth;
-    private boolean focused;
+    public float width, height, textMaxWidth, offsetX;
+    public boolean focused;
+    public float radius;
     public String text;
 
     private final Font font;
-    private final Color backgroundColor, outlineColor;
+    public Color backgroundColor, outlineColor;
     private final ColorAnimation textColorAnim;
     private final ColorAnimation cursorColorAnim;
 
     public TextField(float width, float height, Font font, Color backgroundColor, Color outlineColor) {
+        this.text = "";
         this.width = width;
         this.textMaxWidth = width - 2f;
         this.height = height;
@@ -38,6 +39,7 @@ public class TextField {
         this.outlineColor = outlineColor;
         this.textColorAnim = new ColorAnimation(Color.WHITE, ThemeColor.grayColor, 100);
         this.cursorColorAnim = new ColorAnimation(Color.WHITE, ColorUtil.TRANSPARENT_COLOR, 500);
+        this.radius = 2f;
     }
 
     public void draw(float x, float y, int mouseX, int mouseY) {
@@ -57,15 +59,16 @@ public class TextField {
             cursorColorAnim.changeDirection();
         }
 
-        RoundedUtil.drawRoundOutline(posX, posY, width, height, 2f, 0.2f, backgroundColor, outlineColor);
+        RoundedUtil.drawRoundOutline(posX, posY, width, height, radius, 0.1f, backgroundColor, outlineColor);
 
-        String visibleText = font.getStringWidth(text) > textMaxWidth - 3f? font.trimStringToWidth(text, textMaxWidth - 3f, true) : text;
+        String visibleText = font.getStringWidth(text) > textMaxWidth - 3f - offsetX? font.trimStringToWidth(text, textMaxWidth - 3f - offsetX, true) : text;
         float textX = posX + 2f;
         float textY = posY + height / 2f;
-        font.drawCenteredString(visibleText, textX, textY, textColorAnim.getOutput().getRGB(), CenterType.Vertical, true);
+        font.drawCenteredString(visibleText, textX + offsetX, textY, textColorAnim.getOutput().getRGB(), CenterType.Vertical, true);
 
         if (focused) {
-            RoundedUtil.drawRound(textX + font.getStringWidth(visibleText) + 1.5f, posY + 2f, 0.5f, height - 4f, 1f, cursorColorAnim.getOutput());
+            float h = height * 0.6f;
+            RoundedUtil.drawRound(textX + offsetX + font.getStringWidth(visibleText) + 1.5f, posY + height / 2 - h / 2, 0.5f, h, 1f, cursorColorAnim.getOutput());
         }
     }
 

@@ -1,4 +1,4 @@
-package cn.feng.untitled.ui.clickgui.window;
+package cn.feng.untitled.ui.clickgui.neverlose;
 
 import java.awt.*;
 
