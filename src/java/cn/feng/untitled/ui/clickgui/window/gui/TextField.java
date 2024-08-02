@@ -5,6 +5,7 @@ import cn.feng.untitled.ui.font.CenterType;
 import cn.feng.untitled.ui.font.Font;
 import cn.feng.untitled.util.animation.advanced.Direction;
 import cn.feng.untitled.util.animation.advanced.composed.ColorAnimation;
+import cn.feng.untitled.util.misc.Logger;
 import cn.feng.untitled.util.render.ColorUtil;
 import cn.feng.untitled.util.render.RenderUtil;
 import cn.feng.untitled.util.render.RoundedUtil;
@@ -64,7 +65,7 @@ public class TextField {
         font.drawCenteredString(visibleText, textX, textY, textColorAnim.getOutput().getRGB(), CenterType.Vertical, true);
 
         if (focused) {
-            RoundedUtil.drawRound(textX + font.getStringWidth(visibleText) / 2f + 1.5f, posY + 2f, 0.5f, height - 4f, 1f, cursorColorAnim.getOutput());
+            RoundedUtil.drawRound(textX + font.getStringWidth(visibleText) + 1.5f, posY + 2f, 0.5f, height - 4f, 1f, cursorColorAnim.getOutput());
         }
     }
 
