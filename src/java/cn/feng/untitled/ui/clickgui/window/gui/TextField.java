@@ -59,7 +59,7 @@ public class TextField {
 
         RoundedUtil.drawRoundOutline(posX, posY, width, height, 2f, 0.2f, backgroundColor, outlineColor);
 
-        String visibleText = font.getStringWidth(text) > textMaxWidth? font.trimStringToWidth(text, textMaxWidth, true) : text;
+        String visibleText = font.getStringWidth(text) > textMaxWidth - 3f? font.trimStringToWidth(text, textMaxWidth - 3f, true) : text;
         float textX = posX + 2f;
         float textY = posY + height / 2f;
         font.drawCenteredString(visibleText, textX, textY, textColorAnim.getOutput().getRGB(), CenterType.Vertical, true);

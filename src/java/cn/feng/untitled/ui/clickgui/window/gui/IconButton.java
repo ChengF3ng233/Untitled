@@ -46,7 +46,7 @@ public class IconButton {
             if (colAnim.getDirection() == Direction.BACKWARDS) colAnim.changeDirection();
         } else if (colAnim.getDirection() == Direction.FORWARDS) colAnim.changeDirection();
         RoundedUtil.drawRound(this.x, this.y, width, height, 3f, colAnim.getOutput());
-        RenderUtil.drawImage(resource, this.x + gap, this.y, size, size);
+        RenderUtil.drawImage(resource, this.x + gap, this.y + gap / 2f, size, size);
         font.drawCenteredString(text, this.x + 2 * gap + size, this.y + height / 2f, Color.WHITE.getRGB(), CenterType.Vertical, true);
     }
 }

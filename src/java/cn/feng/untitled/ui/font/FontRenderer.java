@@ -152,46 +152,18 @@ public class FontRenderer extends Font {
         if (text == null) {
             return "";
         } else {
-            StringBuilder buffer = new StringBuilder();
-            float lineWidth = 0.0F;
-            int offset = reverse ? text.length() - 1 : 0;
-            int increment = reverse ? -1 : 1;
-            boolean var8 = false;
-            boolean var9 = false;
+            StringBuilder builder = new StringBuilder();
+            int startIndex = reverse? text.length() - 1 : 0;
+            int step = reverse? -1 : 1;
 
-            for (int index = offset; index >= 0 && index < text.length() && lineWidth < width; index += increment) {
-                char character = text.charAt(index);
-                float charWidth = this.getCharWidthFloat(character);
-                if (var8) {
-                    var8 = false;
-                    if (character != 'l' && character != 'L') {
-                        if (character == 'r' || character == 'R') {
-                            var9 = false;
-                        }
-                    } else {
-                        var9 = true;
-                    }
-                } else if (charWidth < 0.0F) {
-                    var8 = true;
-                } else {
-                    lineWidth += charWidth;
-                    if (var9) {
-                        ++lineWidth;
-                    }
-                }
-
-                if (lineWidth > width) {
-                    break;
-                }
-
-                if (reverse) {
-                    buffer.insert(0, character);
-                } else {
-                    buffer.append(character);
-                }
+            String nextChar = "";
+            for (int i = startIndex; i <= text.length() - 1 && i >= 0 && getStringWidth(builder + nextChar) <= width; i += step) {
+                builder.append(text.charAt(i));
+                nextChar = reverse? (i == 0? "" : String.valueOf(text.charAt(i + step))) : (i == text.length() - 1? "" : String.valueOf(text.charAt(i + step)));
             }
 
-            return buffer.toString();
+            if (reverse) builder.reverse();
+            return builder.toString();
         }
     }
 
@@ -214,6 +186,7 @@ public class FontRenderer extends Font {
         GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MIN_FILTER, GL11.GL_LINEAR);
         GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MAG_FILTER, GL11.GL_LINEAR);
         GL11.glTexImage2D(GL11.GL_TEXTURE_2D, 0, 6408, width, height, 0, 6408, 5121, byteBuffer);
+        byteBuffer.clear();
     }
 
     public int drawString(String text, double x, double y, int color) {
@@ -329,7 +302,11 @@ public class FontRenderer extends Font {
 
                     Map<Character, FontCharacter> map = bold? boldCharacters : defaultCharacters;
                     if (map.containsKey(character)) {
-                        map.get(character).render((float) x, (float) y);
+                        /* 英文字母 gyj 这类比较靠下导致 font height 较高，渲染高度一致的中文字符会显得偏上
+                         * 所以渲染中文字符时将 y 下调
+                         */
+                        float realY = (character > 256)? (float) y + 1 : (float) y;
+                        map.get(character).render((float) x, realY);
                         x += map.get(character).width() - 8.0F;
                     } else {
                         fillSingleChar(character, map, bold);

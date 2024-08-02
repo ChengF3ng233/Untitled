@@ -56,7 +56,6 @@ public class NeverLoseGUI extends GuiScreen {
         }
         currentPanel = categoryPanelList.get(0);
 
-        panelAnim = new CustomAnimation(SmoothStepAnimation.class, 200,0, 0);
     }
 
     @Override
@@ -65,10 +64,11 @@ public class NeverLoseGUI extends GuiScreen {
         windowAnim = new SmoothStepAnimation(150, 1d);
 
         resetHeight = 15f;
-        resetButton = new IconButton(FontLoader.rubik(16), resetHeight, "Reset Scroll", new ResourceLocation("untitled/icon/refresh.png"), 16, 1f);
+        resetButton = new IconButton(FontLoader.rubik(16), resetHeight, "Reset Scroll", new ResourceLocation("untitled/icon/refresh.png"), 14, 1f);
         resetWidth = resetButton.width;
 
         currentPanel.modulePanelList.forEach(ModulePanel::init);
+        panelAnim = new CustomAnimation(SmoothStepAnimation.class, 200,0, 0);
     }
 
     @Override
@@ -122,7 +122,7 @@ public class NeverLoseGUI extends GuiScreen {
         float categoryX = centerX - font.getStringWidth("UNTITLED") / 2f - 3f;
         float categoryY = y + font.getFontHeight() + 50f;
 
-        RoundedUtil.drawRound(categoryX - 2f, categoryY + panelAnim.getOutput().floatValue() - 15f, leftWidth - 14f, currentPanel.height + 10f, 4f, ThemeColor.barColor);
+        RoundedUtil.drawRound(categoryX - 2f, categoryY + panelAnim.getOutput().floatValue() - 5f, leftWidth - 14f, currentPanel.height + 10f, 4f, ThemeColor.barColor);
 
         for (CategoryType type : CategoryType.values()) {
             FontLoader.greyCliff(14).drawString(type.toString(), categoryX, categoryY - 15f, ThemeColor.grayColor.getRGB());
@@ -197,7 +197,7 @@ public class NeverLoseGUI extends GuiScreen {
 
         for (CategoryPanel panel : categoryPanelList) {
             if (RenderUtil.hovering(mouseX, mouseY, panel.x, panel.y - 2, panel.width, panel.height + 4) && mouseButton == 0 && panel != currentPanel) {
-                float categoryY = y + FontLoader.rubik(28).getFontHeight() + 40f;
+                float categoryY = y + FontLoader.rubik_bold(28).getFontHeight() + 50f;
                 panelAnim.setStartPoint(currentPanel.y - categoryY);
                 currentPanel = panel;
                 panelAnim.setEndPoint(panel.y - categoryY);
