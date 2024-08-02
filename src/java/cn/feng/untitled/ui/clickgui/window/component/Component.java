@@ -8,7 +8,7 @@ import cn.feng.untitled.value.Value;
  * @since 2024/7/28
  **/
 public abstract class Component<T> {
-    public float x, y, width, height;
+    public float posX, posY, width, height;
     public Value<T> value;
 
     protected float panelWidth = (NeverLoseGUI.width - NeverLoseGUI.leftWidth - 30f) / 2f;

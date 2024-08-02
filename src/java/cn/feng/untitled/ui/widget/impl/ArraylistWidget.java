@@ -31,7 +31,7 @@ public class ArraylistWidget extends Widget {
         for (Module module : enabledModules) {
             FontRenderer font = FontLoader.greyCliff(18);
             font.drawString(module.name, x - font.getStringWidth(module.name), moduleY, Color.WHITE.getRGB());
-            moduleY += font.height() + 2f;
+            moduleY += font.getFontHeight() + 2f;
         }
     }
 }

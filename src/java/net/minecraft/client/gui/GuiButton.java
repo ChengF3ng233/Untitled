@@ -1,5 +1,6 @@
 package net.minecraft.client.gui;
 
+import cn.feng.untitled.ui.font.CenterType;
 import cn.feng.untitled.ui.font.FontLoader;
 import cn.feng.untitled.util.animation.advanced.Direction;
 import cn.feng.untitled.util.animation.advanced.composed.ColorAnimation;
@@ -58,10 +59,10 @@ public class GuiButton extends Gui {
         this.enabled = true;
         this.visible = true;
         this.id = buttonId;
-        this.xPosition = x;
-        this.yPosition = y;
-        this.width = widthIn;
-        this.height = heightIn;
+        this.xPosition = x + 1;
+        this.yPosition = y + 1;
+        this.width = widthIn - 2;
+        this.height = heightIn - 2;
         this.displayString = buttonText;
         this.colorAnim = new ColorAnimation(new Color(255, 255, 255, 70), Color.WHITE, 100);
     }
@@ -94,7 +95,7 @@ public class GuiButton extends Gui {
 
             this.mouseDragged(mc, mouseX, mouseY);
             RoundedUtil.drawRoundOutline(this.xPosition, this.yPosition, this.width, this.height, 2f, 0.1f, new Color(0, 0, 0, 100), enabled ? colorAnim.getOutput() : new Color(50, 50, 50, 255));
-            FontLoader.greyCliff(18).drawCenteredString(displayString, this.xPosition + this.width / 2f, this.yPosition + this.height / 2f - 2f, Color.WHITE.getRGB());
+            FontLoader.greyCliff(18).drawCenteredString(displayString, this.xPosition + this.width / 2f, this.yPosition + this.height / 2f, Color.WHITE.getRGB(), CenterType.Both);
         }
     }
 

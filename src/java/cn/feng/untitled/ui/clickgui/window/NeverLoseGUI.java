@@ -4,13 +4,13 @@ import cn.feng.untitled.module.ModuleCategory;
 import cn.feng.untitled.ui.clickgui.window.gui.IconButton;
 import cn.feng.untitled.ui.clickgui.window.panel.impl.CategoryPanel;
 import cn.feng.untitled.ui.clickgui.window.panel.impl.ModulePanel;
+import cn.feng.untitled.ui.font.CenterType;
 import cn.feng.untitled.ui.font.FontLoader;
 import cn.feng.untitled.ui.font.FontRenderer;
 import cn.feng.untitled.util.animation.advanced.Animation;
 import cn.feng.untitled.util.animation.advanced.Direction;
 import cn.feng.untitled.util.animation.advanced.composed.CustomAnimation;
 import cn.feng.untitled.util.animation.advanced.impl.SmoothStepAnimation;
-import cn.feng.untitled.util.animation.simple.SimpleAnimation;
 import cn.feng.untitled.util.render.RenderUtil;
 import cn.feng.untitled.util.render.RoundedUtil;
 import cn.feng.untitled.util.render.StencilUtil;
@@ -113,16 +113,16 @@ public class NeverLoseGUI extends GuiScreen {
         StencilUtil.uninitStencilBuffer();
 
         // Title
-        FontRenderer font = FontLoader.rubik(28);
+        FontRenderer font = FontLoader.rubik_bold(28);
         float centerX = x + leftWidth / 2f;
-        font.drawCenteredString("UNTITLED", centerX + 0.5f, y + 13.5f, ThemeColor.focusedColor.getRGB());
-        font.drawCenteredString("UNTITLED", centerX, y + 13f, Color.WHITE.getRGB());
+        font.drawCenteredString("UNTITLED", centerX + 0.5f, y + 13.5f, ThemeColor.focusedColor.getRGB(), CenterType.Horizontal);
+        font.drawCenteredString("UNTITLED", centerX, y + 13f, Color.WHITE.getRGB(), CenterType.Horizontal);
 
         // Category
         float categoryX = centerX - font.getStringWidth("UNTITLED") / 2f - 3f;
-        float categoryY = y + font.height() + 40f;
+        float categoryY = y + font.getFontHeight() + 50f;
 
-        RoundedUtil.drawRound(categoryX - 2f, categoryY + panelAnim.getOutput().floatValue() - 5f, leftWidth - 14f, currentPanel.height + 6f, 4f, ThemeColor.barColor);
+        RoundedUtil.drawRound(categoryX - 2f, categoryY + panelAnim.getOutput().floatValue() - 15f, leftWidth - 14f, currentPanel.height + 10f, 4f, ThemeColor.barColor);
 
         for (CategoryType type : CategoryType.values()) {
             FontLoader.greyCliff(14).drawString(type.toString(), categoryX, categoryY - 15f, ThemeColor.grayColor.getRGB());
@@ -131,7 +131,7 @@ public class NeverLoseGUI extends GuiScreen {
 
                 RenderUtil.drawImage(new ResourceLocation("untitled/icon/" + panel.category.name().toLowerCase(Locale.ROOT) + ".png"), categoryX, categoryY - 3f, 12, 12, ThemeColor.focusedColor);
                 panel.draw(categoryX + 20f, categoryY, mouseX, mouseY);
-                categoryY += panel.height + 10f;
+                categoryY += panel.height + 15f;
             }
             categoryY += 20f;
         }
@@ -161,7 +161,7 @@ public class NeverLoseGUI extends GuiScreen {
         // Scroll
         currentPanel.handleScroll();
 
-        resetX = x + width - 20f - resetWidth;
+        resetX = x + width - 10f - resetWidth;
         resetY = y + topWidth / 2 - resetHeight / 2 - 2f;
         resetButton.draw(resetX, resetY, mouseX, mouseY);
 
@@ -170,8 +170,9 @@ public class NeverLoseGUI extends GuiScreen {
 
     @Override
     protected void keyTyped(char typedChar, int keyCode) throws IOException {
-        if (keyCode == Keyboard.KEY_ESCAPE) {
+        if (keyCode == Keyboard.KEY_ESCAPE && windowAnim.getDirection() == Direction.FORWARDS) {
             windowAnim.changeDirection();
+            Keyboard.enableRepeatEvents(false);
         }
 
         for (ModulePanel panel : currentPanel.modulePanelList) {
@@ -196,7 +197,7 @@ public class NeverLoseGUI extends GuiScreen {
 
         for (CategoryPanel panel : categoryPanelList) {
             if (RenderUtil.hovering(mouseX, mouseY, panel.x, panel.y - 2, panel.width, panel.height + 4) && mouseButton == 0 && panel != currentPanel) {
-                float categoryY = y + FontLoader.rubik(28).height() + 40f;
+                float categoryY = y + FontLoader.rubik(28).getFontHeight() + 40f;
                 panelAnim.setStartPoint(currentPanel.y - categoryY);
                 currentPanel = panel;
                 panelAnim.setEndPoint(panel.y - categoryY);

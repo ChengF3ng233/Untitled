@@ -1,5 +1,8 @@
 package net.minecraft.client.gui;
 
+import cn.feng.untitled.module.impl.client.HUD;
+import cn.feng.untitled.ui.font.CenterType;
+import cn.feng.untitled.ui.font.FontLoader;
 import cn.feng.untitled.util.render.GLUtil;
 import cn.feng.untitled.util.render.RenderUtil;
 import net.minecraft.client.renderer.GlStateManager;
@@ -162,6 +165,10 @@ public class Gui {
      * Renders the specified text to the screen, center-aligned. Args : renderer, string, x, y, color
      */
     public void drawCenteredString(FontRenderer fontRendererIn, String text, int x, int y, int color) {
+        if (HUD.fancyFont.value) {
+            FontLoader.miSans(17).drawCenteredString(text, x, y + FontLoader.miSans(17).getFontHeight() / 2f, color, CenterType.Horizontal);
+            return;
+        }
         fontRendererIn.drawStringWithShadow(text, (float) (x - fontRendererIn.getStringWidth(text) / 2), (float) y, color);
     }
 

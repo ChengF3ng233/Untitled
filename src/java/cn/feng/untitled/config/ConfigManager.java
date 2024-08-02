@@ -18,14 +18,12 @@ import java.util.List;
  **/
 public class ConfigManager extends MinecraftInstance {
     public static final File rootDir = new File(mc.mcDataDir, Client.instance.CLIENT_NAME);
-    public static final File fontDir = new File(rootDir, "font");
     public static final Gson gson = new GsonBuilder().setPrettyPrinting().create();
     private final List<Config> configList;
 
     public ConfigManager() {
         configList = new ArrayList<>();
         if (!rootDir.exists()) rootDir.mkdir();
-        if (!fontDir.exists()) fontDir.mkdir();
     }
 
     public Config getConfig(String name) {

@@ -1,6 +1,7 @@
 package cn.feng.untitled.ui.clickgui.window.gui;
 
 import cn.feng.untitled.ui.clickgui.window.ThemeColor;
+import cn.feng.untitled.ui.font.CenterType;
 import cn.feng.untitled.ui.font.Font;
 import cn.feng.untitled.util.animation.advanced.Direction;
 import cn.feng.untitled.util.animation.advanced.composed.ColorAnimation;
@@ -46,6 +47,6 @@ public class IconButton {
         } else if (colAnim.getDirection() == Direction.FORWARDS) colAnim.changeDirection();
         RoundedUtil.drawRound(this.x, this.y, width, height, 3f, colAnim.getOutput());
         RenderUtil.drawImage(resource, this.x + gap, this.y, size, size);
-        font.drawString(text, this.x + 2 * gap + size, this.y + 5f, Color.WHITE.getRGB());
+        font.drawCenteredString(text, this.x + 2 * gap + size, this.y + height / 2f, Color.WHITE.getRGB(), CenterType.Vertical, true);
     }
 }

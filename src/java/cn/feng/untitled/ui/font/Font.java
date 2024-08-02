@@ -8,19 +8,16 @@ public abstract class Font {
     public abstract int drawString(String text, double x, double y, int color, boolean shadow);
 
     public abstract int drawString(String text, double x, double y, int color);
+    public abstract int drawCenteredString(String text, double x, double y, int color, CenterType type);
 
-    public abstract int drawStringWithShadow(String text, double x, double y, int color);
+    public abstract int drawCenteredString(String text, double x, double y, int color, CenterType type, boolean shadow);
 
     public abstract int getStringWidth(String text);
 
-    public abstract String trimStringToWidth(String text, int width, boolean reverse);
+    public abstract String trimStringToWidth(String text, float width, boolean reverse);
 
-    public abstract String trimStringToWidth(String text, int width);
+    public abstract String trimStringToWidth(String text, float width);
 
-    public abstract int drawCenteredString(String text, double x, double y, int color);
-
-    public abstract float height();
-
-    public abstract void drawCenteredStringWithShadow(String text, float x, float y, int color);
+    public abstract float getFontHeight();
 }
 

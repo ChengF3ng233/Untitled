@@ -64,6 +64,7 @@ public class ValuePanel extends Panel {
 
     @Override
     public void onKeyTyped(char c, int keyCode) {
+        if (component == null) return;
         component.onKeyTyped(c, keyCode);
     }
 }

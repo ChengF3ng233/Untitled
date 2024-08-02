@@ -15,6 +15,7 @@ import java.awt.image.BufferedImage;
 import java.nio.ByteBuffer;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.regex.Pattern;
 
 
 /**
@@ -38,11 +39,15 @@ public class FontRenderer extends Font {
 
     public FontRenderer(java.awt.Font font, boolean chinese) {
         this.font = font;
-        this.fontHeight = (float) (font.getStringBounds("ABCDEFGHOKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz", new FontRenderContext(new AffineTransform(), true, true)).getHeight() / 2.0D);
+        this.fontHeight = (float) (font.getStringBounds("ABCDEFGHOKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz", new FontRenderContext(new AffineTransform(), true, true)).getHeight() / 4.0D);
         this.chinese = chinese;
 
         this.fillCharacters(this.defaultCharacters, 0, chinese);
         this.fillCharacters(this.boldCharacters, 1, chinese);
+    }
+
+    public float getMiddleOfBox(float height) {
+        return height / 2f - this.getFontHeight() / 2f;
     }
 
     private static void calculateColorCodes() {
@@ -137,11 +142,13 @@ public class FontRenderer extends Font {
         }
     }
 
-    public String trimStringToWidth(String text, int width) {
+    public String trimStringToWidth(String text, float width) {
         return this.trimStringToWidth(text, width, false);
     }
 
-    public String trimStringToWidth(String text, int width, boolean reverse) {
+    public String trimStringToWidth(String text, float width, boolean reverse) {
+        if (!chinese && isChinese(text)) return FontLoader.miSans(font.getSize() - 1).trimStringToWidth(text, width, reverse);
+
         if (text == null) {
             return "";
         } else {
@@ -152,7 +159,7 @@ public class FontRenderer extends Font {
             boolean var8 = false;
             boolean var9 = false;
 
-            for (int index = offset; index >= 0 && index < text.length() && lineWidth < (float) width; index += increment) {
+            for (int index = offset; index >= 0 && index < text.length() && lineWidth < width; index += increment) {
                 char character = text.charAt(index);
                 float charWidth = this.getCharWidthFloat(character);
                 if (var8) {
@@ -173,7 +180,7 @@ public class FontRenderer extends Font {
                     }
                 }
 
-                if (lineWidth > (float) width) {
+                if (lineWidth > width) {
                     break;
                 }
 
@@ -213,31 +220,33 @@ public class FontRenderer extends Font {
         return this.renderString(text, x, y, color, false);
     }
 
-    public int drawCenteredString(String text, double x, double y, int color) {
-        return this.drawString(text, x - (double) (this.getStringWidth(text) >> 1), y, color);
+    public int drawCenteredString(String text, double x, double y, int color, CenterType type) {
+        return drawCenteredString(text, x, y, color, type, false);
     }
 
-    public int drawRightString(String text, double x, double y, int color) {
-        return this.renderString(text, x - (double) this.getStringWidth(text), y, color, false);
-    }
+    public int drawCenteredString(String text, double x, double y, int color, CenterType type, boolean shadow) {
+        if (!this.chinese && isChinese(text)) return FontLoader.miSans(this.font.getSize() - 1).drawCenteredString(text, x, y, color, type, shadow);
 
-    public int drawStringWithShadow(String text, double x, double y, int color) {
-        this.renderString(text, x + 0.25D, y + 0.25D, color, true);
-        return this.renderString(text, x, y, color, false);
-    }
+        boolean xCenter = type == CenterType.Both || type == CenterType.Horizontal;
+        boolean yCenter = type == CenterType.Both || type == CenterType.Vertical;
 
-    public void drawCenteredStringWithShadow(String text, float x, float y, int color) {
-        this.renderString(text, (double) (x - (float) (this.getStringWidth(text) >> 1)) + 0.25D, (double) y + 0.25D, (new Color(color, true)).getRGB(), true);
-        this.renderString(text, x - (float) (this.getStringWidth(text) >> 1), y, color, false);
+        double realX = x - (xCenter? getStringWidth(text) / 2d : 0d);
+        double realY = y - (yCenter? fontHeight / 2d : 0d);
+
+        if (shadow)
+            this.renderString(text, realX + 0.25d, realY + 0.25d, color, true);
+        return this.drawString(text, realX, realY, color);
     }
 
     public int drawString(String text, double x, double y, int color, boolean shadow) {
-        this.renderString(text, x + 0.5, y + 0.5, color, true);
+        if (shadow) {
+            this.renderString(text, x + 0.5, y + 0.5, color, true);
+        }
         return this.renderString(text, x, y, color, false);
     }
 
-    public int renderString(String text, double x, double y, int color, boolean shadow) {
-        if (!chinese && isChinese(text)) return FontLoader.miSans(font.getSize() - 1).renderString(text, x, y, color, shadow);
+    public int renderString(String text, double x, double y, int color, boolean shadowMode) {
+        if (!chinese && isChinese(text)) return FontLoader.miSans(font.getSize() - 1).renderString(text, x, y, color, shadowMode);
 
         GL11.glPushMatrix();
         GL11.glPushAttrib(1048575);
@@ -251,7 +260,7 @@ public class FontRenderer extends Font {
         y -= 2.0D;
         x *= 2.0D;
         y *= 2.0D;
-        y -= this.fontHeight / 5.0F;
+        y -= this.fontHeight / 2.5F;
 
         // 处理颜色
 
@@ -259,7 +268,7 @@ public class FontRenderer extends Font {
             color |= -16777216;
         }
 
-        if (shadow) {
+        if (shadowMode) {
             color = (color & 16579836) >> 2 | color & -16777216;;
         }
 
@@ -280,7 +289,7 @@ public class FontRenderer extends Font {
             switch (character) {
                 case '\n' -> {
                     x = startX;
-                    y += this.height() * 2.0F;
+                    y += this.getFontHeight() * 2.0F;
                     specialColor = false;
                 }
 
@@ -298,7 +307,7 @@ public class FontRenderer extends Font {
                     }
 
                     if (colorIndex < 16) {
-                        if (shadow) {
+                        if (shadowMode) {
                             colorIndex += 16;
                         }
 
@@ -355,43 +364,46 @@ public class FontRenderer extends Font {
         fillCharacter(character, map, fontGraphics, fontMetrics);
     }
 
+    public static String removeColorCodes(String text) {
+        return Pattern.compile("(?i)" + '§' + "[0-9A-FK-OR]").matcher(text).replaceAll("");
+    }
+
+    private int getStringWidth(String text, Map<Character, FontCharacter> map) {
+        int width = 0;
+        for (char c : text.toCharArray()) {
+            if (map.containsKey(c)) {
+                width += (int) (map.get(c).width() - 8f);
+            } else if (chinese) {
+                fillSingleChar(c, map, map == boldCharacters);
+            }
+        }
+        return width;
+    }
+
     public int getStringWidth(String text) {
         if (!this.chinese && this.isChinese(text)) {
             return FontLoader.miSans(font.getSize() - 1).getStringWidth(text);
         } else {
-            Map<Character, FontCharacter> map = this.defaultCharacters;
+            boolean hasCode = text.contains("§");
 
-            int length = text.length();
-            char previousCharacter = '.';
             int width = 0;
 
-            for (int i = 0; i < length; ++i) {
-                char character = text.charAt(i);
-                if (previousCharacter != 167) {
-                    if (character == 167) {
-                        int index = "0123456789abcdefklmnor".indexOf(text.toLowerCase().charAt(i + 1));
-                        if (index >= 16 && index != 21) {
-                            if (index == 17) {
-                                map = this.boldCharacters;
-                            }
-                        } else {
-                            map = this.defaultCharacters;
-                        }
-                    } else if (map.containsKey(character)) {
-                        width = (int) ((float) width + (map.get(character).width() - 8.0F));
-                    } else {
-                        fillSingleChar(character, map, map == boldCharacters);
-                    }
-                }
+            if (hasCode) {
+                for (String str : text.split("§")) {
+                    if (str.isEmpty()) continue;
+                    boolean isBold = str.startsWith("l");
+                    Map<Character, FontCharacter> map = isBold ? boldCharacters : defaultCharacters;
 
-                previousCharacter = character;
-            }
+                    String realText = str.substring(1);
+                    width += getStringWidth(realText, map);
+                }
+            } else width += getStringWidth(text, defaultCharacters);
 
             return width / 2;
         }
     }
 
-    public float height() {
+    public float getFontHeight() {
         return this.fontHeight;
     }
 

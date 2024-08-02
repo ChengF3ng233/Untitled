@@ -25,7 +25,7 @@ public class TextWidget extends Widget {
     public void render() {
         Font font = FontLoader.rubik(size.value.intValue());
         width = font.getStringWidth(text.value);
-        height = font.height();
+        height = font.getFontHeight();
         font.drawString("你好", x, y, color.getValue().getRGB());
     }
 }

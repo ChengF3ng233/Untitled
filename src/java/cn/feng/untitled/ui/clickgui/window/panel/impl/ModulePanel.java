@@ -50,7 +50,7 @@ public class ModulePanel extends Panel {
         FontRenderer font = FontLoader.rubik(15);
 
         final float gap = 5f;
-        float panelY = y + font.height() + 3f;
+        float panelY = y + font.getFontHeight() + 3f;
         float contentX = x + 3f;
         float contentY = panelY + gap + 2f;
 

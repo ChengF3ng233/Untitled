@@ -56,12 +56,20 @@ public class Module extends MinecraftInstance {
     }
 
     public void toggle() {
+        if (fixed) {
+            if (enabled) onDisable(); else onEnable();
+            return;
+        }
         this.enabled = !this.enabled;
         if (enabled) {
             onEnable();
             Client.instance.eventBus.register(this);
         } else {
             onDisable();
+            if (fixed) {
+                this.enabled = true;
+                return;
+            }
             Client.instance.eventBus.unregister(this);
         }
     }

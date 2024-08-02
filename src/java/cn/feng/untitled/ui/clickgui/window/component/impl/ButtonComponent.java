@@ -52,18 +52,18 @@ public class ButtonComponent extends Component<Boolean> {
 
     @Override
     public void draw(float x, float y, int mouseX, int mouseY) {
-        this.x = x + panelWidth - 2 * xGap - bgWidth;
-        this.y = y;
-        float bgY = this.y - 1f;
+        this.posX = x + panelWidth - 2 * xGap - bgWidth;
+        this.posY = y;
+        float bgY = this.posY - 1f;
 
-        RoundedUtil.drawRound(this.x, bgY, bgWidth, bgHeight, 3f, bgColAnim.getOutput());
-        RoundedUtil.drawRound(this.x + circXAnim.getOutput().floatValue(), bgY - 1f, 9f, 9f, 4f, circColAnim.getOutput());
+        RoundedUtil.drawRound(this.posX, bgY, bgWidth, bgHeight, 3f, bgColAnim.getOutput());
+        RoundedUtil.drawRound(this.posX + circXAnim.getOutput().floatValue(), bgY - 1f, 9f, 9f, 4f, circColAnim.getOutput());
     }
 
     private void toggle() {
+        if (moduleMode && module.fixed) return;
         if (moduleMode) {
-            if (!module.fixed)
-                module.toggle();
+            module.toggle();
         } else value.value = !value.value;
         textColAnim.changeDirection();
         bgColAnim.changeDirection();
@@ -77,7 +77,7 @@ public class ButtonComponent extends Component<Boolean> {
 
     @Override
     public void onMouseClick(int mouseX, int mouseY, int button) {
-        if (RenderUtil.hovering(mouseX, mouseY, x - 3f, y - 3f, width, height) && button == 0) {
+        if (RenderUtil.hovering(mouseX, mouseY, posX - 3f, posY - 3f, width, height) && button == 0) {
             toggle();
         }
     }
