@@ -27,8 +27,12 @@ public class ColorComponent extends Component<Color> {
         colorWidth = 65f;
         colorHeight = 12f;
 
+        float maxHeight = 13f * 8f + 5f * 7f;
         heightAnim = new CustomAnimation(DecelerateAnimation.class, 100, maxHeight, minHeight);
-        button = new ButtonComponent(value.rainbow);
+
+        buttons = new ButtonComponent[2];
+        buttons[0] = new ButtonComponent(value.rainbow);
+        buttons[1] = new ButtonComponent(value.fade);
 
         numbers = new NumberComponent[5];
         numbers[0] = new NumberComponent(value.hue);
@@ -40,16 +44,17 @@ public class ColorComponent extends Component<Color> {
 
     private boolean expanded;
     private float minX, minY;
-    private final float maxHeight = 13f * 7f + 5f * 6f;
     private final float minHeight = 13f;
     private final float colorWidth, colorHeight;
     private final CustomAnimation heightAnim;
-    private final ButtonComponent button;
+    private final ButtonComponent[] buttons;
     private final NumberComponent[] numbers;
 
     @Override
     public void init() {
-        button.init();
+        for (ButtonComponent button : buttons) {
+            button.init();
+        }
         for (NumberComponent number : numbers) {
             number.init();
         }
@@ -80,9 +85,12 @@ public class ColorComponent extends Component<Color> {
             FontRenderer font = FontLoader.greyCliff(16);
             float textX = minX + 5f;
             float valueY = minY + minHeight + 5f;
-            font.drawString(button.value.name, textX, valueY, button.textColAnim.getOutput().getRGB());
-            button.draw(minX, valueY, mouseX, mouseY);
-            valueY += button.height + 5f;
+
+            for (ButtonComponent button : buttons) {
+                font.drawString(button.value.name, textX, valueY, button.textColAnim.getOutput().getRGB());
+                button.draw(minX, valueY, mouseX, mouseY);
+                valueY += button.height + 5f;
+            }
 
             for (NumberComponent number : numbers) {
                 font.drawString(number.value.name, textX, valueY, Color.WHITE.getRGB());
@@ -97,14 +105,14 @@ public class ColorComponent extends Component<Color> {
     @Override
     public void onMouseClick(int mouseX, int mouseY, int button) {
         if (RenderUtil.hovering(mouseX, mouseY, posX, posY, colorWidth, colorHeight)) {
-            expanded = true;
+            expanded = !expanded;
             heightAnim.changeDirection();
-        } else if (!RenderUtil.hovering(mouseX, mouseY, minX, minY, panelWidth - 2 * xGap, heightAnim.getOutput().floatValue())) {
-            if (heightAnim.getAnimation().getDirection() == Direction.BACKWARDS) heightAnim.changeDirection();
         }
 
         if (expanded && RenderUtil.hovering(mouseX, mouseY, minX, minY, panelWidth - 2 * xGap, heightAnim.getOutput().floatValue())) {
-            this.button.onMouseClick(mouseX, mouseY, button);
+            for (ButtonComponent buttonComponent : buttons) {
+                buttonComponent.onMouseClick(mouseX, mouseY, button);
+            }
             for (NumberComponent number : numbers) {
                 number.onMouseClick(mouseX, mouseY, button);
             }
