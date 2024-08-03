@@ -18,7 +18,7 @@ public class Gui {
     public static final ResourceLocation icons = new ResourceLocation("textures/gui/icons.png");
     protected float zLevel;
 
-    public static void drawRect2(double x, double y, double width, double height, int color) {
+    public static void drawNewRect(double x, double y, double width, double height, int color) {
         RenderUtil.resetColor();
         RenderUtil.setAlphaLimit(0.0F);
         GLUtil.setup2DRendering(true);

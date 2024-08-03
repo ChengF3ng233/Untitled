@@ -1,6 +1,7 @@
 package cn.feng.untitled.util.data.compare;
 
 import cn.feng.untitled.module.Module;
+import cn.feng.untitled.ui.font.Font;
 
 import java.util.Comparator;
 
@@ -10,9 +11,11 @@ import java.util.Comparator;
  **/
 public class ModuleComparator implements Comparator<Module> {
     private final CompareMode mode;
+    private final Font font;
 
-    public ModuleComparator(CompareMode mode) {
+    public ModuleComparator(CompareMode mode, Font font) {
         this.mode = mode;
+        this.font = font;
     }
 
     @Override
@@ -20,7 +23,7 @@ public class ModuleComparator implements Comparator<Module> {
         if (mode == CompareMode.Alphabet) {
             return o1.name.compareTo(o2.name);
         } else {
-            return Integer.compare(o1.name.length(), o2.name.length());
+            return Integer.compare(font.getStringWidth(o2.name), font.getStringWidth(o1.name));
         }
     }
 }

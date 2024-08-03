@@ -61,7 +61,7 @@ public class ButtonComponent extends Component<Boolean> {
     }
 
     private void toggle() {
-        if (moduleMode && module.fixed) return;
+        if (moduleMode && module.locked) return;
         if (moduleMode) {
             module.toggle();
         } else value.value = !value.value;

@@ -2,12 +2,16 @@ package cn.feng.untitled.ui;
 
 import cn.feng.untitled.Client;
 import cn.feng.untitled.event.api.SubscribeEvent;
+import cn.feng.untitled.event.impl.ChatGUIEvent;
 import cn.feng.untitled.event.impl.Render2DEvent;
 import cn.feng.untitled.ui.clickgui.dropdown.DropdownGUI;
 import cn.feng.untitled.ui.clickgui.neverlose.NeverLoseGUI;
 import cn.feng.untitled.ui.widget.Widget;
 import cn.feng.untitled.ui.widget.impl.ArraylistWidget;
 import cn.feng.untitled.ui.widget.impl.TextWidget;
+import cn.feng.untitled.util.MinecraftInstance;
+import cn.feng.untitled.util.misc.ChatUtil;
+import net.minecraft.client.gui.GuiChat;
 import net.minecraft.client.gui.GuiScreen;
 
 import java.util.ArrayList;
@@ -17,7 +21,7 @@ import java.util.List;
  * @author ChengFeng
  * @since 2024/7/30
  **/
-public class UIManager {
+public class UIManager extends MinecraftInstance {
     public GuiScreen neverLoseGUI;
     public GuiScreen dropdownGUI;
 
@@ -45,8 +49,17 @@ public class UIManager {
     @SubscribeEvent
     private void onRender2D(Render2DEvent event) {
         for (Widget widget : widgetList) {
-            if (Client.instance.moduleManager.getModule(widget).enabled)
+            if (Client.instance.moduleManager.getModule(widget).enabled) {
+                widget.update();
                 widget.render();
+            }
+        }
+    }
+
+    @SubscribeEvent
+    private void onChatGUI(ChatGUIEvent event) {
+        for (Widget widget : widgetList) {
+            widget.drawBorder(event.mouseX, event.mouseY);
         }
     }
 }

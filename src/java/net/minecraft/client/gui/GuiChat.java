@@ -1,5 +1,7 @@
 package net.minecraft.client.gui;
 
+import cn.feng.untitled.Client;
+import cn.feng.untitled.event.impl.ChatGUIEvent;
 import com.google.common.collect.Lists;
 import net.minecraft.network.play.client.C14PacketTabComplete;
 import net.minecraft.util.*;
@@ -247,6 +249,8 @@ public class GuiChat extends GuiScreen {
         if (ichatcomponent != null && ichatcomponent.getChatStyle().getChatHoverEvent() != null) {
             this.handleComponentHover(ichatcomponent, mouseX, mouseY);
         }
+
+        Client.instance.eventBus.post(new ChatGUIEvent(mouseX, mouseY));
 
         super.drawScreen(mouseX, mouseY, partialTicks);
     }

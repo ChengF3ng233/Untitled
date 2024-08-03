@@ -32,7 +32,7 @@ public class ModuleConfig extends Config {
                 if (!config.has(module.name)) continue;
                 JsonObject moduleObject = config.get(module.name).getAsJsonObject();
 
-                if (moduleObject.has("enabled") && module.enabled != moduleObject.get("enabled").getAsBoolean()) module.toggle();
+                if (moduleObject.has("enabled") && module.enabled != moduleObject.get("enabled").getAsBoolean() && !module.locked) module.toggle();
                 if (moduleObject.has("key")) module.key = moduleObject.get("key").getAsInt();
 
                 if (!moduleObject.has("value")) continue;

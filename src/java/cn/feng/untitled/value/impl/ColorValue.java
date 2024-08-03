@@ -15,7 +15,7 @@ public class ColorValue extends Value<Color> {
     public NumberValue saturation = new NumberValue("Saturation", 0f, 1f, 0f, 0.01f);
     public NumberValue brightness = new NumberValue("Brightness", 0f, 1f, 0f, 0.01f);
     public NumberValue opacity = new NumberValue("Opacity", 1f, 1f, 0.01f, 0.01f);
-    public NumberValue speed = new NumberValue("RainbowSpeed", 15f, 30f, 5f, 1f);
+    public NumberValue speed = new NumberValue("Speed", 15f, 30f, 5f, 1f);
 
     public BoolValue rainbow = new BoolValue("Rainbow", false);
 
@@ -29,6 +29,7 @@ public class ColorValue extends Value<Color> {
         hue.value = (double) hsb[0];
         saturation.value = (double) hsb[1];
         brightness.value = (double) hsb[2];
+        opacity.value = color.getAlpha() / 255d;
     }
 
     public void setColor(float hue, float saturation, float brightness, float opacity) {
@@ -46,5 +47,12 @@ public class ColorValue extends Value<Color> {
     public Color getColor() {
         if (rainbow.value) return ColorUtil.rainbow(speed.value.intValue(), 0, saturation.value.floatValue(), brightness.value.floatValue(), opacity.value.floatValue());
         return ColorUtil.applyOpacity(Color.getHSBColor(hue.value.floatValue(), saturation.value.floatValue(), brightness.value.floatValue()), opacity.value.floatValue());
+    }
+
+    public Color getColor(int index) {
+        if (rainbow.value) {
+            return ColorUtil.rainbow(speed.value.intValue(), index, saturation.value.floatValue(), brightness.value.floatValue(), opacity.value.floatValue());
+        }
+        return getColor();
     }
 }

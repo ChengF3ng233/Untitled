@@ -10,8 +10,10 @@ import cn.feng.untitled.util.data.compare.CompareMode;
 import cn.feng.untitled.util.data.compare.ModuleComparator;
 import cn.feng.untitled.util.exception.ModuleNotFoundException;
 import cn.feng.untitled.util.exception.ValueLoadException;
+import cn.feng.untitled.util.misc.ChatUtil;
 import cn.feng.untitled.value.Value;
 import cn.feng.untitled.value.impl.*;
+import org.lwjgl.input.Keyboard;
 
 import java.awt.*;
 import java.lang.reflect.Field;
@@ -45,7 +47,7 @@ public class ModuleManager {
      */
     public void register(Widget widget) {
         Module widgetModule = new Module(widget.name, ModuleCategory.Widget);
-        widgetModule.enabled = widget.defaultOn;
+        if (widget.defaultOn) widgetModule.toggle();
         this.moduleList.add(widgetModule);
 
         for (Field field : widget.getClass().getDeclaredFields()) {
@@ -99,15 +101,7 @@ public class ModuleManager {
     public List<Module> getModuleByCategory(ModuleCategory category) {
         List<Module> list = new ArrayList<>(moduleList.stream().filter(it -> it.category == category).toList());
         if (!list.isEmpty()) {
-            list.sort(new ModuleComparator(CompareMode.Alphabet));
-        }
-        return list;
-    }
-
-    public List<Module> getModuleByState(boolean enabled) {
-        List<Module> list = new ArrayList<>(moduleList.stream().filter(it -> it.enabled = enabled).toList());
-        if (!list.isEmpty()) {
-            list.sort(new ModuleComparator(CompareMode.Length));
+            list.sort(new ModuleComparator(CompareMode.Alphabet, null));
         }
         return list;
     }

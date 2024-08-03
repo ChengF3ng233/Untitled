@@ -10,6 +10,7 @@ import cn.feng.untitled.ui.font.FontLoader;
 import cn.feng.untitled.util.misc.Logger;
 import de.florianmichael.viamcp.ViaMCP;
 import org.lwjgl.Sys;
+import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.Display;
 
 public enum Client {
@@ -57,6 +58,7 @@ public enum Client {
         Logger.info("Miscellaneous...");
         configManager.loadConfigs();
         uiManager.initGUI();
+        Keyboard.enableRepeatEvents(false);
 
         Display.setTitle(CLIENT_NAME + " | LWJGL Version " + Sys.getVersion());
         Logger.info("Done.");

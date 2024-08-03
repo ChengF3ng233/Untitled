@@ -4,7 +4,6 @@ import cn.feng.untitled.Client;
 import cn.feng.untitled.module.Module;
 import cn.feng.untitled.module.ModuleCategory;
 import cn.feng.untitled.value.impl.ModeValue;
-import net.minecraft.client.gui.GuiScreen;
 import org.lwjgl.input.Keyboard;
 
 /**
@@ -16,7 +15,7 @@ public class ClickGUI extends Module {
 
     public ClickGUI() {
         super("ClickGUI", ModuleCategory.Client, Keyboard.KEY_RSHIFT);
-        fixed = true;
+        locked = true;
     }
 
     @Override

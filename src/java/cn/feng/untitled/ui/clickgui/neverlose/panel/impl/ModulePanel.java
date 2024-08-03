@@ -81,7 +81,7 @@ public class ModulePanel extends Panel {
 
         FontRenderer font2 = FontLoader.greyCliff(16);
         font2.drawString("Enabled", contentX, contentY + 1f, Color.WHITE.getRGB());
-        if (module.fixed) {
+        if (module.locked) {
             RenderUtil.drawImage(new ResourceLocation("untitled/icon/lock.png"), contentX + width - 17f, contentY - 3f, 12f, 12f);
         } else enableBtn.draw(contentX, contentY, mouseX, mouseY);
 
