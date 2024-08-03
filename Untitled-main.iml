@@ -31,5 +31,6 @@
         <jarDirectory url="file://$MODULE_DIR$/lib/mc" recursive="false" />
       </library>
     </orderEntry>
+    <orderEntry type="library" name="jfree.skijagraphics2d" level="project" />
   </component>
 </module>

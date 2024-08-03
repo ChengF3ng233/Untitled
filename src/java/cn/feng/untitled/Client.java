@@ -6,7 +6,9 @@ import cn.feng.untitled.event.EventBus;
 import cn.feng.untitled.module.ModuleManager;
 import cn.feng.untitled.network.NetworkManager;
 import cn.feng.untitled.ui.UIManager;
-import cn.feng.untitled.ui.font.FontLoader;
+import cn.feng.untitled.ui.font.awt.FontLoader;
+import cn.feng.untitled.ui.font.nano.NanoFontLoader;
+import cn.feng.untitled.ui.font.nano.NanoLoader;
 import cn.feng.untitled.util.misc.Logger;
 import de.florianmichael.viamcp.ViaMCP;
 import org.lwjgl.Sys;
@@ -32,6 +34,7 @@ public enum Client {
         } catch (Exception e) {
             e.printStackTrace();
         }
+        NanoLoader.createContext();
 
         Logger.info("Initializing managers...");
         eventBus = new EventBus();
@@ -44,6 +47,7 @@ public enum Client {
         Logger.info("Loading fonts...");
         long start = System.currentTimeMillis();
         FontLoader.registerFonts();
+        NanoFontLoader.registerFonts();
         Logger.info("Finished loading fonts within " + (System.currentTimeMillis() - start) / 1000 + " seconds.");
 
         Logger.info("Registering...");
@@ -66,7 +70,7 @@ public enum Client {
 
     public void stop() {
         Logger.info("Client stopping...");
-
+        NanoLoader.deleteContext();
         Logger.info("Saving configs...");
         configManager.saveConfigs();
     }

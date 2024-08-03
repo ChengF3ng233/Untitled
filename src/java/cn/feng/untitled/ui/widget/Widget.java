@@ -2,7 +2,7 @@ package cn.feng.untitled.ui.widget;
 
 import cn.feng.untitled.event.impl.ShaderEvent;
 import cn.feng.untitled.ui.clickgui.neverlose.ThemeColor;
-import cn.feng.untitled.ui.font.FontLoader;
+import cn.feng.untitled.ui.font.awt.FontLoader;
 import cn.feng.untitled.util.MinecraftInstance;
 import cn.feng.untitled.util.animation.advanced.Direction;
 import cn.feng.untitled.util.animation.advanced.composed.ColorAnimation;

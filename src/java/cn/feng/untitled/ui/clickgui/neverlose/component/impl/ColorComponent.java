@@ -2,9 +2,9 @@ package cn.feng.untitled.ui.clickgui.neverlose.component.impl;
 
 import cn.feng.untitled.ui.clickgui.neverlose.ThemeColor;
 import cn.feng.untitled.ui.clickgui.neverlose.component.Component;
-import cn.feng.untitled.ui.font.CenterType;
-import cn.feng.untitled.ui.font.FontLoader;
-import cn.feng.untitled.ui.font.FontRenderer;
+import cn.feng.untitled.ui.font.awt.CenterType;
+import cn.feng.untitled.ui.font.awt.FontLoader;
+import cn.feng.untitled.ui.font.awt.FontRenderer;
 import cn.feng.untitled.util.animation.advanced.Direction;
 import cn.feng.untitled.util.animation.advanced.composed.CustomAnimation;
 import cn.feng.untitled.util.animation.advanced.impl.DecelerateAnimation;

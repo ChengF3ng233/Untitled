@@ -1,7 +1,7 @@
 package cn.feng.untitled.util.data.compare;
 
 import cn.feng.untitled.module.Module;
-import cn.feng.untitled.ui.font.Font;
+import cn.feng.untitled.ui.font.awt.Font;
 
 import java.util.Comparator;
 

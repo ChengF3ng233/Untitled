@@ -2,7 +2,7 @@ package net.minecraft.client.gui;
 
 import cn.feng.untitled.Client;
 import cn.feng.untitled.module.impl.client.HUD;
-import cn.feng.untitled.ui.font.FontLoader;
+import cn.feng.untitled.ui.font.awt.FontLoader;
 import com.ibm.icu.text.ArabicShaping;
 import com.ibm.icu.text.ArabicShapingException;
 import com.ibm.icu.text.Bidi;
@@ -24,7 +24,6 @@ import net.optifine.util.FontUtils;
 import org.apache.commons.io.IOUtils;
 import org.lwjgl.opengl.GL11;
 
-import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.InputStream;

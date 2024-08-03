@@ -1,7 +1,7 @@
 package net.minecraft.client.gui;
 
-import cn.feng.untitled.ui.font.CenterType;
-import cn.feng.untitled.ui.font.FontLoader;
+import cn.feng.untitled.ui.font.awt.CenterType;
+import cn.feng.untitled.ui.font.awt.FontLoader;
 import cn.feng.untitled.util.animation.advanced.Direction;
 import cn.feng.untitled.util.animation.advanced.composed.ColorAnimation;
 import cn.feng.untitled.util.render.RoundedUtil;

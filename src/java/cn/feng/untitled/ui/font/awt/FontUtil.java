@@ -1,4 +1,4 @@
-package cn.feng.untitled.ui.font;
+package cn.feng.untitled.ui.font.awt;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.resources.IResourceManager;
