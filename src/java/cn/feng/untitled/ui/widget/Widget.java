@@ -1,5 +1,6 @@
 package cn.feng.untitled.ui.widget;
 
+import cn.feng.untitled.event.impl.ShaderEvent;
 import cn.feng.untitled.ui.clickgui.neverlose.ThemeColor;
 import cn.feng.untitled.ui.font.FontLoader;
 import cn.feng.untitled.util.MinecraftInstance;
@@ -41,9 +42,13 @@ public abstract class Widget extends MinecraftInstance {
         colorAnim = new ColorAnimation(Color.WHITE, ThemeColor.grayColor, 100);
     }
 
-    public abstract void render();
+    public void onShader(ShaderEvent event) {
 
-    public void update() {
+    }
+
+    public abstract void onRender();
+
+    public void updatePos() {
         sr = new ScaledResolution(mc);
         float renderX = x * sr.getScaledWidth();
         float renderY = y * sr.getScaledHeight();
@@ -53,7 +58,7 @@ public abstract class Widget extends MinecraftInstance {
         if (renderY > sr.getScaledHeight() - height) y = (sr.getScaledHeight() - height) / sr.getScaledHeight();
     }
 
-    public void drawBorder(int mouseX, int mouseY) {
+    public void onDrag(int mouseX, int mouseY) {
         float renderX = x * sr.getScaledWidth();
         float renderY = y * sr.getScaledHeight();
 

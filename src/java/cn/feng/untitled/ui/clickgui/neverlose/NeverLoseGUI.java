@@ -1,6 +1,7 @@
 package cn.feng.untitled.ui.clickgui.neverlose;
 
 import cn.feng.untitled.module.ModuleCategory;
+import cn.feng.untitled.module.impl.client.PostProcessing;
 import cn.feng.untitled.ui.clickgui.neverlose.gui.TextField;
 import cn.feng.untitled.ui.clickgui.neverlose.panel.Panel;
 import cn.feng.untitled.ui.clickgui.neverlose.panel.impl.CategoryPanel;
@@ -12,13 +13,14 @@ import cn.feng.untitled.util.animation.advanced.Animation;
 import cn.feng.untitled.util.animation.advanced.Direction;
 import cn.feng.untitled.util.animation.advanced.composed.ColorAnimation;
 import cn.feng.untitled.util.animation.advanced.composed.CustomAnimation;
+import cn.feng.untitled.util.animation.advanced.impl.DecelerateAnimation;
 import cn.feng.untitled.util.animation.advanced.impl.SmoothStepAnimation;
-import cn.feng.untitled.util.misc.ChatUtil;
-import cn.feng.untitled.util.misc.Logger;
 import cn.feng.untitled.util.render.ColorUtil;
 import cn.feng.untitled.util.render.RenderUtil;
 import cn.feng.untitled.util.render.RoundedUtil;
 import cn.feng.untitled.util.render.StencilUtil;
+import cn.feng.untitled.util.render.blur.BlurUtil;
+import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.util.ResourceLocation;
@@ -80,7 +82,7 @@ public class NeverLoseGUI extends GuiScreen {
     @Override
     public void initGui() {
         dragging = false;
-        windowAnim = new SmoothStepAnimation(150, 1d);
+        windowAnim = new DecelerateAnimation(150, 1d);
         iconColorAnim = new ColorAnimation(Color.WHITE, ThemeColor.grayColor, 100);
 
         currentPanel.modulePanelList.forEach(ModulePanel::init);
@@ -103,6 +105,12 @@ public class NeverLoseGUI extends GuiScreen {
         if (y < 10) y = 10;
         if (x + width > sr.getScaledWidth() - 10) x = sr.getScaledWidth() - 10 - width;
         if (y + height > sr.getScaledHeight() - 10) y = sr.getScaledHeight() - 10 - height;
+
+        if (PostProcessing.blur.value) {
+            BlurUtil.processStart();
+            Gui.drawNewRect(0, 0, sr.getScaledWidth(), sr.getScaledHeight(), Color.BLACK.getRGB());
+            BlurUtil.blurEnd();
+        }
 
         RenderUtil.scaleStart(x + width / 2, y + height / 2, windowAnim.getOutput().floatValue());
 
@@ -130,12 +138,24 @@ public class NeverLoseGUI extends GuiScreen {
         // Title
         FontRenderer font = FontLoader.rubik_bold(28);
         float centerX = x + leftWidth / 2f;
+        if (PostProcessing.bloom.value) {
+            BlurUtil.processStart();
+            font.drawCenteredString("UNTITLED", centerX + 0.5f, y + 13.5f, ThemeColor.focusedColor.getRGB(), CenterType.Horizontal);
+            font.drawCenteredString("UNTITLED", centerX, y + 13f, Color.WHITE.getRGB(), CenterType.Horizontal);
+            BlurUtil.bloomEnd();
+        }
         font.drawCenteredString("UNTITLED", centerX + 0.5f, y + 13.5f, ThemeColor.focusedColor.getRGB(), CenterType.Horizontal);
         font.drawCenteredString("UNTITLED", centerX, y + 13f, Color.WHITE.getRGB(), CenterType.Horizontal);
 
         // Category
         float categoryX = centerX - font.getStringWidth("UNTITLED") / 2f - 3f;
         float categoryY = y + font.getFontHeight() + 50f;
+
+        if (PostProcessing.bloom.value) {
+            BlurUtil.processStart();
+            RoundedUtil.drawRound(categoryX - 2f, categoryY + panelAnim.getOutput().floatValue() - 5f, leftWidth - 14f, currentPanel.height + 10f, 4f, ThemeColor.barColor);
+            BlurUtil.bloomEnd();
+        }
 
         RoundedUtil.drawRound(categoryX - 2f, categoryY + panelAnim.getOutput().floatValue() - 5f, leftWidth - 14f, currentPanel.height + 10f, 4f, ThemeColor.barColor);
 
@@ -166,7 +186,8 @@ public class NeverLoseGUI extends GuiScreen {
         RenderUtil.scissorStart(x + leftWidth + 5f, originalY - 3f, width - leftWidth - 10f, height - topWidth - 10f);
         for (ModulePanel panel : currentPanel.modulePanelList) {
             if (!searchField.text.isEmpty()) {
-                if (!panel.module.name.toLowerCase(Locale.ROOT).contains(searchField.text.toLowerCase(Locale.ROOT))) continue;
+                if (!panel.module.name.toLowerCase(Locale.ROOT).contains(searchField.text.toLowerCase(Locale.ROOT)))
+                    continue;
             }
             boolean isLeft = panelIndex % 2 == 0;
             moduleX = x + leftWidth + 10f + (isLeft ? 0 : panel.width + 10);
@@ -199,8 +220,15 @@ public class NeverLoseGUI extends GuiScreen {
 
             if (hovering && Mouse.isButtonDown(0)) currentPanel.scrollAnim.target = 0f;
 
-            RoundedUtil.drawRoundOutline(roundX, roundY, size, size, 10f, 0.2f, ColorUtil.applyOpacity(topColorAnim.getOutput(), opacity), ColorUtil.applyOpacity(ThemeColor.outlineColor, opacity));
-            RenderUtil.drawImage(new ResourceLocation("untitled/icon/top.png"), roundX + 2.6f, roundY + 2.9f, 14f, 14f, ColorUtil.applyOpacity(Color.WHITE, opacity));
+            if (PostProcessing.bloom.value) {
+                BlurUtil.processStart();
+                RoundedUtil.drawRound(roundX, roundY, size, size, 10f, ColorUtil.applyOpacity(topColorAnim.getOutput(), opacity));
+                RenderUtil.drawImage(new ResourceLocation("untitled/icon/top.png"), roundX + 2.6f, roundY + 3.1f, 14f, 14f, ColorUtil.applyOpacity(Color.WHITE, opacity));
+                BlurUtil.bloomEnd();
+            }
+
+            RoundedUtil.drawRound(roundX, roundY, size, size, 10f, ColorUtil.applyOpacity(topColorAnim.getOutput(), opacity));
+            RenderUtil.drawImage(new ResourceLocation("untitled/icon/top.png"), roundX + 2.6f, roundY + 3.1f, 14f, 14f, ColorUtil.applyOpacity(Color.WHITE, opacity));
         }
 
         // Search
@@ -224,12 +252,17 @@ public class NeverLoseGUI extends GuiScreen {
 
     @Override
     protected void keyTyped(char typedChar, int keyCode) throws IOException {
+        boolean close = true;
+
         for (ModulePanel panel : currentPanel.modulePanelList) {
             panel.onKeyTyped(typedChar, keyCode);
-            if (panel.listening) return;
+            if (panel.listening) {
+                panel.listening = false;
+                close = false;
+            }
         }
 
-        if (keyCode == Keyboard.KEY_ESCAPE && windowAnim.getDirection() == Direction.FORWARDS) {
+        if (keyCode == Keyboard.KEY_ESCAPE && windowAnim.getDirection() == Direction.FORWARDS && close) {
             windowAnim.changeDirection();
             Keyboard.enableRepeatEvents(false);
         }

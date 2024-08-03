@@ -1,7 +1,9 @@
 package cn.feng.untitled.ui.widget.impl;
 
 import cn.feng.untitled.Client;
+import cn.feng.untitled.event.impl.ShaderEvent;
 import cn.feng.untitled.module.Module;
+import cn.feng.untitled.module.impl.client.PostProcessing;
 import cn.feng.untitled.ui.font.FontLoader;
 import cn.feng.untitled.ui.font.FontRenderer;
 import cn.feng.untitled.ui.widget.Widget;
@@ -9,6 +11,9 @@ import cn.feng.untitled.util.animation.advanced.Direction;
 import cn.feng.untitled.util.data.compare.CompareMode;
 import cn.feng.untitled.util.data.compare.ModuleComparator;
 import cn.feng.untitled.util.render.RenderUtil;
+import cn.feng.untitled.util.render.RoundedUtil;
+import cn.feng.untitled.util.render.blur.BlurUtil;
+import cn.feng.untitled.value.impl.BoolValue;
 import cn.feng.untitled.value.impl.ColorValue;
 import cn.feng.untitled.value.impl.NumberValue;
 import net.minecraft.client.gui.Gui;
@@ -36,7 +41,16 @@ public class ArraylistWidget extends Widget {
     private final NumberValue indexOffset = new NumberValue("IndexOffset", 6f, 20f, 0f, 1f);
 
     @Override
-    public void render() {
+    public void onShader(ShaderEvent event) {
+        render(event.bloom, !event.bloom);
+    }
+
+    @Override
+    public void onRender() {
+        render(true, false);
+    }
+
+    private void render(boolean drawStr, boolean blur) {
         float renderX = sr.getScaledWidth() * x;
         float renderY = sr.getScaledHeight() * y;
 
@@ -55,8 +69,12 @@ public class ArraylistWidget extends Widget {
         for (Module module : moduleList) {
             double moduleX = renderX + maxWidth - 6f - (font.getStringWidth(module.name)) * module.horizontalAnim.getOutput();
 
-            Gui.drawNewRect(moduleX, moduleY, font.getStringWidth(module.name) + 6f, yGap, backgroundColor.getColor(index).getRGB());
-            font.drawString(module.name, moduleX + 3f, moduleY + 2f, textColor.getColor(index).getRGB(), true);
+            Gui.drawNewRect(moduleX, moduleY, font.getStringWidth(module.name) + 6f, yGap, blur? Color.BLACK.getRGB() : backgroundColor.getColor(index).getRGB());
+
+            if (drawStr) {
+                font.drawString(module.name, moduleX + 3f, moduleY + 2f, textColor.getColor(index).getRGB(), true);
+            }
+
             moduleY += module.verticalAnim.getOutput().floatValue() * yGap;
 
             if (!module.enabled && module.horizontalAnim.getAnimation().finished(Direction.BACKWARDS) && module.verticalAnim.getDirection() == Direction.FORWARDS) {

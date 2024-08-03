@@ -134,60 +134,76 @@ public class ShaderUtil extends MinecraftInstance {
             "uniform int check;\n" +
             "\n" +
             "void main() {\n" +
-            "  //  if(check && texture2D(textureToCheck, gl_TexCoord[0].st).a > 0.0) discard;\n" +
-            "    vec2 uv = vec2(gl_FragCoord.xy / iResolution);\n" +
+            "    vec2 uv = gl_FragCoord.xy / iResolution;\n" +
             "\n" +
-            "    vec4 sum = texture2D(inTexture, uv + vec2(-halfpixel.x * 2.0, 0.0) * offset);\n" +
+            "    vec2 offset1 = vec2(-halfpixel.x, 0.0) * offset;\n" +
+            "    vec2 offset2 = vec2(-halfpixel.x, halfpixel.y) * offset;\n" +
+            "    vec2 offset3 = vec2(0.0, halfpixel.y * 2.0) * offset;\n" +
+            "    vec2 offset4 = vec2(halfpixel.x, halfpixel.y) * offset;\n" +
+            "    vec2 offset5 = vec2(halfpixel.x * 2.0, 0.0) * offset;\n" +
+            "    vec2 offset6 = vec2(halfpixel.x, -halfpixel.y) * offset;\n" +
+            "    vec2 offset7 = vec2(0.0, -halfpixel.y * 2.0) * offset;\n" +
+            "    vec2 offset8 = vec2(-halfpixel.x, -halfpixel.y) * offset;\n" +
+            "\n" +
+            "    vec4 sum = texture2D(inTexture, uv + offset1);\n" +
             "    sum.rgb *= sum.a;\n" +
-            "    vec4 smpl1 =  texture2D(inTexture, uv + vec2(-halfpixel.x, halfpixel.y) * offset);\n" +
+            "    vec4 smpl1 = texture2D(inTexture, uv + offset2);\n" +
             "    smpl1.rgb *= smpl1.a;\n" +
             "    sum += smpl1 * 2.0;\n" +
-            "    vec4 smp2 = texture2D(inTexture, uv + vec2(0.0, halfpixel.y * 2.0) * offset);\n" +
+            "    vec4 smp2 = texture2D(inTexture, uv + offset3);\n" +
             "    smp2.rgb *= smp2.a;\n" +
             "    sum += smp2;\n" +
-            "    vec4 smp3 = texture2D(inTexture, uv + vec2(halfpixel.x, halfpixel.y) * offset);\n" +
+            "    vec4 smp3 = texture2D(inTexture, uv + offset4);\n" +
             "    smp3.rgb *= smp3.a;\n" +
             "    sum += smp3 * 2.0;\n" +
-            "    vec4 smp4 = texture2D(inTexture, uv + vec2(halfpixel.x * 2.0, 0.0) * offset);\n" +
+            "    vec4 smp4 = texture2D(inTexture, uv + offset5);\n" +
             "    smp4.rgb *= smp4.a;\n" +
             "    sum += smp4;\n" +
-            "    vec4 smp5 = texture2D(inTexture, uv + vec2(halfpixel.x, -halfpixel.y) * offset);\n" +
+            "    vec4 smp5 = texture2D(inTexture, uv + offset6);\n" +
             "    smp5.rgb *= smp5.a;\n" +
             "    sum += smp5 * 2.0;\n" +
-            "    vec4 smp6 = texture2D(inTexture, uv + vec2(0.0, -halfpixel.y * 2.0) * offset);\n" +
+            "    vec4 smp6 = texture2D(inTexture, uv + offset7);\n" +
             "    smp6.rgb *= smp6.a;\n" +
             "    sum += smp6;\n" +
-            "    vec4 smp7 = texture2D(inTexture, uv + vec2(-halfpixel.x, -halfpixel.y) * offset);\n" +
+            "    vec4 smp7 = texture2D(inTexture, uv + offset8);\n" +
             "    smp7.rgb *= smp7.a;\n" +
             "    sum += smp7 * 2.0;\n" +
+            "\n" +
             "    vec4 result = sum / 12.0;\n" +
-            "    gl_FragColor = vec4(result.rgb / result.a, mix(result.a, result.a * (1.0 - texture2D(textureToCheck, gl_TexCoord[0].st).a),check));\n" +
-            "}";
+            "    float checkAlpha = texture2D(textureToCheck, gl_TexCoord[0].st).a;\n" +
+            "    gl_FragColor = vec4(result.rgb / result.a, mix(result.a, result.a * (1.0 - checkAlpha), float(check)));\n" +
+            "}\n";
     private final String kawaseDownBloom = "#version 120\n" +
             "\n" +
             "uniform sampler2D inTexture;\n" +
             "uniform vec2 offset, halfpixel, iResolution;\n" +
             "\n" +
             "void main() {\n" +
-            "    vec2 uv = vec2(gl_FragCoord.xy / iResolution);\n" +
-            "    vec4 sum = texture2D(inTexture, gl_TexCoord[0].st);\n" +
+            "    vec2 uv = gl_FragCoord.xy / iResolution;\n" +
+            "\n" +
+            "    vec4 sum = texture2D(inTexture, uv);\n" +
             "    sum.rgb *= sum.a;\n" +
             "    sum *= 4.0;\n" +
+            "    \n" +
             "    vec4 smp1 = texture2D(inTexture, uv - halfpixel.xy * offset);\n" +
             "    smp1.rgb *= smp1.a;\n" +
             "    sum += smp1;\n" +
+            "    \n" +
             "    vec4 smp2 = texture2D(inTexture, uv + halfpixel.xy * offset);\n" +
             "    smp2.rgb *= smp2.a;\n" +
             "    sum += smp2;\n" +
+            "    \n" +
             "    vec4 smp3 = texture2D(inTexture, uv + vec2(halfpixel.x, -halfpixel.y) * offset);\n" +
             "    smp3.rgb *= smp3.a;\n" +
             "    sum += smp3;\n" +
+            "    \n" +
             "    vec4 smp4 = texture2D(inTexture, uv - vec2(halfpixel.x, -halfpixel.y) * offset);\n" +
             "    smp4.rgb *= smp4.a;\n" +
             "    sum += smp4;\n" +
+            "    \n" +
             "    vec4 result = sum / 8.0;\n" +
             "    gl_FragColor = vec4(result.rgb / result.a, result.a);\n" +
-            "}";
+            "}\n";
     private final String kawaseUp = "#version 120\n" +
             "\n" +
             "uniform sampler2D inTexture, textureToCheck;\n" +
@@ -195,7 +211,8 @@ public class ShaderUtil extends MinecraftInstance {
             "uniform int check;\n" +
             "\n" +
             "void main() {\n" +
-            "    vec2 uv = vec2(gl_FragCoord.xy / iResolution);\n" +
+            "    vec2 uv = gl_FragCoord.xy / iResolution;\n" +
+            "\n" +
             "    vec4 sum = texture2D(inTexture, uv + vec2(-halfpixel.x * 2.0, 0.0) * offset);\n" +
             "    sum += texture2D(inTexture, uv + vec2(-halfpixel.x, halfpixel.y) * offset) * 2.0;\n" +
             "    sum += texture2D(inTexture, uv + vec2(0.0, halfpixel.y * 2.0) * offset);\n" +
@@ -205,22 +222,25 @@ public class ShaderUtil extends MinecraftInstance {
             "    sum += texture2D(inTexture, uv + vec2(0.0, -halfpixel.y * 2.0) * offset);\n" +
             "    sum += texture2D(inTexture, uv + vec2(-halfpixel.x, -halfpixel.y) * offset) * 2.0;\n" +
             "\n" +
-            "    gl_FragColor = vec4(sum.rgb /12.0, mix(1.0, texture2D(textureToCheck, gl_TexCoord[0].st).a, check));\n" +
-            "}\n";
+            "    vec4 average = sum / 12.0;\n" +
+            "    gl_FragColor = vec4(average.rgb, mix(1.0, texture2D(textureToCheck, gl_TexCoord[0].st).a, check));\n" +
+            "}";
     private final String kawaseDown = "#version 120\n" +
             "\n" +
             "uniform sampler2D inTexture;\n" +
             "uniform vec2 offset, halfpixel, iResolution;\n" +
             "\n" +
             "void main() {\n" +
-            "    vec2 uv = vec2(gl_FragCoord.xy / iResolution);\n" +
-            "    vec4 sum = texture2D(inTexture, gl_TexCoord[0].st) * 4.0;\n" +
+            "    vec2 uv = gl_FragCoord.xy / iResolution;\n" +
+            "\n" +
+            "    vec4 sum = texture2D(inTexture, uv) * 4.0;\n" +
             "    sum += texture2D(inTexture, uv - halfpixel.xy * offset);\n" +
             "    sum += texture2D(inTexture, uv + halfpixel.xy * offset);\n" +
             "    sum += texture2D(inTexture, uv + vec2(halfpixel.x, -halfpixel.y) * offset);\n" +
             "    sum += texture2D(inTexture, uv - vec2(halfpixel.x, -halfpixel.y) * offset);\n" +
-            "    gl_FragColor = vec4(sum.rgb * .125, 1.0);\n" +
-            "}\n";
+            "\n" +
+            "    gl_FragColor = vec4(sum.rgb * 0.125, 1.0);\n" +
+            "}";
     private final String gradientMask = "#version 120\n" +
             "\n" +
             "uniform vec2 location, rectSize;\n" +
@@ -321,6 +341,7 @@ public class ShaderUtil extends MinecraftInstance {
             "}";
 
     public ShaderUtil(String fragmentShaderLoc, String vertexShaderLoc) {
+
         int program = glCreateProgram();
         try {
             int fragmentShaderID;

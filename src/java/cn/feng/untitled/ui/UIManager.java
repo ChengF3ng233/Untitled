@@ -4,14 +4,13 @@ import cn.feng.untitled.Client;
 import cn.feng.untitled.event.api.SubscribeEvent;
 import cn.feng.untitled.event.impl.ChatGUIEvent;
 import cn.feng.untitled.event.impl.Render2DEvent;
+import cn.feng.untitled.event.impl.ShaderEvent;
 import cn.feng.untitled.ui.clickgui.dropdown.DropdownGUI;
 import cn.feng.untitled.ui.clickgui.neverlose.NeverLoseGUI;
 import cn.feng.untitled.ui.widget.Widget;
 import cn.feng.untitled.ui.widget.impl.ArraylistWidget;
 import cn.feng.untitled.ui.widget.impl.TextWidget;
 import cn.feng.untitled.util.MinecraftInstance;
-import cn.feng.untitled.util.misc.ChatUtil;
-import net.minecraft.client.gui.GuiChat;
 import net.minecraft.client.gui.GuiScreen;
 
 import java.util.ArrayList;
@@ -44,14 +43,25 @@ public class UIManager extends MinecraftInstance {
     public void initGUI() {
         neverLoseGUI = new NeverLoseGUI();
         dropdownGUI = new DropdownGUI();
+
+        Client.instance.eventBus.register(neverLoseGUI);
     }
 
     @SubscribeEvent
     private void onRender2D(Render2DEvent event) {
         for (Widget widget : widgetList) {
             if (Client.instance.moduleManager.getModule(widget).enabled) {
-                widget.update();
-                widget.render();
+                widget.updatePos();
+                widget.onRender();
+            }
+        }
+    }
+
+    @SubscribeEvent
+    private void onShader(ShaderEvent event) {
+        for (Widget widget : widgetList) {
+            if (Client.instance.moduleManager.getModule(widget).enabled) {
+                widget.onShader(event);
             }
         }
     }
@@ -59,7 +69,7 @@ public class UIManager extends MinecraftInstance {
     @SubscribeEvent
     private void onChatGUI(ChatGUIEvent event) {
         for (Widget widget : widgetList) {
-            widget.drawBorder(event.mouseX, event.mouseY);
+            widget.onDrag(event.mouseX, event.mouseY);
         }
     }
 }

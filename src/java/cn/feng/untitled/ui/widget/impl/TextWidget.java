@@ -22,7 +22,7 @@ public class TextWidget extends Widget {
     }
 
     @Override
-    public void render() {
+    public void onRender() {
         Font font = FontLoader.rubik(size.value.intValue());
         width = font.getStringWidth(text.value);
         height = font.getFontHeight();

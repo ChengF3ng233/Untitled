@@ -53,6 +53,7 @@ public class ModuleConfig extends Config {
                     } else if (value instanceof ColorValue cv) {
                         JsonObject colorObject = valueElement.getAsJsonObject();
                         cv.rainbow.value = colorObject.get("rainbow").getAsBoolean();
+                        cv.fade.value = colorObject.get("fade").getAsBoolean();
                         cv.setColor(colorObject.get("hue").getAsFloat(), colorObject.get("saturation").getAsFloat(), colorObject.get("brightness").getAsFloat(), colorObject.get("opacity").getAsFloat());
                         cv.speed.value = colorObject.get("speed").getAsDouble();
                     }
@@ -86,6 +87,7 @@ public class ModuleConfig extends Config {
                 } else if (value instanceof ColorValue cv) {
                     JsonObject colorObject = new JsonObject();
                     colorObject.addProperty("rainbow", cv.rainbow.value);
+                    colorObject.addProperty("fade", cv.fade.value);
                     colorObject.addProperty("hue", cv.hue.value);
                     colorObject.addProperty("saturation", cv.saturation.value);
                     colorObject.addProperty("brightness", cv.brightness.value);

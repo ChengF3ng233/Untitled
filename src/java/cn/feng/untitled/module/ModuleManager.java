@@ -4,18 +4,15 @@ import cn.feng.untitled.event.api.SubscribeEvent;
 import cn.feng.untitled.event.impl.KeyEvent;
 import cn.feng.untitled.module.impl.client.ClickGUI;
 import cn.feng.untitled.module.impl.client.HUD;
+import cn.feng.untitled.module.impl.client.PostProcessing;
 import cn.feng.untitled.module.impl.movement.ToggleSprint;
 import cn.feng.untitled.ui.widget.Widget;
 import cn.feng.untitled.util.data.compare.CompareMode;
 import cn.feng.untitled.util.data.compare.ModuleComparator;
 import cn.feng.untitled.util.exception.ModuleNotFoundException;
 import cn.feng.untitled.util.exception.ValueLoadException;
-import cn.feng.untitled.util.misc.ChatUtil;
 import cn.feng.untitled.value.Value;
-import cn.feng.untitled.value.impl.*;
-import org.lwjgl.input.Keyboard;
 
-import java.awt.*;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
@@ -78,16 +75,7 @@ public class ModuleManager {
         register(new ToggleSprint());
         register(new ClickGUI());
         register(new HUD());
-
-        for (int i = 0; i < 10; i++) {
-            Module test = new Module("Test" + i, ModuleCategory.Client);
-            register(test);
-            test.valueList.add(new BoolValue("BoolValue", false));
-            test.valueList.add(new ModeValue("ModeValue", "Mode0", new String[]{"Mode0", "Mode1", "Mode2", "Mode3"}));
-            test.valueList.add(new StringValue("StringValue", "Value"));
-            test.valueList.add(new NumberValue("NumberValue", 5f, 5f, 0f, 1f));
-            test.valueList.add(new ColorValue("ColorValue", Color.WHITE));
-        }
+        register(new PostProcessing());
     }
 
     public Module getModule(Class<? extends Module> klass) {

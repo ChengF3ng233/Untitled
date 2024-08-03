@@ -2,6 +2,7 @@ package net.minecraft.client.gui;
 
 import cn.feng.untitled.Client;
 import cn.feng.untitled.event.impl.Render2DEvent;
+import cn.feng.untitled.module.impl.client.PostProcessing;
 import com.google.common.base.Predicate;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
@@ -344,6 +345,7 @@ public class GuiIngame extends Gui {
         GlStateManager.disableLighting();
         GlStateManager.enableAlpha();
 
+        PostProcessing.blurScreen();
         Client.instance.eventBus.post(new Render2DEvent(partialTicks));
     }
 

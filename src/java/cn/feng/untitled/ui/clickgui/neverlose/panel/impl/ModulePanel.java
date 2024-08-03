@@ -113,7 +113,6 @@ public class ModulePanel extends Panel {
     public void onKeyTyped(char c, int keyCode) {
         if (listening) {
             module.key = keyCode == Keyboard.KEY_ESCAPE? -1 : keyCode;
-            listening = false;
             Client.instance.configManager.saveConfigs();
             return;
         }
