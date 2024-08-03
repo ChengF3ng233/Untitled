@@ -3,6 +3,8 @@ package cn.feng.untitled.ui.widget.impl;
 import cn.feng.untitled.module.impl.client.PostProcessing;
 import cn.feng.untitled.ui.font.nano.NanoFontLoader;
 import cn.feng.untitled.ui.widget.Widget;
+import cn.feng.untitled.util.animation.advanced.Animation;
+import cn.feng.untitled.util.animation.advanced.impl.SmoothStepAnimation;
 import cn.feng.untitled.util.render.blur.BlurUtil;
 import cn.feng.untitled.value.impl.ColorValue;
 import cn.feng.untitled.value.impl.NumberValue;
@@ -20,6 +22,8 @@ public class TextWidget extends Widget {
     private final NumberValue size = new NumberValue("FontSize", 30f, 80f, 20f, 1f);
     private final ColorValue color = new ColorValue("FontColor", Color.WHITE);
 
+    private Animation anim = new SmoothStepAnimation(500, 1f);
+
     public TextWidget() {
         super("Text", true);
     }
@@ -29,6 +33,11 @@ public class TextWidget extends Widget {
         float renderX = x * sr.getScaledWidth();
         float renderY = y * sr.getScaledHeight();
 
-        NanoFontLoader.misans.drawString(text.value, renderX, renderY, size.value.intValue(), NanoVG.NVG_ALIGN_LEFT, color.getColor());
+        if (anim.finished(anim.getDirection())) anim.changeDirection();
+
+        BlurUtil.processStart();
+        NanoFontLoader.misans.drawString("🐕🤡", renderX, renderY, size.value.intValue() * anim.getOutput().floatValue(), NanoVG.NVG_ALIGN_LEFT, color.getColor());
+        BlurUtil.bloomEnd();
+        NanoFontLoader.misans.drawString("🐕🤡", renderX, renderY, size.value.intValue() * anim.getOutput().floatValue(), NanoVG.NVG_ALIGN_LEFT, color.getColor());
     }
 }

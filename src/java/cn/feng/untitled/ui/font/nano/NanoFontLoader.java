@@ -8,9 +8,10 @@ import net.minecraft.util.ResourceLocation;
  **/
 public class NanoFontLoader {
     public static NanoFontRenderer misans;
+    public static NanoFontRenderer emoji;
 
     public static void registerFonts() {
         misans = new NanoFontRenderer("MiSans", new ResourceLocation("untitled/font/misans.ttf"));
-
+        emoji = new NanoFontRenderer("Emoji", new ResourceLocation("untitled/font/emoji.ttf"));
     }
 }
