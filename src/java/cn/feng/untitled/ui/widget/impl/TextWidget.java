@@ -19,7 +19,7 @@ import java.awt.*;
 public class TextWidget extends Widget {
     private final StringValue text = new StringValue("DisplayText", "Content");
     private final ColorValue glowColor = new ColorValue("GlowColor", Color.WHITE);
-    private final NumberValue glow = new NumberValue("GlowRadius", 10f, 30f, 10f, 1f);
+    private final NumberValue glowRadius = new NumberValue("GlowRadius", 10f, 30f, 10f, 1f);
     private final NumberValue size = new NumberValue("FontSize", 30f, 80f, 20f, 1f);
     private final ColorValue color = new ColorValue("FontColor", Color.WHITE);
 
@@ -36,12 +36,10 @@ public class TextWidget extends Widget {
 
         if (anim.finished(anim.getDirection())) anim.changeDirection();
 
-        NanoUtil.prepareNano();
-        NanoUtil.scaleStart(renderX, renderY, anim.getOutput().floatValue());
-        NanoFontLoader.script.drawGlowString("好的NanoVG使我的内存爆炸🤡", renderX, renderY, size.value.intValue(), NanoVG.NVG_ALIGN_LEFT, color.getColor());
-        NanoUtil.scaleEnd();
-        NanoUtil.endNano();
+      //  NanoUtil.prepareNano();
+        NanoFontLoader.script.drawGlowString("Hello, NanoVG!我是小丑🤡我是大狗🐕我是科比🖊", renderX, renderY, size.value.intValue(), glowRadius.value.floatValue(), color.getColor(), glowColor.getColor());
+       // NanoUtil.endNano();
 
-        width = NanoFontLoader.script.getStringWidth("好的NanoVG使我的内存爆炸🤡", size.value.intValue()) * anim.getOutput().floatValue();
+        width = NanoFontLoader.script.getStringWidth("Hello, NanoVG!我是小丑🤡我是大狗🐕我是科比🖊", size.value.intValue());
     }
 }

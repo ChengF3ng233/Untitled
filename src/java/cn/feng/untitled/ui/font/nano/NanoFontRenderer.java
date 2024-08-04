@@ -3,6 +3,7 @@ package cn.feng.untitled.ui.font.nano;
 import cn.feng.untitled.util.MinecraftInstance;
 import net.minecraft.util.ResourceLocation;
 import org.lwjgl.nanovg.NVGColor;
+import org.lwjgl.nanovg.NanoVG;
 import org.lwjgl.system.MemoryUtil;
 
 import java.awt.*;
@@ -52,7 +53,13 @@ public class NanoFontRenderer extends MinecraftInstance {
         renderString(text, x, y, size, align, 0f, color);
     }
 
+    public void drawGlowString(String text, float x, float y, float size, float radius, Color textColor, Color glowColor) {
+        renderString(text, x, y, size, NVG_ALIGN_LEFT, radius, glowColor);
+        renderString(text, x, y, size, NVG_ALIGN_LEFT, 0f, textColor);
+    }
+
     private void renderString(String text, float x, float y, float size, int align, float blurRadius, Color color) {
+        NanoUtil.prepareNano();
         nvgBeginPath(NanoLoader.vg);
 
         NVGColor nvgColor = NVGColor.calloc();
@@ -70,6 +77,7 @@ public class NanoFontRenderer extends MinecraftInstance {
         for (FontPair fontPair : fontPairs) {
             renderX = fontPair.renderer.renderString(fontPair.text, renderX, renderY, size);
         }
+        NanoUtil.endNano();
     }
 
     private float renderString(String text, float x, float y, float size) {
