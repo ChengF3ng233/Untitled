@@ -602,7 +602,7 @@ public class FontRenderer implements IResourceManagerReloadListener {
      */
     private int renderString(String text, float x, float y, int color, boolean dropShadow) {
         if (HUD.fancyFont.value && Client.instance.moduleManager.getModule(HUD.class).enabled) {
-            this.FONT_HEIGHT = (int) FontLoader.miSans(17).getFontHeight();
+            this.FONT_HEIGHT = (int) FontLoader.miSans(17).getFontHeight() * 2;
             return FontLoader.miSans(17).renderString(text, x, y + 1f, color, dropShadow);
         }
         if (text == null) {

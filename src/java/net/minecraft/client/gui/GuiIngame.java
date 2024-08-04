@@ -36,6 +36,8 @@ import net.minecraft.src.Config;
 import net.minecraft.util.*;
 import net.minecraft.world.border.WorldBorder;
 import net.optifine.CustomColors;
+import org.lwjgl.nanovg.NanoVG;
+import org.lwjgl.opengl.GL11;
 
 import java.util.Collection;
 import java.util.List;
