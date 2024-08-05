@@ -28,8 +28,8 @@ public abstract class BlockLog extends BlockRotatedPillar {
             for (BlockPos blockpos : BlockPos.getAllInBox(pos.add(-i, -i, -i), pos.add(i, i, i))) {
                 IBlockState iblockstate = worldIn.getBlockState(blockpos);
 
-                if (iblockstate.getBlock().getMaterial() == Material.leaves && !iblockstate.getValue(BlockLeaves.CHECK_DECAY).booleanValue()) {
-                    worldIn.setBlockState(blockpos, iblockstate.withProperty(BlockLeaves.CHECK_DECAY, Boolean.valueOf(true)), 4);
+                if (iblockstate.getBlock().getMaterial() == Material.leaves && !iblockstate.getValue(BlockLeaves.CHECK_DECAY)) {
+                    worldIn.setBlockState(blockpos, iblockstate.withProperty(BlockLeaves.CHECK_DECAY, Boolean.TRUE), 4);
                 }
             }
         }
@@ -56,19 +56,12 @@ public abstract class BlockLog extends BlockRotatedPillar {
         }
 
         public static BlockLog.EnumAxis fromFacingAxis(EnumFacing.Axis axis) {
-            switch (axis) {
-                case X:
-                    return X;
-
-                case Y:
-                    return Y;
-
-                case Z:
-                    return Z;
-
-                default:
-                    return NONE;
-            }
+            return switch (axis) {
+                case X -> X;
+                case Y -> Y;
+                case Z -> Z;
+                default -> NONE;
+            };
         }
 
         public String toString() {

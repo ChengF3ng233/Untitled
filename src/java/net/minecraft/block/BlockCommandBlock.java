@@ -23,7 +23,7 @@ public class BlockCommandBlock extends BlockContainer {
 
     public BlockCommandBlock() {
         super(Material.iron, MapColor.adobeColor);
-        this.setDefaultState(this.blockState.getBaseState().withProperty(TRIGGERED, Boolean.valueOf(false)));
+        this.setDefaultState(this.blockState.getBaseState().withProperty(TRIGGERED, Boolean.FALSE));
     }
 
     /**
@@ -39,13 +39,13 @@ public class BlockCommandBlock extends BlockContainer {
     public void onNeighborBlockChange(World worldIn, BlockPos pos, IBlockState state, Block neighborBlock) {
         if (!worldIn.isRemote) {
             boolean flag = worldIn.isBlockPowered(pos);
-            boolean flag1 = state.getValue(TRIGGERED).booleanValue();
+            boolean flag1 = state.getValue(TRIGGERED);
 
             if (flag && !flag1) {
-                worldIn.setBlockState(pos, state.withProperty(TRIGGERED, Boolean.valueOf(true)), 4);
+                worldIn.setBlockState(pos, state.withProperty(TRIGGERED, Boolean.TRUE), 4);
                 worldIn.scheduleUpdate(pos, this, this.tickRate(worldIn));
             } else if (!flag && flag1) {
-                worldIn.setBlockState(pos, state.withProperty(TRIGGERED, Boolean.valueOf(false)), 4);
+                worldIn.setBlockState(pos, state.withProperty(TRIGGERED, Boolean.FALSE), 4);
             }
         }
     }
@@ -117,7 +117,7 @@ public class BlockCommandBlock extends BlockContainer {
      * Convert the given metadata into a BlockState for this Block
      */
     public IBlockState getStateFromMeta(int meta) {
-        return this.getDefaultState().withProperty(TRIGGERED, Boolean.valueOf((meta & 1) > 0));
+        return this.getDefaultState().withProperty(TRIGGERED, (meta & 1) > 0);
     }
 
     /**
@@ -126,7 +126,7 @@ public class BlockCommandBlock extends BlockContainer {
     public int getMetaFromState(IBlockState state) {
         int i = 0;
 
-        if (state.getValue(TRIGGERED).booleanValue()) {
+        if (state.getValue(TRIGGERED)) {
             i |= 1;
         }
 
@@ -142,6 +142,6 @@ public class BlockCommandBlock extends BlockContainer {
      * IBlockstate
      */
     public IBlockState onBlockPlaced(World worldIn, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer) {
-        return this.getDefaultState().withProperty(TRIGGERED, Boolean.valueOf(false));
+        return this.getDefaultState().withProperty(TRIGGERED, Boolean.FALSE);
     }
 }

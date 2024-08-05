@@ -38,7 +38,7 @@ public class MessageDeserializer extends ByteToMessageDecoder {
                     p_decode_3_.add(packet);
 
                     if (logger.isDebugEnabled()) {
-                        logger.debug(RECEIVED_PACKET_MARKER, " IN: [{}:{}] {}", p_decode_1_.channel().attr(NetworkManager.attrKeyConnectionState).get(), Integer.valueOf(i), packet.getClass().getName());
+                        logger.debug(RECEIVED_PACKET_MARKER, " IN: [{}:{}] {}", p_decode_1_.channel().attr(NetworkManager.attrKeyConnectionState).get(), i, packet.getClass().getName());
                     }
                 }
             }

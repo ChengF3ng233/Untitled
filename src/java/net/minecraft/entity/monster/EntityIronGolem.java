@@ -48,7 +48,7 @@ public class EntityIronGolem extends EntityGolem {
 
     protected void entityInit() {
         super.entityInit();
-        this.dataWatcher.addObject(16, Byte.valueOf((byte) 0));
+        this.dataWatcher.addObject(16, (byte) 0);
     }
 
     protected void updateAITasks() {
@@ -228,9 +228,9 @@ public class EntityIronGolem extends EntityGolem {
         byte b0 = this.dataWatcher.getWatchableObjectByte(16);
 
         if (p_70849_1_) {
-            this.dataWatcher.updateObject(16, Byte.valueOf((byte) (b0 | 1)));
+            this.dataWatcher.updateObject(16, (byte) (b0 | 1));
         } else {
-            this.dataWatcher.updateObject(16, Byte.valueOf((byte) (b0 & -2)));
+            this.dataWatcher.updateObject(16, (byte) (b0 & -2));
         }
     }
 

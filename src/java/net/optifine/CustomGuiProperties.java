@@ -114,9 +114,7 @@ public class CustomGuiProperties {
         } else {
             EnumDyeColor[] aenumdyecolor = EnumDyeColor.values();
 
-            for (int i = 0; i < aenumdyecolor.length; ++i) {
-                EnumDyeColor enumdyecolor = aenumdyecolor[i];
-
+            for (EnumDyeColor enumdyecolor : aenumdyecolor) {
                 if (enumdyecolor.getName().equals(str)) {
                     return enumdyecolor;
                 }
@@ -181,52 +179,23 @@ public class CustomGuiProperties {
         if (container == null) {
             return null;
         } else {
-            switch (container) {
-                case ANVIL:
-                    return ANVIL_GUI_TEXTURE;
-
-                case BEACON:
-                    return BEACON_GUI_TEXTURE;
-
-                case BREWING_STAND:
-                    return BREWING_STAND_GUI_TEXTURE;
-
-                case CHEST:
-                    return CHEST_GUI_TEXTURE;
-
-                case CRAFTING:
-                    return CRAFTING_TABLE_GUI_TEXTURE;
-
-                case CREATIVE:
-                    return null;
-
-                case DISPENSER:
-                    return DISPENSER_GUI_TEXTURE;
-
-                case ENCHANTMENT:
-                    return ENCHANTMENT_TABLE_GUI_TEXTURE;
-
-                case FURNACE:
-                    return FURNACE_GUI_TEXTURE;
-
-                case HOPPER:
-                    return HOPPER_GUI_TEXTURE;
-
-                case HORSE:
-                    return HORSE_GUI_TEXTURE;
-
-                case INVENTORY:
-                    return INVENTORY_GUI_TEXTURE;
-
-                case SHULKER_BOX:
-                    return SHULKER_BOX_GUI_TEXTURE;
-
-                case VILLAGER:
-                    return VILLAGER_GUI_TEXTURE;
-
-                default:
-                    return null;
-            }
+            return switch (container) {
+                case ANVIL -> ANVIL_GUI_TEXTURE;
+                case BEACON -> BEACON_GUI_TEXTURE;
+                case BREWING_STAND -> BREWING_STAND_GUI_TEXTURE;
+                case CHEST -> CHEST_GUI_TEXTURE;
+                case CRAFTING -> CRAFTING_TABLE_GUI_TEXTURE;
+                case CREATIVE -> null;
+                case DISPENSER -> DISPENSER_GUI_TEXTURE;
+                case ENCHANTMENT -> ENCHANTMENT_TABLE_GUI_TEXTURE;
+                case FURNACE -> FURNACE_GUI_TEXTURE;
+                case HOPPER -> HOPPER_GUI_TEXTURE;
+                case HORSE -> HORSE_GUI_TEXTURE;
+                case INVENTORY -> INVENTORY_GUI_TEXTURE;
+                case SHULKER_BOX -> SHULKER_BOX_GUI_TEXTURE;
+                case VILLAGER -> VILLAGER_GUI_TEXTURE;
+                default -> null;
+            };
         }
     }
 
@@ -305,19 +274,12 @@ public class CustomGuiProperties {
                 }
             }
 
-            switch (ec) {
-                case BEACON:
-                    return this.matchesBeacon(pos, blockAccess);
-
-                case CHEST:
-                    return this.matchesChest(pos, blockAccess);
-
-                case DISPENSER:
-                    return this.matchesDispenser(pos, blockAccess);
-
-                default:
-                    return true;
-            }
+            return switch (ec) {
+                case BEACON -> this.matchesBeacon(pos, blockAccess);
+                case CHEST -> this.matchesChest(pos, blockAccess);
+                case DISPENSER -> this.matchesDispenser(pos, blockAccess);
+                default -> true;
+            };
         }
     }
 
@@ -365,7 +327,7 @@ public class CustomGuiProperties {
     }
 
     private boolean matchesChest(boolean isLarge, boolean isTrapped, boolean isChristmas, boolean isEnder) {
-        return (this.large == null || this.large.booleanValue() == isLarge) && ((this.trapped == null || this.trapped.booleanValue() == isTrapped) && ((this.christmas == null || this.christmas.booleanValue() == isChristmas) && (this.ender == null || this.ender.booleanValue() == isEnder)));
+        return (this.large == null || this.large == isLarge) && ((this.trapped == null || this.trapped == isTrapped) && ((this.christmas == null || this.christmas == isChristmas) && (this.ender == null || this.ender == isEnder)));
     }
 
     private boolean matchesDispenser(BlockPos pos, IBlockAccess blockAccess) {
@@ -401,16 +363,11 @@ public class CustomGuiProperties {
                 }
             }
 
-            switch (ec) {
-                case HORSE:
-                    return this.matchesHorse(entity, blockAccess);
-
-                case VILLAGER:
-                    return this.matchesVillager(entity, blockAccess);
-
-                default:
-                    return true;
-            }
+            return switch (ec) {
+                case HORSE -> this.matchesHorse(entity, blockAccess);
+                case VILLAGER -> this.matchesVillager(entity, blockAccess);
+                default -> true;
+            };
         }
     }
 
@@ -429,9 +386,7 @@ public class CustomGuiProperties {
 
                 boolean flag = false;
 
-                for (int k = 0; k < this.professions.length; ++k) {
-                    VillagerProfession villagerprofession = this.professions[k];
-
+                for (VillagerProfession villagerprofession : this.professions) {
                     if (villagerprofession.matches(i, j)) {
                         flag = true;
                         break;
@@ -463,19 +418,12 @@ public class CustomGuiProperties {
     private CustomGuiProperties.EnumVariant getHorseVariant(EntityHorse entity) {
         int i = entity.getHorseType();
 
-        switch (i) {
-            case 0:
-                return CustomGuiProperties.EnumVariant.HORSE;
-
-            case 1:
-                return CustomGuiProperties.EnumVariant.DONKEY;
-
-            case 2:
-                return CustomGuiProperties.EnumVariant.MULE;
-
-            default:
-                return null;
-        }
+        return switch (i) {
+            case 0 -> EnumVariant.HORSE;
+            case 1 -> EnumVariant.DONKEY;
+            case 2 -> EnumVariant.MULE;
+            default -> null;
+        };
     }
 
     public CustomGuiProperties.EnumContainer getContainer() {

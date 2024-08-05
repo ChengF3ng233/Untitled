@@ -114,8 +114,7 @@ public class CustomItems {
         List list = makePropertyList(itemProperties);
         List list1 = makePropertyList(enchantmentProperties);
 
-        for (int i = 0; i < astring.length; ++i) {
-            String s = astring[i];
+        for (String s : astring) {
             Config.dbg("CustomItems: " + s);
 
             try {
@@ -155,17 +154,13 @@ public class CustomItems {
         enchantmentProperties = propertyListToArray(list1);
         Comparator comparator = getPropertiesComparator();
 
-        for (int j = 0; j < itemProperties.length; ++j) {
-            CustomItemProperties[] acustomitemproperties = itemProperties[j];
-
+        for (CustomItemProperties[] acustomitemproperties : itemProperties) {
             if (acustomitemproperties != null) {
                 Arrays.sort(acustomitemproperties, comparator);
             }
         }
 
-        for (int k = 0; k < enchantmentProperties.length; ++k) {
-            CustomItemProperties[] acustomitemproperties1 = enchantmentProperties[k];
-
+        for (CustomItemProperties[] acustomitemproperties1 : enchantmentProperties) {
             if (acustomitemproperties1 != null) {
                 Arrays.sort(acustomitemproperties1, comparator);
             }
@@ -214,13 +209,9 @@ public class CustomItems {
 
     private static void addAll(CustomItemProperties[][] cipsArr, List<CustomItemProperties> list) {
         if (cipsArr != null) {
-            for (int i = 0; i < cipsArr.length; ++i) {
-                CustomItemProperties[] acustomitemproperties = cipsArr[i];
-
+            for (CustomItemProperties[] acustomitemproperties : cipsArr) {
                 if (acustomitemproperties != null) {
-                    for (int j = 0; j < acustomitemproperties.length; ++j) {
-                        CustomItemProperties customitemproperties = acustomitemproperties[j];
-
+                    for (CustomItemProperties customitemproperties : acustomitemproperties) {
                         if (customitemproperties != null) {
                             list.add(customitemproperties);
                         }
@@ -245,8 +236,7 @@ public class CustomItems {
         String[] astring1 = new String[]{".png"};
         String[] astring2 = ResUtils.collectFiles(rp, astring, astring1);
 
-        for (int i = 0; i < astring2.length; ++i) {
-            String s1 = astring2[i];
+        for (String s1 : astring2) {
             String name = StrUtils.removePrefixSuffix(s1, astring, astring1);
             Properties properties = makePotionProperties(name, type, itemId, s1);
 
@@ -369,9 +359,7 @@ public class CustomItems {
         String s = "potion." + name;
         Potion[] apotion = Potion.potionTypes;
 
-        for (int i = 0; i < apotion.length; ++i) {
-            Potion potion = apotion[i];
-
+        for (Potion potion : apotion) {
             if (potion != null) {
                 String s1 = potion.getName();
 
@@ -388,8 +376,7 @@ public class CustomItems {
         List list = new ArrayList();
 
         if (propsArr != null) {
-            for (int i = 0; i < propsArr.length; ++i) {
-                CustomItemProperties[] acustomitemproperties = propsArr[i];
+            for (CustomItemProperties[] acustomitemproperties : propsArr) {
                 List list1 = null;
 
                 if (acustomitemproperties != null) {
@@ -537,9 +524,7 @@ public class CustomItems {
                 CustomItemProperties[] acustomitemproperties = itemProperties[i];
 
                 if (acustomitemproperties != null) {
-                    for (int j = 0; j < acustomitemproperties.length; ++j) {
-                        CustomItemProperties customitemproperties = acustomitemproperties[j];
-
+                    for (CustomItemProperties customitemproperties : acustomitemproperties) {
                         if (customitemproperties.type == type && matchesProperties(customitemproperties, itemStack, null)) {
                             return customitemproperties;
                         }
@@ -583,8 +568,8 @@ public class CustomItems {
 
                 boolean flag = false;
 
-                for (int k = 0; k < aint.length; ++k) {
-                    int l = aint[k][0];
+                for (int[] ints : aint) {
+                    int l = ints[0];
 
                     if (cip.enchantmentIds.isInRange(l)) {
                         flag = true;
@@ -604,8 +589,8 @@ public class CustomItems {
 
                 boolean flag1 = false;
 
-                for (int i1 = 0; i1 < aint.length; ++i1) {
-                    int k1 = aint[i1][1];
+                for (int[] ints : aint) {
+                    int k1 = ints[1];
 
                     if (cip.enchantmentLevels.isInRange(k1)) {
                         flag1 = true;
@@ -678,21 +663,19 @@ public class CustomItems {
                 boolean flag = false;
                 TextureManager texturemanager = Config.getTextureManager();
 
-                for (int i = 0; i < aint.length; ++i) {
-                    int j = aint[i][0];
+                for (int[] ints : aint) {
+                    int j = ints[0];
 
                     if (j >= 0 && j < enchantmentProperties.length) {
                         CustomItemProperties[] acustomitemproperties = enchantmentProperties[j];
 
                         if (acustomitemproperties != null) {
-                            for (int k = 0; k < acustomitemproperties.length; ++k) {
-                                CustomItemProperties customitemproperties = acustomitemproperties[k];
-
+                            for (CustomItemProperties customitemproperties : acustomitemproperties) {
                                 if (set == null) {
                                     set = new HashSet();
                                 }
 
-                                if (set.add(Integer.valueOf(j)) && matchesProperties(customitemproperties, itemStack, aint) && customitemproperties.textureLocation != null) {
+                                if (set.add(j) && matchesProperties(customitemproperties, itemStack, aint) && customitemproperties.textureLocation != null) {
                                     texturemanager.bindTexture(customitemproperties.textureLocation);
                                     float f = customitemproperties.getTextureWidth(texturemanager);
 
@@ -752,21 +735,19 @@ public class CustomItems {
                 boolean flag = false;
                 TextureManager texturemanager = Config.getTextureManager();
 
-                for (int i = 0; i < aint.length; ++i) {
-                    int j = aint[i][0];
+                for (int[] ints : aint) {
+                    int j = ints[0];
 
                     if (j >= 0 && j < enchantmentProperties.length) {
                         CustomItemProperties[] acustomitemproperties = enchantmentProperties[j];
 
                         if (acustomitemproperties != null) {
-                            for (int k = 0; k < acustomitemproperties.length; ++k) {
-                                CustomItemProperties customitemproperties = acustomitemproperties[k];
-
+                            for (CustomItemProperties customitemproperties : acustomitemproperties) {
                                 if (set == null) {
                                     set = new HashSet();
                                 }
 
-                                if (set.add(Integer.valueOf(j)) && matchesProperties(customitemproperties, itemStack, aint) && customitemproperties.textureLocation != null) {
+                                if (set.add(j) && matchesProperties(customitemproperties, itemStack, aint) && customitemproperties.textureLocation != null) {
                                     texturemanager.bindTexture(customitemproperties.textureLocation);
                                     float f = customitemproperties.getTextureWidth(texturemanager);
 

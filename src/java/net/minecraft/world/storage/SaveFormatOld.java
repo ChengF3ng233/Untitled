@@ -34,8 +34,7 @@ public class SaveFormatOld implements ISaveFormat {
      * listed in the list recursively.
      */
     protected static boolean deleteFiles(File[] files) {
-        for (int i = 0; i < files.length; ++i) {
-            File file1 = files[i];
+        for (File file1 : files) {
             logger.debug("Deleting " + file1);
 
             if (file1.isDirectory() && !deleteFiles(file1.listFiles())) {

@@ -9,6 +9,7 @@ import cn.feng.untitled.ui.clickgui.neverlose.panel.impl.ModulePanel;
 import cn.feng.untitled.ui.font.awt.CenterType;
 import cn.feng.untitled.ui.font.awt.FontLoader;
 import cn.feng.untitled.ui.font.awt.FontRenderer;
+import cn.feng.untitled.ui.font.nano.NanoUtil;
 import cn.feng.untitled.util.animation.advanced.Animation;
 import cn.feng.untitled.util.animation.advanced.Direction;
 import cn.feng.untitled.util.animation.advanced.composed.ColorAnimation;
@@ -114,6 +115,9 @@ public class NeverLoseGUI extends GuiScreen {
 
         RenderUtil.scaleStart(x + width / 2, y + height / 2, windowAnim.getOutput().floatValue());
 
+        NanoUtil.beginFrame();
+        NanoUtil.scaleStart(x + width / 2, y + height / 2, windowAnim.getOutput().floatValue());
+
         // Window BG
         RoundedUtil.drawRound(x, y, width, height, radius, ThemeColor.windowColor);
 
@@ -158,6 +162,7 @@ public class NeverLoseGUI extends GuiScreen {
         }
 
         RoundedUtil.drawRound(categoryX - 2f, categoryY + panelAnim.getOutput().floatValue() - 5f, leftWidth - 14f, currentPanel.height + 10f, 4f, ThemeColor.barColor);
+
 
         for (CategoryType type : CategoryType.values()) {
             FontLoader.greyCliff(14).drawString(type.toString(), categoryX, categoryY - 15f, ThemeColor.grayColor.getRGB());
@@ -246,6 +251,9 @@ public class NeverLoseGUI extends GuiScreen {
         } else if (!selected && iconColorAnim.getDirection() == Direction.BACKWARDS) {
             iconColorAnim.changeDirection();
         }
+
+        NanoUtil.scaleEnd();
+        NanoUtil.endFrame();
 
         RenderUtil.scaleEnd();
     }

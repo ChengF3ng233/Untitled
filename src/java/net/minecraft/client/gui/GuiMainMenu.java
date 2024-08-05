@@ -518,7 +518,7 @@ public class GuiMainMenu extends GuiScreen implements GuiYesNoCallback {
 
         if (Reflector.FMLCommonHandler_getBrandings.exists()) {
             Object object = Reflector.call(Reflector.FMLCommonHandler_instance);
-            List<String> list = Lists.<String>reverse((List) Reflector.call(object, Reflector.FMLCommonHandler_getBrandings, new Object[]{Boolean.valueOf(true)}));
+            List<String> list = Lists.<String>reverse((List) Reflector.call(object, Reflector.FMLCommonHandler_getBrandings, new Object[]{Boolean.TRUE}));
 
             for (int l1 = 0; l1 < list.size(); ++l1) {
                 String s1 = list.get(l1);
@@ -529,7 +529,7 @@ public class GuiMainMenu extends GuiScreen implements GuiYesNoCallback {
             }
 
             if (Reflector.ForgeHooksClient_renderMainMenu.exists()) {
-                Reflector.call(Reflector.ForgeHooksClient_renderMainMenu, this, this.fontRendererObj, Integer.valueOf(this.width), Integer.valueOf(this.height));
+                Reflector.call(Reflector.ForgeHooksClient_renderMainMenu, this, this.fontRendererObj, this.width, this.height);
             }
         } else {
             this.drawString(this.fontRendererObj, s, 2, this.height - 10, -1);

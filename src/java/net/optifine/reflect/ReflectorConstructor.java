@@ -20,8 +20,7 @@ public class ReflectorConstructor implements IResolvable {
     private static Constructor findConstructor(Class cls, Class[] paramTypes) {
         Constructor[] aconstructor = cls.getDeclaredConstructors();
 
-        for (int i = 0; i < aconstructor.length; ++i) {
-            Constructor constructor = aconstructor[i];
+        for (Constructor constructor : aconstructor) {
             Class[] aclass = constructor.getParameterTypes();
 
             if (Reflector.matchesTypes(paramTypes, aclass)) {

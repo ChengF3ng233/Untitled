@@ -284,8 +284,7 @@ public abstract class ServerConfigurationManager {
         worldserver.spawnEntityInWorld(playerIn);
         this.preparePlayer(playerIn, null);
 
-        for (int i = 0; i < this.playerEntityList.size(); ++i) {
-            EntityPlayerMP entityplayermp = this.playerEntityList.get(i);
+        for (EntityPlayerMP entityplayermp : this.playerEntityList) {
             playerIn.playerNetServerHandler.sendPacket(new S38PacketPlayerListItem(S38PacketPlayerListItem.Action.ADD_PLAYER, entityplayermp));
         }
     }
@@ -360,9 +359,7 @@ public abstract class ServerConfigurationManager {
         UUID uuid = EntityPlayer.getUUID(profile);
         List<EntityPlayerMP> list = Lists.newArrayList();
 
-        for (int i = 0; i < this.playerEntityList.size(); ++i) {
-            EntityPlayerMP entityplayermp = this.playerEntityList.get(i);
-
+        for (EntityPlayerMP entityplayermp : this.playerEntityList) {
             if (entityplayermp.getUniqueID().equals(uuid)) {
                 list.add(entityplayermp);
             }
@@ -551,15 +548,13 @@ public abstract class ServerConfigurationManager {
     }
 
     public void sendPacketToAllPlayers(Packet packetIn) {
-        for (int i = 0; i < this.playerEntityList.size(); ++i) {
-            this.playerEntityList.get(i).playerNetServerHandler.sendPacket(packetIn);
+        for (EntityPlayerMP entityPlayerMP : this.playerEntityList) {
+            entityPlayerMP.playerNetServerHandler.sendPacket(packetIn);
         }
     }
 
     public void sendPacketToAllPlayersInDimension(Packet packetIn, int dimension) {
-        for (int i = 0; i < this.playerEntityList.size(); ++i) {
-            EntityPlayerMP entityplayermp = this.playerEntityList.get(i);
-
+        for (EntityPlayerMP entityplayermp : this.playerEntityList) {
             if (entityplayermp.dimension == dimension) {
                 entityplayermp.playerNetServerHandler.sendPacket(packetIn);
             }
@@ -586,9 +581,7 @@ public abstract class ServerConfigurationManager {
         if (team == null) {
             this.sendChatMsg(message);
         } else {
-            for (int i = 0; i < this.playerEntityList.size(); ++i) {
-                EntityPlayerMP entityplayermp = this.playerEntityList.get(i);
-
+            for (EntityPlayerMP entityplayermp : this.playerEntityList) {
                 if (entityplayermp.getTeam() != team) {
                     entityplayermp.addChatMessage(message);
                 }
@@ -684,9 +677,7 @@ public abstract class ServerConfigurationManager {
      * search radius
      */
     public void sendToAllNearExcept(EntityPlayer p_148543_1_, double x, double y, double z, double radius, int dimension, Packet p_148543_11_) {
-        for (int i = 0; i < this.playerEntityList.size(); ++i) {
-            EntityPlayerMP entityplayermp = this.playerEntityList.get(i);
-
+        for (EntityPlayerMP entityplayermp : this.playerEntityList) {
             if (entityplayermp != p_148543_1_ && entityplayermp.dimension == dimension) {
                 double d0 = x - entityplayermp.posX;
                 double d1 = y - entityplayermp.posY;
@@ -703,8 +694,8 @@ public abstract class ServerConfigurationManager {
      * Saves all of the players' current states.
      */
     public void saveAllPlayerData() {
-        for (int i = 0; i < this.playerEntityList.size(); ++i) {
-            this.writePlayerData(this.playerEntityList.get(i));
+        for (EntityPlayerMP entityPlayerMP : this.playerEntityList) {
+            this.writePlayerData(entityPlayerMP);
         }
     }
 
@@ -854,8 +845,8 @@ public abstract class ServerConfigurationManager {
      * Kicks everyone with "Server closed" as reason.
      */
     public void removeAllPlayers() {
-        for (int i = 0; i < this.playerEntityList.size(); ++i) {
-            this.playerEntityList.get(i).playerNetServerHandler.kickPlayerFromServer("Server closed");
+        for (EntityPlayerMP entityPlayerMP : this.playerEntityList) {
+            entityPlayerMP.playerNetServerHandler.kickPlayerFromServer("Server closed");
         }
     }
 

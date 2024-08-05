@@ -75,8 +75,8 @@ public class RandomEntities {
         if (newWorld != null) {
             List list = newWorld.getLoadedEntityList();
 
-            for (int i = 0; i < list.size(); ++i) {
-                Entity entity = (Entity) list.get(i);
+            for (Object o : list) {
+                Entity entity = (Entity) o;
                 entityLoaded(entity, newWorld);
             }
         }
@@ -274,9 +274,7 @@ public class RandomEntities {
     }
 
     private static String getParentTexturePath(String path) {
-        for (int i = 0; i < DEPENDANT_SUFFIXES.length; ++i) {
-            String s = DEPENDANT_SUFFIXES[i];
-
+        for (String s : DEPENDANT_SUFFIXES) {
             if (path.endsWith(s)) {
                 String s1 = StrUtils.removeSuffix(path, s);
                 return s1;
@@ -330,8 +328,8 @@ public class RandomEntities {
         String[] astring2 = ResUtils.collectFiles(astring, astring1);
         Set set = new HashSet();
 
-        for (int i = 0; i < astring2.length; ++i) {
-            String s = astring2[i];
+        for (String string : astring2) {
+            String s = string;
             s = StrUtils.removeSuffix(s, astring1);
             s = StrUtils.trimTrailing(s, "0123456789");
             s = s + ".png";

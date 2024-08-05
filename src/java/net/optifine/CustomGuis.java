@@ -111,9 +111,7 @@ public class CustomGuis {
         if (acustomguiproperties == null) {
             return loc;
         } else {
-            for (int i = 0; i < acustomguiproperties.length; ++i) {
-                CustomGuiProperties customguiproperties = acustomguiproperties[i];
-
+            for (CustomGuiProperties customguiproperties : acustomguiproperties) {
                 if (customguiproperties.matchesPos(container, pos, blockAccess, screen)) {
                     return customguiproperties.getTextureLocation(loc);
                 }
@@ -129,9 +127,7 @@ public class CustomGuis {
         if (acustomguiproperties == null) {
             return loc;
         } else {
-            for (int i = 0; i < acustomguiproperties.length; ++i) {
-                CustomGuiProperties customguiproperties = acustomguiproperties[i];
-
+            for (CustomGuiProperties customguiproperties : acustomguiproperties) {
                 if (customguiproperties.matchesEntity(container, entity, blockAccess)) {
                     return customguiproperties.getTextureLocation(loc);
                 }
@@ -182,8 +178,7 @@ public class CustomGuis {
         String[] astring = ResUtils.collectFiles(rp, "optifine/gui/container/", ".properties", null);
         Arrays.sort(astring);
 
-        for (int i = 0; i < astring.length; ++i) {
-            String s = astring[i];
+        for (String s : astring) {
             Config.dbg("CustomGuis: " + s);
 
             try {

@@ -94,14 +94,14 @@ public class ContainerRepair extends Container {
                 IBlockState iblockstate = worldIn.getBlockState(blockPosIn);
 
                 if (!playerIn.capabilities.isCreativeMode && !worldIn.isRemote && iblockstate.getBlock() == Blocks.anvil && playerIn.getRNG().nextFloat() < 0.12F) {
-                    int l = iblockstate.getValue(BlockAnvil.DAMAGE).intValue();
+                    int l = iblockstate.getValue(BlockAnvil.DAMAGE);
                     ++l;
 
                     if (l > 2) {
                         worldIn.setBlockToAir(blockPosIn);
                         worldIn.playAuxSFX(1020, blockPosIn, 0);
                     } else {
-                        worldIn.setBlockState(blockPosIn, iblockstate.withProperty(BlockAnvil.DAMAGE, Integer.valueOf(l)), 2);
+                        worldIn.setBlockState(blockPosIn, iblockstate.withProperty(BlockAnvil.DAMAGE, l), 2);
                         worldIn.playAuxSFX(1021, blockPosIn, 0);
                     }
                 } else if (!worldIn.isRemote) {
@@ -210,12 +210,12 @@ public class ContainerRepair extends Container {
                     Iterator iterator1 = map1.keySet().iterator();
 
                     while (iterator1.hasNext()) {
-                        int i5 = ((Integer) iterator1.next()).intValue();
+                        int i5 = (Integer) iterator1.next();
                         Enchantment enchantment = Enchantment.getEnchantmentById(i5);
 
                         if (enchantment != null) {
-                            int k5 = map.containsKey(Integer.valueOf(i5)) ? map.get(Integer.valueOf(i5)).intValue() : 0;
-                            int l3 = map1.get(Integer.valueOf(i5)).intValue();
+                            int k5 = map.containsKey(i5) ? map.get(i5) : 0;
+                            int l3 = map1.get(i5);
                             int i6;
 
                             if (k5 == l3) {
@@ -235,7 +235,7 @@ public class ContainerRepair extends Container {
                             Iterator iterator = map.keySet().iterator();
 
                             while (iterator.hasNext()) {
-                                int i4 = ((Integer) iterator.next()).intValue();
+                                int i4 = (Integer) iterator.next();
 
                                 if (i4 != i5 && !enchantment.canApplyTogether(Enchantment.getEnchantmentById(i4))) {
                                     flag1 = false;
@@ -248,7 +248,7 @@ public class ContainerRepair extends Container {
                                     l3 = enchantment.getMaxLevel();
                                 }
 
-                                map.put(Integer.valueOf(i5), Integer.valueOf(l3));
+                                map.put(i5, l3);
                                 int l5 = 0;
 
                                 switch (enchantment.getWeight()) {

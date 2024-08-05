@@ -49,9 +49,7 @@ public class ViewFrustum {
             }
         }
 
-        for (int k1 = 0; k1 < this.renderChunks.length; ++k1) {
-            RenderChunk renderchunk1 = this.renderChunks[k1];
-
+        for (RenderChunk renderchunk1 : this.renderChunks) {
             for (int l1 = 0; l1 < EnumFacing.VALUES.length; ++l1) {
                 EnumFacing enumfacing = EnumFacing.VALUES[l1];
                 BlockPos blockpos1 = renderchunk1.getBlockPosOffset16(enumfacing);

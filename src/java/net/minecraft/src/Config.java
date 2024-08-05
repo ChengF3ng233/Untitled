@@ -55,7 +55,7 @@ public class Config {
     public static final String OF_EDITION = "HD_U";
     public static final String OF_RELEASE = "M6_pre2";
     public static final String VERSION = "OptiFine_1.8.9_HD_U_M6_pre2";
-    public static final Float DEF_ALPHA_FUNC_LEVEL = Float.valueOf(0.1F);
+    public static final Float DEF_ALPHA_FUNC_LEVEL = 0.1F;
     public static final boolean logDetail = System.getProperty("log.detail", "false").equals("true");
     private static final Logger LOGGER = LogManager.getLogger();
     public static String openGlVersion = null;
@@ -359,9 +359,7 @@ public class Config {
             Thread[] athread = new Thread[i];
             threadgroup.enumerate(athread, false);
 
-            for (int j = 0; j < athread.length; ++j) {
-                Thread thread = athread[j];
-
+            for (Thread thread : athread) {
                 if (thread != null && thread.getName().startsWith(p_setThreadPriority_0_)) {
                     thread.setPriority(p_setThreadPriority_1_);
                 }
@@ -389,39 +387,32 @@ public class Config {
     }
 
     public static int getMipmapType() {
-        switch (gameSettings.ofMipmapType) {
-            case 0:
-                return 9986;
-
-            case 1:
-                return 9986;
-
-            case 2:
+        return switch (gameSettings.ofMipmapType) {
+            case 0 -> 9986;
+            case 1 -> 9986;
+            case 2 -> {
                 if (isMultiTexture()) {
-                    return 9985;
+                    yield 9985;
                 }
-
-                return 9986;
-
-            case 3:
+                yield 9986;
+            }
+            case 3 -> {
                 if (isMultiTexture()) {
-                    return 9987;
+                    yield 9987;
                 }
-
-                return 9986;
-
-            default:
-                return 9986;
-        }
+                yield 9986;
+            }
+            default -> 9986;
+        };
     }
 
     public static boolean isUseAlphaFunc() {
         float f = getAlphaFuncLevel();
-        return f > DEF_ALPHA_FUNC_LEVEL.floatValue() + 1.0E-5F;
+        return f > DEF_ALPHA_FUNC_LEVEL + 1.0E-5F;
     }
 
     public static float getAlphaFuncLevel() {
-        return DEF_ALPHA_FUNC_LEVEL.floatValue();
+        return DEF_ALPHA_FUNC_LEVEL;
     }
 
     public static boolean isFogFancy() {
@@ -1092,8 +1083,7 @@ public class Config {
     private static Set<Dimension> getDisplayModeDimensions(DisplayMode[] p_getDisplayModeDimensions_0_) {
         Set<Dimension> set = new HashSet();
 
-        for (int i = 0; i < p_getDisplayModeDimensions_0_.length; ++i) {
-            DisplayMode displaymode = p_getDisplayModeDimensions_0_[i];
+        for (DisplayMode displaymode : p_getDisplayModeDimensions_0_) {
             Dimension dimension = new Dimension(displaymode.getWidth(), displaymode.getHeight());
             set.add(dimension);
         }
@@ -1104,9 +1094,7 @@ public class Config {
     private static DisplayMode[] getDisplayModes(DisplayMode[] p_getDisplayModes_0_, Dimension p_getDisplayModes_1_) {
         List list = new ArrayList();
 
-        for (int i = 0; i < p_getDisplayModes_0_.length; ++i) {
-            DisplayMode displaymode = p_getDisplayModes_0_[i];
-
+        for (DisplayMode displaymode : p_getDisplayModes_0_) {
             if ((double) displaymode.getWidth() == p_getDisplayModes_1_.getWidth() && (double) displaymode.getHeight() == p_getDisplayModes_1_.getHeight()) {
                 list.add(displaymode);
             }
@@ -1118,9 +1106,7 @@ public class Config {
 
     private static DisplayMode getDisplayMode(DisplayMode[] p_getDisplayMode_0_, DisplayMode p_getDisplayMode_1_) {
         if (p_getDisplayMode_1_ != null) {
-            for (int i = 0; i < p_getDisplayMode_0_.length; ++i) {
-                DisplayMode displaymode = p_getDisplayMode_0_[i];
-
+            for (DisplayMode displaymode : p_getDisplayMode_0_) {
                 if (displaymode.getBitsPerPixel() == p_getDisplayMode_1_.getBitsPerPixel() && displaymode.getFrequency() == p_getDisplayMode_1_.getFrequency()) {
                     return displaymode;
                 }
@@ -1151,9 +1137,7 @@ public class Config {
     public static DisplayMode getDisplayMode(Dimension p_getDisplayMode_0_) throws LWJGLException {
         DisplayMode[] adisplaymode = getDisplayModes();
 
-        for (int i = 0; i < adisplaymode.length; ++i) {
-            DisplayMode displaymode = adisplaymode[i];
-
+        for (DisplayMode displaymode : adisplaymode) {
             if (displaymode.getWidth() == p_getDisplayMode_0_.width && displaymode.getHeight() == p_getDisplayMode_0_.height) {
                 return displaymode;
             }
@@ -1183,11 +1167,11 @@ public class Config {
 
         if (i != 0 && GlErrors.isEnabled(i)) {
             String s = getGlErrorString(i);
-            String s1 = String.format("OpenGL error: %s (%s), at: %s", Integer.valueOf(i), s, p_checkGlError_0_);
+            String s1 = String.format("OpenGL error: %s (%s), at: %s", i, s, p_checkGlError_0_);
             error(s1);
 
             if (isShowGlErrors() && TimedEvent.isActive("ShowGlError", 10000L)) {
-                String s2 = I18n.format("of.message.openglError", Integer.valueOf(i), s);
+                String s2 = I18n.format("of.message.openglError", i, s);
                 minecraft.ingameGUI.getChatGUI().printChatMessage(new ChatComponentText(s2));
             }
         }
@@ -1431,9 +1415,7 @@ public class Config {
         if (p_equalsOne_1_ == null) {
             return false;
         } else {
-            for (int i = 0; i < p_equalsOne_1_.length; ++i) {
-                Object object = p_equalsOne_1_[i];
-
+            for (Object object : p_equalsOne_1_) {
                 if (equals(p_equalsOne_0_, object)) {
                     return true;
                 }
@@ -1444,8 +1426,8 @@ public class Config {
     }
 
     public static boolean equalsOne(int p_equalsOne_0_, int[] p_equalsOne_1_) {
-        for (int i = 0; i < p_equalsOne_1_.length; ++i) {
-            if (p_equalsOne_1_[i] == p_equalsOne_0_) {
+        for (int j : p_equalsOne_1_) {
+            if (j == p_equalsOne_0_) {
                 return true;
             }
         }
@@ -1457,9 +1439,7 @@ public class Config {
         if (p_isSameOne_1_ == null) {
             return false;
         } else {
-            for (int i = 0; i < p_isSameOne_1_.length; ++i) {
-                Object object = p_isSameOne_1_[i];
-
+            for (Object object : p_isSameOne_1_) {
                 if (p_isSameOne_0_ == object) {
                     return true;
                 }
@@ -1756,8 +1736,7 @@ public class Config {
     public static int getBitsJre() {
         String[] astring = new String[]{"sun.arch.data.model", "com.ibm.vm.bitmode", "os.arch"};
 
-        for (int i = 0; i < astring.length; ++i) {
-            String s = astring[i];
+        for (String s : astring) {
             String s1 = System.getProperty(s);
 
             if (s1 != null && s1.contains("64")) {
@@ -1871,7 +1850,7 @@ public class Config {
             int[] aint = new int[p_toPrimitive_0_.length];
 
             for (int i = 0; i < aint.length; ++i) {
-                aint[i] = p_toPrimitive_0_[i].intValue();
+                aint[i] = p_toPrimitive_0_[i];
             }
 
             return aint;
@@ -1934,38 +1913,21 @@ public class Config {
     }
 
     public static String getGlErrorString(int p_getGlErrorString_0_) {
-        switch (p_getGlErrorString_0_) {
-            case 0:
-                return "No error";
-
-            case 1280:
-                return "Invalid enum";
-
-            case 1281:
-                return "Invalid value";
-
-            case 1282:
-                return "Invalid operation";
-
-            case 1283:
-                return "Stack overflow";
-
-            case 1284:
-                return "Stack underflow";
-
-            case 1285:
-                return "Out of memory";
-
-            case 1286:
-                return "Invalid framebuffer operation";
-
-            default:
-                return "Unknown";
-        }
+        return switch (p_getGlErrorString_0_) {
+            case 0 -> "No error";
+            case 1280 -> "Invalid enum";
+            case 1281 -> "Invalid value";
+            case 1282 -> "Invalid operation";
+            case 1283 -> "Stack overflow";
+            case 1284 -> "Stack underflow";
+            case 1285 -> "Out of memory";
+            case 1286 -> "Invalid framebuffer operation";
+            default -> "Unknown";
+        };
     }
 
     public static boolean isTrue(Boolean p_isTrue_0_) {
-        return p_isTrue_0_ != null && p_isTrue_0_.booleanValue();
+        return p_isTrue_0_ != null && p_isTrue_0_;
     }
 
     public static boolean isQuadsToTriangles() {

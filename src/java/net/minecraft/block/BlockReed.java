@@ -22,7 +22,7 @@ public class BlockReed extends Block {
 
     protected BlockReed() {
         super(Material.plants);
-        this.setDefaultState(this.blockState.getBaseState().withProperty(AGE, Integer.valueOf(0)));
+        this.setDefaultState(this.blockState.getBaseState().withProperty(AGE, 0));
         float f = 0.375F;
         this.setBlockBounds(0.5F - f, 0.0F, 0.5F - f, 0.5F + f, 1.0F, 0.5F + f);
         this.setTickRandomly(true);
@@ -37,13 +37,13 @@ public class BlockReed extends Block {
                 }
 
                 if (i < 3) {
-                    int j = state.getValue(AGE).intValue();
+                    int j = state.getValue(AGE);
 
                     if (j == 15) {
                         worldIn.setBlockState(pos.up(), this.getDefaultState());
-                        worldIn.setBlockState(pos, state.withProperty(AGE, Integer.valueOf(0)), 4);
+                        worldIn.setBlockState(pos, state.withProperty(AGE, 0), 4);
                     } else {
-                        worldIn.setBlockState(pos, state.withProperty(AGE, Integer.valueOf(j + 1)), 4);
+                        worldIn.setBlockState(pos, state.withProperty(AGE, j + 1), 4);
                     }
                 }
             }
@@ -127,14 +127,14 @@ public class BlockReed extends Block {
      * Convert the given metadata into a BlockState for this Block
      */
     public IBlockState getStateFromMeta(int meta) {
-        return this.getDefaultState().withProperty(AGE, Integer.valueOf(meta));
+        return this.getDefaultState().withProperty(AGE, meta);
     }
 
     /**
      * Convert the BlockState into the correct metadata value
      */
     public int getMetaFromState(IBlockState state) {
-        return state.getValue(AGE).intValue();
+        return state.getValue(AGE);
     }
 
     protected BlockState createBlockState() {

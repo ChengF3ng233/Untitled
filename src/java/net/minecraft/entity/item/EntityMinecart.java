@@ -61,28 +61,15 @@ public abstract class EntityMinecart extends Entity implements IWorldNameable {
     }
 
     public static EntityMinecart getMinecart(World worldIn, double x, double y, double z, EntityMinecart.EnumMinecartType type) {
-        switch (type) {
-            case CHEST:
-                return new EntityMinecartChest(worldIn, x, y, z);
-
-            case FURNACE:
-                return new EntityMinecartFurnace(worldIn, x, y, z);
-
-            case TNT:
-                return new EntityMinecartTNT(worldIn, x, y, z);
-
-            case SPAWNER:
-                return new EntityMinecartMobSpawner(worldIn, x, y, z);
-
-            case HOPPER:
-                return new EntityMinecartHopper(worldIn, x, y, z);
-
-            case COMMAND_BLOCK:
-                return new EntityMinecartCommandBlock(worldIn, x, y, z);
-
-            default:
-                return new EntityMinecartEmpty(worldIn, x, y, z);
-        }
+        return switch (type) {
+            case CHEST -> new EntityMinecartChest(worldIn, x, y, z);
+            case FURNACE -> new EntityMinecartFurnace(worldIn, x, y, z);
+            case TNT -> new EntityMinecartTNT(worldIn, x, y, z);
+            case SPAWNER -> new EntityMinecartMobSpawner(worldIn, x, y, z);
+            case HOPPER -> new EntityMinecartHopper(worldIn, x, y, z);
+            case COMMAND_BLOCK -> new EntityMinecartCommandBlock(worldIn, x, y, z);
+            default -> new EntityMinecartEmpty(worldIn, x, y, z);
+        };
     }
 
     /**
@@ -94,12 +81,12 @@ public abstract class EntityMinecart extends Entity implements IWorldNameable {
     }
 
     protected void entityInit() {
-        this.dataWatcher.addObject(17, Integer.valueOf(0));
-        this.dataWatcher.addObject(18, Integer.valueOf(1));
-        this.dataWatcher.addObject(19, new Float(0.0F));
-        this.dataWatcher.addObject(20, Integer.valueOf(0));
-        this.dataWatcher.addObject(21, Integer.valueOf(6));
-        this.dataWatcher.addObject(22, Byte.valueOf((byte) 0));
+        this.dataWatcher.addObject(17, 0);
+        this.dataWatcher.addObject(18, 1);
+        this.dataWatcher.addObject(19, 0.0F);
+        this.dataWatcher.addObject(20, 0);
+        this.dataWatcher.addObject(21, 6);
+        this.dataWatcher.addObject(22, (byte) 0);
     }
 
     /**
@@ -292,7 +279,7 @@ public abstract class EntityMinecart extends Entity implements IWorldNameable {
                 this.func_180460_a(blockpos, iblockstate);
 
                 if (iblockstate.getBlock() == Blocks.activator_rail) {
-                    this.onActivatorRailPass(k, l, i1, iblockstate.getValue(BlockRailPowered.POWERED).booleanValue());
+                    this.onActivatorRailPass(k, l, i1, iblockstate.getValue(BlockRailPowered.POWERED));
                 }
             } else {
                 this.moveDerailedMinecart();
@@ -384,7 +371,7 @@ public abstract class EntityMinecart extends Entity implements IWorldNameable {
         BlockRailBase blockrailbase = (BlockRailBase) p_180460_2_.getBlock();
 
         if (blockrailbase == Blocks.golden_rail) {
-            flag = p_180460_2_.getValue(BlockRailPowered.POWERED).booleanValue();
+            flag = p_180460_2_.getValue(BlockRailPowered.POWERED);
             flag1 = !flag;
         }
 
@@ -835,7 +822,7 @@ public abstract class EntityMinecart extends Entity implements IWorldNameable {
      * 40.
      */
     public void setDamage(float p_70492_1_) {
-        this.dataWatcher.updateObject(19, Float.valueOf(p_70492_1_));
+        this.dataWatcher.updateObject(19, p_70492_1_);
     }
 
     /**
@@ -849,7 +836,7 @@ public abstract class EntityMinecart extends Entity implements IWorldNameable {
      * Sets the rolling amplitude the cart rolls while being attacked.
      */
     public void setRollingAmplitude(int p_70497_1_) {
-        this.dataWatcher.updateObject(17, Integer.valueOf(p_70497_1_));
+        this.dataWatcher.updateObject(17, p_70497_1_);
     }
 
     /**
@@ -863,7 +850,7 @@ public abstract class EntityMinecart extends Entity implements IWorldNameable {
      * Sets the rolling direction the cart rolls while being attacked. Can be 1 or -1.
      */
     public void setRollingDirection(int p_70494_1_) {
-        this.dataWatcher.updateObject(18, Integer.valueOf(p_70494_1_));
+        this.dataWatcher.updateObject(18, p_70494_1_);
     }
 
     public abstract EntityMinecart.EnumMinecartType getMinecartType();
@@ -881,7 +868,7 @@ public abstract class EntityMinecart extends Entity implements IWorldNameable {
     }
 
     public void setDisplayTileOffset(int p_94086_1_) {
-        this.getDataWatcher().updateObject(21, Integer.valueOf(p_94086_1_));
+        this.getDataWatcher().updateObject(21, p_94086_1_);
         this.setHasDisplayTile(true);
     }
 
@@ -890,7 +877,7 @@ public abstract class EntityMinecart extends Entity implements IWorldNameable {
     }
 
     public void func_174899_a(IBlockState p_174899_1_) {
-        this.getDataWatcher().updateObject(20, Integer.valueOf(Block.getStateId(p_174899_1_)));
+        this.getDataWatcher().updateObject(20, Block.getStateId(p_174899_1_));
         this.setHasDisplayTile(true);
     }
 
@@ -899,7 +886,7 @@ public abstract class EntityMinecart extends Entity implements IWorldNameable {
     }
 
     public void setHasDisplayTile(boolean p_94096_1_) {
-        this.getDataWatcher().updateObject(22, Byte.valueOf((byte) (p_94096_1_ ? 1 : 0)));
+        this.getDataWatcher().updateObject(22, (byte) (p_94096_1_ ? 1 : 0));
     }
 
     /**
@@ -957,7 +944,7 @@ public abstract class EntityMinecart extends Entity implements IWorldNameable {
 
         static {
             for (EntityMinecart.EnumMinecartType entityminecart$enumminecarttype : values()) {
-                ID_LOOKUP.put(Integer.valueOf(entityminecart$enumminecarttype.getNetworkID()), entityminecart$enumminecarttype);
+                ID_LOOKUP.put(entityminecart$enumminecarttype.getNetworkID(), entityminecart$enumminecarttype);
             }
         }
 
@@ -970,7 +957,7 @@ public abstract class EntityMinecart extends Entity implements IWorldNameable {
         }
 
         public static EntityMinecart.EnumMinecartType byNetworkID(int id) {
-            EntityMinecart.EnumMinecartType entityminecart$enumminecarttype = ID_LOOKUP.get(Integer.valueOf(id));
+            EntityMinecart.EnumMinecartType entityminecart$enumminecarttype = ID_LOOKUP.get(id);
             return entityminecart$enumminecarttype == null ? RIDEABLE : entityminecart$enumminecarttype;
         }
 

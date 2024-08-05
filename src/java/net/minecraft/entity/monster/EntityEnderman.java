@@ -77,9 +77,9 @@ public class EntityEnderman extends EntityMob {
 
     protected void entityInit() {
         super.entityInit();
-        this.dataWatcher.addObject(16, Short.valueOf((short) 0));
-        this.dataWatcher.addObject(17, Byte.valueOf((byte) 0));
-        this.dataWatcher.addObject(18, Byte.valueOf((byte) 0));
+        this.dataWatcher.addObject(16, (short) 0);
+        this.dataWatcher.addObject(17, (byte) 0);
+        this.dataWatcher.addObject(18, (byte) 0);
     }
 
     /**
@@ -306,7 +306,7 @@ public class EntityEnderman extends EntityMob {
      * Sets this enderman's held block state
      */
     public void setHeldBlockState(IBlockState state) {
-        this.dataWatcher.updateObject(16, Short.valueOf((short) (Block.getStateId(state) & 65535)));
+        this.dataWatcher.updateObject(16, (short) (Block.getStateId(state) & 65535));
     }
 
     /**
@@ -357,7 +357,7 @@ public class EntityEnderman extends EntityMob {
     }
 
     public void setScreaming(boolean screaming) {
-        this.dataWatcher.updateObject(18, Byte.valueOf((byte) (screaming ? 1 : 0)));
+        this.dataWatcher.updateObject(18, (byte) (screaming ? 1 : 0));
     }
 
     static class AIFindPlayer extends EntityAINearestAttackableTarget {

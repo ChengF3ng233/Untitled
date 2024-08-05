@@ -27,9 +27,7 @@ public class CompoundKey {
         if (this.hashcode == 0) {
             this.hashcode = 7;
 
-            for (int i = 0; i < this.keys.length; ++i) {
-                Object object = this.keys[i];
-
+            for (Object object : this.keys) {
                 if (object != null) {
                     this.hashcode = 31 * this.hashcode + object.hashCode();
                 }

@@ -1,12 +1,16 @@
 package org.lwjgl.opengl;
 
-import cn.feng.untitled.util.misc.Logger;
+import cn.feng.untitled.Client;
+import cn.feng.untitled.event.impl.NanoEvent;
+import cn.feng.untitled.ui.font.nano.NanoLoader;
+import cn.feng.untitled.ui.font.nano.NanoUtil;
 import org.lwjgl.BufferUtils;
 import org.lwjgl.Sys;
 import org.lwjgl.glfw.*;
 import org.lwjgl.input.KeyCodes;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
+import org.lwjgl.nanovg.NanoVG;
 
 import java.awt.*;
 import java.nio.ByteBuffer;
@@ -294,6 +298,7 @@ public class Display {
         glfwMakeContextCurrent(Window.handle);
         drawable = new DrawableGL();
         GL.createCapabilities();
+        NanoLoader.createContext();
 
         if (savedIcons != null) {
             setIcon(savedIcons);
@@ -348,6 +353,12 @@ public class Display {
     }
 
     public static void update(boolean processMessages) {
+        if (Client.instance.loaded && NanoLoader.shouldRender()) {
+            NanoVG.nvgBeginFrame(NanoLoader.vg, displayWidth, displayHeight, 1f);
+            Client.instance.eventBus.post(new NanoEvent(NanoLoader.vg));
+            NanoVG.nvgEndFrame(NanoLoader.vg);
+        }
+
         swapBuffers();
         displayDirty = false;
 
@@ -375,6 +386,8 @@ public class Display {
 
     public static void destroy() {
         Window.releaseCallbacks();
+
+        NanoLoader.deleteContext();
         glfwDestroyWindow(Window.handle);
 
         /*

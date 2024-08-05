@@ -608,22 +608,22 @@ public class ChatController {
         }
 
         public void chatChannelUserChangeCallback(String p_chatChannelUserChangeCallback_1_, ChatUserInfo[] p_chatChannelUserChangeCallback_2_, ChatUserInfo[] p_chatChannelUserChangeCallback_3_, ChatUserInfo[] p_chatChannelUserChangeCallback_4_) {
-            for (int i = 0; i < p_chatChannelUserChangeCallback_3_.length; ++i) {
-                int j = this.field_176044_d.indexOf(p_chatChannelUserChangeCallback_3_[i]);
+            for (ChatUserInfo userInfo : p_chatChannelUserChangeCallback_3_) {
+                int j = this.field_176044_d.indexOf(userInfo);
 
                 if (j >= 0) {
                     this.field_176044_d.remove(j);
                 }
             }
 
-            for (int k = 0; k < p_chatChannelUserChangeCallback_4_.length; ++k) {
-                int i1 = this.field_176044_d.indexOf(p_chatChannelUserChangeCallback_4_[k]);
+            for (ChatUserInfo chatUserInfo : p_chatChannelUserChangeCallback_4_) {
+                int i1 = this.field_176044_d.indexOf(chatUserInfo);
 
                 if (i1 >= 0) {
                     this.field_176044_d.remove(i1);
                 }
 
-                this.field_176044_d.add(p_chatChannelUserChangeCallback_4_[k]);
+                this.field_176044_d.add(chatUserInfo);
             }
 
             Collections.addAll(this.field_176044_d, p_chatChannelUserChangeCallback_2_);
@@ -638,8 +638,8 @@ public class ChatController {
         }
 
         public void chatChannelRawMessageCallback(String p_chatChannelRawMessageCallback_1_, ChatRawMessage[] p_chatChannelRawMessageCallback_2_) {
-            for (int i = 0; i < p_chatChannelRawMessageCallback_2_.length; ++i) {
-                this.field_176045_e.addLast(p_chatChannelRawMessageCallback_2_[i]);
+            for (ChatRawMessage chatRawMessage : p_chatChannelRawMessageCallback_2_) {
+                this.field_176045_e.addLast(chatRawMessage);
             }
 
             try {
@@ -656,8 +656,8 @@ public class ChatController {
         }
 
         public void chatChannelTokenizedMessageCallback(String p_chatChannelTokenizedMessageCallback_1_, ChatTokenizedMessage[] p_chatChannelTokenizedMessageCallback_2_) {
-            for (int i = 0; i < p_chatChannelTokenizedMessageCallback_2_.length; ++i) {
-                this.field_176042_f.addLast(p_chatChannelTokenizedMessageCallback_2_[i]);
+            for (ChatTokenizedMessage chatTokenizedMessage : p_chatChannelTokenizedMessageCallback_2_) {
+                this.field_176042_f.addLast(chatTokenizedMessage);
             }
 
             try {

@@ -112,7 +112,7 @@ public class NetworkManager extends SimpleChannelInboundHandler<Packet> {
         (new Bootstrap()).group(lazyloadbase.getValue()).handler(new ChannelInitializer<Channel>() {
             protected void initChannel(Channel p_initChannel_1_) throws Exception {
                 try {
-                    p_initChannel_1_.config().setOption(ChannelOption.TCP_NODELAY, Boolean.valueOf(true));
+                    p_initChannel_1_.config().setOption(ChannelOption.TCP_NODELAY, Boolean.TRUE);
                 } catch (ChannelException var3) {
                 }
 

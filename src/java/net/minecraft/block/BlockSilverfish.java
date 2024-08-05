@@ -40,25 +40,16 @@ public class BlockSilverfish extends Block {
     }
 
     protected ItemStack createStackedBlock(IBlockState state) {
-        switch (state.getValue(VARIANT)) {
-            case COBBLESTONE:
-                return new ItemStack(Blocks.cobblestone);
-
-            case STONEBRICK:
-                return new ItemStack(Blocks.stonebrick);
-
-            case MOSSY_STONEBRICK:
-                return new ItemStack(Blocks.stonebrick, 1, BlockStoneBrick.EnumType.MOSSY.getMetadata());
-
-            case CRACKED_STONEBRICK:
-                return new ItemStack(Blocks.stonebrick, 1, BlockStoneBrick.EnumType.CRACKED.getMetadata());
-
-            case CHISELED_STONEBRICK:
-                return new ItemStack(Blocks.stonebrick, 1, BlockStoneBrick.EnumType.CHISELED.getMetadata());
-
-            default:
-                return new ItemStack(Blocks.stone);
-        }
+        return switch (state.getValue(VARIANT)) {
+            case COBBLESTONE -> new ItemStack(Blocks.cobblestone);
+            case STONEBRICK -> new ItemStack(Blocks.stonebrick);
+            case MOSSY_STONEBRICK -> new ItemStack(Blocks.stonebrick, 1, BlockStoneBrick.EnumType.MOSSY.getMetadata());
+            case CRACKED_STONEBRICK ->
+                    new ItemStack(Blocks.stonebrick, 1, BlockStoneBrick.EnumType.CRACKED.getMetadata());
+            case CHISELED_STONEBRICK ->
+                    new ItemStack(Blocks.stonebrick, 1, BlockStoneBrick.EnumType.CHISELED.getMetadata());
+            default -> new ItemStack(Blocks.stone);
+        };
     }
 
     /**

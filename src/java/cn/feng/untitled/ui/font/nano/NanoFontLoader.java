@@ -10,10 +10,12 @@ public class NanoFontLoader {
     public static NanoFontRenderer misans;
     public static NanoFontRenderer emoji;
     public static NanoFontRenderer script;
+    public static NanoFontRenderer rubik;
 
     public static void registerFonts() {
         misans = new NanoFontRenderer("MiSans", new ResourceLocation("untitled/font/misans.ttf"));
         emoji = new NanoFontRenderer("Emoji", new ResourceLocation("untitled/font/emoji.ttf"));
         script = new NanoFontRenderer("Script", new ResourceLocation("untitled/font/script.ttf"));
+        rubik = new NanoFontRenderer("Rubik", new ResourceLocation("untitled/font/rubik.ttf"));
     }
 }

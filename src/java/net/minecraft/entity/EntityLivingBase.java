@@ -200,10 +200,10 @@ public abstract class EntityLivingBase extends Entity {
     }
 
     protected void entityInit() {
-        this.dataWatcher.addObject(7, Integer.valueOf(0));
-        this.dataWatcher.addObject(8, Byte.valueOf((byte) 0));
-        this.dataWatcher.addObject(9, Byte.valueOf((byte) 0));
-        this.dataWatcher.addObject(6, Float.valueOf(1.0F));
+        this.dataWatcher.addObject(7, 0);
+        this.dataWatcher.addObject(8, (byte) 0);
+        this.dataWatcher.addObject(9, (byte) 0);
+        this.dataWatcher.addObject(6, 1.0F);
     }
 
     protected void applyEntityAttributes() {
@@ -497,7 +497,7 @@ public abstract class EntityLivingBase extends Entity {
                 PotionEffect potioneffect = PotionEffect.readCustomPotionEffectFromNBT(nbttagcompound);
 
                 if (potioneffect != null) {
-                    this.activePotionsMap.put(Integer.valueOf(potioneffect.getPotionID()), potioneffect);
+                    this.activePotionsMap.put(potioneffect.getPotionID(), potioneffect);
                 }
             }
         }
@@ -581,8 +581,8 @@ public abstract class EntityLivingBase extends Entity {
             this.setInvisible(false);
         } else {
             int i = PotionHelper.calcPotionLiquidColor(this.activePotionsMap.values());
-            this.dataWatcher.updateObject(8, Byte.valueOf((byte) (PotionHelper.getAreAmbient(this.activePotionsMap.values()) ? 1 : 0)));
-            this.dataWatcher.updateObject(7, Integer.valueOf(i));
+            this.dataWatcher.updateObject(8, (byte) (PotionHelper.getAreAmbient(this.activePotionsMap.values()) ? 1 : 0));
+            this.dataWatcher.updateObject(7, i);
             this.setInvisible(this.isPotionActive(Potion.invisibility.id));
         }
     }
@@ -591,8 +591,8 @@ public abstract class EntityLivingBase extends Entity {
      * Resets the potion effect color and ambience metadata values
      */
     protected void resetPotionEffectMetadata() {
-        this.dataWatcher.updateObject(8, Byte.valueOf((byte) 0));
-        this.dataWatcher.updateObject(7, Integer.valueOf(0));
+        this.dataWatcher.updateObject(8, (byte) 0);
+        this.dataWatcher.updateObject(7, 0);
     }
 
     public void clearActivePotions() {
@@ -614,18 +614,18 @@ public abstract class EntityLivingBase extends Entity {
     }
 
     public boolean isPotionActive(int potionId) {
-        return this.activePotionsMap.containsKey(Integer.valueOf(potionId));
+        return this.activePotionsMap.containsKey(potionId);
     }
 
     public boolean isPotionActive(Potion potionIn) {
-        return this.activePotionsMap.containsKey(Integer.valueOf(potionIn.id));
+        return this.activePotionsMap.containsKey(potionIn.id);
     }
 
     /**
      * returns the PotionEffect for the supplied Potion if it is active, null otherwise.
      */
     public PotionEffect getActivePotionEffect(Potion potionIn) {
-        return this.activePotionsMap.get(Integer.valueOf(potionIn.id));
+        return this.activePotionsMap.get(potionIn.id);
     }
 
     /**
@@ -633,11 +633,11 @@ public abstract class EntityLivingBase extends Entity {
      */
     public void addPotionEffect(PotionEffect potioneffectIn) {
         if (this.isPotionApplicable(potioneffectIn)) {
-            if (this.activePotionsMap.containsKey(Integer.valueOf(potioneffectIn.getPotionID()))) {
-                this.activePotionsMap.get(Integer.valueOf(potioneffectIn.getPotionID())).combine(potioneffectIn);
-                this.onChangedPotionEffect(this.activePotionsMap.get(Integer.valueOf(potioneffectIn.getPotionID())), true);
+            if (this.activePotionsMap.containsKey(potioneffectIn.getPotionID())) {
+                this.activePotionsMap.get(potioneffectIn.getPotionID()).combine(potioneffectIn);
+                this.onChangedPotionEffect(this.activePotionsMap.get(potioneffectIn.getPotionID()), true);
             } else {
-                this.activePotionsMap.put(Integer.valueOf(potioneffectIn.getPotionID()), potioneffectIn);
+                this.activePotionsMap.put(potioneffectIn.getPotionID(), potioneffectIn);
                 this.onNewPotionEffect(potioneffectIn);
             }
         }
@@ -664,14 +664,14 @@ public abstract class EntityLivingBase extends Entity {
      * Remove the speified potion effect from this entity.
      */
     public void removePotionEffectClient(int potionId) {
-        this.activePotionsMap.remove(Integer.valueOf(potionId));
+        this.activePotionsMap.remove(potionId);
     }
 
     /**
      * Remove the specified potion effect from this entity.
      */
     public void removePotionEffect(int potionId) {
-        PotionEffect potioneffect = this.activePotionsMap.remove(Integer.valueOf(potionId));
+        PotionEffect potioneffect = this.activePotionsMap.remove(potionId);
 
         if (potioneffect != null) {
             this.onFinishedPotionEffect(potioneffect);
@@ -719,7 +719,7 @@ public abstract class EntityLivingBase extends Entity {
     }
 
     public void setHealth(float health) {
-        this.dataWatcher.updateObject(6, Float.valueOf(MathHelper.clamp_float(health, 0.0F, this.getMaxHealth())));
+        this.dataWatcher.updateObject(6, MathHelper.clamp_float(health, 0.0F, this.getMaxHealth()));
     }
 
     /**
@@ -1107,7 +1107,7 @@ public abstract class EntityLivingBase extends Entity {
      * sets the amount of arrows stuck in the entity. used for rendering those
      */
     public final void setArrowCountInEntity(int count) {
-        this.dataWatcher.updateObject(9, Byte.valueOf((byte) count));
+        this.dataWatcher.updateObject(9, (byte) count);
     }
 
     /**
@@ -1716,8 +1716,7 @@ public abstract class EntityLivingBase extends Entity {
         }));
 
         if (!list.isEmpty()) {
-            for (int i = 0; i < list.size(); ++i) {
-                Entity entity = list.get(i);
+            for (Entity entity : list) {
                 this.collideWithEntity(entity);
             }
         }

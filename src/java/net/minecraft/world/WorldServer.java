@@ -616,8 +616,7 @@ public class WorldServer extends World implements IThreadListener {
     public List<TileEntity> getTileEntitiesIn(int minX, int minY, int minZ, int maxX, int maxY, int maxZ) {
         List<TileEntity> list = Lists.newArrayList();
 
-        for (int i = 0; i < this.loadedTileEntityList.size(); ++i) {
-            TileEntity tileentity = this.loadedTileEntityList.get(i);
+        for (TileEntity tileentity : this.loadedTileEntityList) {
             BlockPos blockpos = tileentity.getPos();
 
             if (blockpos.getX() >= minX && blockpos.getY() >= minY && blockpos.getZ() >= minZ && blockpos.getX() < maxX && blockpos.getY() < maxY && blockpos.getZ() < maxZ) {
@@ -800,8 +799,8 @@ public class WorldServer extends World implements IThreadListener {
         Entity[] aentity = entityIn.getParts();
 
         if (aentity != null) {
-            for (int i = 0; i < aentity.length; ++i) {
-                this.entitiesById.addKey(aentity[i].getEntityId(), aentity[i]);
+            for (Entity entity : aentity) {
+                this.entitiesById.addKey(entity.getEntityId(), entity);
             }
         }
     }
@@ -813,8 +812,8 @@ public class WorldServer extends World implements IThreadListener {
         Entity[] aentity = entityIn.getParts();
 
         if (aentity != null) {
-            for (int i = 0; i < aentity.length; ++i) {
-                this.entitiesById.removeObject(aentity[i].getEntityId());
+            for (Entity entity : aentity) {
+                this.entitiesById.removeObject(entity.getEntityId());
             }
         }
     }
@@ -961,8 +960,8 @@ public class WorldServer extends World implements IThreadListener {
     public void spawnParticle(EnumParticleTypes particleType, boolean longDistance, double xCoord, double yCoord, double zCoord, int numberOfParticles, double xOffset, double yOffset, double zOffset, double particleSpeed, int... particleArguments) {
         Packet packet = new S2APacketParticles(particleType, longDistance, (float) xCoord, (float) yCoord, (float) zCoord, (float) xOffset, (float) yOffset, (float) zOffset, (float) particleSpeed, numberOfParticles, particleArguments);
 
-        for (int i = 0; i < this.playerEntities.size(); ++i) {
-            EntityPlayerMP entityplayermp = (EntityPlayerMP) this.playerEntities.get(i);
+        for (EntityPlayer playerEntity : this.playerEntities) {
+            EntityPlayerMP entityplayermp = (EntityPlayerMP) playerEntity;
             BlockPos blockpos = entityplayermp.getPosition();
             double d0 = blockpos.distanceSq(xCoord, yCoord, zCoord);
 

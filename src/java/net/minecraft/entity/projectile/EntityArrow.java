@@ -108,7 +108,7 @@ public class EntityArrow extends Entity implements IProjectile {
     }
 
     protected void entityInit() {
-        this.dataWatcher.addObject(16, Byte.valueOf((byte) 0));
+        this.dataWatcher.addObject(16, (byte) 0);
     }
 
     /**
@@ -220,9 +220,7 @@ public class EntityArrow extends Entity implements IProjectile {
             List<Entity> list = this.worldObj.getEntitiesWithinAABBExcludingEntity(this, this.getEntityBoundingBox().addCoord(this.motionX, this.motionY, this.motionZ).expand(1.0D, 1.0D, 1.0D));
             double d0 = 0.0D;
 
-            for (int i = 0; i < list.size(); ++i) {
-                Entity entity1 = list.get(i);
-
+            for (Entity entity1 : list) {
                 if (entity1.canBeCollidedWith() && (entity1 != this.shootingEntity || this.ticksInAir >= 5)) {
                     float f1 = 0.3F;
                     AxisAlignedBB axisalignedbb1 = entity1.getEntityBoundingBox().expand(f1, f1, f1);
@@ -504,9 +502,9 @@ public class EntityArrow extends Entity implements IProjectile {
         byte b0 = this.dataWatcher.getWatchableObjectByte(16);
 
         if (critical) {
-            this.dataWatcher.updateObject(16, Byte.valueOf((byte) (b0 | 1)));
+            this.dataWatcher.updateObject(16, (byte) (b0 | 1));
         } else {
-            this.dataWatcher.updateObject(16, Byte.valueOf((byte) (b0 & -2)));
+            this.dataWatcher.updateObject(16, (byte) (b0 & -2));
         }
     }
 }

@@ -39,9 +39,7 @@ public class FieldLocatorName implements IFieldLocator {
     private Field getDeclaredField(Class cls, String name) throws NoSuchFieldException {
         Field[] afield = cls.getDeclaredFields();
 
-        for (int i = 0; i < afield.length; ++i) {
-            Field field = afield[i];
-
+        for (Field field : afield) {
             if (field.getName().equals(name)) {
                 return field;
             }

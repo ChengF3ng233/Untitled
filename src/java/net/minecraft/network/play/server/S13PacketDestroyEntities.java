@@ -33,8 +33,8 @@ public class S13PacketDestroyEntities implements Packet<INetHandlerPlayClient> {
     public void writePacketData(PacketBuffer buf) throws IOException {
         buf.writeVarIntToBuffer(this.entityIDs.length);
 
-        for (int i = 0; i < this.entityIDs.length; ++i) {
-            buf.writeVarIntToBuffer(this.entityIDs[i]);
+        for (int entityID : this.entityIDs) {
+            buf.writeVarIntToBuffer(entityID);
         }
     }
 

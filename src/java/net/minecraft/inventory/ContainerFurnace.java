@@ -41,9 +41,7 @@ public class ContainerFurnace extends Container {
     public void detectAndSendChanges() {
         super.detectAndSendChanges();
 
-        for (int i = 0; i < this.crafters.size(); ++i) {
-            ICrafting icrafting = this.crafters.get(i);
-
+        for (ICrafting icrafting : this.crafters) {
             if (this.cookTime != this.tileFurnace.getField(2)) {
                 icrafting.sendProgressBarUpdate(this, 2, this.tileFurnace.getField(2));
             }

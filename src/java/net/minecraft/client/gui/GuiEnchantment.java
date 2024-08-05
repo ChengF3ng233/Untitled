@@ -244,7 +244,7 @@ public class GuiEnchantment extends GuiContainer {
                         if (i1 == 1) {
                             s1 = I18n.format("container.enchant.lapis.one");
                         } else {
-                            s1 = I18n.format("container.enchant.lapis.many", Integer.valueOf(i1));
+                            s1 = I18n.format("container.enchant.lapis.many", i1);
                         }
 
                         if (i >= i1) {
@@ -256,7 +256,7 @@ public class GuiEnchantment extends GuiContainer {
                         if (i1 == 1) {
                             s1 = I18n.format("container.enchant.level.one");
                         } else {
-                            s1 = I18n.format("container.enchant.level.many", Integer.valueOf(i1));
+                            s1 = I18n.format("container.enchant.level.many", i1);
                         }
 
                         list.add(EnumChatFormatting.GRAY + s1);

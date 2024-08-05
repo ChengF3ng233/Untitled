@@ -99,9 +99,7 @@ public enum FunctionType {
     }
 
     public static FunctionType parse(String str) {
-        for (int i = 0; i < VALUES.length; ++i) {
-            FunctionType functiontype = VALUES[i];
-
+        for (FunctionType functiontype : VALUES) {
             if (functiontype.getName().equals(str)) {
                 return functiontype;
             }
@@ -370,16 +368,14 @@ public enum FunctionType {
     }
 
     public float[] evalFloatArray(IExpression[] args) {
-        switch (this) {
-            case VEC2:
-                return new float[]{evalFloat(args, 0), evalFloat(args, 1)};
-            case VEC3:
-                return new float[]{evalFloat(args, 0), evalFloat(args, 1), evalFloat(args, 2)};
-            case VEC4:
-                return new float[]{evalFloat(args, 0), evalFloat(args, 1), evalFloat(args, 2), evalFloat(args, 3)};
-            default:
+        return switch (this) {
+            case VEC2 -> new float[]{evalFloat(args, 0), evalFloat(args, 1)};
+            case VEC3 -> new float[]{evalFloat(args, 0), evalFloat(args, 1), evalFloat(args, 2)};
+            case VEC4 -> new float[]{evalFloat(args, 0), evalFloat(args, 1), evalFloat(args, 2), evalFloat(args, 3)};
+            default -> {
                 Config.warn("Unknown function type: " + this);
-                return null;
-        }
+                yield null;
+            }
+        };
     }
 }

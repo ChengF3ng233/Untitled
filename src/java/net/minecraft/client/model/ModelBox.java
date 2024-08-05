@@ -145,8 +145,8 @@ public class ModelBox {
         this.quadList[5] = new TexturedQuad(new PositionTextureVertex[]{positiontexturevertex3, positiontexturevertex4, positiontexturevertex5, positiontexturevertex6}, textureX + p_i46301_9_ + p_i46301_7_ + p_i46301_9_, textureY + p_i46301_9_, textureX + p_i46301_9_ + p_i46301_7_ + p_i46301_9_ + p_i46301_7_, textureY + p_i46301_9_ + p_i46301_8_, renderer.textureWidth, renderer.textureHeight);
 
         if (p_i46301_11_) {
-            for (int i = 0; i < this.quadList.length; ++i) {
-                this.quadList[i].flipFace();
+            for (TexturedQuad texturedQuad : this.quadList) {
+                texturedQuad.flipFace();
             }
         }
     }
@@ -156,9 +156,7 @@ public class ModelBox {
     }
 
     public void render(WorldRenderer renderer, float scale) {
-        for (int i = 0; i < this.quadList.length; ++i) {
-            TexturedQuad texturedquad = this.quadList[i];
-
+        for (TexturedQuad texturedquad : this.quadList) {
             if (texturedquad != null) {
                 texturedquad.draw(renderer, scale);
             }

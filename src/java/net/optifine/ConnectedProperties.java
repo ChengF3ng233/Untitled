@@ -171,8 +171,7 @@ public class ConnectedProperties {
             String[] astring = Config.tokenize(str, " ,");
             int i = 0;
 
-            for (int j = 0; j < astring.length; ++j) {
-                String s = astring[j];
+            for (String s : astring) {
                 int k = parseFace(s);
                 i |= k;
             }
@@ -304,17 +303,10 @@ public class ConnectedProperties {
     }
 
     private static boolean isMethodOverlay(int method) {
-        switch (method) {
-            case 11:
-            case 12:
-            case 13:
-            case 14:
-            case 15:
-                return true;
-
-            default:
-                return false;
-        }
+        return switch (method) {
+            case 11, 12, 13, 14, 15 -> true;
+            default -> false;
+        };
     }
 
     private static TextureAtlasSprite[] registerIcons(String[] tileNames, TextureMap textureMap, boolean skipTiles, boolean defaultTiles) {
@@ -323,8 +315,7 @@ public class ConnectedProperties {
         } else {
             List list = new ArrayList();
 
-            for (int i = 0; i < tileNames.length; ++i) {
-                String s = tileNames[i];
+            for (String s : tileNames) {
                 ResourceLocation resourcelocation = new ResourceLocation(s);
                 String s1 = resourcelocation.getResourceDomain();
                 String s2 = resourcelocation.getResourcePath();
@@ -387,7 +378,7 @@ public class ConnectedProperties {
                                 int j = Config.parseInt(s3, -1);
 
                                 if (j >= 0 && j < this.tiles.length) {
-                                    map.put(Integer.valueOf(i), Integer.valueOf(j));
+                                    map.put(i, j);
                                 } else {
                                     Config.warn("Invalid CTM tile index: " + s3);
                                 }
@@ -407,8 +398,8 @@ public class ConnectedProperties {
                 for (int k = 0; k < aint.length; ++k) {
                     aint[k] = -1;
 
-                    if (map.containsKey(Integer.valueOf(k))) {
-                        aint[k] = map.get(Integer.valueOf(k)).intValue();
+                    if (map.containsKey(k)) {
+                        aint[k] = map.get(k);
                     }
                 }
 
@@ -446,9 +437,7 @@ public class ConnectedProperties {
             String[] astring = Config.tokenize(str, " ,");
             label32:
 
-            for (int i = 0; i < astring.length; ++i) {
-                String s = astring[i];
-
+            for (String s : astring) {
                 if (s.contains("-")) {
                     String[] astring1 = Config.tokenize(s, "-");
 
@@ -542,56 +531,27 @@ public class ConnectedProperties {
                         Config.warn("Invalid symmetry in: " + path);
                         return false;
                     } else {
-                        switch (this.method) {
-                            case 1:
-                                return this.isValidCtm(path);
-
-                            case 2:
-                                return this.isValidHorizontal(path);
-
-                            case 3:
-                                return this.isValidTop(path);
-
-                            case 4:
-                                return this.isValidRandom(path);
-
-                            case 5:
-                                return this.isValidRepeat(path);
-
-                            case 6:
-                                return this.isValidVertical(path);
-
-                            case 7:
-                                return this.isValidFixed(path);
-
-                            case 8:
-                                return this.isValidHorizontalVertical(path);
-
-                            case 9:
-                                return this.isValidVerticalHorizontal(path);
-
-                            case 10:
-                                return this.isValidCtmCompact(path);
-
-                            case 11:
-                                return this.isValidOverlay(path);
-
-                            case 12:
-                                return this.isValidOverlayFixed(path);
-
-                            case 13:
-                                return this.isValidOverlayRandom(path);
-
-                            case 14:
-                                return this.isValidOverlayRepeat(path);
-
-                            case 15:
-                                return this.isValidOverlayCtm(path);
-
-                            default:
+                        return switch (this.method) {
+                            case 1 -> this.isValidCtm(path);
+                            case 2 -> this.isValidHorizontal(path);
+                            case 3 -> this.isValidTop(path);
+                            case 4 -> this.isValidRandom(path);
+                            case 5 -> this.isValidRepeat(path);
+                            case 6 -> this.isValidVertical(path);
+                            case 7 -> this.isValidFixed(path);
+                            case 8 -> this.isValidHorizontalVertical(path);
+                            case 9 -> this.isValidVerticalHorizontal(path);
+                            case 10 -> this.isValidCtmCompact(path);
+                            case 11 -> this.isValidOverlay(path);
+                            case 12 -> this.isValidOverlayFixed(path);
+                            case 13 -> this.isValidOverlayRandom(path);
+                            case 14 -> this.isValidOverlayRepeat(path);
+                            case 15 -> this.isValidOverlayCtm(path);
+                            default -> {
                                 Config.warn("Unknown method: " + path);
-                                return false;
-                        }
+                                yield false;
+                            }
+                        };
                     }
                 } else {
                     Config.warn("No tiles specified: " + path);
@@ -922,8 +882,7 @@ public class ConnectedProperties {
         i = this.getMax(this.metadatas, i);
 
         if (this.matchBlocks != null) {
-            for (int j = 0; j < this.matchBlocks.length; ++j) {
-                MatchBlock matchblock = this.matchBlocks[j];
+            for (MatchBlock matchblock : this.matchBlocks) {
                 i = this.getMax(matchblock.getMetadatas(), i);
             }
         }
@@ -935,9 +894,7 @@ public class ConnectedProperties {
         if (mds == null) {
             return max;
         } else {
-            for (int i = 0; i < mds.length; ++i) {
-                int j = mds[i];
-
+            for (int j : mds) {
                 if (j > max) {
                     max = j;
                 }

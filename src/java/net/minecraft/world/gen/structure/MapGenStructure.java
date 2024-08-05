@@ -30,13 +30,13 @@ public abstract class MapGenStructure extends MapGenBase {
     protected final void recursiveGenerate(World worldIn, final int chunkX, final int chunkZ, int p_180701_4_, int p_180701_5_, ChunkPrimer chunkPrimerIn) {
         this.initializeStructureData(worldIn);
 
-        if (!this.structureMap.containsKey(Long.valueOf(ChunkCoordIntPair.chunkXZ2Int(chunkX, chunkZ)))) {
+        if (!this.structureMap.containsKey(ChunkCoordIntPair.chunkXZ2Int(chunkX, chunkZ))) {
             this.rand.nextInt();
 
             try {
                 if (this.canSpawnStructureAtCoords(chunkX, chunkZ)) {
                     StructureStart structurestart = this.getStructureStart(chunkX, chunkZ);
-                    this.structureMap.put(Long.valueOf(ChunkCoordIntPair.chunkXZ2Int(chunkX, chunkZ)), structurestart);
+                    this.structureMap.put(ChunkCoordIntPair.chunkXZ2Int(chunkX, chunkZ), structurestart);
                     this.setStructureStart(chunkX, chunkZ, structurestart);
                 }
             } catch (Throwable throwable) {
@@ -47,7 +47,7 @@ public abstract class MapGenStructure extends MapGenBase {
                         return MapGenStructure.this.canSpawnStructureAtCoords(chunkX, chunkZ) ? "True" : "False";
                     }
                 });
-                crashreportcategory.addCrashSection("Chunk location", String.format("%d,%d", Integer.valueOf(chunkX), Integer.valueOf(chunkZ)));
+                crashreportcategory.addCrashSection("Chunk location", String.format("%d,%d", chunkX, chunkZ));
                 crashreportcategory.addCrashSectionCallable("Chunk pos hash", new Callable<String>() {
                     public String call() throws Exception {
                         return String.valueOf(ChunkCoordIntPair.chunkXZ2Int(chunkX, chunkZ));
@@ -200,7 +200,7 @@ public abstract class MapGenStructure extends MapGenBase {
                             StructureStart structurestart = MapGenStructureIO.getStructureStart(nbttagcompound1, worldIn);
 
                             if (structurestart != null) {
-                                this.structureMap.put(Long.valueOf(ChunkCoordIntPair.chunkXZ2Int(i, j)), structurestart);
+                                this.structureMap.put(ChunkCoordIntPair.chunkXZ2Int(i, j), structurestart);
                             }
                         }
                     }

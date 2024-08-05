@@ -106,7 +106,7 @@ public class Teleporter {
         if (d0 >= 0.0D) {
             if (flag) {
                 this.destinationCoordinateCache.add(l, new Teleporter.PortalPosition(blockpos, this.worldServerInstance.getTotalWorldTime()));
-                this.destinationCoordinateKeys.add(Long.valueOf(l));
+                this.destinationCoordinateKeys.add(l);
             }
 
             double d5 = (double) blockpos.getX() + 0.5D;
@@ -338,11 +338,11 @@ public class Teleporter {
 
             while (iterator.hasNext()) {
                 Long olong = iterator.next();
-                Teleporter.PortalPosition teleporter$portalposition = this.destinationCoordinateCache.getValueByKey(olong.longValue());
+                Teleporter.PortalPosition teleporter$portalposition = this.destinationCoordinateCache.getValueByKey(olong);
 
                 if (teleporter$portalposition == null || teleporter$portalposition.lastUpdateTime < i) {
                     iterator.remove();
-                    this.destinationCoordinateCache.remove(olong.longValue());
+                    this.destinationCoordinateCache.remove(olong);
                 }
             }
         }

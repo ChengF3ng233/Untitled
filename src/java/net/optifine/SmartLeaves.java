@@ -145,8 +145,7 @@ public class SmartLeaves {
         } else {
             EnumFacing[] aenumfacing = EnumFacing.VALUES;
 
-            for (int i = 0; i < aenumfacing.length; ++i) {
-                EnumFacing enumfacing = aenumfacing[i];
+            for (EnumFacing enumfacing : aenumfacing) {
                 List<BakedQuad> list = model.getFaceQuads(enumfacing);
 
                 if (list.size() != 1) {
@@ -158,8 +157,7 @@ public class SmartLeaves {
             IBakedModel ibakedmodel = ModelUtils.duplicateModel(model);
             List[] alist = new List[aenumfacing.length];
 
-            for (int k = 0; k < aenumfacing.length; ++k) {
-                EnumFacing enumfacing1 = aenumfacing[k];
+            for (EnumFacing enumfacing1 : aenumfacing) {
                 List<BakedQuad> list1 = ibakedmodel.getFaceQuads(enumfacing1);
                 BakedQuad bakedquad = list1.get(0);
                 BakedQuad bakedquad1 = new BakedQuad(bakedquad.getVertexData().clone(), bakedquad.getTintIndex(), bakedquad.getFace(), bakedquad.getSprite());

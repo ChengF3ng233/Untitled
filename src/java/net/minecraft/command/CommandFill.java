@@ -58,7 +58,7 @@ public class CommandFill extends CommandBase {
             int j = (blockpos3.getX() - blockpos2.getX() + 1) * (blockpos3.getY() - blockpos2.getY() + 1) * (blockpos3.getZ() - blockpos2.getZ() + 1);
 
             if (j > 32768) {
-                throw new CommandException("commands.fill.tooManyBlocks", Integer.valueOf(j), Integer.valueOf(32768));
+                throw new CommandException("commands.fill.tooManyBlocks", j, 32768);
             } else if (blockpos2.getY() >= 0 && blockpos3.getY() < 256) {
                 World world = sender.getEntityWorld();
 
@@ -168,7 +168,7 @@ public class CommandFill extends CommandBase {
                     throw new CommandException("commands.fill.failed");
                 } else {
                     sender.setCommandStat(CommandResultStats.Type.AFFECTED_BLOCKS, j);
-                    notifyOperators(sender, this, "commands.fill.success", Integer.valueOf(j));
+                    notifyOperators(sender, this, "commands.fill.success", j);
                 }
             } else {
                 throw new CommandException("commands.fill.outOfWorld");

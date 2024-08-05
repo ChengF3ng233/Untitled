@@ -344,54 +344,32 @@ public class ShaderUtil extends MinecraftInstance {
 
         int program = glCreateProgram();
         try {
-            int fragmentShaderID;
-            switch (fragmentShaderLoc) {
-                case "kawaseUpGlow":
-                    fragmentShaderID = createShader(new ByteArrayInputStream(kawaseUpGlow.getBytes()), GL_FRAGMENT_SHADER);
-                    break;
-                case "glow":
-                    fragmentShaderID = createShader(new ByteArrayInputStream(glowShader.getBytes()), GL_FRAGMENT_SHADER);
-                    break;
-                case "chams":
-                    fragmentShaderID = createShader(new ByteArrayInputStream(chams.getBytes()), GL_FRAGMENT_SHADER);
-                    break;
-                case "roundRectTexture":
-                    fragmentShaderID = createShader(new ByteArrayInputStream(roundRectTexture.getBytes()), GL_FRAGMENT_SHADER);
-                    break;
-                case "roundRectOutline":
-                    fragmentShaderID = createShader(new ByteArrayInputStream(roundRectOutline.getBytes()), GL_FRAGMENT_SHADER);
-                    break;
-                case "kawaseUpBloom":
-                    fragmentShaderID = createShader(new ByteArrayInputStream(kawaseUpBloom.getBytes()), GL_FRAGMENT_SHADER);
-                    break;
-                case "kawaseDownBloom":
-                    fragmentShaderID = createShader(new ByteArrayInputStream(kawaseDownBloom.getBytes()), GL_FRAGMENT_SHADER);
-                    break;
-                case "kawaseUp":
-                    fragmentShaderID = createShader(new ByteArrayInputStream(kawaseUp.getBytes()), GL_FRAGMENT_SHADER);
-                    break;
-                case "kawaseDown":
-                    fragmentShaderID = createShader(new ByteArrayInputStream(kawaseDown.getBytes()), GL_FRAGMENT_SHADER);
-                    break;
-                case "gradientMask":
-                    fragmentShaderID = createShader(new ByteArrayInputStream(gradientMask.getBytes()), GL_FRAGMENT_SHADER);
-                    break;
-                case "mask":
-                    fragmentShaderID = createShader(new ByteArrayInputStream(mask.getBytes()), GL_FRAGMENT_SHADER);
-                    break;
-                case "gradient":
-                    fragmentShaderID = createShader(new ByteArrayInputStream(gradient.getBytes()), GL_FRAGMENT_SHADER);
-                    break;
-                case "roundedRect":
-                    fragmentShaderID = createShader(new ByteArrayInputStream(roundedRect.getBytes()), GL_FRAGMENT_SHADER);
-                    break;
-                case "roundedRectGradient":
-                    fragmentShaderID = createShader(new ByteArrayInputStream(roundedRectGradient.getBytes()), GL_FRAGMENT_SHADER);
-                    break;
-                default:
-                    fragmentShaderID = createShader(mc.getResourceManager().getResource(new ResourceLocation(fragmentShaderLoc)).getInputStream(), GL_FRAGMENT_SHADER);
-                    break;
-            }
+            int fragmentShaderID = switch (fragmentShaderLoc) {
+                case "kawaseUpGlow" ->
+                        createShader(new ByteArrayInputStream(kawaseUpGlow.getBytes()), GL_FRAGMENT_SHADER);
+                case "glow" -> createShader(new ByteArrayInputStream(glowShader.getBytes()), GL_FRAGMENT_SHADER);
+                case "chams" -> createShader(new ByteArrayInputStream(chams.getBytes()), GL_FRAGMENT_SHADER);
+                case "roundRectTexture" ->
+                        createShader(new ByteArrayInputStream(roundRectTexture.getBytes()), GL_FRAGMENT_SHADER);
+                case "roundRectOutline" ->
+                        createShader(new ByteArrayInputStream(roundRectOutline.getBytes()), GL_FRAGMENT_SHADER);
+                case "kawaseUpBloom" ->
+                        createShader(new ByteArrayInputStream(kawaseUpBloom.getBytes()), GL_FRAGMENT_SHADER);
+                case "kawaseDownBloom" ->
+                        createShader(new ByteArrayInputStream(kawaseDownBloom.getBytes()), GL_FRAGMENT_SHADER);
+                case "kawaseUp" -> createShader(new ByteArrayInputStream(kawaseUp.getBytes()), GL_FRAGMENT_SHADER);
+                case "kawaseDown" -> createShader(new ByteArrayInputStream(kawaseDown.getBytes()), GL_FRAGMENT_SHADER);
+                case "gradientMask" ->
+                        createShader(new ByteArrayInputStream(gradientMask.getBytes()), GL_FRAGMENT_SHADER);
+                case "mask" -> createShader(new ByteArrayInputStream(mask.getBytes()), GL_FRAGMENT_SHADER);
+                case "gradient" -> createShader(new ByteArrayInputStream(gradient.getBytes()), GL_FRAGMENT_SHADER);
+                case "roundedRect" ->
+                        createShader(new ByteArrayInputStream(roundedRect.getBytes()), GL_FRAGMENT_SHADER);
+                case "roundedRectGradient" ->
+                        createShader(new ByteArrayInputStream(roundedRectGradient.getBytes()), GL_FRAGMENT_SHADER);
+                default ->
+                        createShader(mc.getResourceManager().getResource(new ResourceLocation(fragmentShaderLoc)).getInputStream(), GL_FRAGMENT_SHADER);
+            };
             glAttachShader(program, fragmentShaderID);
 
             int vertexShaderID = createShader(mc.getResourceManager().getResource(new ResourceLocation(vertexShaderLoc)).getInputStream(), GL_VERTEX_SHADER);

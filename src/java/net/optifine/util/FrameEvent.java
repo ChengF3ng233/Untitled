@@ -14,16 +14,16 @@ public class FrameEvent {
             Integer integer = mapEventFrames.get(name);
 
             if (integer == null) {
-                integer = Integer.valueOf(i);
+                integer = i;
                 mapEventFrames.put(name, integer);
             }
 
-            int j = integer.intValue();
+            int j = integer;
 
             if (i > j && i < j + frameInterval) {
                 return false;
             } else {
-                mapEventFrames.put(name, Integer.valueOf(i));
+                mapEventFrames.put(name, i);
                 return true;
             }
         }

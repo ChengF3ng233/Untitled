@@ -63,7 +63,7 @@ public class CommandEnchant extends CommandBase {
                 Enchantment enchantment1 = Enchantment.getEnchantmentById(i);
 
                 if (enchantment1 == null) {
-                    throw new NumberInvalidException("commands.enchant.notFound", Integer.valueOf(i));
+                    throw new NumberInvalidException("commands.enchant.notFound", i);
                 } else if (!enchantment1.canApply(itemstack)) {
                     throw new CommandException("commands.enchant.cantEnchant");
                 } else {

@@ -3,6 +3,7 @@ package cn.feng.untitled.ui;
 import cn.feng.untitled.Client;
 import cn.feng.untitled.event.api.SubscribeEvent;
 import cn.feng.untitled.event.impl.ChatGUIEvent;
+import cn.feng.untitled.event.impl.NanoEvent;
 import cn.feng.untitled.event.impl.Render2DEvent;
 import cn.feng.untitled.event.impl.ShaderEvent;
 import cn.feng.untitled.ui.clickgui.dropdown.DropdownGUI;
@@ -48,7 +49,7 @@ public class UIManager extends MinecraftInstance {
     }
 
     @SubscribeEvent
-    private void onRender2D(Render2DEvent event) {
+    private void onNano(NanoEvent event) {
         for (Widget widget : widgetList) {
             if (Client.instance.moduleManager.getModule(widget).enabled) {
                 widget.updatePos();

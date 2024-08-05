@@ -102,9 +102,7 @@ public enum ShaderParameterFloat {
         } else {
             Class oclass = obj.getClass();
 
-            for (int i = 0; i < classes.length; ++i) {
-                Class oclass1 = classes[i];
-
+            for (Class oclass1 : classes) {
                 if (oclass1.isAssignableFrom(oclass)) {
                     return true;
                 }

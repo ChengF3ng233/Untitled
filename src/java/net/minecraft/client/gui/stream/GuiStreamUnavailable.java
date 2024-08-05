@@ -50,9 +50,9 @@ public class GuiStreamUnavailable extends GuiScreen {
         if (!OpenGlHelper.framebufferSupported) {
             List<ChatComponentTranslation> list = Lists.newArrayList();
             list.add(new ChatComponentTranslation("stream.unavailable.no_fbo.version", GL11.glGetString(GL11.GL_VERSION)));
-            list.add(new ChatComponentTranslation("stream.unavailable.no_fbo.blend", Boolean.valueOf(GLContext.getCapabilities().GL_EXT_blend_func_separate)));
-            list.add(new ChatComponentTranslation("stream.unavailable.no_fbo.arb", Boolean.valueOf(GLContext.getCapabilities().GL_ARB_framebuffer_object)));
-            list.add(new ChatComponentTranslation("stream.unavailable.no_fbo.ext", Boolean.valueOf(GLContext.getCapabilities().GL_EXT_framebuffer_object)));
+            list.add(new ChatComponentTranslation("stream.unavailable.no_fbo.blend", GLContext.getCapabilities().GL_EXT_blend_func_separate));
+            list.add(new ChatComponentTranslation("stream.unavailable.no_fbo.arb", GLContext.getCapabilities().GL_ARB_framebuffer_object));
+            list.add(new ChatComponentTranslation("stream.unavailable.no_fbo.ext", GLContext.getCapabilities().GL_EXT_framebuffer_object));
             minecraft.displayGuiScreen(new GuiStreamUnavailable(p_152321_0_, GuiStreamUnavailable.Reason.NO_FBO, list));
         } else if (istream instanceof NullStream) {
             if (((NullStream) istream).func_152937_a().getMessage().contains("Can't load AMD 64-bit .dll on a IA 32-bit platform")) {

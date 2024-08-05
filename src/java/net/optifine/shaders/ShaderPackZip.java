@@ -61,9 +61,7 @@ public class ShaderPackZip implements IShaderPack {
         Deque<String> deque = new ArrayDeque();
         String[] astring = Config.tokenize(name, "/");
 
-        for (int i = 0; i < astring.length; ++i) {
-            String s = astring[i];
-
+        for (String s : astring) {
             if (s.equals("..")) {
                 if (deque.isEmpty()) {
                     return "";

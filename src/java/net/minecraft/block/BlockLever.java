@@ -22,7 +22,7 @@ public class BlockLever extends Block {
 
     protected BlockLever() {
         super(Material.circuits);
-        this.setDefaultState(this.blockState.getBaseState().withProperty(FACING, BlockLever.EnumOrientation.NORTH).withProperty(POWERED, Boolean.valueOf(false)));
+        this.setDefaultState(this.blockState.getBaseState().withProperty(FACING, BlockLever.EnumOrientation.NORTH).withProperty(POWERED, Boolean.FALSE));
         this.setCreativeTab(CreativeTabs.tabRedstone);
     }
 
@@ -31,28 +31,15 @@ public class BlockLever extends Block {
     }
 
     public static int getMetadataForFacing(EnumFacing facing) {
-        switch (facing) {
-            case DOWN:
-                return 0;
-
-            case UP:
-                return 5;
-
-            case NORTH:
-                return 4;
-
-            case SOUTH:
-                return 3;
-
-            case WEST:
-                return 2;
-
-            case EAST:
-                return 1;
-
-            default:
-                return -1;
-        }
+        return switch (facing) {
+            case DOWN -> 0;
+            case UP -> 5;
+            case NORTH -> 4;
+            case SOUTH -> 3;
+            case WEST -> 2;
+            case EAST -> 1;
+            default -> -1;
+        };
     }
 
     public AxisAlignedBB getCollisionBoundingBox(World worldIn, BlockPos pos, IBlockState state) {
@@ -92,7 +79,7 @@ public class BlockLever extends Block {
      * IBlockstate
      */
     public IBlockState onBlockPlaced(World worldIn, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer) {
-        IBlockState iblockstate = this.getDefaultState().withProperty(POWERED, Boolean.valueOf(false));
+        IBlockState iblockstate = this.getDefaultState().withProperty(POWERED, Boolean.FALSE);
 
         if (func_181090_a(worldIn, pos, facing.getOpposite())) {
             return iblockstate.withProperty(FACING, BlockLever.EnumOrientation.forFacings(facing, placer.getHorizontalFacing()));
@@ -170,7 +157,7 @@ public class BlockLever extends Block {
         } else {
             state = state.cycleProperty(POWERED);
             worldIn.setBlockState(pos, state, 3);
-            worldIn.playSoundEffect((double) pos.getX() + 0.5D, (double) pos.getY() + 0.5D, (double) pos.getZ() + 0.5D, "random.click", 0.3F, state.getValue(POWERED).booleanValue() ? 0.6F : 0.5F);
+            worldIn.playSoundEffect((double) pos.getX() + 0.5D, (double) pos.getY() + 0.5D, (double) pos.getZ() + 0.5D, "random.click", 0.3F, state.getValue(POWERED) ? 0.6F : 0.5F);
             worldIn.notifyNeighborsOfStateChange(pos, this);
             EnumFacing enumfacing = state.getValue(FACING).getFacing();
             worldIn.notifyNeighborsOfStateChange(pos.offset(enumfacing.getOpposite()), this);
@@ -179,7 +166,7 @@ public class BlockLever extends Block {
     }
 
     public void breakBlock(World worldIn, BlockPos pos, IBlockState state) {
-        if (state.getValue(POWERED).booleanValue()) {
+        if (state.getValue(POWERED)) {
             worldIn.notifyNeighborsOfStateChange(pos, this);
             EnumFacing enumfacing = state.getValue(FACING).getFacing();
             worldIn.notifyNeighborsOfStateChange(pos.offset(enumfacing.getOpposite()), this);
@@ -189,11 +176,11 @@ public class BlockLever extends Block {
     }
 
     public int getWeakPower(IBlockAccess worldIn, BlockPos pos, IBlockState state, EnumFacing side) {
-        return state.getValue(POWERED).booleanValue() ? 15 : 0;
+        return state.getValue(POWERED) ? 15 : 0;
     }
 
     public int getStrongPower(IBlockAccess worldIn, BlockPos pos, IBlockState state, EnumFacing side) {
-        return !state.getValue(POWERED).booleanValue() ? 0 : (state.getValue(FACING).getFacing() == side ? 15 : 0);
+        return !state.getValue(POWERED) ? 0 : (state.getValue(FACING).getFacing() == side ? 15 : 0);
     }
 
     /**
@@ -207,7 +194,7 @@ public class BlockLever extends Block {
      * Convert the given metadata into a BlockState for this Block
      */
     public IBlockState getStateFromMeta(int meta) {
-        return this.getDefaultState().withProperty(FACING, BlockLever.EnumOrientation.byMetadata(meta & 7)).withProperty(POWERED, Boolean.valueOf((meta & 8) > 0));
+        return this.getDefaultState().withProperty(FACING, BlockLever.EnumOrientation.byMetadata(meta & 7)).withProperty(POWERED, (meta & 8) > 0);
     }
 
     /**
@@ -217,7 +204,7 @@ public class BlockLever extends Block {
         int i = 0;
         i = i | state.getValue(FACING).getMetadata();
 
-        if (state.getValue(POWERED).booleanValue()) {
+        if (state.getValue(POWERED)) {
             i |= 8;
         }
 
@@ -267,28 +254,20 @@ public class BlockLever extends Block {
         public static BlockLever.EnumOrientation forFacings(EnumFacing clickedSide, EnumFacing entityFacing) {
             switch (clickedSide) {
                 case DOWN:
-                    switch (entityFacing.getAxis()) {
-                        case X:
-                            return DOWN_X;
-
-                        case Z:
-                            return DOWN_Z;
-
-                        default:
-                            throw new IllegalArgumentException("Invalid entityFacing " + entityFacing + " for facing " + clickedSide);
-                    }
+                    return switch (entityFacing.getAxis()) {
+                        case X -> DOWN_X;
+                        case Z -> DOWN_Z;
+                        default ->
+                                throw new IllegalArgumentException("Invalid entityFacing " + entityFacing + " for facing " + clickedSide);
+                    };
 
                 case UP:
-                    switch (entityFacing.getAxis()) {
-                        case X:
-                            return UP_X;
-
-                        case Z:
-                            return UP_Z;
-
-                        default:
-                            throw new IllegalArgumentException("Invalid entityFacing " + entityFacing + " for facing " + clickedSide);
-                    }
+                    return switch (entityFacing.getAxis()) {
+                        case X -> UP_X;
+                        case Z -> UP_Z;
+                        default ->
+                                throw new IllegalArgumentException("Invalid entityFacing " + entityFacing + " for facing " + clickedSide);
+                    };
 
                 case NORTH:
                     return NORTH;

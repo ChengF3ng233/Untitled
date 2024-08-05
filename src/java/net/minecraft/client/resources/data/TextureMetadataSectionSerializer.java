@@ -23,7 +23,7 @@ public class TextureMetadataSectionSerializer extends BaseMetadataSectionSeriali
 
                     if (jsonelement.isJsonPrimitive()) {
                         try {
-                            list.add(Integer.valueOf(jsonelement.getAsInt()));
+                            list.add(jsonelement.getAsInt());
                         } catch (NumberFormatException numberformatexception) {
                             throw new JsonParseException("Invalid texture->mipmap->" + i + ": expected number, was " + jsonelement, numberformatexception);
                         }

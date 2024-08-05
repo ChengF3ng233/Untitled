@@ -27,7 +27,7 @@ public class BlockOldLeaf extends BlockLeaves {
     });
 
     public BlockOldLeaf() {
-        this.setDefaultState(this.blockState.getBaseState().withProperty(VARIANT, BlockPlanks.EnumType.OAK).withProperty(CHECK_DECAY, Boolean.valueOf(true)).withProperty(DECAYABLE, Boolean.valueOf(true)));
+        this.setDefaultState(this.blockState.getBaseState().withProperty(VARIANT, BlockPlanks.EnumType.OAK).withProperty(CHECK_DECAY, Boolean.TRUE).withProperty(DECAYABLE, Boolean.TRUE));
     }
 
     public int getRenderColor(IBlockState state) {
@@ -85,7 +85,7 @@ public class BlockOldLeaf extends BlockLeaves {
      * Convert the given metadata into a BlockState for this Block
      */
     public IBlockState getStateFromMeta(int meta) {
-        return this.getDefaultState().withProperty(VARIANT, this.getWoodType(meta)).withProperty(DECAYABLE, Boolean.valueOf((meta & 4) == 0)).withProperty(CHECK_DECAY, Boolean.valueOf((meta & 8) > 0));
+        return this.getDefaultState().withProperty(VARIANT, this.getWoodType(meta)).withProperty(DECAYABLE, (meta & 4) == 0).withProperty(CHECK_DECAY, (meta & 8) > 0);
     }
 
     /**
@@ -95,11 +95,11 @@ public class BlockOldLeaf extends BlockLeaves {
         int i = 0;
         i = i | state.getValue(VARIANT).getMetadata();
 
-        if (!state.getValue(DECAYABLE).booleanValue()) {
+        if (!state.getValue(DECAYABLE)) {
             i |= 4;
         }
 
-        if (state.getValue(CHECK_DECAY).booleanValue()) {
+        if (state.getValue(CHECK_DECAY)) {
             i |= 8;
         }
 

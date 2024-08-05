@@ -53,7 +53,7 @@ public class EntitySkeleton extends EntityMob implements IRangedAttackMob {
 
     protected void entityInit() {
         super.entityInit();
-        this.dataWatcher.addObject(13, Byte.valueOf((byte) 0));
+        this.dataWatcher.addObject(13, (byte) 0);
     }
 
     /**
@@ -302,7 +302,7 @@ public class EntitySkeleton extends EntityMob implements IRangedAttackMob {
      * Set this skeleton's type.
      */
     public void setSkeletonType(int p_82201_1_) {
-        this.dataWatcher.updateObject(13, Byte.valueOf((byte) p_82201_1_));
+        this.dataWatcher.updateObject(13, (byte) p_82201_1_);
         this.isImmuneToFire = p_82201_1_ == 1;
 
         if (p_82201_1_ == 1) {

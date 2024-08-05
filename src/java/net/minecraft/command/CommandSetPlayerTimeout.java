@@ -33,7 +33,7 @@ public class CommandSetPlayerTimeout extends CommandBase {
         } else {
             int i = parseInt(args[0], 0);
             MinecraftServer.getServer().setPlayerIdleTimeout(i);
-            notifyOperators(sender, this, "commands.setidletimeout.success", Integer.valueOf(i));
+            notifyOperators(sender, this, "commands.setidletimeout.success", i);
         }
     }
 }

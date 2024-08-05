@@ -130,7 +130,7 @@ public abstract class BlockRedstoneDiode extends BlockDirectional {
             return i;
         } else {
             IBlockState iblockstate = worldIn.getBlockState(blockpos);
-            return Math.max(i, iblockstate.getBlock() == Blocks.redstone_wire ? iblockstate.getValue(BlockRedstoneWire.POWER).intValue() : 0);
+            return Math.max(i, iblockstate.getBlock() == Blocks.redstone_wire ? iblockstate.getValue(BlockRedstoneWire.POWER) : 0);
         }
     }
 
@@ -144,7 +144,7 @@ public abstract class BlockRedstoneDiode extends BlockDirectional {
     protected int getPowerOnSide(IBlockAccess worldIn, BlockPos pos, EnumFacing side) {
         IBlockState iblockstate = worldIn.getBlockState(pos);
         Block block = iblockstate.getBlock();
-        return this.canPowerSide(block) ? (block == Blocks.redstone_wire ? iblockstate.getValue(BlockRedstoneWire.POWER).intValue() : worldIn.getStrongPower(pos, side)) : 0;
+        return this.canPowerSide(block) ? (block == Blocks.redstone_wire ? iblockstate.getValue(BlockRedstoneWire.POWER) : worldIn.getStrongPower(pos, side)) : 0;
     }
 
     /**

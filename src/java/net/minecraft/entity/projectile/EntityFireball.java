@@ -116,9 +116,7 @@ public abstract class EntityFireball extends Entity {
             List<Entity> list = this.worldObj.getEntitiesWithinAABBExcludingEntity(this, this.getEntityBoundingBox().addCoord(this.motionX, this.motionY, this.motionZ).expand(1.0D, 1.0D, 1.0D));
             double d0 = 0.0D;
 
-            for (int i = 0; i < list.size(); ++i) {
-                Entity entity1 = list.get(i);
-
+            for (Entity entity1 : list) {
                 if (entity1.canBeCollidedWith() && (!entity1.isEntityEqual(this.shootingEntity) || this.ticksInAir >= 25)) {
                     float f = 0.3F;
                     AxisAlignedBB axisalignedbb = entity1.getEntityBoundingBox().expand(f, f, f);

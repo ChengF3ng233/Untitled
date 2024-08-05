@@ -263,11 +263,11 @@ public class PlayerSelector {
                         Score score = scoreboard.getValueFromObjective(s1, scoreobjective);
                         int i = score.getScorePoints();
 
-                        if (i < entry.getValue().intValue() && flag) {
+                        if (i < entry.getValue() && flag) {
                             return false;
                         }
 
-                        if (i > entry.getValue().intValue() && !flag) {
+                        if (i > entry.getValue() && !flag) {
                             return false;
                         }
                     }
@@ -493,7 +493,7 @@ public class PlayerSelector {
 
         for (String s : p_96560_0_.keySet()) {
             if (s.startsWith("score_") && s.length() > "score_".length()) {
-                map.put(s.substring("score_".length()), Integer.valueOf(MathHelper.parseIntWithDefault(p_96560_0_.get(s), 1)));
+                map.put(s.substring("score_".length()), MathHelper.parseIntWithDefault(p_96560_0_.get(s), 1));
             }
         }
 
@@ -533,24 +533,13 @@ public class PlayerSelector {
             int j = -1;
 
             for (Matcher matcher = intListPattern.matcher(argumentString); matcher.find(); j = matcher.end()) {
-                String s = null;
-
-                switch (i++) {
-                    case 0:
-                        s = "x";
-                        break;
-
-                    case 1:
-                        s = "y";
-                        break;
-
-                    case 2:
-                        s = "z";
-                        break;
-
-                    case 3:
-                        s = "r";
-                }
+                String s = switch (i++) {
+                    case 0 -> "x";
+                    case 1 -> "y";
+                    case 2 -> "z";
+                    case 3 -> "r";
+                    default -> null;
+                };
 
                 if (s != null && matcher.group(1).length() > 0) {
                     map.put(s, matcher.group(1));

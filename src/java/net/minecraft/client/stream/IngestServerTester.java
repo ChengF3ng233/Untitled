@@ -366,8 +366,8 @@ public class IngestServerTester {
         this.field_153059_q = null;
 
         if (this.field_153055_m != null) {
-            for (int i = 0; i < this.field_153055_m.size(); ++i) {
-                this.field_153055_m.get(i).free();
+            for (FrameBuffer frameBuffer : this.field_153055_m) {
+                frameBuffer.free();
             }
 
             this.field_153055_m = null;

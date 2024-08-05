@@ -263,9 +263,9 @@ public class TwitchStream implements BroadcastController.BroadcastListener, Chat
             long i = this.broadcastController.getStreamTime();
 
             if (!this.broadcastController.func_152840_a(p_152911_1_.func_152810_c(), i + p_152911_2_, p_152911_1_.func_152809_a(), p_152911_1_.func_152806_b())) {
-                LOGGER.warn(STREAM_MARKER, "Couldn't send stream metadata action at {}: {}", Long.valueOf(i + p_152911_2_), p_152911_1_);
+                LOGGER.warn(STREAM_MARKER, "Couldn't send stream metadata action at {}: {}", i + p_152911_2_, p_152911_1_);
             } else {
-                LOGGER.debug(STREAM_MARKER, "Sent stream metadata action at {}: {}", Long.valueOf(i + p_152911_2_), p_152911_1_);
+                LOGGER.debug(STREAM_MARKER, "Sent stream metadata action at {}: {}", i + p_152911_2_, p_152911_1_);
             }
         }
     }
@@ -278,11 +278,11 @@ public class TwitchStream implements BroadcastController.BroadcastListener, Chat
             long j = this.broadcastController.func_177946_b(p_176026_1_.func_152810_c(), i + p_176026_2_, s, s1);
 
             if (j < 0L) {
-                LOGGER.warn(STREAM_MARKER, "Could not send stream metadata sequence from {} to {}: {}", Long.valueOf(i + p_176026_2_), Long.valueOf(i + p_176026_4_), p_176026_1_);
+                LOGGER.warn(STREAM_MARKER, "Could not send stream metadata sequence from {} to {}: {}", i + p_176026_2_, i + p_176026_4_, p_176026_1_);
             } else if (this.broadcastController.func_177947_a(p_176026_1_.func_152810_c(), i + p_176026_4_, j, s, s1)) {
-                LOGGER.debug(STREAM_MARKER, "Sent stream metadata sequence from {} to {}: {}", Long.valueOf(i + p_176026_2_), Long.valueOf(i + p_176026_4_), p_176026_1_);
+                LOGGER.debug(STREAM_MARKER, "Sent stream metadata sequence from {} to {}: {}", i + p_176026_2_, i + p_176026_4_, p_176026_1_);
             } else {
-                LOGGER.warn(STREAM_MARKER, "Half-sent stream metadata sequence from {} to {}: {}", Long.valueOf(i + p_176026_2_), Long.valueOf(i + p_176026_4_), p_176026_1_);
+                LOGGER.warn(STREAM_MARKER, "Half-sent stream metadata sequence from {} to {}: {}", i + p_176026_2_, i + p_176026_4_, p_176026_1_);
             }
         }
     }
@@ -361,7 +361,7 @@ public class TwitchStream implements BroadcastController.BroadcastListener, Chat
         this.targetFPS = videoparams.targetFps;
         this.field_152957_i = gamesettings.streamSendMetadata;
         this.broadcastController.func_152836_a(videoparams);
-        LOGGER.info(STREAM_MARKER, "Streaming at {}/{} at {} kbps to {}", Integer.valueOf(videoparams.outputWidth), Integer.valueOf(videoparams.outputHeight), Integer.valueOf(videoparams.maxKbps), this.broadcastController.getIngestServer().serverUrl);
+        LOGGER.info(STREAM_MARKER, "Streaming at {}/{} at {} kbps to {}", videoparams.outputWidth, videoparams.outputHeight, videoparams.maxKbps, this.broadcastController.getIngestServer().serverUrl);
         this.broadcastController.func_152828_a(null, "Minecraft", null);
     }
 
@@ -381,7 +381,7 @@ public class TwitchStream implements BroadcastController.BroadcastListener, Chat
             LOGGER.debug(STREAM_MARKER, "Login attempt successful");
             this.loggedIn = true;
         } else {
-            LOGGER.warn(STREAM_MARKER, "Login attempt unsuccessful: {} (error code {})", ErrorCode.getString(p_152897_1_), Integer.valueOf(p_152897_1_.getValue()));
+            LOGGER.warn(STREAM_MARKER, "Login attempt unsuccessful: {} (error code {})", ErrorCode.getString(p_152897_1_), p_152897_1_.getValue());
             this.loggedIn = false;
         }
     }
@@ -402,14 +402,14 @@ public class TwitchStream implements BroadcastController.BroadcastListener, Chat
     }
 
     public void func_152894_a(StreamInfo p_152894_1_) {
-        LOGGER.debug(STREAM_MARKER, "Stream info updated; {} viewers on stream ID {}", Integer.valueOf(p_152894_1_.viewers), Long.valueOf(p_152894_1_.streamId));
+        LOGGER.debug(STREAM_MARKER, "Stream info updated; {} viewers on stream ID {}", p_152894_1_.viewers, p_152894_1_.streamId);
     }
 
     public void func_152896_a(IngestList p_152896_1_) {
     }
 
     public void func_152893_b(ErrorCode p_152893_1_) {
-        LOGGER.warn(STREAM_MARKER, "Issue submitting frame: {} (Error code {})", ErrorCode.getString(p_152893_1_), Integer.valueOf(p_152893_1_.getValue()));
+        LOGGER.warn(STREAM_MARKER, "Issue submitting frame: {} (Error code {})", ErrorCode.getString(p_152893_1_), p_152893_1_.getValue());
         this.mc.ingameGUI.getChatGUI().printChatMessageWithOptionalDeletion(new ChatComponentText("Issue streaming frame: " + p_152893_1_ + " (" + ErrorCode.getString(p_152893_1_) + ")"), 2);
     }
 
@@ -426,7 +426,7 @@ public class TwitchStream implements BroadcastController.BroadcastListener, Chat
         if (p_152892_1_ == ErrorCode.TTV_EC_SOUNDFLOWER_NOT_INSTALLED) {
             IChatComponent ichatcomponent = new ChatComponentTranslation("stream.unavailable.soundflower.chat.link");
             ichatcomponent.getChatStyle().setChatClickEvent(new ClickEvent(ClickEvent.Action.OPEN_URL, "https://help.mojang.com/customer/portal/articles/1374877-configuring-soundflower-for-streaming-on-apple-computers"));
-            ichatcomponent.getChatStyle().setUnderlined(Boolean.valueOf(true));
+            ichatcomponent.getChatStyle().setUnderlined(Boolean.TRUE);
             IChatComponent ichatcomponent1 = new ChatComponentTranslation("stream.unavailable.soundflower.chat", ichatcomponent);
             ichatcomponent1.getChatStyle().setColor(EnumChatFormatting.DARK_RED);
             this.mc.ingameGUI.getChatGUI().printChatMessage(ichatcomponent1);
@@ -493,7 +493,7 @@ public class TwitchStream implements BroadcastController.BroadcastListener, Chat
                 IChatComponent ichatcomponent1 = new ChatComponentTranslation("chat.stream." + (chatrawmessage.action ? "emote" : "text"), this.twitchComponent, ichatcomponent, EnumChatFormatting.getTextWithoutFormattingCodes(chatrawmessage.message));
 
                 if (chatrawmessage.action) {
-                    ichatcomponent1.getChatStyle().setItalic(Boolean.valueOf(true));
+                    ichatcomponent1.getChatStyle().setItalic(Boolean.TRUE);
                 }
 
                 IChatComponent ichatcomponent2 = new ChatComponentText("");

@@ -23,7 +23,7 @@ public class BlockFarmland extends Block {
 
     protected BlockFarmland() {
         super(Material.ground);
-        this.setDefaultState(this.blockState.getBaseState().withProperty(MOISTURE, Integer.valueOf(0)));
+        this.setDefaultState(this.blockState.getBaseState().withProperty(MOISTURE, 0));
         this.setTickRandomly(true);
         this.setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 0.9375F, 1.0F);
         this.setLightOpacity(255);
@@ -45,16 +45,16 @@ public class BlockFarmland extends Block {
     }
 
     public void updateTick(World worldIn, BlockPos pos, IBlockState state, Random rand) {
-        int i = state.getValue(MOISTURE).intValue();
+        int i = state.getValue(MOISTURE);
 
         if (!this.hasWater(worldIn, pos) && !worldIn.isRainingAt(pos.up())) {
             if (i > 0) {
-                worldIn.setBlockState(pos, state.withProperty(MOISTURE, Integer.valueOf(i - 1)), 2);
+                worldIn.setBlockState(pos, state.withProperty(MOISTURE, i - 1), 2);
             } else if (!this.hasCrops(worldIn, pos)) {
                 worldIn.setBlockState(pos, Blocks.dirt.getDefaultState());
             }
         } else if (i < 7) {
-            worldIn.setBlockState(pos, state.withProperty(MOISTURE, Integer.valueOf(7)), 2);
+            worldIn.setBlockState(pos, state.withProperty(MOISTURE, 7), 2);
         }
     }
 
@@ -102,20 +102,14 @@ public class BlockFarmland extends Block {
     }
 
     public boolean shouldSideBeRendered(IBlockAccess worldIn, BlockPos pos, EnumFacing side) {
-        switch (side) {
-            case UP:
-                return true;
-
-            case NORTH:
-            case SOUTH:
-            case WEST:
-            case EAST:
+        return switch (side) {
+            case UP -> true;
+            case NORTH, SOUTH, WEST, EAST -> {
                 Block block = worldIn.getBlockState(pos).getBlock();
-                return !block.isOpaqueCube() && block != Blocks.farmland;
-
-            default:
-                return super.shouldSideBeRendered(worldIn, pos, side);
-        }
+                yield !block.isOpaqueCube() && block != Blocks.farmland;
+            }
+            default -> super.shouldSideBeRendered(worldIn, pos, side);
+        };
     }
 
     /**
@@ -133,14 +127,14 @@ public class BlockFarmland extends Block {
      * Convert the given metadata into a BlockState for this Block
      */
     public IBlockState getStateFromMeta(int meta) {
-        return this.getDefaultState().withProperty(MOISTURE, Integer.valueOf(meta & 7));
+        return this.getDefaultState().withProperty(MOISTURE, meta & 7);
     }
 
     /**
      * Convert the BlockState into the correct metadata value
      */
     public int getMetaFromState(IBlockState state) {
-        return state.getValue(MOISTURE).intValue();
+        return state.getValue(MOISTURE);
     }
 
     protected BlockState createBlockState() {

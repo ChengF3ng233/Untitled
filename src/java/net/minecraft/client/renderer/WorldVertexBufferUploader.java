@@ -30,7 +30,7 @@ public class WorldVertexBufferUploader {
                 VertexFormatElement.EnumUsage vertexformatelement$enumusage = vertexformatelement.getUsage();
 
                 if (flag) {
-                    Reflector.callVoid(vertexformatelement$enumusage, Reflector.ForgeVertexFormatElementEnumUseage_preDraw, vertexformat, Integer.valueOf(j), Integer.valueOf(i), bytebuffer);
+                    Reflector.callVoid(vertexformatelement$enumusage, Reflector.ForgeVertexFormatElementEnumUseage_preDraw, vertexformat, j, i, bytebuffer);
                 } else {
                     int k = vertexformatelement.getType().getGlConstant();
                     int l = vertexformatelement.getIndex();
@@ -76,7 +76,7 @@ public class WorldVertexBufferUploader {
                 VertexFormatElement.EnumUsage vertexformatelement$enumusage1 = vertexformatelement1.getUsage();
 
                 if (flag1) {
-                    Reflector.callVoid(vertexformatelement$enumusage1, Reflector.ForgeVertexFormatElementEnumUseage_postDraw, vertexformat, Integer.valueOf(j1), Integer.valueOf(i), bytebuffer);
+                    Reflector.callVoid(vertexformatelement$enumusage1, Reflector.ForgeVertexFormatElementEnumUseage_postDraw, vertexformat, j1, i, bytebuffer);
                 } else {
                     int i1 = vertexformatelement1.getIndex();
 

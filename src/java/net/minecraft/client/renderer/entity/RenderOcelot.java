@@ -19,20 +19,12 @@ public class RenderOcelot extends RenderLiving<EntityOcelot> {
      * Returns the location of an entity's texture. Doesn't seem to be called unless you call Render.bindEntityTexture.
      */
     protected ResourceLocation getEntityTexture(EntityOcelot entity) {
-        switch (entity.getTameSkin()) {
-            case 0:
-            default:
-                return ocelotTextures;
-
-            case 1:
-                return blackOcelotTextures;
-
-            case 2:
-                return redOcelotTextures;
-
-            case 3:
-                return siameseOcelotTextures;
-        }
+        return switch (entity.getTameSkin()) {
+            default -> ocelotTextures;
+            case 1 -> blackOcelotTextures;
+            case 2 -> redOcelotTextures;
+            case 3 -> siameseOcelotTextures;
+        };
     }
 
     /**

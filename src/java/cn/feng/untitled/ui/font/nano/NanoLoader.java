@@ -1,5 +1,6 @@
 package cn.feng.untitled.ui.font.nano;
 
+import net.minecraft.client.Minecraft;
 import org.lwjgl.nanovg.NanoVG;
 import org.lwjgl.nanovg.NanoVGGL3;
 
@@ -16,5 +17,8 @@ public class NanoLoader {
     }
     public static void deleteContext() {
         NanoVGGL3.nvgDelete(vg);
+    }
+    public static boolean shouldRender() {
+        return (Minecraft.getMinecraft() != null) && Minecraft.getMinecraft().thePlayer != null;
     }
 }

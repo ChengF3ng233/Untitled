@@ -26,15 +26,17 @@ public enum Client {
     public NetworkManager networkManager;
     public ConfigManager configManager;
 
+    public boolean loaded = false;
+
     public void start() {
         Logger.info("Client starting up...");
+
         try {
             ViaMCP.create();
             ViaMCP.INSTANCE.initAsyncSlider(); // For top left aligned slider
         } catch (Exception e) {
             e.printStackTrace();
         }
-        NanoLoader.createContext();
 
         Logger.info("Initializing managers...");
         eventBus = new EventBus();
@@ -66,11 +68,12 @@ public enum Client {
 
         Display.setTitle(CLIENT_NAME + " | LWJGL Version " + Sys.getVersion());
         Logger.info("Done.");
+
+        loaded = true;
     }
 
     public void stop() {
         Logger.info("Client stopping...");
-        NanoLoader.deleteContext();
         Logger.info("Saving configs...");
         configManager.saveConfigs();
     }

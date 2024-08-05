@@ -6,8 +6,7 @@ public class MathUtilsTest {
     public static void main(String[] args) throws Exception {
         MathUtilsTest.OPER[] amathutilstest$oper = MathUtilsTest.OPER.values();
 
-        for (int i = 0; i < amathutilstest$oper.length; ++i) {
-            MathUtilsTest.OPER mathutilstest$oper = amathutilstest$oper[i];
+        for (OPER mathutilstest$oper : amathutilstest$oper) {
             dbg("******** " + mathutilstest$oper + " ***********");
             test(mathutilstest$oper, false);
         }
@@ -67,7 +66,7 @@ public class MathUtilsTest {
                     return;
             }
 
-            dbg(String.format("%.2f, Math: %f, Helper: %f, diff: %f", Double.valueOf(d2), Float.valueOf(f), Float.valueOf(f1), Float.valueOf(Math.abs(f - f1))));
+            dbg(String.format("%.2f, Math: %f, Helper: %f, diff: %f", d2, f, f1, Math.abs(f - f1)));
         }
     }
 

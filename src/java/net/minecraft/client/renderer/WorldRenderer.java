@@ -120,12 +120,12 @@ public class WorldRenderer {
         Integer[] ainteger = new Integer[i];
 
         for (int k = 0; k < ainteger.length; ++k) {
-            ainteger[k] = Integer.valueOf(k);
+            ainteger[k] = k;
         }
 
         Arrays.sort(ainteger, new Comparator<Integer>() {
             public int compare(Integer p_compare_1_, Integer p_compare_2_) {
-                return Floats.compare(afloat[p_compare_2_.intValue()], afloat[p_compare_1_.intValue()]);
+                return Floats.compare(afloat[p_compare_2_], afloat[p_compare_1_]);
             }
         });
         BitSet bitset = new BitSet();
@@ -133,7 +133,7 @@ public class WorldRenderer {
         int[] aint = new int[l];
 
         for (int l1 = 0; (l1 = bitset.nextClearBit(l1)) < ainteger.length; ++l1) {
-            int i1 = ainteger[l1].intValue();
+            int i1 = ainteger[l1];
 
             if (i1 != l1) {
                 this.rawIntBuffer.limit(i1 * l + l);
@@ -141,7 +141,7 @@ public class WorldRenderer {
                 this.rawIntBuffer.get(aint);
                 int j1 = i1;
 
-                for (int k1 = ainteger[i1].intValue(); j1 != l1; k1 = ainteger[k1].intValue()) {
+                for (int k1 = ainteger[i1]; j1 != l1; k1 = ainteger[k1]) {
                     this.rawIntBuffer.limit(k1 * l + l);
                     this.rawIntBuffer.position(k1 * l);
                     IntBuffer intbuffer = this.rawIntBuffer.slice();
@@ -168,7 +168,7 @@ public class WorldRenderer {
             int i2 = this.vertexFormat.getNextOffset() / 4 * 4;
 
             for (int j2 = 0; j2 < ainteger.length; ++j2) {
-                int k2 = ainteger[j2].intValue();
+                int k2 = ainteger[j2];
                 atextureatlassprite[j2] = this.quadSprites[k2];
             }
 

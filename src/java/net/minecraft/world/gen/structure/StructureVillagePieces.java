@@ -350,16 +350,11 @@ public class StructureVillagePieces {
         }
 
         private Block func_151559_a(Random rand) {
-            switch (rand.nextInt(5)) {
-                case 0:
-                    return Blocks.carrots;
-
-                case 1:
-                    return Blocks.potatoes;
-
-                default:
-                    return Blocks.wheat;
-            }
+            return switch (rand.nextInt(5)) {
+                case 0 -> Blocks.carrots;
+                case 1 -> Blocks.potatoes;
+                default -> Blocks.wheat;
+            };
         }
 
         public boolean addComponentParts(World worldIn, Random randomIn, StructureBoundingBox structureBoundingBoxIn) {
@@ -441,16 +436,11 @@ public class StructureVillagePieces {
         }
 
         private Block func_151560_a(Random rand) {
-            switch (rand.nextInt(5)) {
-                case 0:
-                    return Blocks.carrots;
-
-                case 1:
-                    return Blocks.potatoes;
-
-                default:
-                    return Blocks.wheat;
-            }
+            return switch (rand.nextInt(5)) {
+                case 0 -> Blocks.carrots;
+                case 1 -> Blocks.potatoes;
+                default -> Blocks.wheat;
+            };
         }
 
         public boolean addComponentParts(World worldIn, Random randomIn, StructureBoundingBox structureBoundingBoxIn) {

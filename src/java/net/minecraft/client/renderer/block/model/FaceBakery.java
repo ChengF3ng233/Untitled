@@ -20,36 +20,28 @@ public class FaceBakery {
     private static final float SCALE_ROTATION_GENERAL = 1.0F / (float) Math.cos((Math.PI / 4D)) - 1.0F;
 
     public static float getFaceBrightness(EnumFacing p_178412_0_) {
-        switch (p_178412_0_) {
-            case DOWN:
+        return switch (p_178412_0_) {
+            case DOWN -> {
                 if (Config.isShaders()) {
-                    return Shaders.blockLightLevel05;
+                    yield Shaders.blockLightLevel05;
                 }
-
-                return 0.5F;
-
-            case UP:
-                return 1.0F;
-
-            case NORTH:
-            case SOUTH:
+                yield 0.5F;
+            }
+            case UP -> 1.0F;
+            case NORTH, SOUTH -> {
                 if (Config.isShaders()) {
-                    return Shaders.blockLightLevel08;
+                    yield Shaders.blockLightLevel08;
                 }
-
-                return 0.8F;
-
-            case WEST:
-            case EAST:
+                yield 0.8F;
+            }
+            case WEST, EAST -> {
                 if (Config.isShaders()) {
-                    return Shaders.blockLightLevel06;
+                    yield Shaders.blockLightLevel06;
                 }
-
-                return 0.6F;
-
-            default:
-                return 1.0F;
-        }
+                yield 0.6F;
+            }
+            default -> 1.0F;
+        };
     }
 
     public static EnumFacing getFacingFromVertexData(int[] faceData) {
@@ -333,38 +325,32 @@ public class FaceBakery {
         }
 
         float f3 = 0.0F;
-        float f4 = 0.0F;
-
-        switch (facing) {
-            case DOWN:
+        float f4 = switch (facing) {
+            case DOWN -> {
                 f3 = f * 16.0F;
-                f4 = (1.0F - f2) * 16.0F;
-                break;
-
-            case UP:
+                yield (1.0F - f2) * 16.0F;
+            }
+            case UP -> {
                 f3 = f * 16.0F;
-                f4 = f2 * 16.0F;
-                break;
-
-            case NORTH:
+                yield f2 * 16.0F;
+            }
+            case NORTH -> {
                 f3 = (1.0F - f) * 16.0F;
-                f4 = (1.0F - f1) * 16.0F;
-                break;
-
-            case SOUTH:
+                yield (1.0F - f1) * 16.0F;
+            }
+            case SOUTH -> {
                 f3 = f * 16.0F;
-                f4 = (1.0F - f1) * 16.0F;
-                break;
-
-            case WEST:
+                yield (1.0F - f1) * 16.0F;
+            }
+            case WEST -> {
                 f3 = f2 * 16.0F;
-                f4 = (1.0F - f1) * 16.0F;
-                break;
-
-            case EAST:
+                yield (1.0F - f1) * 16.0F;
+            }
+            case EAST -> {
                 f3 = (1.0F - f2) * 16.0F;
-                f4 = (1.0F - f1) * 16.0F;
-        }
+                yield (1.0F - f1) * 16.0F;
+            }
+        };
 
         int k = p_178401_4_.func_178345_c(p_178401_1_) * i;
         p_178401_2_[k + 4] = Float.floatToRawIntBits(p_178401_5_.getInterpolatedU(f3));

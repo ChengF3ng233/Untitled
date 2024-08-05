@@ -73,7 +73,7 @@ public class ThreadDownloadImageData extends SimpleTexture {
             this.imageBuffer.skinAvailable();
         }
 
-        this.imageFound = Boolean.valueOf(this.bufferedImage != null);
+        this.imageFound = this.bufferedImage != null;
     }
 
     public void loadTexture(IResourceManager resourceManager) throws IOException {
@@ -198,7 +198,7 @@ public class ThreadDownloadImageData extends SimpleTexture {
     }
 
     private void loadingFinished() {
-        this.imageFound = Boolean.valueOf(this.bufferedImage != null);
+        this.imageFound = this.bufferedImage != null;
 
         if (this.imageBuffer instanceof CapeImageBuffer capeimagebuffer) {
             capeimagebuffer.cleanup();

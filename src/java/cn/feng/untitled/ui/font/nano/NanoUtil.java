@@ -1,8 +1,12 @@
 package cn.feng.untitled.ui.font.nano;
 
 import cn.feng.untitled.util.MinecraftInstance;
+import cn.feng.untitled.util.render.ColorUtil;
+import net.minecraft.client.renderer.GlStateManager;
+import org.lwjgl.nanovg.NVGColor;
 import org.lwjgl.nanovg.NanoVG;
 
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -104,22 +108,38 @@ public class NanoUtil extends MinecraftInstance {
         return renderList;
     }
 
-    public static void prepareNano() {
+    public static void beginFrame() {
         nvgBeginFrame(vg, mc.displayWidth, mc.displayHeight, 1f);
     }
 
     public static void scaleStart(float centerX, float centerY, float scale) {
         nvgSave(vg);
-        NanoVG.nvgTranslate(NanoLoader.vg, centerX * 2, centerY * 2);
-        NanoVG.nvgScale(NanoLoader.vg, scale, scale);
-        NanoVG.nvgTranslate(NanoLoader.vg, -centerX * 2, -centerY * 2);
+        nvgTranslate(vg, centerX * 2, centerY * 2);
+        nvgScale(vg, scale, scale);
+        nvgTranslate(vg, -centerX * 2, -centerY * 2);
     }
 
     public static void scaleEnd() {
         nvgRestore(vg);
     }
+    
+    public static void scissorStart(float x, float y, float width, float height) {
+        nvgSave(vg);
+        nvgScissor(vg, x * 2f, y * 2f, width * 2f, height * 2f);
+    }
+    
+    public static void scissorEnd() {
+        nvgRestore(vg);
+    }
 
-    public static void endNano() {
+    public static void nvgColor(Color color) {
+        NVGColor nvgColor = NVGColor.calloc();
+        nvgColor.r(color.getRed() / 255f).g(color.getGreen() / 255f).b(color.getBlue() / 255f).a(color.getAlpha() / 255f);
+        nvgFillColor(NanoLoader.vg, nvgColor);
+        nvgColor.free();
+    }
+
+    public static void endFrame() {
         nvgEndFrame(vg);
     }
 }

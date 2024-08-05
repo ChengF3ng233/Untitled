@@ -144,8 +144,7 @@ public class GuiShaderOptions extends GuiScreenOF {
             if (guibutton.id == 201) {
                 ShaderOption[] ashaderoption = Shaders.getChangedOptions(Shaders.getShaderPackOptions());
 
-                for (int i = 0; i < ashaderoption.length; ++i) {
-                    ShaderOption shaderoption1 = ashaderoption[i];
+                for (ShaderOption shaderoption1 : ashaderoption) {
                     shaderoption1.resetValue();
                     this.changed = true;
                 }

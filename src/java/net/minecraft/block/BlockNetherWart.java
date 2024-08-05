@@ -21,7 +21,7 @@ public class BlockNetherWart extends BlockBush {
 
     protected BlockNetherWart() {
         super(Material.plants, MapColor.redColor);
-        this.setDefaultState(this.blockState.getBaseState().withProperty(AGE, Integer.valueOf(0)));
+        this.setDefaultState(this.blockState.getBaseState().withProperty(AGE, 0));
         this.setTickRandomly(true);
         float f = 0.5F;
         this.setBlockBounds(0.5F - f, 0.0F, 0.5F - f, 0.5F + f, 0.25F, 0.5F + f);
@@ -40,10 +40,10 @@ public class BlockNetherWart extends BlockBush {
     }
 
     public void updateTick(World worldIn, BlockPos pos, IBlockState state, Random rand) {
-        int i = state.getValue(AGE).intValue();
+        int i = state.getValue(AGE);
 
         if (i < 3 && rand.nextInt(10) == 0) {
-            state = state.withProperty(AGE, Integer.valueOf(i + 1));
+            state = state.withProperty(AGE, i + 1);
             worldIn.setBlockState(pos, state, 2);
         }
 
@@ -57,7 +57,7 @@ public class BlockNetherWart extends BlockBush {
         if (!worldIn.isRemote) {
             int i = 1;
 
-            if (state.getValue(AGE).intValue() >= 3) {
+            if (state.getValue(AGE) >= 3) {
                 i = 2 + worldIn.rand.nextInt(3);
 
                 if (fortune > 0) {
@@ -93,14 +93,14 @@ public class BlockNetherWart extends BlockBush {
      * Convert the given metadata into a BlockState for this Block
      */
     public IBlockState getStateFromMeta(int meta) {
-        return this.getDefaultState().withProperty(AGE, Integer.valueOf(meta));
+        return this.getDefaultState().withProperty(AGE, meta);
     }
 
     /**
      * Convert the BlockState into the correct metadata value
      */
     public int getMetaFromState(IBlockState state) {
-        return state.getValue(AGE).intValue();
+        return state.getValue(AGE);
     }
 
     protected BlockState createBlockState() {

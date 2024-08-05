@@ -144,8 +144,8 @@ public class FlatGeneratorInfo {
                                 if (astring2.length > 1 && astring2[1].endsWith(")") && astring2[1].length() > 1) {
                                     String[] astring3 = astring2[1].substring(0, astring2[1].length() - 1).split(" ");
 
-                                    for (int l = 0; l < astring3.length; ++l) {
-                                        String[] astring4 = astring3[l].split("=", 2);
+                                    for (String string : astring3) {
+                                        String[] astring4 = string.split("=", 2);
 
                                         if (astring4.length == 2) {
                                             map.put(astring4[0], astring4[1]);

@@ -79,8 +79,7 @@ public class DynamicLights {
                 if (mapDynamicLights.size() > 0) {
                     List<DynamicLight> list = mapDynamicLights.valueList();
 
-                    for (int j = 0; j < list.size(); ++j) {
-                        DynamicLight dynamiclight = list.get(j);
+                    for (DynamicLight dynamiclight : list) {
                         dynamiclight.update(renderGlobal);
                     }
                 }
@@ -94,9 +93,7 @@ public class DynamicLights {
         mapItemLightLevels.clear();
         String[] astring = ReflectorForge.getForgeModIds();
 
-        for (int i = 0; i < astring.length; ++i) {
-            String s = astring[i];
-
+        for (String s : astring) {
             try {
                 ResourceLocation resourcelocation = new ResourceLocation(s, "optifine/dynamic_lights.properties");
                 InputStream inputstream = Config.getResourceStream(resourcelocation);
@@ -134,8 +131,7 @@ public class DynamicLights {
         if (prop != null) {
             String[] astring = Config.tokenize(prop, " ");
 
-            for (int i = 0; i < astring.length; ++i) {
-                String s = astring[i];
+            for (String s : astring) {
                 String[] astring1 = Config.tokenize(s, ":");
 
                 if (astring1.length != 2) {
@@ -153,7 +149,7 @@ public class DynamicLights {
                         int j = cp.parseInt(s2, -1);
 
                         if (j >= 0 && j <= 15) {
-                            mapLightLevels.put(object, Integer.valueOf(j));
+                            mapLightLevels.put(object, j);
                         } else {
                             cp.warn("Invalid light level: " + s);
                         }
@@ -223,8 +219,7 @@ public class DynamicLights {
             List<DynamicLight> list = mapDynamicLights.valueList();
             int i = list.size();
 
-            for (int j = 0; j < i; ++j) {
-                DynamicLight dynamiclight = list.get(j);
+            for (DynamicLight dynamiclight : list) {
                 int k = dynamiclight.getLastLightLevel();
 
                 if (k > 0) {
@@ -288,7 +283,7 @@ public class DynamicLights {
                         Integer integer = mapItemLightLevels.get(item);
 
                         if (integer != null) {
-                            return integer.intValue();
+                            return integer;
                         }
                     }
 
@@ -318,7 +313,7 @@ public class DynamicLights {
                     Integer integer = mapEntityLightLevels.get(entity.getClass());
 
                     if (integer != null) {
-                        return integer.intValue();
+                        return integer;
                     }
                 }
 
@@ -359,8 +354,7 @@ public class DynamicLights {
         synchronized (mapDynamicLights) {
             List<DynamicLight> list = mapDynamicLights.valueList();
 
-            for (int i = 0; i < list.size(); ++i) {
-                DynamicLight dynamiclight = list.get(i);
+            for (DynamicLight dynamiclight : list) {
                 dynamiclight.updateLitChunks(renderGlobal);
             }
 

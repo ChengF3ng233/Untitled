@@ -657,7 +657,7 @@ public class RenderGlobal implements IWorldAccess, IResourceManagerReloadListene
             for (int j = 0; j < this.theWorld.weatherEffects.size(); ++j) {
                 Entity entity1 = this.theWorld.weatherEffects.get(j);
 
-                if (!flag || Reflector.callBoolean(entity1, Reflector.ForgeEntity_shouldRenderInPass, Integer.valueOf(i))) {
+                if (!flag || Reflector.callBoolean(entity1, Reflector.ForgeEntity_shouldRenderInPass, i)) {
                     ++this.countEntitiesRendered;
 
                     if (entity1.isInRangeToRender3d(d0, d1, d2)) {
@@ -675,8 +675,7 @@ public class RenderGlobal implements IWorldAccess, IResourceManagerReloadListene
                 RenderHelper.disableStandardItemLighting();
                 this.renderManager.setRenderOutlines(true);
 
-                for (int k = 0; k < list.size(); ++k) {
-                    Entity entity3 = list.get(k);
+                for (Entity entity3 : list) {
                     boolean flag2 = this.mc.getRenderViewEntity() instanceof EntityLivingBase && ((EntityLivingBase) this.mc.getRenderViewEntity()).isPlayerSleeping();
                     boolean flag3 = entity3.isInRangeToRender3d(d0, d1, d2) && (entity3.ignoreFrustumCheck || camera.isBoundingBoxInFrustum(entity3.getEntityBoundingBox()) || entity3.riddenByEntity == this.mc.thePlayer) && entity3 instanceof EntityPlayer;
 
@@ -732,7 +731,7 @@ public class RenderGlobal implements IWorldAccess, IResourceManagerReloadListene
 
                             entity2 = (Entity) iterator.next();
 
-                            if (!flag || Reflector.callBoolean(entity2, Reflector.ForgeEntity_shouldRenderInPass, Integer.valueOf(i))) {
+                            if (!flag || Reflector.callBoolean(entity2, Reflector.ForgeEntity_shouldRenderInPass, i)) {
                                 flag4 = this.renderManager.shouldRender(entity2, camera, d0, d1, d2) || entity2.riddenByEntity == this.mc.thePlayer;
 
                                 if (!flag4) {
@@ -756,7 +755,7 @@ public class RenderGlobal implements IWorldAccess, IResourceManagerReloadListene
                             }
                         }
 
-                        if (!flag4 && entity2 instanceof EntityWitherSkull && (!flag || Reflector.callBoolean(entity2, Reflector.ForgeEntity_shouldRenderInPass, Integer.valueOf(i)))) {
+                        if (!flag4 && entity2 instanceof EntityWitherSkull && (!flag || Reflector.callBoolean(entity2, Reflector.ForgeEntity_shouldRenderInPass, i))) {
                             this.renderedEntity = entity2;
 
                             if (flag6) {
@@ -808,7 +807,7 @@ public class RenderGlobal implements IWorldAccess, IResourceManagerReloadListene
                                 break;
                             }
 
-                            if (Reflector.callBoolean(tileentity1, Reflector.ForgeTileEntity_shouldRenderInPass, Integer.valueOf(i))) {
+                            if (Reflector.callBoolean(tileentity1, Reflector.ForgeTileEntity_shouldRenderInPass, i)) {
                                 AxisAlignedBB axisalignedbb1 = (AxisAlignedBB) Reflector.call(tileentity1, Reflector.ForgeTileEntity_getRenderBoundingBox, new Object[0]);
 
                                 if (axisalignedbb1 == null || camera.isBoundingBoxInFrustum(axisalignedbb1)) {
@@ -829,7 +828,7 @@ public class RenderGlobal implements IWorldAccess, IResourceManagerReloadListene
 
             synchronized (this.setTileEntities) {
                 for (TileEntity tileentity : this.setTileEntities) {
-                    if (!flag1 || Reflector.callBoolean(tileentity, Reflector.ForgeTileEntity_shouldRenderInPass, Integer.valueOf(i))) {
+                    if (!flag1 || Reflector.callBoolean(tileentity, Reflector.ForgeTileEntity_shouldRenderInPass, i)) {
                         if (flag6) {
                             Shaders.nextBlockEntity(tileentity);
                         }
@@ -867,7 +866,7 @@ public class RenderGlobal implements IWorldAccess, IResourceManagerReloadListene
                 if (flag1) {
                     flag9 = false;
 
-                    if (tileentity2 != null && Reflector.callBoolean(tileentity2, Reflector.ForgeTileEntity_shouldRenderInPass, Integer.valueOf(i)) && Reflector.callBoolean(tileentity2, Reflector.ForgeTileEntity_canRenderBreaking)) {
+                    if (tileentity2 != null && Reflector.callBoolean(tileentity2, Reflector.ForgeTileEntity_shouldRenderInPass, i) && Reflector.callBoolean(tileentity2, Reflector.ForgeTileEntity_canRenderBreaking)) {
                         AxisAlignedBB axisalignedbb = (AxisAlignedBB) Reflector.call(tileentity2, Reflector.ForgeTileEntity_getRenderBoundingBox, new Object[0]);
 
                         if (axisalignedbb != null) {
@@ -915,7 +914,7 @@ public class RenderGlobal implements IWorldAccess, IResourceManagerReloadListene
             }
         }
 
-        return String.format("C: %d/%d %sD: %d, %s", Integer.valueOf(j), Integer.valueOf(i), this.mc.renderChunksMany ? "(s) " : "", Integer.valueOf(this.renderDistanceChunks), this.renderDispatcher.getDebugInfo());
+        return String.format("C: %d/%d %sD: %d, %s", j, i, this.mc.renderChunksMany ? "(s) " : "", this.renderDistanceChunks, this.renderDispatcher.getDebugInfo());
     }
 
     /**
@@ -1464,7 +1463,7 @@ public class RenderGlobal implements IWorldAccess, IResourceManagerReloadListene
             Object object = Reflector.call(worldprovider, Reflector.ForgeWorldProvider_getSkyRenderer);
 
             if (object != null) {
-                Reflector.callVoid(object, Reflector.IRenderHandler_render, Float.valueOf(partialTicks), this.theWorld, this.mc);
+                Reflector.callVoid(object, Reflector.IRenderHandler_render, partialTicks, this.theWorld, this.mc);
                 return;
             }
         }
@@ -1764,7 +1763,7 @@ public class RenderGlobal implements IWorldAccess, IResourceManagerReloadListene
                 Object object = Reflector.call(worldprovider, Reflector.ForgeWorldProvider_getCloudRenderer);
 
                 if (object != null) {
-                    Reflector.callVoid(object, Reflector.IRenderHandler_render, Float.valueOf(partialTicks), this.theWorld, this.mc);
+                    Reflector.callVoid(object, Reflector.IRenderHandler_render, partialTicks, this.theWorld, this.mc);
                     return;
                 }
             }
@@ -2392,7 +2391,7 @@ public class RenderGlobal implements IWorldAccess, IResourceManagerReloadListene
         } catch (Throwable throwable) {
             CrashReport crashreport = CrashReport.makeCrashReport(throwable, "Exception while adding particle");
             CrashReportCategory crashreportcategory = crashreport.makeCategory("Particle being added");
-            crashreportcategory.addCrashSection("ID", Integer.valueOf(particleID));
+            crashreportcategory.addCrashSection("ID", particleID);
 
             if (parameters != null) {
                 crashreportcategory.addCrashSection("Parameters", parameters);
@@ -2759,17 +2758,17 @@ public class RenderGlobal implements IWorldAccess, IResourceManagerReloadListene
 
     public void sendBlockBreakProgress(int breakerId, BlockPos pos, int progress) {
         if (progress >= 0 && progress < 10) {
-            DestroyBlockProgress destroyblockprogress = this.damagedBlocks.get(Integer.valueOf(breakerId));
+            DestroyBlockProgress destroyblockprogress = this.damagedBlocks.get(breakerId);
 
             if (destroyblockprogress == null || destroyblockprogress.getPosition().getX() != pos.getX() || destroyblockprogress.getPosition().getY() != pos.getY() || destroyblockprogress.getPosition().getZ() != pos.getZ()) {
                 destroyblockprogress = new DestroyBlockProgress(breakerId, pos);
-                this.damagedBlocks.put(Integer.valueOf(breakerId), destroyblockprogress);
+                this.damagedBlocks.put(breakerId, destroyblockprogress);
             }
 
             destroyblockprogress.setPartialBlockDamage(progress);
             destroyblockprogress.setCloudUpdateTick(this.cloudTickCounter);
         } else {
-            this.damagedBlocks.remove(Integer.valueOf(breakerId));
+            this.damagedBlocks.remove(breakerId);
         }
     }
 

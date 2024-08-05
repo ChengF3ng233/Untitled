@@ -37,16 +37,14 @@ public class Lang {
         loadResources(Config.getDefaultResourcePack(), astring, map);
         IResourcePack[] airesourcepack = Config.getResourcePacks();
 
-        for (int i = 0; i < airesourcepack.length; ++i) {
-            IResourcePack iresourcepack = airesourcepack[i];
+        for (IResourcePack iresourcepack : airesourcepack) {
             loadResources(iresourcepack, astring, map);
         }
     }
 
     private static void loadResources(IResourcePack rp, String[] files, Map localeProperties) {
         try {
-            for (int i = 0; i < files.length; ++i) {
-                String s = files[i];
+            for (String s : files) {
                 ResourceLocation resourcelocation = new ResourceLocation(s);
 
                 if (rp.resourceExists(resourcelocation)) {

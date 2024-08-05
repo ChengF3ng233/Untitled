@@ -39,9 +39,7 @@ public class BlockRedstoneTorch extends BlockTorch {
 
         int i = 0;
 
-        for (int j = 0; j < list.size(); ++j) {
-            BlockRedstoneTorch.Toggle blockredstonetorch$toggle = list.get(j);
-
+        for (Toggle blockredstonetorch$toggle : list) {
             if (blockredstonetorch$toggle.pos.equals(pos)) {
                 ++i;
 

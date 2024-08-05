@@ -68,10 +68,10 @@ public class ChunkProviderServer implements IChunkProvider {
     public void dropChunk(int x, int z) {
         if (this.worldObj.provider.canRespawnHere()) {
             if (!this.worldObj.isSpawnChunk(x, z)) {
-                this.droppedChunksSet.add(Long.valueOf(ChunkCoordIntPair.chunkXZ2Int(x, z)));
+                this.droppedChunksSet.add(ChunkCoordIntPair.chunkXZ2Int(x, z));
             }
         } else {
-            this.droppedChunksSet.add(Long.valueOf(ChunkCoordIntPair.chunkXZ2Int(x, z)));
+            this.droppedChunksSet.add(ChunkCoordIntPair.chunkXZ2Int(x, z));
         }
     }
 
@@ -92,7 +92,7 @@ public class ChunkProviderServer implements IChunkProvider {
      */
     public Chunk loadChunk(int chunkX, int chunkZ) {
         long i = ChunkCoordIntPair.chunkXZ2Int(chunkX, chunkZ);
-        this.droppedChunksSet.remove(Long.valueOf(i));
+        this.droppedChunksSet.remove(i);
         Chunk chunk = this.id2ChunkMap.getValueByKey(i);
 
         if (chunk == null) {
@@ -107,8 +107,8 @@ public class ChunkProviderServer implements IChunkProvider {
                     } catch (Throwable throwable) {
                         CrashReport crashreport = CrashReport.makeCrashReport(throwable, "Exception generating new chunk");
                         CrashReportCategory crashreportcategory = crashreport.makeCategory("Chunk to be generated");
-                        crashreportcategory.addCrashSection("Location", String.format("%d,%d", Integer.valueOf(chunkX), Integer.valueOf(chunkZ)));
-                        crashreportcategory.addCrashSection("Position hash", Long.valueOf(i));
+                        crashreportcategory.addCrashSection("Location", String.format("%d,%d", chunkX, chunkZ));
+                        crashreportcategory.addCrashSection("Position hash", i);
                         crashreportcategory.addCrashSection("Generator", this.serverChunkGenerator.makeString());
                         throw new ReportedException(crashreport);
                     }
@@ -213,9 +213,7 @@ public class ChunkProviderServer implements IChunkProvider {
         int i = 0;
         List<Chunk> list = Lists.newArrayList(this.loadedChunks);
 
-        for (int j = 0; j < list.size(); ++j) {
-            Chunk chunk = list.get(j);
-
+        for (Chunk chunk : list) {
             if (saveAllChunks) {
                 this.saveChunkExtraData(chunk);
             }
@@ -252,13 +250,13 @@ public class ChunkProviderServer implements IChunkProvider {
             for (int i = 0; i < 100; ++i) {
                 if (!this.droppedChunksSet.isEmpty()) {
                     Long olong = this.droppedChunksSet.iterator().next();
-                    Chunk chunk = this.id2ChunkMap.getValueByKey(olong.longValue());
+                    Chunk chunk = this.id2ChunkMap.getValueByKey(olong);
 
                     if (chunk != null) {
                         chunk.onChunkUnload();
                         this.saveChunkData(chunk);
                         this.saveChunkExtraData(chunk);
-                        this.id2ChunkMap.remove(olong.longValue());
+                        this.id2ChunkMap.remove(olong);
                         this.loadedChunks.remove(chunk);
                     }
 

@@ -666,7 +666,7 @@ public class BroadcastController {
 
     public boolean func_177947_a(String p_177947_1_, long p_177947_2_, long p_177947_4_, String p_177947_6_, String p_177947_7_) {
         if (p_177947_4_ == -1L) {
-            this.logError(String.format("Invalid sequence id: %d\n", Long.valueOf(p_177947_4_)));
+            this.logError(String.format("Invalid sequence id: %d\n", p_177947_4_));
             return false;
         } else {
             ErrorCode errorcode = this.theStream.sendEndSpanMetaData(this.authenticationToken, p_177947_1_, p_177947_2_, p_177947_4_, p_177947_6_, p_177947_7_);
@@ -814,8 +814,7 @@ public class BroadcastController {
     }
 
     protected void func_152831_M() {
-        for (int i = 0; i < this.field_152874_j.size(); ++i) {
-            FrameBuffer framebuffer = this.field_152874_j.get(i);
+        for (FrameBuffer framebuffer : this.field_152874_j) {
             framebuffer.free();
         }
 
@@ -845,8 +844,8 @@ public class BroadcastController {
             CrashReportCategory crashreportcategory = crashreport.makeCategory("Broadcast State");
             crashreportcategory.addCrashSection("Last reported errors", Arrays.toString(field_152862_C.func_152756_c()));
             crashreportcategory.addCrashSection("Buffer", p_152846_1_);
-            crashreportcategory.addCrashSection("Free buffer count", Integer.valueOf(this.field_152875_k.size()));
-            crashreportcategory.addCrashSection("Capture buffer count", Integer.valueOf(this.field_152874_j.size()));
+            crashreportcategory.addCrashSection("Free buffer count", this.field_152875_k.size());
+            crashreportcategory.addCrashSection("Capture buffer count", this.field_152874_j.size());
             throw new ReportedException(crashreport);
         }
     }

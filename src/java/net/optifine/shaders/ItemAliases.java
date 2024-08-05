@@ -66,9 +66,7 @@ public class ItemAliases {
     private static void loadModItemAliases(List<Integer> listItemAliases) {
         String[] astring = ReflectorForge.getForgeModIds();
 
-        for (int i = 0; i < astring.length; ++i) {
-            String s = astring[i];
-
+        for (String s : astring) {
             try {
                 ResourceLocation resourcelocation = new ResourceLocation(s, "shaders/item.properties");
                 InputStream inputstream = Config.getResourceStream(resourcelocation);
@@ -105,8 +103,7 @@ public class ItemAliases {
                             int[] aint = connectedparser.parseItems(s1);
 
                             if (aint != null && aint.length >= 1) {
-                                for (int j = 0; j < aint.length; ++j) {
-                                    int k = aint[j];
+                                for (int k : aint) {
                                     addToList(listItemAliases, k, i);
                                 }
                             } else {
@@ -123,17 +120,17 @@ public class ItemAliases {
 
     private static void addToList(List<Integer> list, int index, int val) {
         while (list.size() <= index) {
-            list.add(Integer.valueOf(Integer.MIN_VALUE));
+            list.add(Integer.MIN_VALUE);
         }
 
-        list.set(index, Integer.valueOf(val));
+        list.set(index, val);
     }
 
     private static int[] toArray(List<Integer> list) {
         int[] aint = new int[list.size()];
 
         for (int i = 0; i < aint.length; ++i) {
-            aint[i] = list.get(i).intValue();
+            aint[i] = list.get(i);
         }
 
         return aint;

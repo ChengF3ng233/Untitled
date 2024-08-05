@@ -302,9 +302,7 @@ public abstract class BlockRailBase extends Block {
         }
 
         private boolean func_180363_c(BlockPos p_180363_1_) {
-            for (int i = 0; i < this.field_150657_g.size(); ++i) {
-                BlockPos blockpos = this.field_150657_g.get(i);
-
+            for (BlockPos blockpos : this.field_150657_g) {
                 if (blockpos.getX() == p_180363_1_.getX() && blockpos.getZ() == p_180363_1_.getZ()) {
                     return true;
                 }
@@ -519,8 +517,8 @@ public abstract class BlockRailBase extends Block {
             if (p_180364_2_ || this.world.getBlockState(this.pos) != this.state) {
                 this.world.setBlockState(this.pos, this.state, 3);
 
-                for (int i = 0; i < this.field_150657_g.size(); ++i) {
-                    BlockRailBase.Rail blockrailbase$rail = this.findRailAt(this.field_150657_g.get(i));
+                for (BlockPos blockPos : this.field_150657_g) {
+                    Rail blockrailbase$rail = this.findRailAt(blockPos);
 
                     if (blockrailbase$rail != null) {
                         blockrailbase$rail.func_150651_b();

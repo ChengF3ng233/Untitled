@@ -103,7 +103,7 @@ public class EffectRenderer {
     }
 
     public void registerParticle(int id, IParticleFactory particleFactory) {
-        this.particleTypes.put(Integer.valueOf(id), particleFactory);
+        this.particleTypes.put(id, particleFactory);
     }
 
     public void emitParticleAtEntity(Entity entityIn, EnumParticleTypes particleTypes) {
@@ -122,7 +122,7 @@ public class EffectRenderer {
      * @param parameters Parameters for the particle (color for redstone, ...)
      */
     public EntityFX spawnEffectParticle(int particleId, double xCoord, double yCoord, double zCoord, double xSpeed, double ySpeed, double zSpeed, int... parameters) {
-        IParticleFactory iparticlefactory = this.particleTypes.get(Integer.valueOf(particleId));
+        IParticleFactory iparticlefactory = this.particleTypes.get(particleId);
 
         if (iparticlefactory != null) {
             EntityFX entityfx = iparticlefactory.getEntityFX(particleId, this.worldObj, xCoord, yCoord, zCoord, xSpeed, ySpeed, zSpeed, parameters);
@@ -325,8 +325,7 @@ public class EffectRenderer {
                 Tessellator tessellator = Tessellator.getInstance();
                 WorldRenderer worldrenderer = tessellator.getWorldRenderer();
 
-                for (int j = 0; j < list.size(); ++j) {
-                    EntityFX entityfx = list.get(j);
+                for (EntityFX entityfx : list) {
                     entityfx.renderParticle(worldrenderer, entityIn, partialTick, f1, f5, f2, f3, f4);
                 }
             }

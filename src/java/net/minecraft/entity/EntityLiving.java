@@ -253,7 +253,7 @@ public abstract class EntityLiving extends EntityLivingBase {
 
     protected void entityInit() {
         super.entityInit();
-        this.dataWatcher.addObject(15, Byte.valueOf((byte) 0));
+        this.dataWatcher.addObject(15, (byte) 0);
     }
 
     /**
@@ -397,11 +397,11 @@ public abstract class EntityLiving extends EntityLivingBase {
         tagCompound.setBoolean("PersistenceRequired", this.persistenceRequired);
         NBTTagList nbttaglist = new NBTTagList();
 
-        for (int i = 0; i < this.equipment.length; ++i) {
+        for (ItemStack itemStack : this.equipment) {
             NBTTagCompound nbttagcompound = new NBTTagCompound();
 
-            if (this.equipment[i] != null) {
-                this.equipment[i].writeToNBT(nbttagcompound);
+            if (itemStack != null) {
+                itemStack.writeToNBT(nbttagcompound);
             }
 
             nbttaglist.appendTag(nbttagcompound);
@@ -410,8 +410,8 @@ public abstract class EntityLiving extends EntityLivingBase {
         tagCompound.setTag("Equipment", nbttaglist);
         NBTTagList nbttaglist1 = new NBTTagList();
 
-        for (int j = 0; j < this.equipmentDropChances.length; ++j) {
-            nbttaglist1.appendTag(new NBTTagFloat(this.equipmentDropChances[j]));
+        for (float equipmentDropChance : this.equipmentDropChances) {
+            nbttaglist1.appendTag(new NBTTagFloat(equipmentDropChance));
         }
 
         tagCompound.setTag("DropChances", nbttaglist1);
@@ -1067,7 +1067,7 @@ public abstract class EntityLiving extends EntityLivingBase {
      * Set whether this Entity's AI is disabled
      */
     public void setNoAI(boolean disable) {
-        this.dataWatcher.updateObject(15, Byte.valueOf((byte) (disable ? 1 : 0)));
+        this.dataWatcher.updateObject(15, (byte) (disable ? 1 : 0));
     }
 
     /**

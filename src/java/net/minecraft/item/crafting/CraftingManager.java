@@ -198,8 +198,7 @@ public class CraftingManager {
         if (recipeComponents[i] instanceof String[]) {
             String[] astring = (String[]) recipeComponents[i++];
 
-            for (int l = 0; l < astring.length; ++l) {
-                String s2 = astring[l];
+            for (String s2 : astring) {
                 ++k;
                 j = s2.length();
                 s = s + s2;
@@ -235,8 +234,8 @@ public class CraftingManager {
         for (int i1 = 0; i1 < j * k; ++i1) {
             char c0 = s.charAt(i1);
 
-            if (map.containsKey(Character.valueOf(c0))) {
-                aitemstack[i1] = map.get(Character.valueOf(c0)).copy();
+            if (map.containsKey(c0)) {
+                aitemstack[i1] = map.get(c0).copy();
             } else {
                 aitemstack[i1] = null;
             }

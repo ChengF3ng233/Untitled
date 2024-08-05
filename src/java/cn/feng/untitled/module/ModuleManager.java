@@ -5,7 +5,11 @@ import cn.feng.untitled.event.impl.KeyEvent;
 import cn.feng.untitled.module.impl.client.ClickGUI;
 import cn.feng.untitled.module.impl.client.HUD;
 import cn.feng.untitled.module.impl.client.PostProcessing;
+import cn.feng.untitled.module.impl.client.Target;
 import cn.feng.untitled.module.impl.movement.ToggleSprint;
+import cn.feng.untitled.module.impl.render.FullBright;
+import cn.feng.untitled.module.impl.render.NameTag;
+import cn.feng.untitled.ui.font.awt.Font;
 import cn.feng.untitled.ui.widget.Widget;
 import cn.feng.untitled.util.data.compare.CompareMode;
 import cn.feng.untitled.util.data.compare.ModuleComparator;
@@ -76,6 +80,9 @@ public class ModuleManager {
         register(new ClickGUI());
         register(new HUD());
         register(new PostProcessing());
+        register(new Target());
+        register(new FullBright());
+        register(new NameTag());
     }
 
     public Module getModule(Class<? extends Module> klass) {
@@ -89,7 +96,7 @@ public class ModuleManager {
     public List<Module> getModuleByCategory(ModuleCategory category) {
         List<Module> list = new ArrayList<>(moduleList.stream().filter(it -> it.category == category).toList());
         if (!list.isEmpty()) {
-            list.sort(new ModuleComparator(CompareMode.Alphabet, null));
+            list.sort(new ModuleComparator(CompareMode.Alphabet, (Font) null));
         }
         return list;
     }

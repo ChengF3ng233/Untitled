@@ -159,23 +159,13 @@ public class BlockModelShapes {
             protected ModelResourceLocation getModelResourceLocation(IBlockState state) {
                 BlockQuartz.EnumType blockquartz$enumtype = state.getValue(BlockQuartz.VARIANT);
 
-                switch (blockquartz$enumtype) {
-                    case DEFAULT:
-                    default:
-                        return new ModelResourceLocation("quartz_block", "normal");
-
-                    case CHISELED:
-                        return new ModelResourceLocation("chiseled_quartz_block", "normal");
-
-                    case LINES_Y:
-                        return new ModelResourceLocation("quartz_column", "axis=y");
-
-                    case LINES_X:
-                        return new ModelResourceLocation("quartz_column", "axis=x");
-
-                    case LINES_Z:
-                        return new ModelResourceLocation("quartz_column", "axis=z");
-                }
+                return switch (blockquartz$enumtype) {
+                    default -> new ModelResourceLocation("quartz_block", "normal");
+                    case CHISELED -> new ModelResourceLocation("chiseled_quartz_block", "normal");
+                    case LINES_Y -> new ModelResourceLocation("quartz_column", "axis=y");
+                    case LINES_X -> new ModelResourceLocation("quartz_column", "axis=x");
+                    case LINES_Z -> new ModelResourceLocation("quartz_column", "axis=z");
+                };
             }
         });
         this.registerBlockWithStateMapper(Blocks.deadbush, new StateMapperBase() {
@@ -222,7 +212,7 @@ public class BlockModelShapes {
                 Map<IProperty, Comparable> map = Maps.newLinkedHashMap(state.getProperties());
                 String s = BlockStoneSlab.VARIANT.getName((BlockStoneSlab.EnumType) map.remove(BlockStoneSlab.VARIANT));
                 map.remove(BlockStoneSlab.SEAMLESS);
-                String s1 = state.getValue(BlockStoneSlab.SEAMLESS).booleanValue() ? "all" : "normal";
+                String s1 = state.getValue(BlockStoneSlab.SEAMLESS) ? "all" : "normal";
                 return new ModelResourceLocation(s + "_double_slab", s1);
             }
         });
@@ -231,7 +221,7 @@ public class BlockModelShapes {
                 Map<IProperty, Comparable> map = Maps.newLinkedHashMap(state.getProperties());
                 String s = BlockStoneSlabNew.VARIANT.getName((BlockStoneSlabNew.EnumType) map.remove(BlockStoneSlabNew.VARIANT));
                 map.remove(BlockStoneSlab.SEAMLESS);
-                String s1 = state.getValue(BlockStoneSlabNew.SEAMLESS).booleanValue() ? "all" : "normal";
+                String s1 = state.getValue(BlockStoneSlabNew.SEAMLESS) ? "all" : "normal";
                 return new ModelResourceLocation(s + "_double_slab", s1);
             }
         });

@@ -120,7 +120,7 @@ public class IntegratedServer extends MinecraftServer {
             int i = ainteger.length;
 
             for (int j = 0; j < i; ++j) {
-                int k = ainteger1[j].intValue();
+                int k = ainteger1[j];
                 WorldServer worldserver1 = k == 0 ? worldserver : (WorldServer) (new WorldServerMulti(this, isavehandler, k, worldserver, this.theProfiler)).init();
                 worldserver1.addWorldAccess(new WorldManager(this, worldserver1));
 
@@ -236,7 +236,7 @@ public class IntegratedServer extends MinecraftServer {
             super.tick();
 
             if (this.mc.gameSettings.renderDistanceChunks != this.getConfigurationManager().getViewDistance()) {
-                logger.info("Changing view distance to {}, from {}", Integer.valueOf(this.mc.gameSettings.renderDistanceChunks), Integer.valueOf(this.getConfigurationManager().getViewDistance()));
+                logger.info("Changing view distance to {}, from {}", this.mc.gameSettings.renderDistanceChunks, this.getConfigurationManager().getViewDistance());
                 this.getConfigurationManager().setViewDistance(this.mc.gameSettings.renderDistanceChunks);
             }
 

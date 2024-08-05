@@ -45,8 +45,8 @@ public class NaturalTextures {
 
                 TextureMap texturemap = TextureUtils.getTextureMapBlocks();
 
-                for (int i = 0; i < astring.length; ++i) {
-                    String s2 = astring[i].trim();
+                for (String string : astring) {
+                    String s2 = string.trim();
 
                     if (!s2.startsWith("#")) {
                         String[] astring1 = Config.tokenize(s2, "=");

@@ -19,7 +19,7 @@ public class BlockRailPowered extends BlockRailBase {
 
     protected BlockRailPowered() {
         super(true);
-        this.setDefaultState(this.blockState.getBaseState().withProperty(SHAPE, BlockRailBase.EnumRailDirection.NORTH_SOUTH).withProperty(POWERED, Boolean.valueOf(false)));
+        this.setDefaultState(this.blockState.getBaseState().withProperty(SHAPE, BlockRailBase.EnumRailDirection.NORTH_SOUTH).withProperty(POWERED, Boolean.FALSE));
     }
 
     @SuppressWarnings("incomplete-switch")
@@ -111,16 +111,16 @@ public class BlockRailPowered extends BlockRailBase {
             return false;
         } else {
             BlockRailBase.EnumRailDirection blockrailbase$enumraildirection = iblockstate.getValue(SHAPE);
-            return (p_176567_5_ != EnumRailDirection.EAST_WEST || blockrailbase$enumraildirection != EnumRailDirection.NORTH_SOUTH && blockrailbase$enumraildirection != EnumRailDirection.ASCENDING_NORTH && blockrailbase$enumraildirection != EnumRailDirection.ASCENDING_SOUTH) && ((p_176567_5_ != EnumRailDirection.NORTH_SOUTH || blockrailbase$enumraildirection != EnumRailDirection.EAST_WEST && blockrailbase$enumraildirection != EnumRailDirection.ASCENDING_EAST && blockrailbase$enumraildirection != EnumRailDirection.ASCENDING_WEST) && (iblockstate.getValue(POWERED).booleanValue() && (worldIn.isBlockPowered(p_176567_2_) || this.func_176566_a(worldIn, p_176567_2_, iblockstate, p_176567_3_, distance + 1))));
+            return (p_176567_5_ != EnumRailDirection.EAST_WEST || blockrailbase$enumraildirection != EnumRailDirection.NORTH_SOUTH && blockrailbase$enumraildirection != EnumRailDirection.ASCENDING_NORTH && blockrailbase$enumraildirection != EnumRailDirection.ASCENDING_SOUTH) && ((p_176567_5_ != EnumRailDirection.NORTH_SOUTH || blockrailbase$enumraildirection != EnumRailDirection.EAST_WEST && blockrailbase$enumraildirection != EnumRailDirection.ASCENDING_EAST && blockrailbase$enumraildirection != EnumRailDirection.ASCENDING_WEST) && (iblockstate.getValue(POWERED) && (worldIn.isBlockPowered(p_176567_2_) || this.func_176566_a(worldIn, p_176567_2_, iblockstate, p_176567_3_, distance + 1))));
         }
     }
 
     protected void onNeighborChangedInternal(World worldIn, BlockPos pos, IBlockState state, Block neighborBlock) {
-        boolean flag = state.getValue(POWERED).booleanValue();
+        boolean flag = state.getValue(POWERED);
         boolean flag1 = worldIn.isBlockPowered(pos) || this.func_176566_a(worldIn, pos, state, true, 0) || this.func_176566_a(worldIn, pos, state, false, 0);
 
         if (flag1 != flag) {
-            worldIn.setBlockState(pos, state.withProperty(POWERED, Boolean.valueOf(flag1)), 3);
+            worldIn.setBlockState(pos, state.withProperty(POWERED, flag1), 3);
             worldIn.notifyNeighborsOfStateChange(pos.down(), this);
 
             if (state.getValue(SHAPE).isAscending()) {
@@ -137,7 +137,7 @@ public class BlockRailPowered extends BlockRailBase {
      * Convert the given metadata into a BlockState for this Block
      */
     public IBlockState getStateFromMeta(int meta) {
-        return this.getDefaultState().withProperty(SHAPE, BlockRailBase.EnumRailDirection.byMetadata(meta & 7)).withProperty(POWERED, Boolean.valueOf((meta & 8) > 0));
+        return this.getDefaultState().withProperty(SHAPE, BlockRailBase.EnumRailDirection.byMetadata(meta & 7)).withProperty(POWERED, (meta & 8) > 0);
     }
 
     /**
@@ -147,7 +147,7 @@ public class BlockRailPowered extends BlockRailBase {
         int i = 0;
         i = i | state.getValue(SHAPE).getMetadata();
 
-        if (state.getValue(POWERED).booleanValue()) {
+        if (state.getValue(POWERED)) {
             i |= 8;
         }
 

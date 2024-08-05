@@ -1,10 +1,12 @@
 package cn.feng.untitled.ui.widget.impl;
 
+import cn.feng.untitled.ui.font.awt.FontLoader;
 import cn.feng.untitled.ui.font.nano.NanoFontLoader;
 import cn.feng.untitled.ui.font.nano.NanoUtil;
 import cn.feng.untitled.ui.widget.Widget;
 import cn.feng.untitled.util.animation.advanced.Animation;
 import cn.feng.untitled.util.animation.advanced.impl.SmoothStepAnimation;
+import cn.feng.untitled.util.render.blur.BlurUtil;
 import cn.feng.untitled.value.impl.ColorValue;
 import cn.feng.untitled.value.impl.NumberValue;
 import cn.feng.untitled.value.impl.StringValue;
@@ -36,9 +38,9 @@ public class TextWidget extends Widget {
 
         if (anim.finished(anim.getDirection())) anim.changeDirection();
 
-      //  NanoUtil.prepareNano();
-        NanoFontLoader.script.drawGlowString("Hello, NanoVG!我是小丑🤡我是大狗🐕我是科比🖊", renderX, renderY, size.value.intValue(), glowRadius.value.floatValue(), color.getColor(), glowColor.getColor());
-       // NanoUtil.endNano();
+        for (int i = 0; i < 100; i++) {
+           NanoFontLoader.script.drawString("Hello, NanoVG!我是小丑🤡我是大狗🐕我是科比🖊", renderX, renderY + i, size.value.intValue(), /*glowRadius.value.floatValue(), */color.getColor()/*, glowColor.getColor()*/);
+        }
 
         width = NanoFontLoader.script.getStringWidth("Hello, NanoVG!我是小丑🤡我是大狗🐕我是科比🖊", size.value.intValue());
     }

@@ -172,8 +172,8 @@ public class RenderChunk {
                     aenumworldblocklayer[0] = block.getBlockLayer();
                 }
 
-                for (int j = 0; j < aenumworldblocklayer.length; ++j) {
-                    EnumWorldBlockLayer enumworldblocklayer = aenumworldblocklayer[j];
+                for (EnumWorldBlockLayer enumWorldBlockLayer : aenumworldblocklayer) {
+                    EnumWorldBlockLayer enumworldblocklayer = enumWorldBlockLayer;
 
                     if (flag) {
                         boolean flag2 = Reflector.callBoolean(block, Reflector.ForgeBlock_canRenderInLayer, enumworldblocklayer);
@@ -402,9 +402,7 @@ public class RenderChunk {
         this.renderChunksOffset16Updated = false;
         this.renderChunkNeighboursUpated = false;
 
-        for (int k = 0; k < this.renderChunkNeighbours.length; ++k) {
-            RenderChunk renderchunk = this.renderChunkNeighbours[k];
-
+        for (RenderChunk renderchunk : this.renderChunkNeighbours) {
             if (renderchunk != null) {
                 renderchunk.renderChunkNeighboursUpated = false;
             }

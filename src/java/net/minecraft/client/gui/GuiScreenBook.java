@@ -376,7 +376,7 @@ public class GuiScreenBook extends GuiScreen {
             String s3 = I18n.format("book.finalizeWarning");
             this.fontRendererObj.drawSplitString(s3, i + 36, j + 80, 116, 0);
         } else {
-            String s4 = I18n.format("book.pageIndicator", Integer.valueOf(this.currPage + 1), Integer.valueOf(this.bookTotalPages));
+            String s4 = I18n.format("book.pageIndicator", this.currPage + 1, this.bookTotalPages);
             String s5 = "";
 
             if (this.bookPages != null && this.currPage >= 0 && this.currPage < this.bookPages.tagCount()) {

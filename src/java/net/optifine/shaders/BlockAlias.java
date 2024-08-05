@@ -22,9 +22,7 @@ public class BlockAlias {
     }
 
     public boolean matches(int id, int metadata) {
-        for (int i = 0; i < this.matchBlocks.length; ++i) {
-            MatchBlock matchblock = this.matchBlocks[i];
-
+        for (MatchBlock matchblock : this.matchBlocks) {
             if (matchblock.matches(id, metadata)) {
                 return true;
             }
@@ -36,10 +34,9 @@ public class BlockAlias {
     public int[] getMatchBlockIds() {
         Set<Integer> set = new HashSet();
 
-        for (int i = 0; i < this.matchBlocks.length; ++i) {
-            MatchBlock matchblock = this.matchBlocks[i];
+        for (MatchBlock matchblock : this.matchBlocks) {
             int j = matchblock.getBlockId();
-            set.add(Integer.valueOf(j));
+            set.add(j);
         }
 
         Integer[] ainteger = set.toArray(new Integer[set.size()]);
@@ -50,9 +47,7 @@ public class BlockAlias {
     public MatchBlock[] getMatchBlocks(int matchBlockId) {
         List<MatchBlock> list = new ArrayList();
 
-        for (int i = 0; i < this.matchBlocks.length; ++i) {
-            MatchBlock matchblock = this.matchBlocks[i];
-
+        for (MatchBlock matchblock : this.matchBlocks) {
             if (matchblock.getBlockId() == matchBlockId) {
                 list.add(matchblock);
             }

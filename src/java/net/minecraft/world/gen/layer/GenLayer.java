@@ -117,8 +117,8 @@ public abstract class GenLayer {
             } catch (Throwable throwable) {
                 CrashReport crashreport = CrashReport.makeCrashReport(throwable, "Comparing biomes");
                 CrashReportCategory crashreportcategory = crashreport.makeCategory("Biomes being compared");
-                crashreportcategory.addCrashSection("Biome A ID", Integer.valueOf(biomeIDA));
-                crashreportcategory.addCrashSection("Biome B ID", Integer.valueOf(biomeIDB));
+                crashreportcategory.addCrashSection("Biome A ID", biomeIDA);
+                crashreportcategory.addCrashSection("Biome B ID", biomeIDB);
                 crashreportcategory.addCrashSectionCallable("Biome A", new Callable<String>() {
                     public String call() throws Exception {
                         return String.valueOf(biomegenbase);

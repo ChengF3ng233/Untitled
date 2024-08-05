@@ -44,10 +44,10 @@ public class CommandListBans extends CommandBase {
      */
     public void processCommand(ICommandSender sender, String[] args) throws CommandException {
         if (args.length >= 1 && args[0].equalsIgnoreCase("ips")) {
-            sender.addChatMessage(new ChatComponentTranslation("commands.banlist.ips", Integer.valueOf(MinecraftServer.getServer().getConfigurationManager().getBannedIPs().getKeys().length)));
+            sender.addChatMessage(new ChatComponentTranslation("commands.banlist.ips", MinecraftServer.getServer().getConfigurationManager().getBannedIPs().getKeys().length));
             sender.addChatMessage(new ChatComponentText(joinNiceString(MinecraftServer.getServer().getConfigurationManager().getBannedIPs().getKeys())));
         } else {
-            sender.addChatMessage(new ChatComponentTranslation("commands.banlist.players", Integer.valueOf(MinecraftServer.getServer().getConfigurationManager().getBannedPlayers().getKeys().length)));
+            sender.addChatMessage(new ChatComponentTranslation("commands.banlist.players", MinecraftServer.getServer().getConfigurationManager().getBannedPlayers().getKeys().length));
             sender.addChatMessage(new ChatComponentText(joinNiceString(MinecraftServer.getServer().getConfigurationManager().getBannedPlayers().getKeys())));
         }
     }

@@ -229,8 +229,7 @@ public class HttpPipelineConnection {
         if (s1 != null) {
             String[] astring = Config.tokenize(s1, ",;");
 
-            for (int i = 0; i < astring.length; ++i) {
-                String s2 = astring[i];
+            for (String s2 : astring) {
                 String[] astring1 = this.split(s2, '=');
 
                 if (astring1.length >= 2) {

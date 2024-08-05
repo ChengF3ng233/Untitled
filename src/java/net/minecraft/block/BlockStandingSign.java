@@ -11,7 +11,7 @@ public class BlockStandingSign extends BlockSign {
     public static final PropertyInteger ROTATION = PropertyInteger.create("rotation", 0, 15);
 
     public BlockStandingSign() {
-        this.setDefaultState(this.blockState.getBaseState().withProperty(ROTATION, Integer.valueOf(0)));
+        this.setDefaultState(this.blockState.getBaseState().withProperty(ROTATION, 0));
     }
 
     /**
@@ -30,14 +30,14 @@ public class BlockStandingSign extends BlockSign {
      * Convert the given metadata into a BlockState for this Block
      */
     public IBlockState getStateFromMeta(int meta) {
-        return this.getDefaultState().withProperty(ROTATION, Integer.valueOf(meta));
+        return this.getDefaultState().withProperty(ROTATION, meta);
     }
 
     /**
      * Convert the BlockState into the correct metadata value
      */
     public int getMetaFromState(IBlockState state) {
-        return state.getValue(ROTATION).intValue();
+        return state.getValue(ROTATION);
     }
 
     protected BlockState createBlockState() {

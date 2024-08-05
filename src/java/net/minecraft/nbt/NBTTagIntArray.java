@@ -24,8 +24,8 @@ public class NBTTagIntArray extends NBTBase {
     void write(DataOutput output) throws IOException {
         output.writeInt(this.intArray.length);
 
-        for (int i = 0; i < this.intArray.length; ++i) {
-            output.writeInt(this.intArray[i]);
+        for (int j : this.intArray) {
+            output.writeInt(j);
         }
     }
 

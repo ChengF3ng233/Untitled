@@ -171,9 +171,7 @@ public abstract class EntityThrowable extends Entity implements IProjectile {
             double d0 = 0.0D;
             EntityLivingBase entitylivingbase = this.getThrower();
 
-            for (int j = 0; j < list.size(); ++j) {
-                Entity entity1 = list.get(j);
-
+            for (Entity entity1 : list) {
                 if (entity1.canBeCollidedWith() && (entity1 != entitylivingbase || this.ticksInAir >= 5)) {
                     float f = 0.3F;
                     AxisAlignedBB axisalignedbb = entity1.getEntityBoundingBox().expand(f, f, f);

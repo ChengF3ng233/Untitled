@@ -54,12 +54,12 @@ public class ModelSilverfish extends ModelBase {
     public void render(Entity entityIn, float p_78088_2_, float p_78088_3_, float p_78088_4_, float p_78088_5_, float p_78088_6_, float scale) {
         this.setRotationAngles(p_78088_2_, p_78088_3_, p_78088_4_, p_78088_5_, p_78088_6_, scale, entityIn);
 
-        for (int i = 0; i < this.silverfishBodyParts.length; ++i) {
-            this.silverfishBodyParts[i].render(scale);
+        for (ModelRenderer silverfishBodyPart : this.silverfishBodyParts) {
+            silverfishBodyPart.render(scale);
         }
 
-        for (int j = 0; j < this.silverfishWings.length; ++j) {
-            this.silverfishWings[j].render(scale);
+        for (ModelRenderer silverfishWing : this.silverfishWings) {
+            silverfishWing.render(scale);
         }
     }
 

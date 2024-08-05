@@ -21,9 +21,7 @@ public class NativeMemory {
     private static LongSupplier makeLongSupplier(String[][] paths) {
         List<Throwable> list = new ArrayList();
 
-        for (int i = 0; i < paths.length; ++i) {
-            String[] astring = paths[i];
-
+        for (String[] astring : paths) {
             try {
                 LongSupplier longsupplier = makeLongSupplier(astring);
                 return longsupplier;
@@ -65,7 +63,7 @@ public class NativeMemory {
                         return -1L;
                     } else {
                         try {
-                            return ((Long) finalMethod.invoke(finalObject, new Object[0])).longValue();
+                            return (Long) finalMethod.invoke(finalObject, new Object[0]);
                         } catch (Throwable throwable) {
                             Config.warn(throwable.getClass().getName() + ": " + throwable.getMessage());
                             this.disabled = true;

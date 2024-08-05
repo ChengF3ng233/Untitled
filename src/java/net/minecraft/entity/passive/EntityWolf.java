@@ -102,14 +102,14 @@ public class EntityWolf extends EntityTameable {
     }
 
     protected void updateAITasks() {
-        this.dataWatcher.updateObject(18, Float.valueOf(this.getHealth()));
+        this.dataWatcher.updateObject(18, this.getHealth());
     }
 
     protected void entityInit() {
         super.entityInit();
-        this.dataWatcher.addObject(18, new Float(this.getHealth()));
-        this.dataWatcher.addObject(19, Byte.valueOf((byte) 0));
-        this.dataWatcher.addObject(20, Byte.valueOf((byte) EnumDyeColor.RED.getMetadata()));
+        this.dataWatcher.addObject(18, this.getHealth());
+        this.dataWatcher.addObject(19, (byte) 0);
+        this.dataWatcher.addObject(20, (byte) EnumDyeColor.RED.getMetadata());
     }
 
     protected void playStepSound(BlockPos pos, Block blockIn) {
@@ -434,9 +434,9 @@ public class EntityWolf extends EntityTameable {
         byte b0 = this.dataWatcher.getWatchableObjectByte(16);
 
         if (angry) {
-            this.dataWatcher.updateObject(16, Byte.valueOf((byte) (b0 | 2)));
+            this.dataWatcher.updateObject(16, (byte) (b0 | 2));
         } else {
-            this.dataWatcher.updateObject(16, Byte.valueOf((byte) (b0 & -3)));
+            this.dataWatcher.updateObject(16, (byte) (b0 & -3));
         }
     }
 
@@ -445,7 +445,7 @@ public class EntityWolf extends EntityTameable {
     }
 
     public void setCollarColor(EnumDyeColor collarcolor) {
-        this.dataWatcher.updateObject(20, Byte.valueOf((byte) (collarcolor.getDyeDamage() & 15)));
+        this.dataWatcher.updateObject(20, (byte) (collarcolor.getDyeDamage() & 15));
     }
 
     public EntityWolf createChild(EntityAgeable ageable) {
@@ -481,9 +481,9 @@ public class EntityWolf extends EntityTameable {
 
     public void setBegging(boolean beg) {
         if (beg) {
-            this.dataWatcher.updateObject(19, Byte.valueOf((byte) 1));
+            this.dataWatcher.updateObject(19, (byte) 1);
         } else {
-            this.dataWatcher.updateObject(19, Byte.valueOf((byte) 0));
+            this.dataWatcher.updateObject(19, (byte) 0);
         }
     }
 

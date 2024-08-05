@@ -31,7 +31,7 @@ public class BlockModelRenderer {
 
     public BlockModelRenderer() {
         if (Reflector.ForgeModContainer_forgeLightPipelineEnabled.exists()) {
-            Reflector.setFieldValue(Reflector.ForgeModContainer_forgeLightPipelineEnabled, Boolean.valueOf(false));
+            Reflector.setFieldValue(Reflector.ForgeModContainer_forgeLightPipelineEnabled, Boolean.FALSE);
         }
     }
 
@@ -75,7 +75,7 @@ public class BlockModelRenderer {
             CrashReport crashreport = CrashReport.makeCrashReport(throwable, "Tesselating block model");
             CrashReportCategory crashreportcategory = crashreport.makeCategory("Block model being tesselated");
             CrashReportCategory.addBlockInfo(crashreportcategory, blockPosIn, blockStateIn);
-            crashreportcategory.addCrashSection("Using AO", Boolean.valueOf(flag));
+            crashreportcategory.addCrashSection("Using AO", flag);
             throw new ReportedException(crashreport);
         }
     }
@@ -428,8 +428,7 @@ public class BlockModelRenderer {
 
     private void renderOverlayModels(IBlockAccess p_renderOverlayModels_1_, IBakedModel p_renderOverlayModels_2_, IBlockState p_renderOverlayModels_3_, BlockPos p_renderOverlayModels_4_, WorldRenderer p_renderOverlayModels_5_, boolean p_renderOverlayModels_6_, long p_renderOverlayModels_7_, RenderEnv p_renderOverlayModels_9_, boolean p_renderOverlayModels_10_) {
         if (p_renderOverlayModels_9_.isOverlaysRendered()) {
-            for (int i = 0; i < OVERLAY_LAYERS.length; ++i) {
-                EnumWorldBlockLayer enumworldblocklayer = OVERLAY_LAYERS[i];
+            for (EnumWorldBlockLayer enumworldblocklayer : OVERLAY_LAYERS) {
                 ListQuadsOverlay listquadsoverlay = p_renderOverlayModels_9_.getListQuadsOverlay(enumworldblocklayer);
 
                 if (listquadsoverlay.size() > 0) {

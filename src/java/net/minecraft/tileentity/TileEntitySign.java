@@ -177,8 +177,8 @@ public class TileEntitySign extends TileEntity {
             }
         };
 
-        for (int i = 0; i < this.signText.length; ++i) {
-            ChatStyle chatstyle = this.signText[i] == null ? null : this.signText[i].getChatStyle();
+        for (IChatComponent iChatComponent : this.signText) {
+            ChatStyle chatstyle = iChatComponent == null ? null : iChatComponent.getChatStyle();
 
             if (chatstyle != null && chatstyle.getChatClickEvent() != null) {
                 ClickEvent clickevent = chatstyle.getChatClickEvent();

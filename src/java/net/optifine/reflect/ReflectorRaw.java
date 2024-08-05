@@ -11,9 +11,7 @@ public class ReflectorRaw {
         try {
             Field[] afield = cls.getDeclaredFields();
 
-            for (int i = 0; i < afield.length; ++i) {
-                Field field = afield[i];
-
+            for (Field field : afield) {
                 if (field.getType() == fieldType) {
                     field.setAccessible(true);
                     return field;
@@ -39,9 +37,7 @@ public class ReflectorRaw {
         try {
             List list = new ArrayList();
 
-            for (int i = 0; i < fields.length; ++i) {
-                Field field = fields[i];
-
+            for (Field field : fields) {
                 if (field.getType() == fieldType) {
                     field.setAccessible(true);
                     list.add(field);
@@ -77,9 +73,7 @@ public class ReflectorRaw {
         try {
             List<Field> list = new ArrayList();
 
-            for (int i = 0; i < fields.length; ++i) {
-                Field field = fields[i];
-
+            for (Field field : fields) {
                 if (field.getType() == fieldType) {
                     boolean flag = Modifier.isStatic(field.getModifiers());
 

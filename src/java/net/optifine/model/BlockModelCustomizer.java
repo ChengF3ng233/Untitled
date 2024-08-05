@@ -50,8 +50,7 @@ public class BlockModelCustomizer {
                 return quads;
             }
 
-            for (int j = 0; j < abakedquad.length; ++j) {
-                BakedQuad bakedquad1 = abakedquad[j];
+            for (BakedQuad bakedquad1 : abakedquad) {
                 list.add(bakedquad1);
 
                 if (bakedquad1.getQuadEmissive() != null) {

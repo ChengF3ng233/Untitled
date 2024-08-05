@@ -36,9 +36,7 @@ public enum ShaderParameterBool implements IExpressionBool {
         if (str == null) {
             return null;
         } else {
-            for (int i = 0; i < VALUES.length; ++i) {
-                ShaderParameterBool shaderparameterbool = VALUES[i];
-
+            for (ShaderParameterBool shaderparameterbool : VALUES) {
                 if (shaderparameterbool.getName().equals(str)) {
                     return shaderparameterbool;
                 }

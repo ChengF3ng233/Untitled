@@ -201,8 +201,8 @@ public class LongHashMap<V> {
     public double getKeyDistribution() {
         int i = 0;
 
-        for (int j = 0; j < this.hashArray.length; ++j) {
-            if (this.hashArray[j] != null) {
+        for (Entry<V> vEntry : this.hashArray) {
+            if (vEntry != null) {
                 ++i;
             }
         }
@@ -236,8 +236,8 @@ public class LongHashMap<V> {
                 return false;
             } else {
                 LongHashMap.Entry<V> entry = (LongHashMap.Entry) p_equals_1_;
-                Object object = Long.valueOf(this.getKey());
-                Object object1 = Long.valueOf(entry.getKey());
+                Object object = this.getKey();
+                Object object1 = entry.getKey();
 
                 if (Objects.equals(object, object1)) {
                     Object object2 = this.getValue();

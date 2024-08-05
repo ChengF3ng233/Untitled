@@ -222,8 +222,8 @@ public class NetHandlerPlayClient implements INetHandlerPlayClient {
             if (aentity != null) {
                 int i = packetIn.getEntityID() - entity.getEntityId();
 
-                for (int j = 0; j < aentity.length; ++j) {
-                    aentity[j].setEntityId(aentity[j].getEntityId() + i);
+                for (Entity value : aentity) {
+                    value.setEntityId(value.getEntityId() + i);
                 }
             }
 
@@ -648,8 +648,8 @@ public class NetHandlerPlayClient implements INetHandlerPlayClient {
         if (aentity != null) {
             int i = packetIn.getEntityID() - entitylivingbase.getEntityId();
 
-            for (int j = 0; j < aentity.length; ++j) {
-                aentity[j].setEntityId(aentity[j].getEntityId() + i);
+            for (Entity entity : aentity) {
+                entity.setEntityId(entity.getEntityId() + i);
             }
         }
 
@@ -1077,7 +1077,7 @@ public class NetHandlerPlayClient implements INetHandlerPlayClient {
 
         for (Entry<StatBase, Integer> entry : packetIn.func_148974_c().entrySet()) {
             StatBase statbase = entry.getKey();
-            int i = entry.getValue().intValue();
+            int i = entry.getValue();
 
             if (statbase.isAchievement() && i > 0) {
                 if (this.field_147308_k && this.gameController.thePlayer.getStatFileWriter().readStat(statbase) == 0) {
