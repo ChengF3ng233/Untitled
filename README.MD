@@ -9,18 +9,17 @@
 - 升级到lwjgl3
 
 ---
-## 待实现的功能（按优先级排列）
-- 矢量文字渲染
-- Splash Screen
-- 多配置
-- 命令实现
-- Text组件
+## 待实现的功能
+- 启动界面（不是原神）
+- 修复netty不能用直接缓冲区的问题
 - ~~绘制ClickGUI~~
 - ~~Arraylist~~
+- ~~矢量文字渲染~~
+- ~~Splash Screen~~
 
 ---
 ## 开发指南
-1. 自行添加mc自带依赖库
+1. 自行添加mc自带依赖库，删除lwjgl2
 2. 添加如下jvm参数:
 - `--add-opens
 java.base/jdk.internal.access=ALL-UNNAMED`
