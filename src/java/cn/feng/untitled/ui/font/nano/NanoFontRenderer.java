@@ -48,6 +48,19 @@ public class NanoFontRenderer extends MinecraftInstance {
         renderString(text, x, y, size, align, 0f, color);
     }
 
+    public void drawString(String text, float x, float y, float size, int align, Color col, boolean shadow) {
+        int color = col.getRGB();
+
+        if (shadow) {
+            color = (color & 16579836) >> 2 | color & -16777216;
+        }
+
+        if (shadow) {
+            renderString(text, x + 0.5f, y + 0.5f, size, align, 0f, new Color(color));
+        }
+        renderString(text, x, y, size, align, 0f, col);
+    }
+
     public void drawString(String text, float x, float y, float size, Color color) {
         renderString(text, x, y, size, NVG_ALIGN_LEFT, 0f, color);
     }
@@ -57,14 +70,7 @@ public class NanoFontRenderer extends MinecraftInstance {
     }
 
     public void drawString(String text, float x, float y, Color col, boolean shadow) {
-        int color = col.getRGB();
-
-        if (shadow) {
-            color = (color & 16579836) >> 2 | color & -16777216;
-        }
-
-        renderString(text, x + 0.5f, y + 0.5f, size, NVG_ALIGN_LEFT, 0f, new Color(color));
-        renderString(text, x, y, size, NVG_ALIGN_LEFT, 0f, col);
+        drawString(text, x, y, size, NVG_ALIGN_LEFT, col, shadow);
     }
 
     // Glow
@@ -91,6 +97,11 @@ public class NanoFontRenderer extends MinecraftInstance {
     public void drawGlowString(String text, float x, float y, float size, int align, Color color) {
         renderString(text, x, y, size, align, 5f, color);
         renderString(text, x, y, size, align, 0f, color);
+    }
+
+    public void drawGlowString(String text, float x, float y, float size, float radius, int align, Color textColor, Color glowColor) {
+        renderString(text, x, y, size, align, radius, glowColor);
+        renderString(text, x, y, size, align, 0f, textColor);
     }
 
     public void drawGlowString(String text, float x, float y, float size, float radius, Color textColor, Color glowColor) {

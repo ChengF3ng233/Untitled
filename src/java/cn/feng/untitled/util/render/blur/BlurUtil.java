@@ -28,15 +28,18 @@ public class BlurUtil {
         KawaseBlur.renderBlur(stencilFramebuffer.framebufferTexture, blurRadius.value.intValue(), blurOffset.value.intValue());
     }
 
+    public static void blurEnd(int radius, int offset) {
+        stencilFramebuffer.unbindFramebuffer();
+        KawaseBlur.renderBlur(stencilFramebuffer.framebufferTexture, radius, offset);
+    }
+
     public static void bloomEnd() {
         stencilFramebuffer.unbindFramebuffer();
         KawaseBloom.renderBlur(stencilFramebuffer.framebufferTexture, bloomRadius.value.intValue(), bloomOffset.value.intValue());
     }
 
-/*    public static void bloom(Runnable runnable) {
-        stencilFramebuffer = RenderUtil.createFrameBuffer(stencilFramebuffer);
-        stencilFramebuffer.framebufferClear();
-        stencilFramebuffer.bindFramebuffer(false);
-        runnable.run();
-    }*/
+    public static void bloomEnd(int radius, int offset) {
+        stencilFramebuffer.unbindFramebuffer();
+        KawaseBloom.renderBlur(stencilFramebuffer.framebufferTexture, radius, offset);
+    }
 }

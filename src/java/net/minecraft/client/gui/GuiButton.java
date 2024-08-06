@@ -54,15 +54,13 @@ public class GuiButton extends Gui {
     }
 
     public GuiButton(int buttonId, int x, int y, int widthIn, int heightIn, String buttonText) {
-        this.width = 200;
-        this.height = 20;
         this.enabled = true;
         this.visible = true;
         this.id = buttonId;
         this.xPosition = x + 1;
         this.yPosition = y + 1;
         this.width = widthIn - 2;
-        this.height = heightIn - 2;
+        this.height = heightIn;
         this.displayString = buttonText;
         this.colorAnim = new ColorAnimation(new Color(255, 255, 255, 70), Color.WHITE, 100);
     }
