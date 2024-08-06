@@ -3,6 +3,7 @@ package net.minecraft.client;
 import cn.feng.untitled.Client;
 import cn.feng.untitled.event.impl.KeyEvent;
 import cn.feng.untitled.ui.screen.MainMenu;
+import cn.feng.untitled.ui.screen.SplashScreen;
 import com.google.common.collect.*;
 import com.google.common.util.concurrent.Futures;
 import com.google.common.util.concurrent.ListenableFuture;
@@ -874,6 +875,15 @@ public class Minecraft implements IThreadListener, IPlayerUsage {
      * Sets the argument GuiScreen as the main (topmost visible) screen.
      */
     public void displayGuiScreen(GuiScreen guiScreenIn) {
+        if (guiScreenIn == null || currentScreen == null) {
+            displayScreen(guiScreenIn);
+            return;
+        }
+        SplashScreen splashScreen = new SplashScreen(currentScreen, guiScreenIn);
+        displayScreen(splashScreen);
+    }
+
+    public void displayScreen(GuiScreen guiScreenIn) {
         if (this.currentScreen != null) {
             this.currentScreen.onGuiClosed();
         }
