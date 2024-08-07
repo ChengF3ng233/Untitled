@@ -29,7 +29,7 @@ public class SplashScreen extends GuiScreen {
 
         current.onGuiClosed();
 
-        if (target instanceof MainMenu) {
+        if (target instanceof MainScreen) {
             mc.gameSettings.showDebugInfo = false;
             mc.ingameGUI.getChatGUI().clearChatMessages();
         }
@@ -48,14 +48,12 @@ public class SplashScreen extends GuiScreen {
     public void drawScreen(int mouseX, int mouseY, float partialTicks) {
         if (alphaAnim.finished(Direction.FORWARDS)) {
             alphaAnim.changeDirection();
-            Logger.info("Change direction");
         } else if (alphaAnim.getDirection() == Direction.FORWARDS) {
             current.drawScreen(mouseX, mouseY, partialTicks);
         }
 
         if (alphaAnim.finished(Direction.BACKWARDS)) {
             mc.displayScreen(target);
-            Logger.info("Done");
         } else if (alphaAnim.getDirection() == Direction.BACKWARDS) {
             target.drawScreen(mouseX, mouseY, partialTicks);
         }

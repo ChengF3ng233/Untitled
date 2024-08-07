@@ -202,7 +202,7 @@ public abstract class Entity implements ICommandSender {
      * Which dimension the player is in (-1 = the Nether, 0 = normal world)
      */
     public int dimension;
-    protected boolean isInWeb;
+    public boolean isInWeb;
     protected Random rand;
     /**
      * Whether this entity is currently inside of water (if it handles water movement that is)

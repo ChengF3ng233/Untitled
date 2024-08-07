@@ -1,5 +1,6 @@
 package net.optifine.reflect;
 
+import cn.feng.untitled.ui.screen.MainScreen;
 import com.google.common.base.Optional;
 
 import java.lang.reflect.Constructor;
@@ -312,7 +313,7 @@ public class Reflector {
     public static ReflectorField GuiFurnace_tileFurnace = new ReflectorField(GuiFurnace, IInventory.class);
     public static ReflectorClass GuiHopper = new ReflectorClass(GuiHopper.class);
     public static ReflectorField GuiHopper_hopperInventory = new ReflectorField(GuiHopper, IInventory.class, 1);
-    public static ReflectorClass MainMenu = new ReflectorClass(cn.feng.untitled.ui.screen.MainMenu.class);
+    public static ReflectorClass MainMenu = new ReflectorClass(MainScreen.class);
     public static ReflectorField MainMenu_splashText = new ReflectorField(MainMenu, String.class);
     public static ReflectorClass Minecraft = new ReflectorClass(Minecraft.class);
     public static ReflectorField Minecraft_defaultResourcePack = new ReflectorField(Minecraft, DefaultResourcePack.class);

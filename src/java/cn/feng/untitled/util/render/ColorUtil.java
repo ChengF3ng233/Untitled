@@ -183,7 +183,7 @@ public class ColorUtil {
     //Opacity value ranges from 0-1
     public static Color applyOpacity(Color color, float opacity) {
         opacity = Math.min(1, Math.max(0, opacity));
-        return new Color(color.getRed(), color.getGreen(), color.getBlue(), (int) (color.getAlpha() * opacity));
+        return new Color(color.getRed() / 255f, color.getGreen() / 255f, color.getBlue() / 255f, opacity);
     }
 
     public static Color darker(Color color, float FACTOR) {

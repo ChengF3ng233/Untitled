@@ -9,6 +9,7 @@ import cn.feng.untitled.module.impl.client.Target;
 import cn.feng.untitled.module.impl.movement.ToggleSprint;
 import cn.feng.untitled.module.impl.render.FullBright;
 import cn.feng.untitled.module.impl.render.NameTag;
+import cn.feng.untitled.module.impl.world.Scaffold;
 import cn.feng.untitled.ui.font.awt.Font;
 import cn.feng.untitled.ui.widget.Widget;
 import cn.feng.untitled.util.data.compare.CompareMode;
@@ -83,6 +84,7 @@ public class ModuleManager {
         register(new Target());
         register(new FullBright());
         register(new NameTag());
+        register(new Scaffold());
     }
 
     public Module getModule(Class<? extends Module> klass) {

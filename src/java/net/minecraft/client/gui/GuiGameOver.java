@@ -1,6 +1,6 @@
 package net.minecraft.client.gui;
 
-import cn.feng.untitled.ui.screen.MainMenu;
+import cn.feng.untitled.ui.screen.MainScreen;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.util.EnumChatFormatting;
@@ -60,7 +60,7 @@ public class GuiGameOver extends GuiScreen implements GuiYesNoCallback {
 
             case 1:
                 if (this.mc.theWorld.getWorldInfo().isHardcoreModeEnabled()) {
-                    this.mc.displayGuiScreen(new MainMenu());
+                    this.mc.displayGuiScreen(new MainScreen());
                 } else {
                     GuiYesNo guiyesno = new GuiYesNo(this, I18n.format("deathScreen.quit.confirm"), "", I18n.format("deathScreen.titleScreen"), I18n.format("deathScreen.respawn"), 0);
                     this.mc.displayGuiScreen(guiyesno);
@@ -73,7 +73,7 @@ public class GuiGameOver extends GuiScreen implements GuiYesNoCallback {
         if (result) {
             this.mc.theWorld.sendQuittingDisconnectingPacket();
             this.mc.loadWorld(null);
-            this.mc.displayGuiScreen(new MainMenu());
+            this.mc.displayGuiScreen(new MainScreen());
         } else {
             this.mc.thePlayer.respawnPlayer();
             this.mc.displayGuiScreen(null);

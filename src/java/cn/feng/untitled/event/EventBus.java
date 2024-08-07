@@ -136,7 +136,13 @@ public class EventBus {
         try {
             List<EventData> registered = registry.get(event.getClass());
             if (registered != null) {
-                for (EventData data : registry.get(event.getClass())) {
+/*                for (EventData data : registry.get(event.getClass())) {
+                    data.target.invoke(data.source, event);
+                }*/
+
+                List<EventData> eventData = registry.get(event.getClass());
+                for (int i = 0; i < eventData.size(); i++) {
+                    EventData data = eventData.get(i);
                     data.target.invoke(data.source, event);
                 }
             }

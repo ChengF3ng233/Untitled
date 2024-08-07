@@ -1,6 +1,8 @@
 package net.minecraft.network;
 
 import cn.feng.untitled.Client;
+import cn.feng.untitled.event.impl.PacketEvent;
+import cn.feng.untitled.event.type.PacketType;
 import com.google.common.collect.Queues;
 import com.google.common.util.concurrent.ThreadFactoryBuilder;
 import com.viaversion.viaversion.api.connection.UserConnection;
@@ -182,17 +184,32 @@ public class NetworkManager extends SimpleChannelInboundHandler<Packet> {
         this.closeChannel(chatcomponenttranslation);
     }
 
-    protected void channelRead0(ChannelHandlerContext p_channelRead0_1_, Packet p_channelRead0_2_) throws Exception {
+    protected void channelRead0(ChannelHandlerContext p_channelRead0_1_, Packet packet) {
         if (this.channel.isOpen()) {
             try {
-                p_channelRead0_2_.processPacket(this.packetListener);
+                PacketEvent e = new PacketEvent(packet);
+                e.setPacketType(PacketType.RECEIVE);
+                Client.instance.eventBus.post(e);
+                if (e.isCancelled()) return;
+                packet.processPacket(this.packetListener);
             } catch (ThreadQuickExitException var4) {
             }
         }
     }
 
     public void sendPacket(Packet packetIn) {
+        sendPacket(packetIn, true);
+    }
+
+    public void sendPacket(Packet<?> packetIn, boolean event) {
         if (this.isChannelOpen()) {
+            if (event) {
+                PacketEvent e = new PacketEvent(packetIn);
+                e.setPacketType(PacketType.SEND);
+                Client.instance.eventBus.post(e);
+                if (e.isCancelled()) return;
+            }
+
             this.flushOutboundQueue();
             this.dispatchPacket(packetIn, null);
         } else {

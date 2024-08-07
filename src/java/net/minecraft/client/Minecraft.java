@@ -2,7 +2,7 @@ package net.minecraft.client;
 
 import cn.feng.untitled.Client;
 import cn.feng.untitled.event.impl.KeyEvent;
-import cn.feng.untitled.ui.screen.MainMenu;
+import cn.feng.untitled.ui.screen.MainScreen;
 import cn.feng.untitled.ui.screen.SplashScreen;
 import com.google.common.collect.*;
 import com.google.common.util.concurrent.Futures;
@@ -570,9 +570,9 @@ public class Minecraft implements IThreadListener, IPlayerUsage {
         this.ingameGUI = new GuiIngame(this);
 
         if (this.serverName != null) {
-            this.displayGuiScreen(new GuiConnecting(new MainMenu(), this, this.serverName, this.serverPort));
+            this.displayGuiScreen(new GuiConnecting(new MainScreen(), this, this.serverName, this.serverPort));
         } else {
-            this.displayGuiScreen(new MainMenu());
+            this.displayGuiScreen(new MainScreen());
         }
 
         this.renderEngine.deleteTexture(this.mojangLogo);
@@ -790,7 +790,7 @@ public class Minecraft implements IThreadListener, IPlayerUsage {
         this.displayHeight = displaymode.getHeight();
     }
 
-    private void drawSplashScreen(TextureManager textureManagerInstance) throws LWJGLException {
+    private void drawSplashScreen(TextureManager textureManagerInstance) {
         ScaledResolution scaledresolution = new ScaledResolution(this);
         int i = scaledresolution.getScaleFactor();
         Framebuffer framebuffer = new Framebuffer(scaledresolution.getScaledWidth() * i, scaledresolution.getScaledHeight() * i, true);
@@ -875,7 +875,7 @@ public class Minecraft implements IThreadListener, IPlayerUsage {
      * Sets the argument GuiScreen as the main (topmost visible) screen.
      */
     public void displayGuiScreen(GuiScreen guiScreenIn) {
-        if (guiScreenIn == null || currentScreen == null) {
+        if (thePlayer != null || currentScreen instanceof GuiIngameMenu) {
             displayScreen(guiScreenIn);
             return;
         }
@@ -889,12 +889,12 @@ public class Minecraft implements IThreadListener, IPlayerUsage {
         }
 
         if (guiScreenIn == null && this.theWorld == null) {
-            guiScreenIn = new MainMenu();
+            guiScreenIn = new MainScreen();
         } else if (guiScreenIn == null && this.thePlayer.getHealth() <= 0.0F) {
             guiScreenIn = new GuiGameOver();
         }
 
-        if (guiScreenIn instanceof MainMenu) {
+        if (guiScreenIn instanceof MainScreen) {
             this.gameSettings.showDebugInfo = false;
             this.ingameGUI.getChatGUI().clearChatMessages();
         }

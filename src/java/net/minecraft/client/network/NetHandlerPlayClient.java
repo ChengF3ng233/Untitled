@@ -1,6 +1,6 @@
 package net.minecraft.client.network;
 
-import cn.feng.untitled.ui.screen.MainMenu;
+import cn.feng.untitled.ui.screen.MainScreen;
 import com.google.common.collect.Maps;
 import com.google.common.util.concurrent.FutureCallback;
 import com.google.common.util.concurrent.Futures;
@@ -552,7 +552,7 @@ public class NetHandlerPlayClient implements INetHandlerPlayClient {
         if (this.guiScreenServer != null) {
             this.gameController.displayGuiScreen(new GuiDisconnected(this.guiScreenServer, "disconnect.lost", reason));
         } else {
-            this.gameController.displayGuiScreen(new GuiDisconnected(new GuiMultiplayer(new MainMenu()), "disconnect.lost", reason));
+            this.gameController.displayGuiScreen(new GuiDisconnected(new GuiMultiplayer(new MainScreen()), "disconnect.lost", reason));
         }
     }
 

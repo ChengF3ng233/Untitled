@@ -22,7 +22,7 @@ import java.util.List;
  * @author ChengFeng
  * @since 2024/7/28
  **/
-public class MainMenu extends GuiScreen {
+public class MainScreen extends GuiScreen {
 
     private final float buttonWidth = 130f;
     private final float buttonHeight = 30f;
@@ -30,7 +30,7 @@ public class MainMenu extends GuiScreen {
 
     private final ColorAnimation colorAnim = new ColorAnimation(Color.WHITE, Color.GRAY, 200);
 
-    public MainMenu() {
+    public MainScreen() {
         buttonList.add(new Button("Single Player", () -> mc.displayGuiScreen(new GuiSelectWorld(this))));
         buttonList.add(new Button("Multi Player", () -> mc.displayGuiScreen(new GuiMultiplayer(this))));
         buttonList.add(new Button("Alt Manager", () -> JOptionPane.showMessageDialog(null, "我几把没写呢")));

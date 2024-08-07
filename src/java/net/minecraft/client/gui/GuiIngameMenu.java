@@ -1,6 +1,6 @@
 package net.minecraft.client.gui;
 
-import cn.feng.untitled.ui.screen.MainMenu;
+import cn.feng.untitled.ui.screen.MainScreen;
 import net.minecraft.client.gui.achievement.GuiAchievements;
 import net.minecraft.client.gui.achievement.GuiStats;
 import net.minecraft.client.resources.I18n;
@@ -51,9 +51,9 @@ public class GuiIngameMenu extends GuiScreen {
                 this.mc.loadWorld(null);
 
                 if (flag) {
-                    this.mc.displayGuiScreen(new MainMenu());
+                    this.mc.displayGuiScreen(new MainScreen());
                 } else {
-                    this.mc.displayGuiScreen(new GuiMultiplayer(new MainMenu()));
+                    this.mc.displayGuiScreen(new GuiMultiplayer(new MainScreen()));
                 }
 
             case 2:

@@ -2,7 +2,7 @@ package net.minecraft.client.renderer;
 
 import cn.feng.untitled.Client;
 import cn.feng.untitled.event.impl.Render3DEvent;
-import cn.feng.untitled.ui.screen.MainMenu;
+import cn.feng.untitled.ui.screen.MainScreen;
 import com.google.common.base.Predicate;
 import com.google.common.base.Predicates;
 import com.google.gson.JsonSyntaxException;
@@ -2294,8 +2294,8 @@ public class EntityRenderer implements IResourceManagerReloadListener {
             }
         }
 
-        if (this.mc.currentScreen instanceof MainMenu) {
-            this.updateMainMenu((MainMenu) this.mc.currentScreen);
+        if (this.mc.currentScreen instanceof MainScreen) {
+            this.updateMainMenu((MainScreen) this.mc.currentScreen);
         }
 
         if (this.updatedWorld != world) {
@@ -2327,7 +2327,7 @@ public class EntityRenderer implements IResourceManagerReloadListener {
         }
     }
 
-    private void updateMainMenu(MainMenu p_updateMainMenu_1_) {
+    private void updateMainMenu(MainScreen p_updateMainScreen_1_) {
         try {
             String s = null;
             Calendar calendar = Calendar.getInstance();
@@ -2347,7 +2347,7 @@ public class EntityRenderer implements IResourceManagerReloadListener {
                 return;
             }
 
-            Reflector.setFieldValue(p_updateMainMenu_1_, Reflector.MainMenu_splashText, s);
+            Reflector.setFieldValue(p_updateMainScreen_1_, Reflector.MainMenu_splashText, s);
         } catch (Throwable var6) {
         }
     }
