@@ -4,13 +4,11 @@ import cn.feng.untitled.Client;
 import cn.feng.untitled.event.api.SubscribeEvent;
 import cn.feng.untitled.event.impl.ChatGUIEvent;
 import cn.feng.untitled.event.impl.NanoEvent;
-import cn.feng.untitled.event.impl.Render2DEvent;
 import cn.feng.untitled.event.impl.ShaderEvent;
 import cn.feng.untitled.ui.clickgui.dropdown.DropdownGUI;
 import cn.feng.untitled.ui.clickgui.neverlose.NeverLoseGUI;
 import cn.feng.untitled.ui.widget.Widget;
 import cn.feng.untitled.ui.widget.impl.ArraylistWidget;
-import cn.feng.untitled.ui.widget.impl.TextWidget;
 import cn.feng.untitled.util.MinecraftInstance;
 import net.minecraft.client.gui.GuiScreen;
 
@@ -32,7 +30,6 @@ public class UIManager extends MinecraftInstance {
     }
 
     public void registerWidgets() {
-        register(new TextWidget());
         register(new ArraylistWidget());
     }
 

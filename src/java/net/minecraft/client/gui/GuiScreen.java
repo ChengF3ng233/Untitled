@@ -6,7 +6,6 @@ import com.google.common.base.Splitter;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.stream.GuiTwitchUserMode;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.client.renderer.Tessellator;
@@ -396,7 +395,7 @@ public abstract class GuiScreen extends Gui implements GuiYesNoCallback {
                             this.openWebLink(uri);
                         }
                     } catch (URISyntaxException urisyntaxexception) {
-                        LOGGER.error("Can't open url for " + clickevent, urisyntaxexception);
+                        LOGGER.error("Can't open url for {}", clickevent, urisyntaxexception);
                     }
                 } else if (clickevent.getAction() == ClickEvent.Action.OPEN_FILE) {
                     URI uri1 = (new File(clickevent.getValue())).toURI();
@@ -405,16 +404,8 @@ public abstract class GuiScreen extends Gui implements GuiYesNoCallback {
                     this.setText(clickevent.getValue(), true);
                 } else if (clickevent.getAction() == ClickEvent.Action.RUN_COMMAND) {
                     this.sendChatMessage(clickevent.getValue(), false);
-                } else if (clickevent.getAction() == ClickEvent.Action.TWITCH_USER_INFO) {
-                    ChatUserInfo chatuserinfo = this.mc.getTwitchStream().func_152926_a(clickevent.getValue());
-
-                    if (chatuserinfo != null) {
-                        this.mc.displayGuiScreen(new GuiTwitchUserMode(this.mc.getTwitchStream(), chatuserinfo));
-                    } else {
-                        LOGGER.error("Tried to handle twitch user but couldn't find them!");
-                    }
                 } else {
-                    LOGGER.error("Don't know how to handle " + clickevent);
+                    LOGGER.error("Don't know how to handle {}", clickevent);
                 }
 
                 return true;
