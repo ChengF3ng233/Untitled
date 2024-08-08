@@ -118,7 +118,6 @@ public class Config {
             gameSettings = p_initGameSettings_0_;
             desktopDisplayMode = Display.getDesktopDisplayMode();
             updateAvailableProcessors();
-            ReflectorForge.putLaunchBlackboard("optifine.ForgeSplashCompatible", Boolean.TRUE);
         }
     }
 

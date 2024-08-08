@@ -234,7 +234,6 @@ public abstract class EntityLiving extends EntityLivingBase {
      */
     public void setAttackTarget(EntityLivingBase entitylivingbaseIn) {
         this.attackTarget = entitylivingbaseIn;
-        Reflector.callVoid(Reflector.ForgeHooks_onLivingSetAttackTarget, this, entitylivingbaseIn);
     }
 
     /**
@@ -585,18 +584,8 @@ public abstract class EntityLiving extends EntityLivingBase {
      * Makes the entity despawn if requirements are reached
      */
     protected void despawnEntity() {
-        Object object = null;
-        Object object1 = Reflector.getFieldValue(Reflector.Event_Result_DEFAULT);
-        Object object2 = Reflector.getFieldValue(Reflector.Event_Result_DENY);
-
         if (this.persistenceRequired) {
             this.entityAge = 0;
-        } else if ((this.entityAge & 31) == 31 && (object = Reflector.call(Reflector.ForgeEventFactory_canEntityDespawn, this)) != object1) {
-            if (object == object2) {
-                this.entityAge = 0;
-            } else {
-                this.setDead();
-            }
         } else {
             Entity entity = this.worldObj.getClosestPlayerToEntity(this, -1.0D);
 

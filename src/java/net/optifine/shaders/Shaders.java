@@ -733,11 +733,6 @@ public class Shaders {
         if (flag3 || flag4) {
             DefaultVertexFormats.updateVertexFormats();
 
-            if (Reflector.LightUtil.exists()) {
-                Reflector.LightUtil_itemConsumer.setValue(null);
-                Reflector.LightUtil_tessellator.setValue(null);
-            }
-
             updateBlockLightLevel();
         }
 

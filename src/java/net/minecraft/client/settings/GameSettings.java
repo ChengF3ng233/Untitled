@@ -1075,14 +1075,6 @@ public class GameSettings {
      * Saves the options to the options file.
      */
     public void saveOptions() {
-        if (Reflector.FMLClientHandler.exists()) {
-            Object object = Reflector.call(Reflector.FMLClientHandler_instance);
-
-            if (object != null && Reflector.callBoolean(object, Reflector.FMLClientHandler_isLoading)) {
-                return;
-            }
-        }
-
         try {
             PrintWriter printwriter = new PrintWriter(new FileWriter(this.optionsFile));
             printwriter.println("invertYMouse:" + this.invertMouse);

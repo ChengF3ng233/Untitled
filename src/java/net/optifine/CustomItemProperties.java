@@ -363,26 +363,7 @@ public class CustomItemProperties {
         ResourceLocation resourcelocation = getModelLocation(model);
         ModelResourceLocation modelresourcelocation = new ModelResourceLocation(resourcelocation, "inventory");
 
-        if (Reflector.ModelLoader.exists()) {
-            try {
-                Object object = Reflector.ModelLoader_VanillaLoader_INSTANCE.getValue();
-                checkNull(object, "vanillaLoader is null");
-                Object object1 = Reflector.call(object, Reflector.ModelLoader_VanillaLoader_loadModel, modelresourcelocation);
-                checkNull(object1, "iModel is null");
-                Map map = (Map) Reflector.getFieldValue(modelBakery, Reflector.ModelLoader_stateModels);
-                checkNull(map, "stateModels is null");
-                map.put(modelresourcelocation, object1);
-                Set set = (Set) Reflector.getFieldValue(modelBakery, Reflector.ModelLoader_textures);
-                checkNull(set, "registryTextures is null");
-                Collection collection = (Collection) Reflector.call(object1, Reflector.IModel_getTextures, new Object[0]);
-                checkNull(collection, "modelTextures is null");
-                set.addAll(collection);
-            } catch (Exception exception) {
-                Config.warn("Error registering model with ModelLoader: " + modelresourcelocation + ", " + exception.getClass().getName() + ": " + exception.getMessage());
-            }
-        } else {
-            modelBakery.loadItemModel(resourcelocation.toString(), modelresourcelocation, resourcelocation);
-        }
+        modelBakery.loadItemModel(resourcelocation.toString(), modelresourcelocation, resourcelocation);
     }
 
     private static void checkNull(Object obj, String msg) throws NullPointerException {
@@ -392,7 +373,7 @@ public class CustomItemProperties {
     }
 
     private static ResourceLocation getModelLocation(String modelName) {
-        return Reflector.ModelLoader.exists() && !modelName.startsWith("mcpatcher/") && !modelName.startsWith("optifine/") ? new ResourceLocation("models/" + modelName) : new ResourceLocation(modelName);
+        return new ResourceLocation(modelName);
     }
 
     private int parseType(String str) {

@@ -143,14 +143,6 @@ public class LoadingScreenRenderer implements IProgressUpdate {
 
                 boolean flag = true;
 
-                if (Reflector.FMLClientHandler_handleLoadingScreen.exists()) {
-                    Object object = Reflector.call(Reflector.FMLClientHandler_instance);
-
-                    if (object != null) {
-                        flag = !Reflector.callBoolean(object, Reflector.FMLClientHandler_handleLoadingScreen, scaledresolution);
-                    }
-                }
-
                 if (flag) {
                     Tessellator tessellator = Tessellator.getInstance();
                     WorldRenderer worldrenderer = tessellator.getWorldRenderer();

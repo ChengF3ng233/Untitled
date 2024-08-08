@@ -30,9 +30,7 @@ public class BlockModelRenderer {
     private static boolean separateAoLightValue = false;
 
     public BlockModelRenderer() {
-        if (Reflector.ForgeModContainer_forgeLightPipelineEnabled.exists()) {
-            Reflector.setFieldValue(Reflector.ForgeModContainer_forgeLightPipelineEnabled, Boolean.FALSE);
-        }
+
     }
 
     public static float fixAoLightValue(float p_fixAoLightValue_0_) {

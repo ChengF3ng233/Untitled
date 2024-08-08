@@ -149,10 +149,6 @@ public class TextureUtil {
     public static void allocateTextureImpl(int p_180600_0_, int p_180600_1_, int p_180600_2_, int p_180600_3_) {
         Object object = TextureUtil.class;
 
-        if (Reflector.SplashScreen.exists()) {
-            object = Reflector.SplashScreen.getTargetClass();
-        }
-
         synchronized (object) {
             deleteTexture(p_180600_0_);
             bindTexture(p_180600_0_);

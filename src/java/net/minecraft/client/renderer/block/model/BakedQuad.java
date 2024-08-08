@@ -5,11 +5,10 @@ import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.src.Config;
 import net.minecraft.util.EnumFacing;
 import net.minecraftforge.client.model.pipeline.IVertexConsumer;
-import net.minecraftforge.client.model.pipeline.IVertexProducer;
 import net.optifine.model.QuadBounds;
 import net.optifine.reflect.Reflector;
 
-public class BakedQuad implements IVertexProducer {
+public class BakedQuad {
     protected final int tintIndex;
     /**
      * Joined 4 vertex records, each has 7 fields (x, y, z, shadeColor, u, v, <unused>), see
@@ -137,10 +136,6 @@ public class BakedQuad implements IVertexProducer {
         }
 
         return this.vertexDataSingle;
-    }
-
-    public void pipe(IVertexConsumer p_pipe_1_) {
-        Reflector.callVoid(Reflector.LightUtil_putBakedQuad, p_pipe_1_, this);
     }
 
     protected void fixVertexData() {

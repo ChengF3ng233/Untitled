@@ -242,12 +242,6 @@ public class GuiOverlayDebug extends Gui {
         list.add(4, s);
         list.set(5, "GC: " + MemoryMonitor.getAllocationRateMb() + "MB/s");
 
-        if (Reflector.FMLCommonHandler_getBrandings.exists()) {
-            Object object = Reflector.call(Reflector.FMLCommonHandler_instance);
-            list.add("");
-            list.addAll((Collection) Reflector.call(object, Reflector.FMLCommonHandler_getBrandings, new Object[]{Boolean.FALSE}));
-        }
-
         if (this.isReducedDebug()) {
             return list;
         } else {

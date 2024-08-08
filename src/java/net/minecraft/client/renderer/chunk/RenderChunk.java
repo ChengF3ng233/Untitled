@@ -51,7 +51,6 @@ public class RenderChunk {
     private final VertexBuffer[] vertexBuffers = new VertexBuffer[EnumWorldBlockLayer.values().length];
     private final EnumWorldBlockLayer[] blockLayersSingle = new EnumWorldBlockLayer[1];
     private final boolean isMipmaps = Config.isMipmaps();
-    private final boolean fixBlockLayer = !Reflector.BetterFoliageClient.exists();
     private final RenderChunk[] renderChunksOfset16 = new RenderChunk[6];
     public CompiledChunk compiledChunk = CompiledChunk.DUMMY;
     public AxisAlignedBB boundingBox;
@@ -138,8 +137,6 @@ public class RenderChunk {
             chunkcacheof.renderStart();
             boolean[] aboolean = new boolean[ENUM_WORLD_BLOCK_LAYERS.length];
             BlockRendererDispatcher blockrendererdispatcher = Minecraft.getMinecraft().getBlockRendererDispatcher();
-            boolean flag = Reflector.ForgeBlock_canRenderInLayer.exists();
-            boolean flag1 = Reflector.ForgeHooksClient_setRenderLayer.exists();
 
             for (Object o : BlockPosM.getAllInBoxMutable(blockpos, blockpos1)) {
                 BlockPosM blockposm = (BlockPosM) o;
@@ -165,27 +162,11 @@ public class RenderChunk {
 
                 EnumWorldBlockLayer[] aenumworldblocklayer;
 
-                if (flag) {
-                    aenumworldblocklayer = ENUM_WORLD_BLOCK_LAYERS;
-                } else {
-                    aenumworldblocklayer = this.blockLayersSingle;
-                    aenumworldblocklayer[0] = block.getBlockLayer();
-                }
+                aenumworldblocklayer = this.blockLayersSingle;
+                aenumworldblocklayer[0] = block.getBlockLayer();
 
                 for (EnumWorldBlockLayer enumWorldBlockLayer : aenumworldblocklayer) {
                     EnumWorldBlockLayer enumworldblocklayer = enumWorldBlockLayer;
-
-                    if (flag) {
-                        boolean flag2 = Reflector.callBoolean(block, Reflector.ForgeBlock_canRenderInLayer, enumworldblocklayer);
-
-                        if (!flag2) {
-                            continue;
-                        }
-                    }
-
-                    if (flag1) {
-                        Reflector.callVoid(Reflector.ForgeHooksClient_setRenderLayer, enumworldblocklayer);
-                    }
 
                     enumworldblocklayer = this.fixBlockLayer(iblockstate, enumworldblocklayer);
                     int k = enumworldblocklayer.ordinal();
@@ -208,10 +189,6 @@ public class RenderChunk {
                             renderenv.setOverlaysRendered(false);
                         }
                     }
-                }
-
-                if (flag1) {
-                    Reflector.callVoid(Reflector.ForgeHooksClient_setRenderLayer, null);
                 }
             }
 
@@ -469,29 +446,25 @@ public class RenderChunk {
             }
         }
 
-        if (!this.fixBlockLayer) {
-            return p_fixBlockLayer_2_;
-        } else {
-            if (this.isMipmaps) {
-                if (p_fixBlockLayer_2_ == EnumWorldBlockLayer.CUTOUT) {
-                    Block block = p_fixBlockLayer_1_.getBlock();
+        if (this.isMipmaps) {
+            if (p_fixBlockLayer_2_ == EnumWorldBlockLayer.CUTOUT) {
+                Block block = p_fixBlockLayer_1_.getBlock();
 
-                    if (block instanceof BlockRedstoneWire) {
-                        return p_fixBlockLayer_2_;
-                    }
-
-                    if (block instanceof BlockCactus) {
-                        return p_fixBlockLayer_2_;
-                    }
-
-                    return EnumWorldBlockLayer.CUTOUT_MIPPED;
+                if (block instanceof BlockRedstoneWire) {
+                    return p_fixBlockLayer_2_;
                 }
-            } else if (p_fixBlockLayer_2_ == EnumWorldBlockLayer.CUTOUT_MIPPED) {
-                return EnumWorldBlockLayer.CUTOUT;
-            }
 
-            return p_fixBlockLayer_2_;
+                if (block instanceof BlockCactus) {
+                    return p_fixBlockLayer_2_;
+                }
+
+                return EnumWorldBlockLayer.CUTOUT_MIPPED;
+            }
+        } else if (p_fixBlockLayer_2_ == EnumWorldBlockLayer.CUTOUT_MIPPED) {
+            return EnumWorldBlockLayer.CUTOUT;
         }
+
+        return p_fixBlockLayer_2_;
     }
 
     private void postRenderOverlays(RegionRenderCacheBuilder p_postRenderOverlays_1_, CompiledChunk p_postRenderOverlays_2_, boolean[] p_postRenderOverlays_3_) {
@@ -513,10 +486,6 @@ public class RenderChunk {
         BlockPos blockpos = p_makeChunkCacheOF_1_.add(-1, -1, -1);
         BlockPos blockpos1 = p_makeChunkCacheOF_1_.add(16, 16, 16);
         ChunkCache chunkcache = this.createRegionRenderCache(this.world, blockpos, blockpos1, 1);
-
-        if (Reflector.MinecraftForgeClient_onRebuildChunk.exists()) {
-            Reflector.call(Reflector.MinecraftForgeClient_onRebuildChunk, this.world, p_makeChunkCacheOF_1_, chunkcache);
-        }
 
         ChunkCacheOF chunkcacheof = new ChunkCacheOF(chunkcache, blockpos, blockpos1, 1);
         return chunkcacheof;

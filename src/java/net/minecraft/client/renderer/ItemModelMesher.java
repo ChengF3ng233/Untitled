@@ -46,10 +46,6 @@ public class ItemModelMesher {
             }
         }
 
-        if (Reflector.ForgeHooksClient.exists() && ibakedmodel instanceof ISmartItemModel) {
-            ibakedmodel = ((ISmartItemModel) ibakedmodel).handleItemState(stack);
-        }
-
         if (ibakedmodel == null) {
             ibakedmodel = this.modelManager.getMissingModel();
         }

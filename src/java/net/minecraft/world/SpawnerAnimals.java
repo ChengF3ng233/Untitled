@@ -60,8 +60,7 @@ public final class SpawnerAnimals {
                 return block.getMaterial().isLiquid() && worldIn.getBlockState(pos.down()).getBlock().getMaterial().isLiquid() && !worldIn.getBlockState(pos.up()).getBlock().isNormalCube();
             } else {
                 BlockPos blockpos = pos.down();
-                IBlockState iblockstate = worldIn.getBlockState(blockpos);
-                boolean flag = Reflector.ForgeBlock_canCreatureSpawn.exists() ? Reflector.callBoolean(iblockstate.getBlock(), Reflector.ForgeBlock_canCreatureSpawn, worldIn, blockpos, spawnPlacementTypeIn) : World.doesBlockHaveSolidTopSurface(worldIn, blockpos);
+                boolean flag = World.doesBlockHaveSolidTopSurface(worldIn, blockpos);
 
                 if (!flag) {
                     return false;
@@ -104,14 +103,6 @@ public final class SpawnerAnimals {
                             } catch (Exception exception1) {
                                 exception1.printStackTrace();
                                 continue;
-                            }
-
-                            if (Reflector.ForgeEventFactory_canEntitySpawn.exists()) {
-                                Object object = Reflector.call(Reflector.ForgeEventFactory_canEntitySpawn, entityliving, worldIn, (float) j + 0.5F, blockpos.getY(), (float) k + 0.5F);
-
-                                if (object == ReflectorForge.EVENT_RESULT_DENY) {
-                                    continue;
-                                }
                             }
 
                             entityliving.setLocationAndAngles((float) j + 0.5F, blockpos.getY(), (float) k + 0.5F, randomIn.nextFloat() * 360.0F, 0.0F);
@@ -192,17 +183,11 @@ public final class SpawnerAnimals {
 
             for (EnumCreatureType enumcreaturetype : EnumCreatureType.values()) {
                 if ((!enumcreaturetype.getPeacefulCreature() || spawnPeacefulMobs) && (enumcreaturetype.getPeacefulCreature() || spawnHostileMobs) && (!enumcreaturetype.getAnimal() || p_77192_4_)) {
-                    int k4 = Reflector.ForgeWorld_countEntities.exists() ? Reflector.callInt(worldServerIn, Reflector.ForgeWorld_countEntities, enumcreaturetype, Boolean.TRUE) : worldServerIn.countEntities(enumcreaturetype.getCreatureClass());
+                    int k4 = worldServerIn.countEntities(enumcreaturetype.getCreatureClass());
                     int l4 = enumcreaturetype.getMaxNumberOfCreature() * this.countChunkPos / MOB_COUNT_DIV;
 
                     if (k4 <= l4) {
                         Collection<ChunkCoordIntPair> collection = this.eligibleChunksForSpawning;
-
-                        if (Reflector.ForgeHooksClient.exists()) {
-                            ArrayList<ChunkCoordIntPair> arraylist = Lists.newArrayList(collection);
-                            Collections.shuffle(arraylist);
-                            collection = arraylist;
-                        }
 
                         label561:
 
@@ -257,21 +242,19 @@ public final class SpawnerAnimals {
                                                 }
 
                                                 entityliving.setLocationAndAngles(f, i3, f1, worldServerIn.rand.nextFloat() * 360.0F, 0.0F);
-                                                boolean flag2 = Reflector.ForgeEventFactory_canEntitySpawn.exists() ? ReflectorForge.canEntitySpawn(entityliving, worldServerIn, f, (float) i3, f1) : entityliving.getCanSpawnHere() && entityliving.isNotColliding();
+                                                boolean flag2 = entityliving.getCanSpawnHere() && entityliving.isNotColliding();
 
                                                 if (flag2) {
                                                     this.mapSampleEntitiesByClass.remove(biomegenbase$spawnlistentry.entityClass);
 
-                                                    if (!ReflectorForge.doSpecialSpawn(entityliving, worldServerIn, f, i3, f1)) {
-                                                        ientitylivingdata = entityliving.onInitialSpawn(worldServerIn.getDifficultyForLocation(new BlockPos(entityliving)), ientitylivingdata);
-                                                    }
+                                                    ientitylivingdata = entityliving.onInitialSpawn(worldServerIn.getDifficultyForLocation(new BlockPos(entityliving)), ientitylivingdata);
 
                                                     if (entityliving.isNotColliding()) {
                                                         ++j2;
                                                         worldServerIn.spawnEntityInWorld(entityliving);
                                                     }
 
-                                                    int i4 = Reflector.ForgeEventFactory_getMaxSpawnPackSize.exists() ? Reflector.callInt(Reflector.ForgeEventFactory_getMaxSpawnPackSize, entityliving) : entityliving.getMaxSpawnedInChunk();
+                                                    int i4 = entityliving.getMaxSpawnedInChunk();
 
                                                     if (j2 >= i4) {
                                                         continue label561;

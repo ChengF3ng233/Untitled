@@ -121,28 +121,6 @@ public class ModelBakery {
         return p_fixResourcePath_0_;
     }
 
-    @Deprecated
-    public static void addVariantName(Item p_addVariantName_0_, String... p_addVariantName_1_) {
-        RegistryDelegate registrydelegate = (RegistryDelegate) Reflector.getFieldValue(p_addVariantName_0_, Reflector.ForgeItem_delegate);
-
-        if (customVariantNames.containsKey(registrydelegate)) {
-            customVariantNames.get(registrydelegate).addAll(Lists.newArrayList(p_addVariantName_1_));
-        } else {
-            customVariantNames.put(registrydelegate, Sets.newHashSet(p_addVariantName_1_));
-        }
-    }
-
-    public static <T extends ResourceLocation> void registerItemVariants(Item p_registerItemVariants_0_, T... p_registerItemVariants_1_) {
-        RegistryDelegate registrydelegate = (RegistryDelegate) Reflector.getFieldValue(p_registerItemVariants_0_, Reflector.ForgeItem_delegate);
-
-        if (!customVariantNames.containsKey(registrydelegate)) {
-            customVariantNames.put(registrydelegate, Sets.newHashSet());
-        }
-
-        for (ResourceLocation resourcelocation : p_registerItemVariants_1_) {
-            customVariantNames.get(registrydelegate).add(resourcelocation.toString());
-        }
-    }
 
     public IRegistry<ModelResourceLocation, IBakedModel> setupModelRegistry() {
         this.loadVariantItemModels();
@@ -397,10 +375,6 @@ public class ModelBakery {
     private ResourceLocation getItemLocation(String p_177583_1_) {
         ResourceLocation resourcelocation = new ResourceLocation(p_177583_1_);
 
-        if (Reflector.ForgeHooksClient.exists()) {
-            resourcelocation = new ResourceLocation(p_177583_1_.replaceAll("#.*", ""));
-        }
-
         return new ResourceLocation(resourcelocation.getResourceDomain(), "item/" + resourcelocation.getResourcePath());
     }
 
@@ -432,10 +406,6 @@ public class ModelBakery {
         for (Entry<String, ResourceLocation> entry : this.itemLocations.entrySet()) {
             ResourceLocation resourcelocation = entry.getValue();
             ModelResourceLocation modelresourcelocation1 = new ModelResourceLocation(entry.getKey(), "inventory");
-
-            if (Reflector.ModelLoader_getInventoryVariant.exists()) {
-                modelresourcelocation1 = (ModelResourceLocation) Reflector.call(Reflector.ModelLoader_getInventoryVariant, new Object[]{entry.getKey()});
-            }
 
             ModelBlock modelblock1 = this.models.get(resourcelocation);
 
@@ -490,13 +460,8 @@ public class ModelBakery {
             for (EnumFacing enumfacing : blockpart.mapFaces.keySet()) {
                 BlockPartFace blockpartface = blockpart.mapFaces.get(enumfacing);
                 TextureAtlasSprite textureatlassprite1 = this.sprites.get(new ResourceLocation(p_bakeModel_1_.resolveTextureName(blockpartface.texture)));
-                boolean flag = true;
 
-                if (Reflector.ForgeHooksClient.exists()) {
-                    flag = TRSRTransformation.isInteger(p_bakeModel_2_.getMatrix());
-                }
-
-                if (blockpartface.cullFace != null && flag) {
+                if (blockpartface.cullFace != null) {
                     simplebakedmodel$builder.addFaceQuad(p_bakeModel_2_.rotate(blockpartface.cullFace), this.makeBakedQuad(blockpart, blockpartface, textureatlassprite1, enumfacing, p_bakeModel_2_, p_bakeModel_3_));
                 } else {
                     simplebakedmodel$builder.addGeneralQuad(this.makeBakedQuad(blockpart, blockpartface, textureatlassprite1, enumfacing, p_bakeModel_2_, p_bakeModel_3_));
@@ -505,10 +470,6 @@ public class ModelBakery {
         }
 
         return simplebakedmodel$builder.makeBakedModel();
-    }
-
-    private BakedQuad makeBakedQuad(BlockPart p_177589_1_, BlockPartFace p_177589_2_, TextureAtlasSprite p_177589_3_, EnumFacing p_177589_4_, ModelRotation p_177589_5_, boolean p_177589_6_) {
-        return Reflector.ForgeHooksClient.exists() ? this.makeBakedQuad(p_177589_1_, p_177589_2_, p_177589_3_, p_177589_4_, p_177589_5_, p_177589_6_) : this.faceBakery.makeBakedQuad(p_177589_1_.positionFrom, p_177589_1_.positionTo, p_177589_2_, p_177589_3_, p_177589_4_, p_177589_5_, p_177589_1_.partRotation, p_177589_6_, p_177589_1_.shade);
     }
 
     protected BakedQuad makeBakedQuad(BlockPart p_makeBakedQuad_1_, BlockPartFace p_makeBakedQuad_2_, TextureAtlasSprite p_makeBakedQuad_3_, EnumFacing p_makeBakedQuad_4_, ITransformation p_makeBakedQuad_5_, boolean p_makeBakedQuad_6_) {

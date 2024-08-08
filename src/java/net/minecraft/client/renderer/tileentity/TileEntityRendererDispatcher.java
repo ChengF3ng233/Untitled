@@ -105,10 +105,6 @@ public class TileEntityRendererDispatcher {
         if (tileentityIn.getDistanceSq(this.entityX, this.entityY, this.entityZ) < tileentityIn.getMaxRenderDistanceSquared()) {
             boolean flag = true;
 
-            if (Reflector.ForgeTileEntity_hasFastRenderer.exists()) {
-                flag = !this.drawingBatch || !Reflector.callBoolean(tileentityIn, Reflector.ForgeTileEntity_hasFastRenderer);
-            }
-
             if (flag) {
                 RenderHelper.enableStandardItemLighting();
                 int i = this.worldObj.getCombinedLight(tileentityIn.getPos(), 0);
@@ -165,11 +161,7 @@ public class TileEntityRendererDispatcher {
             try {
                 this.tileEntityRendered = tileEntityIn;
 
-                if (this.drawingBatch && Reflector.callBoolean(tileEntityIn, Reflector.ForgeTileEntity_hasFastRenderer)) {
-                    tileentityspecialrenderer.renderTileEntityFast(tileEntityIn, x, y, z, partialTicks, destroyStage, this.batchBuffer.getWorldRenderer());
-                } else {
-                    tileentityspecialrenderer.renderTileEntityAt(tileEntityIn, x, y, z, partialTicks, destroyStage);
-                }
+                tileentityspecialrenderer.renderTileEntityAt(tileEntityIn, x, y, z, partialTicks, destroyStage);
 
                 this.tileEntityRendered = null;
             } catch (Throwable throwable) {
