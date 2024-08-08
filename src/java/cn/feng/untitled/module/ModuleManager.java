@@ -2,10 +2,7 @@ package cn.feng.untitled.module;
 
 import cn.feng.untitled.event.api.SubscribeEvent;
 import cn.feng.untitled.event.impl.KeyEvent;
-import cn.feng.untitled.module.impl.client.ClickGUI;
-import cn.feng.untitled.module.impl.client.HUD;
-import cn.feng.untitled.module.impl.client.PostProcessing;
-import cn.feng.untitled.module.impl.client.Target;
+import cn.feng.untitled.module.impl.client.*;
 import cn.feng.untitled.module.impl.movement.ToggleSprint;
 import cn.feng.untitled.module.impl.render.Camera;
 import cn.feng.untitled.module.impl.render.FullBright;
@@ -87,6 +84,7 @@ public class ModuleManager {
         register(new NameTag());
         register(new Scaffold());
         register(new Camera());
+        register(new EntityCullingMod());
     }
 
     public Module getModule(Class<? extends Module> klass) {

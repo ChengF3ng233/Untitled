@@ -1,6 +1,11 @@
 package net.minecraft.client.renderer.entity;
 
+import cn.feng.untitled.Client;
+import cn.feng.untitled.module.impl.client.EntityCullingMod;
 import com.google.common.collect.Maps;
+import dev.tr7zw.entityculling.EntityCulling;
+import dev.tr7zw.entityculling.access.Cullable;
+import dev.tr7zw.entityculling.access.EntityRendererInter;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockBed;
 import net.minecraft.block.state.IBlockState;
@@ -285,6 +290,20 @@ public class RenderManager {
     }
 
     public boolean doRenderEntity(Entity entity, double x, double y, double z, float entityYaw, float partialTicks, boolean hideDebugBox) {
+        if (Client.instance.moduleManager.getModule(EntityCullingMod.class).enabled) {
+            if (!((Cullable) entity).isForcedVisible() && ((Cullable) entity).isCulled()) {
+                EntityRendererInter<Entity> entityRenderer = getEntityRenderObject(entity);
+                if (EntityCullingMod.through.value && entityRenderer.shadowShouldShowName(entity)) {
+                    entityRenderer.shadowRenderNameTag(entity, x, y, z);
+                }
+                EntityCulling.instance.skippedEntities++;
+                return false;
+            }
+
+            EntityCulling.instance.renderedEntities++;
+            ((Cullable) entity).setOutOfCamera(false);
+        }
+
         Render<Entity> render = null;
 
         try {

@@ -7,6 +7,7 @@ import cn.feng.untitled.util.animation.advanced.impl.SmoothStepAnimation;
 import cn.feng.untitled.util.render.RenderUtil;
 import cn.feng.untitled.util.render.RoundedUtil;
 import cn.feng.untitled.util.render.blur.BlurUtil;
+import net.minecraft.client.Minecraft;
 import org.lwjgl.input.Mouse;
 import org.lwjgl.nanovg.NanoVG;
 
@@ -37,7 +38,7 @@ public class Button {
             scaleAnim.changeDirection();
         }
 
-        if (hovering && Mouse.isButtonDown(0)) {
+        if (hovering && Mouse.isButtonDown(0) && Minecraft.getMinecraft().currentScreen instanceof MainScreen) {
             action.run();
             return;
         }

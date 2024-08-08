@@ -1,6 +1,8 @@
 package net.minecraft.tileentity;
 
 import com.google.common.collect.Maps;
+import dev.tr7zw.entityculling.EntityCulling;
+import dev.tr7zw.entityculling.access.Cullable;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockJukebox;
 import net.minecraft.block.state.IBlockState;
@@ -16,10 +18,49 @@ import org.apache.logging.log4j.Logger;
 import java.util.Map;
 import java.util.concurrent.Callable;
 
-public abstract class TileEntity {
+public abstract class TileEntity implements Cullable {
     private static final Logger logger = LogManager.getLogger();
     private static final Map<String, Class<? extends TileEntity>> nameToClassMap = Maps.newHashMap();
     private static final Map<Class<? extends TileEntity>, String> classToNameMap = Maps.newHashMap();
+
+    private long lasttime = 0;
+    private boolean culled = false;
+    private boolean outOfCamera = false;
+
+    @Override
+    public void setTimeout() {
+        lasttime = System.currentTimeMillis() + 1000;
+    }
+
+    @Override
+    public boolean isForcedVisible() {
+        return lasttime > System.currentTimeMillis();
+    }
+
+    @Override
+    public void setCulled(boolean value) {
+        this.culled = value;
+        if(!value) {
+            setTimeout();
+        }
+    }
+
+    @Override
+    public boolean isCulled() {
+        if(!EntityCulling.enabled)return false;
+        return culled;
+    }
+
+    @Override
+    public void setOutOfCamera(boolean value) {
+        this.outOfCamera = value;
+    }
+
+    @Override
+    public boolean isOutOfCamera() {
+        if(!EntityCulling.enabled)return false;
+        return outOfCamera;
+    }
 
     static {
         addMapping(TileEntityFurnace.class, "Furnace");

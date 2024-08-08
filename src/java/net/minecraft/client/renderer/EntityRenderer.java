@@ -714,9 +714,7 @@ public class EntityRenderer implements IResourceManagerReloadListener {
                 GlStateManager.rotate(renderEntity.rotationPitch - pitch, 1.0F, 0.0F, 0.0F);
                 GlStateManager.rotate(renderEntity.rotationYaw - yaw, 0.0F, 1.0F, 0.0F);
 
-                boolean motion = Camera.motion.value;
-
-                if (Camera.animation.value || motion) {
+                if (Camera.animation.value) {
                     GlStateManager.translate(
                             animatedPosition[0],
                             animatedPosition[1],

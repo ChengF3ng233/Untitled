@@ -27,7 +27,7 @@ public class SplashScreen extends GuiScreen {
         this.current = current;
         this.target = target;
 
-        alphaAnim = new SmoothStepAnimation(700, 1d);
+        alphaAnim = new SmoothStepAnimation(500, 1d);
     }
 
     @Override

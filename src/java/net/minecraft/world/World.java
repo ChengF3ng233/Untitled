@@ -1,5 +1,6 @@
 package net.minecraft.world;
 
+import cn.feng.untitled.Client;
 import com.google.common.base.Predicate;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
@@ -14,6 +15,7 @@ import java.util.UUID;
 import java.util.concurrent.Callable;
 
 import de.florianmichael.viamcp.fixes.FixedSoundEngine;
+import dev.tr7zw.entityculling.EntityCulling;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockHopper;
 import net.minecraft.block.BlockLiquid;
@@ -2020,6 +2022,7 @@ public abstract class World implements IBlockAccess {
      * Runs a single tick for the world
      */
     public void tick() {
+        EntityCulling.instance.worldTick();
         this.updateWeather();
     }
 

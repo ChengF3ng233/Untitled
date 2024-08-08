@@ -11,6 +11,7 @@ import cn.feng.untitled.ui.font.nano.NanoFontLoader;
 import cn.feng.untitled.ui.font.nano.NanoLoader;
 import cn.feng.untitled.util.misc.Logger;
 import de.florianmichael.viamcp.ViaMCP;
+import dev.tr7zw.entityculling.EntityCulling;
 import net.minecraft.client.Minecraft;
 import org.lwjgl.Sys;
 import org.lwjgl.input.Keyboard;
@@ -31,6 +32,7 @@ public enum Client {
 
     public void start() {
         Logger.info("Client starting up...");
+        long start = System.currentTimeMillis();
 
         try {
             ViaMCP.create();
@@ -38,6 +40,8 @@ public enum Client {
         } catch (Exception e) {
             e.printStackTrace();
         }
+
+        EntityCulling.instance.onInitialize();
 
         Logger.info("Initializing managers...");
         eventBus = new EventBus();
@@ -48,10 +52,8 @@ public enum Client {
         configManager = new ConfigManager();
 
         Logger.info("Loading fonts...");
-        long start = System.currentTimeMillis();
         FontLoader.registerFonts();
         NanoFontLoader.registerFonts();
-        Logger.info("Finished loading fonts within " + (System.currentTimeMillis() - start) / 1000 + " seconds.");
 
         Logger.info("Registering...");
         eventBus.register(moduleManager);
@@ -69,7 +71,7 @@ public enum Client {
         Keyboard.enableRepeatEvents(false);
 
         Display.setTitle(CLIENT_NAME + " | LWJGL Version " + Sys.getVersion());
-        Logger.info("Done.");
+        Logger.info("Finished loading in " + (System.currentTimeMillis() - start) / 1000f + " seconds.");
 
         loaded = true;
     }

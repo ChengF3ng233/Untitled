@@ -1,7 +1,10 @@
 package net.minecraft.client.gui;
 
+import cn.feng.untitled.Client;
+import cn.feng.untitled.module.impl.client.EntityCullingMod;
 import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
+import dev.tr7zw.entityculling.EntityCulling;
 import net.minecraft.block.Block;
 import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.state.IBlockState;
@@ -209,6 +212,19 @@ public class GuiOverlayDebug extends Gui {
                 BlockPos blockpos1 = this.mc.objectMouseOver.getBlockPos();
                 list.add(String.format("Looking at: %d %d %d", blockpos1.getX(), blockpos1.getY(), blockpos1.getZ()));
             }
+
+
+            if (Client.instance.moduleManager.getModule(EntityCullingMod.class).enabled) {
+                list.add("[Culling] Last pass: " + EntityCulling.instance.cullTask.lastTime + "ms");
+                list.add("[Culling] Rendered Block Entities: " + EntityCulling.instance.renderedBlockEntities + " Skipped: " + EntityCulling.instance.skippedBlockEntities);
+                list.add("[Culling] Rendered Entities: " + EntityCulling.instance.renderedEntities + " Skipped: " + EntityCulling.instance.skippedEntities);
+
+                EntityCulling.instance.renderedBlockEntities = 0;
+                EntityCulling.instance.skippedBlockEntities = 0;
+                EntityCulling.instance.renderedEntities = 0;
+                EntityCulling.instance.skippedEntities = 0;
+            }
+
 
             return list;
         }

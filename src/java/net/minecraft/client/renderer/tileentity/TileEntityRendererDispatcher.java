@@ -1,6 +1,10 @@
 package net.minecraft.client.renderer.tileentity;
 
+import cn.feng.untitled.Client;
+import cn.feng.untitled.module.impl.client.EntityCullingMod;
 import com.google.common.collect.Maps;
+import dev.tr7zw.entityculling.EntityCulling;
+import dev.tr7zw.entityculling.access.Cullable;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.renderer.GlStateManager;
@@ -146,6 +150,15 @@ public class TileEntityRendererDispatcher {
     }
 
     public void renderTileEntityAt(TileEntity tileEntityIn, double x, double y, double z, float partialTicks, int destroyStage) {
+
+        if (Client.instance.moduleManager.getModule(EntityCullingMod.class).enabled) {
+            if (!((Cullable) tileEntityIn).isForcedVisible() && ((Cullable) tileEntityIn).isCulled()) {
+                EntityCulling.instance.skippedBlockEntities++;
+                return;
+            }
+            EntityCulling.instance.renderedBlockEntities++;
+        }
+
         TileEntitySpecialRenderer<TileEntity> tileentityspecialrenderer = this.getSpecialRenderer(tileEntityIn);
 
         if (tileentityspecialrenderer != null) {
