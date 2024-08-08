@@ -3,13 +3,12 @@ package net.minecraft.client.resources.model;
 import com.google.common.collect.Maps;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.MathHelper;
-import net.minecraftforge.client.model.ITransformation;
 import org.lwjgl.util.vector.Matrix4f;
 import org.lwjgl.util.vector.Vector3f;
 
 import java.util.Map;
 
-public enum ModelRotation implements ITransformation {
+public enum ModelRotation {
     X0_Y0(0, 0),
     X0_Y90(0, 90),
     X0_Y180(0, 180),

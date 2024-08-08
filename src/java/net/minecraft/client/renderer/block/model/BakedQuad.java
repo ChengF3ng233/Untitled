@@ -4,9 +4,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.src.Config;
 import net.minecraft.util.EnumFacing;
-import net.minecraftforge.client.model.pipeline.IVertexConsumer;
 import net.optifine.model.QuadBounds;
-import net.optifine.reflect.Reflector;
 
 public class BakedQuad {
     protected final int tintIndex;

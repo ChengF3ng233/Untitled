@@ -8,10 +8,7 @@ import net.minecraft.client.resources.model.ModelResourceLocation;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.src.Config;
-import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.client.model.ISmartItemModel;
 import net.optifine.CustomItems;
-import net.optifine.reflect.Reflector;
 
 import java.util.Map;
 import java.util.Map.Entry;
