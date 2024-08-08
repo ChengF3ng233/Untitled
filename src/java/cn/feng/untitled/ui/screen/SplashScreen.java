@@ -41,7 +41,7 @@ public class SplashScreen extends GuiScreen {
         target.setWorldAndResolution(mc, i, j);
         mc.skipRenderWorld = false;
 
-        alphaAnim = new SmoothStepAnimation(1000, 1d);
+        alphaAnim = new SmoothStepAnimation(700, 1d);
     }
 
     @Override

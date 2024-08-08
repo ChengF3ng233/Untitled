@@ -3,6 +3,7 @@ package cn.feng.untitled.ui.clickgui.neverlose.gui;
 import cn.feng.untitled.ui.clickgui.neverlose.ThemeColor;
 import cn.feng.untitled.ui.font.awt.CenterType;
 import cn.feng.untitled.ui.font.awt.Font;
+import cn.feng.untitled.ui.font.nano.NanoFontRenderer;
 import cn.feng.untitled.util.animation.advanced.Direction;
 import cn.feng.untitled.util.animation.advanced.composed.ColorAnimation;
 import cn.feng.untitled.util.render.ColorUtil;
@@ -10,6 +11,7 @@ import cn.feng.untitled.util.render.RenderUtil;
 import cn.feng.untitled.util.render.RoundedUtil;
 import net.minecraft.util.ChatAllowedCharacters;
 import org.lwjgl.input.Keyboard;
+import org.lwjgl.nanovg.NanoVG;
 
 import java.awt.*;
 
@@ -24,12 +26,12 @@ public class TextField {
     public float radius;
     public String text;
 
-    private final Font font;
+    private final NanoFontRenderer font;
     public Color backgroundColor, outlineColor;
     private final ColorAnimation textColorAnim;
     private final ColorAnimation cursorColorAnim;
 
-    public TextField(float width, float height, Font font, Color backgroundColor, Color outlineColor) {
+    public TextField(float width, float height, NanoFontRenderer font, Color backgroundColor, Color outlineColor) {
         this.text = "";
         this.width = width;
         this.textMaxWidth = width - 2f;
@@ -59,12 +61,14 @@ public class TextField {
             cursorColorAnim.changeDirection();
         }
 
+        font.setSize(16);
+
         RoundedUtil.drawRoundOutline(posX, posY, width, height, radius, 0.1f, backgroundColor, outlineColor);
 
         String visibleText = font.getStringWidth(text) > textMaxWidth - 3f - offsetX? font.trimStringToWidth(text, textMaxWidth - 3f - offsetX, true) : text;
         float textX = posX + 2f;
         float textY = posY + height / 2f;
-        font.drawCenteredString(visibleText, textX + offsetX, textY, textColorAnim.getOutput().getRGB(), CenterType.Vertical, true);
+        font.drawString(visibleText, textX + offsetX, textY - font.getSize() + 0.5f, NanoVG.NVG_ALIGN_MIDDLE, textColorAnim.getOutput(), true);
 
         if (focused) {
             float h = height * 0.6f;
@@ -94,7 +98,7 @@ public class TextField {
             }
 
             default -> {
-                if (!ChatAllowedCharacters.isAllowedCharacter(c)) return;
+                if (c == '\u0000') return;
                 text += c;
             }
         }

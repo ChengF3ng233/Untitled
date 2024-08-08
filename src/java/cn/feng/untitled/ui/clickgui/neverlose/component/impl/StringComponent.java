@@ -4,6 +4,7 @@ import cn.feng.untitled.ui.clickgui.neverlose.ThemeColor;
 import cn.feng.untitled.ui.clickgui.neverlose.component.Component;
 import cn.feng.untitled.ui.clickgui.neverlose.gui.TextField;
 import cn.feng.untitled.ui.font.awt.FontLoader;
+import cn.feng.untitled.ui.font.nano.NanoFontLoader;
 import cn.feng.untitled.value.impl.StringValue;
 
 /**
@@ -19,7 +20,7 @@ public class StringComponent extends Component<String> {
         width = 65f;
         height = 13f;
 
-        textField = new TextField(width, height, FontLoader.miSans(15), ThemeColor.barColor, ThemeColor.outlineColor);
+        textField = new TextField(width, height, NanoFontLoader.misans, ThemeColor.barColor, ThemeColor.outlineColor);
         textField.text = value.value;
     }
 

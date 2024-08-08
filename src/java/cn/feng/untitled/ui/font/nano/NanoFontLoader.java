@@ -12,6 +12,7 @@ public class NanoFontLoader {
     public static NanoFontRenderer script;
     public static NanoFontRenderer rubik;
     public static NanoFontRenderer greyCliff;
+    public static NanoFontRenderer monster;
 
     public static void registerFonts() {
         misans = new NanoFontRenderer("MiSans", new ResourceLocation("untitled/font/misans.ttf"));
@@ -19,5 +20,6 @@ public class NanoFontLoader {
         script = new NanoFontRenderer("Script", new ResourceLocation("untitled/font/script.ttf"));
         rubik = new NanoFontRenderer("Rubik", new ResourceLocation("untitled/font/rubik.ttf"));
         greyCliff = new NanoFontRenderer("Greycliff", new ResourceLocation("untitled/font/greycliff.ttf"));
+        monster = new NanoFontRenderer("Monster", new ResourceLocation("untitled/font/monster.ttf"));
     }
 }

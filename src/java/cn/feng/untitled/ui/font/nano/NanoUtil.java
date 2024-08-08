@@ -44,7 +44,7 @@ public class NanoUtil extends MinecraftInstance {
     }
 
     protected static List<FontPair> generateFontPair(String text, NanoFontRenderer defaultRenderer) {
-        if (fontPairs.containsKey(text)) return fontPairs.get(text);
+       // if (fontPairs.containsKey(text)) return fontPairs.get(text);
 
         List<FontPair> renderList = new ArrayList<>();
         int[] codePoints = text.codePoints().toArray();
@@ -104,7 +104,7 @@ public class NanoUtil extends MinecraftInstance {
             renderList.add(new FontPair(international.toString(), internationalRenderer));
         }
 
-        fontPairs.put(text, renderList);
+      //  fontPairs.put(text, renderList);
         return renderList;
     }
 

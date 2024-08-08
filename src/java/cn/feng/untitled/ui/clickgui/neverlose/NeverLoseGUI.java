@@ -9,6 +9,7 @@ import cn.feng.untitled.ui.clickgui.neverlose.panel.impl.ModulePanel;
 import cn.feng.untitled.ui.font.awt.CenterType;
 import cn.feng.untitled.ui.font.awt.FontLoader;
 import cn.feng.untitled.ui.font.awt.FontRenderer;
+import cn.feng.untitled.ui.font.nano.NanoFontLoader;
 import cn.feng.untitled.ui.font.nano.NanoUtil;
 import cn.feng.untitled.util.animation.advanced.Animation;
 import cn.feng.untitled.util.animation.advanced.Direction;
@@ -70,7 +71,7 @@ public class NeverLoseGUI extends GuiScreen {
         currentPanel = categoryPanelList.get(0);
 
         float iconSize = 14f;
-        searchField = new TextField(60f, 20f, FontLoader.rubik(18), ThemeColor.titleColor, ThemeColor.grayColor);
+        searchField = new TextField(60f, 20f, NanoFontLoader.misans, ThemeColor.titleColor, ThemeColor.grayColor);
         searchField.radius = 5f;
         searchField.offsetX = iconSize + 2f;
 

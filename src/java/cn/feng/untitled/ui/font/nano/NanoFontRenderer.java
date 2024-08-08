@@ -48,6 +48,14 @@ public class NanoFontRenderer extends MinecraftInstance {
         renderString(text, x, y, size, align, 0f, color);
     }
 
+    public void drawString(String text, float x, float y, int align, Color color) {
+        renderString(text, x, y, size, align, 0f, color);
+    }
+
+    public void drawString(String text, float x, float y, int align, Color color, boolean shadow) {
+        drawString(text, x, y, size, align, color, shadow);
+    }
+
     public void drawString(String text, float x, float y, float size, int align, Color col, boolean shadow) {
         int color = col.getRGB();
 
@@ -158,13 +166,22 @@ public class NanoFontRenderer extends MinecraftInstance {
      * @return 文本长度
      */
     public float getStringWidth(String text, float size) {
+        float width = 0f;
+        List<FontPair> fontPairs = NanoUtil.generateFontPair(text, this);
+        for (FontPair fontPair : fontPairs) {
+            width += fontPair.renderer.getStringPartWidth(fontPair.text, size);
+        }
+        return width;
+    }
+
+    private float getStringPartWidth(String text, float size) {
         nvgFontFaceId(NanoLoader.vg, font);
         nvgFontSize(NanoLoader.vg, size);
 
         float[] bounds = new float[4];
         nvgTextBounds(NanoLoader.vg, 0, 0, text, bounds);
 
-        return bounds[2] - bounds[0];
+        return (bounds[2] - bounds[0]) / 2f;
     }
 
     public String trimStringToWidth(String text, float width, float size) {

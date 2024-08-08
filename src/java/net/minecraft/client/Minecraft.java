@@ -875,7 +875,7 @@ public class Minecraft implements IThreadListener, IPlayerUsage {
      * Sets the argument GuiScreen as the main (topmost visible) screen.
      */
     public void displayGuiScreen(GuiScreen guiScreenIn) {
-        if (thePlayer != null || currentScreen instanceof GuiIngameMenu) {
+        if (currentScreen == null || guiScreenIn == null ||thePlayer != null || currentScreen instanceof GuiIngameMenu) {
             displayScreen(guiScreenIn);
             return;
         }
