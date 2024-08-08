@@ -5,7 +5,7 @@ package cn.feng.untitled.util.animation.simple;
  * @since 2024/8/1
  **/
 public class AnimationUtil {
-    public static float animate(float target, float current, double speed) {
+    public static double animate(double target, double current, double speed) {
         boolean larger;
         boolean bl = larger = target > current;
         if (speed < 0.0) {
@@ -13,8 +13,8 @@ public class AnimationUtil {
         } else if (speed > 1.0) {
             speed = 1.0;
         }
-        float dif = Math.max(target, current) - Math.min(target, current);
-        float factor = (float) ((double) dif * speed);
+        double dif = Math.max(target, current) - Math.min(target, current);
+        double factor = dif * speed;
         current = larger ? current + factor : current - factor;
         return current;
     }

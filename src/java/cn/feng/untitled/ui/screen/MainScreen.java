@@ -70,15 +70,17 @@ public class MainScreen extends GuiScreen {
         NanoFontLoader.script.drawGlowString("Untitled Client", centerX, (sr.getScaledHeight() / 2f) * 0.3f, 50f, 15f, NanoVG.NVG_ALIGN_CENTER, Color.WHITE, ThemeColor.focusedColor);
         NanoFontLoader.script.drawGlowString("Some birds are not meant to be caged, their feathers are just too bright.", centerX, sr.getScaledHeight() * 0.8f, 25f, 5f, NanoVG.NVG_ALIGN_CENTER, Color.WHITE, Color.WHITE);
 
-        float gap = 10f;
-        float buttonX, buttonY;
-        int buttonIndex = 0;
+        if (mc.currentScreen == this) {
+            float gap = 10f;
+            float buttonX, buttonY;
+            int buttonIndex = 0;
 
-        for (Button button : buttonList) {
-            buttonX = buttonIndex % 2 == 0 ? sr.getScaledWidth() / 2f - gap / 2f - buttonWidth : sr.getScaledWidth() / 2f + gap / 2f;
-            buttonY = buttonIndex <= 1 ? sr.getScaledHeight() / 2f - gap / 2f - buttonHeight : sr.getScaledHeight() / 2f + gap / 2f;
-            button.draw(buttonX, buttonY, mouseX, mouseY);
-            buttonIndex++;
+            for (Button button : buttonList) {
+                buttonX = buttonIndex % 2 == 0 ? sr.getScaledWidth() / 2f - gap / 2f - buttonWidth : sr.getScaledWidth() / 2f + gap / 2f;
+                buttonY = buttonIndex <= 1 ? sr.getScaledHeight() / 2f - gap / 2f - buttonHeight : sr.getScaledHeight() / 2f + gap / 2f;
+                button.draw(buttonX, buttonY, mouseX, mouseY);
+                buttonIndex++;
+            }
         }
 
         NanoUtil.endFrame();

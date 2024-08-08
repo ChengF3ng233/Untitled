@@ -7,6 +7,7 @@ import cn.feng.untitled.module.impl.client.HUD;
 import cn.feng.untitled.module.impl.client.PostProcessing;
 import cn.feng.untitled.module.impl.client.Target;
 import cn.feng.untitled.module.impl.movement.ToggleSprint;
+import cn.feng.untitled.module.impl.render.Camera;
 import cn.feng.untitled.module.impl.render.FullBright;
 import cn.feng.untitled.module.impl.render.NameTag;
 import cn.feng.untitled.module.impl.world.Scaffold;
@@ -85,6 +86,7 @@ public class ModuleManager {
         register(new FullBright());
         register(new NameTag());
         register(new Scaffold());
+        register(new Camera());
     }
 
     public Module getModule(Class<? extends Module> klass) {

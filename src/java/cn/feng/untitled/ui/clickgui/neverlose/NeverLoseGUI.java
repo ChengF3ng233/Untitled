@@ -178,7 +178,7 @@ public class NeverLoseGUI extends GuiScreen {
         }
 
         // Module
-        float scroll = currentPanel.scrollAnim.animate();
+        float scroll = (float) currentPanel.scrollAnim.animate();
 
         float moduleX;
         float originalY = y + topWidth + 8f;

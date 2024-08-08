@@ -27,26 +27,26 @@ public class SplashScreen extends GuiScreen {
         this.current = current;
         this.target = target;
 
-        current.onGuiClosed();
-
-        if (target instanceof MainScreen) {
-            mc.gameSettings.showDebugInfo = false;
-            mc.ingameGUI.getChatGUI().clearChatMessages();
-        }
-
-        mc.setIngameNotInFocus();
-        ScaledResolution scaledresolution = new ScaledResolution(mc);
-        int i = scaledresolution.getScaledWidth();
-        int j = scaledresolution.getScaledHeight();
-        target.setWorldAndResolution(mc, i, j);
-        mc.skipRenderWorld = false;
-
         alphaAnim = new SmoothStepAnimation(700, 1d);
     }
 
     @Override
     public void drawScreen(int mouseX, int mouseY, float partialTicks) {
         if (alphaAnim.finished(Direction.FORWARDS)) {
+            current.onGuiClosed();
+
+            if (target instanceof MainScreen) {
+                mc.gameSettings.showDebugInfo = false;
+                mc.ingameGUI.getChatGUI().clearChatMessages();
+            }
+
+            mc.setIngameNotInFocus();
+            ScaledResolution scaledresolution = new ScaledResolution(mc);
+            int i = scaledresolution.getScaledWidth();
+            int j = scaledresolution.getScaledHeight();
+            target.setWorldAndResolution(mc, i, j);
+            mc.skipRenderWorld = false;
+
             alphaAnim.changeDirection();
         } else if (alphaAnim.getDirection() == Direction.FORWARDS) {
             current.drawScreen(mouseX, mouseY, partialTicks);

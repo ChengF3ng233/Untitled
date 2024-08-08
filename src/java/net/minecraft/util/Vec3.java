@@ -4,17 +4,17 @@ public class Vec3 {
     /**
      * X coordinate of Vec3D
      */
-    public final double xCoord;
+    public double xCoord;
 
     /**
      * Y coordinate of Vec3D
      */
-    public final double yCoord;
+    public double yCoord;
 
     /**
      * Z coordinate of Vec3D
      */
-    public final double zCoord;
+    public double zCoord;
 
     public Vec3(double x, double y, double z) {
         if (x == -0.0D) {

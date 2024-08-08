@@ -566,6 +566,8 @@ public class Minecraft implements IThreadListener, IPlayerUsage {
         this.checkGLError("Post startup");
 
         Client.instance.start();
+        entityRenderer.cameraPosAnim.setCurrent(0f, 0f, -0.1f);
+        entityRenderer.cameraPosAnim.setTarget(0f, 0f, -0.1f);
 
         this.ingameGUI = new GuiIngame(this);
 

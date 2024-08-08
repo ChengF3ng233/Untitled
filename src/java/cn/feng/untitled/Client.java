@@ -11,6 +11,7 @@ import cn.feng.untitled.ui.font.nano.NanoFontLoader;
 import cn.feng.untitled.ui.font.nano.NanoLoader;
 import cn.feng.untitled.util.misc.Logger;
 import de.florianmichael.viamcp.ViaMCP;
+import net.minecraft.client.Minecraft;
 import org.lwjgl.Sys;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.Display;
@@ -56,6 +57,7 @@ public enum Client {
         eventBus.register(moduleManager);
         eventBus.register(commandManager);
         eventBus.register(uiManager);
+        eventBus.register(Minecraft.getMinecraft().entityRenderer);
         moduleManager.registerModules();
         commandManager.registerCommands();
         configManager.registerConfigs();

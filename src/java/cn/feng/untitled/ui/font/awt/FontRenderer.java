@@ -34,7 +34,6 @@ public class FontRenderer extends Font {
     private final float fontHeight;
     private final Map<Character, FontCharacter> defaultCharacters = new HashMap<>();
     private final Map<Character, FontCharacter> boldCharacters = new HashMap<>();
-    private final Map<Character, FontCharacter> chineseCharacters = new HashMap<>();
     private final boolean chinese;
 
     public FontRenderer(java.awt.Font font, boolean chinese) {
@@ -42,8 +41,8 @@ public class FontRenderer extends Font {
         this.fontHeight = (float) (font.getStringBounds("ABCDEFGHOKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz", new FontRenderContext(new AffineTransform(), true, true)).getHeight() / 4.0D);
         this.chinese = chinese;
 
-        this.fillCharacters(this.defaultCharacters, 0, chinese);
-        this.fillCharacters(this.boldCharacters, 1, chinese);
+        this.fillCharacters(this.defaultCharacters, 0, false);
+        //this.fillCharacters(this.boldCharacters, 1, false);
     }
 
     public float getMiddleOfBox(float height) {
@@ -332,7 +331,7 @@ public class FontRenderer extends Font {
      */
     private void fillSingleChar(char character, Map<Character, FontCharacter> map, boolean bold) {
         // 不是中文字体就算了，肯定画不出来
-        if (!this.chinese) return;
+        if (!this.chinese && isChinese(character)) return;
         java.awt.Font font = this.font.deriveFont(bold? java.awt.Font.BOLD : java.awt.Font.PLAIN);
 
         BufferedImage fontImage = new BufferedImage(1, 1, 2);
@@ -394,5 +393,9 @@ public class FontRenderer extends Font {
         }
 
         return highest >= 256;
+    }
+
+    private boolean isChinese(char character) {
+        return character >= 256;
     }
 }
