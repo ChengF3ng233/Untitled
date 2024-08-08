@@ -1735,6 +1735,10 @@ public class Minecraft implements IThreadListener, IPlayerUsage {
                                     this.entityRenderer.loadEntityShader(null);
                                 }
 
+                                if (gameSettings.thirdPersonView != 0) {
+                                  //  entityRenderer.motionStartPoint = new Vec3(thePlayer.posX, thePlayer.posY, thePlayer.posZ);
+                                }
+
                                 this.renderGlobal.setDisplayListEntitiesDirty();
                             }
 

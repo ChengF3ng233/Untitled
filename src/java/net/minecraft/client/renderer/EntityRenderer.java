@@ -567,9 +567,7 @@ public class EntityRenderer implements IResourceManagerReloadListener {
                     this.mc.renderGlobal.displayListEntitiesDirty = true;
                 }
 
-                if (Config.zoomMode) {
-                    f /= 4.0F;
-                }
+                f /= 4.0F;
             } else if (Config.zoomMode) {
                 Config.zoomMode = false;
                 this.mc.gameSettings.smoothCamera = Config.zoomSmoothCamera;
@@ -637,6 +635,7 @@ public class EntityRenderer implements IResourceManagerReloadListener {
     private void orientCamera(float partialTicks) {
         Entity renderEntity = this.mc.getRenderViewEntity();
         float eyeHeight = renderEntity.getEyeHeight();
+
         double interpolatedPosX = renderEntity.prevPosX + (renderEntity.posX - renderEntity.prevPosX) * partialTicks;
         double interpolatedPosY = renderEntity.prevPosY + (renderEntity.posY - renderEntity.prevPosY) * partialTicks + eyeHeight;
         double interpolatedPosZ = renderEntity.prevPosZ + (renderEntity.posZ - renderEntity.prevPosZ) * partialTicks;
@@ -665,7 +664,7 @@ public class EntityRenderer implements IResourceManagerReloadListener {
 
             float yaw = renderEntity.rotationYaw;
             float pitch = renderEntity.rotationPitch;
-            double thirdPersonDistance = this.thirdPersonDistanceTemp + (this.thirdPersonDistance - this.thirdPersonDistanceTemp) * partialTicks;
+            double thirdPersonDistance = this.thirdPersonDistanceTemp + (this.thirdPersonDistance - this.thirdPersonDistanceTemp) * partialTicks + (Camera.transform.value && mc.gameSettings.thirdPersonView == 1? Camera.z.value : 0);
 
             if (this.mc.gameSettings.thirdPersonView > 0) {
                 double offsetX = (-MathHelper.sin(yaw / 180.0F * (float) Math.PI) * MathHelper.cos(pitch / 180.0F * (float) Math.PI)) * thirdPersonDistance;
@@ -679,6 +678,7 @@ public class EntityRenderer implements IResourceManagerReloadListener {
                         float cornerOffsetZ = ((i >> 2 & 1) * 2 - 1) * 0.1F;
 
                         Vec3 endPoint =  new Vec3(interpolatedPosX - offsetX + cornerOffsetX + cornerOffsetZ, interpolatedPosY - offsetZ + cornerOffsetY, interpolatedPosZ - offsetY + cornerOffsetZ);
+
                         if (mc.gameSettings.thirdPersonView == 2) {
                             endPoint.xCoord = interpolatedPosX + offsetX - cornerOffsetX - cornerOffsetZ;
                             endPoint.yCoord = interpolatedPosY + offsetZ - cornerOffsetY;
@@ -700,8 +700,9 @@ public class EntityRenderer implements IResourceManagerReloadListener {
                     }
                 }
 
+                boolean transform = Camera.transform.value;
                 if (this.mc.gameSettings.thirdPersonView == 1) {
-                    cameraPosAnim.setTarget(0f, 0f, -thirdPersonDistance);
+                    cameraPosAnim.setTarget(transform? -Camera.x.value : 0f, transform? -Camera.y.value : 0f, -thirdPersonDistance);
                 } else {
                     cameraPosAnim.setTarget(0f, 0f, thirdPersonDistance);
                 }
@@ -712,11 +713,19 @@ public class EntityRenderer implements IResourceManagerReloadListener {
 
                 GlStateManager.rotate(renderEntity.rotationPitch - pitch, 1.0F, 0.0F, 0.0F);
                 GlStateManager.rotate(renderEntity.rotationYaw - yaw, 0.0F, 1.0F, 0.0F);
-                if (Camera.animation.value) {
-                    GlStateManager.translate(animatedPosition[0], animatedPosition[1], animatedPosition[2]);
+
+                boolean motion = Camera.motion.value;
+
+                if (Camera.animation.value || motion) {
+                    GlStateManager.translate(
+                            animatedPosition[0],
+                            animatedPosition[1],
+                            animatedPosition[2]
+                    );
                 } else {
                     GlStateManager.translate(0f, 0f, mc.gameSettings.thirdPersonView == 1? -thirdPersonDistance : thirdPersonDistance);
                 }
+
                 GlStateManager.rotate(yaw - renderEntity.rotationYaw, 0.0F, 1.0F, 0.0F);
                 GlStateManager.rotate(pitch - renderEntity.rotationPitch, 1.0F, 0.0F, 0.0F);
             } else {
@@ -1109,9 +1118,10 @@ public class EntityRenderer implements IResourceManagerReloadListener {
     public void updateCameraAndRender(float partialTicks, long nanoTime) {
         Config.renderPartialTicks = partialTicks;
         this.frameInit();
-        boolean flag = Display.isActive();
+        boolean active = Display.isActive();
 
-        if (!flag && this.mc.gameSettings.pauseOnLostFocus && (!this.mc.gameSettings.touchscreen || !Mouse.isButtonDown(1))) {
+        // 检测窗口是否聚焦
+        if (!active && this.mc.gameSettings.pauseOnLostFocus && (!this.mc.gameSettings.touchscreen || !Mouse.isButtonDown(1))) {
             if (Minecraft.getSystemTime() - this.prevFrameTime > 500L) {
                 this.mc.displayInGameMenu();
             }
@@ -1121,13 +1131,13 @@ public class EntityRenderer implements IResourceManagerReloadListener {
 
         this.mc.mcProfiler.startSection("mouse");
 
-        if (flag && Minecraft.isRunningOnMac && this.mc.inGameHasFocus && !Mouse.isInsideWindow()) {
+        if (active && Minecraft.isRunningOnMac && this.mc.inGameHasFocus && !Mouse.isInsideWindow()) {
             Mouse.setGrabbed(false);
             Mouse.setCursorPosition(Display.getWidth() / 2, Display.getHeight() / 2);
             Mouse.setGrabbed(true);
         }
 
-        if (this.mc.inGameHasFocus && flag) {
+        if (this.mc.inGameHasFocus && active) {
             this.mc.mouseHelper.mouseXYChange();
             float f = this.mc.gameSettings.mouseSensitivity * 0.6F + 0.2F;
             float f1 = f * f * f * 8.0F;
@@ -1163,11 +1173,11 @@ public class EntityRenderer implements IResourceManagerReloadListener {
             int j1 = scaledresolution.getScaledHeight();
             final int k1 = Mouse.getX() * i1 / this.mc.displayWidth;
             final int l1 = j1 - Mouse.getY() * j1 / this.mc.displayHeight - 1;
-            int i2 = this.mc.gameSettings.limitFramerate;
+            int maxFPS = this.mc.gameSettings.limitFramerate;
 
             if (this.mc.theWorld != null) {
                 this.mc.mcProfiler.startSection("level");
-                int j = Math.min(Minecraft.getDebugFPS(), i2);
+                int j = Math.min(Minecraft.getDebugFPS(), maxFPS);
                 j = Math.max(j, 60);
                 long k = System.nanoTime() - nanoTime;
                 long l = Math.max((long) (1000000000 / j / 4) - k, 0L);
@@ -1386,6 +1396,7 @@ public class EntityRenderer implements IResourceManagerReloadListener {
         clippinghelper.disabled = Config.isShaders() && !Shaders.isFrustumCulling();
         ICamera icamera = new Frustum(clippinghelper);
         Entity entity = this.mc.getRenderViewEntity();
+
         double d0 = entity.lastTickPosX + (entity.posX - entity.lastTickPosX) * (double) partialTicks;
         double d1 = entity.lastTickPosY + (entity.posY - entity.lastTickPosY) * (double) partialTicks;
         double d2 = entity.lastTickPosZ + (entity.posZ - entity.lastTickPosZ) * (double) partialTicks;

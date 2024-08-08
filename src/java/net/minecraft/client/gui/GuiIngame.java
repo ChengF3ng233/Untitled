@@ -38,8 +38,6 @@ import net.minecraft.src.Config;
 import net.minecraft.util.*;
 import net.minecraft.world.border.WorldBorder;
 import net.optifine.CustomColors;
-import org.lwjgl.nanovg.NanoVG;
-import org.lwjgl.opengl.GL11;
 
 import java.awt.*;
 import java.util.Collection;
@@ -187,8 +185,8 @@ public class GuiIngame extends Gui {
         GlStateManager.enableBlend();
 
         if (this.showCrosshair()) {
-         //   GlStateManager.tryBlendFuncSeparate(775, 769, 1, 0);
-        //    GlStateManager.enableAlpha();
+            //   GlStateManager.tryBlendFuncSeparate(775, 769, 1, 0);
+            //    GlStateManager.enableAlpha();
             BlurUtil.processStart();
 
             Gui.drawNewRect(i / 2 - 5, j / 2 - 1, 9, 1, Color.WHITE.getRGB());
@@ -199,7 +197,7 @@ public class GuiIngame extends Gui {
 
             Gui.drawNewRect(i / 2 - 5, j / 2 - 1, 9, 1, ColorUtil.applyOpacity(Color.WHITE, 0.7f).getRGB());
             Gui.drawNewRect(i / 2 - 1, j / 2 - 5, 1, 9, ColorUtil.applyOpacity(Color.WHITE, 0.7f).getRGB());
-        //    this.drawTexturedModalRect(i / 2 - 7, j / 2 - 7, 0, 0, 16, 16);
+            //    this.drawTexturedModalRect(i / 2 - 7, j / 2 - 7, 0, 0, 16, 16);
         }
 
         GlStateManager.enableAlpha();

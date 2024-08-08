@@ -6,8 +6,7 @@ package cn.feng.untitled.util.animation.simple;
  **/
 public class AnimationUtil {
     public static double animate(double target, double current, double speed) {
-        boolean larger;
-        boolean bl = larger = target > current;
+        boolean larger = target > current;
         if (speed < 0.0) {
             speed = 0.0;
         } else if (speed > 1.0) {
