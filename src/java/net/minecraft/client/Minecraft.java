@@ -734,7 +734,7 @@ public class Minecraft implements IThreadListener, IPlayerUsage {
         return bytebuffer;
     }
 
-    private void updateDisplayMode() throws LWJGLException {
+    private void updateDisplayMode() {
         Set<DisplayMode> set = Sets.newHashSet();
         Collections.addAll(set, Display.getAvailableDisplayModes());
         DisplayMode displaymode = Display.getDesktopDisplayMode();

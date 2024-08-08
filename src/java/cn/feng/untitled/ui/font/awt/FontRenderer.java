@@ -320,7 +320,7 @@ public class FontRenderer extends Font {
         GlStateManager.resetColor();
         GL11.glPopAttrib();
         GL11.glPopMatrix();
-        return (int) (x - startX);
+        return (int) (startX + getStringWidth(text));
     }
 
     /**

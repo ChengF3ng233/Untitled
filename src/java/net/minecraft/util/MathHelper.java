@@ -56,19 +56,52 @@ public class MathHelper {
         }
     }
 
+    public static final float BF_PI = 3.1415927f;
+
+    private static final int BF_SIN_BITS = 14; // 16KB. Adjust for accuracy.
+    private static final int BF_SIN_MASK = ~(-1 << BF_SIN_BITS);
+    private static final int BF_SIN_COUNT = BF_SIN_MASK + 1;
+
+    private static final float BF_radFull = BF_PI * 2;
+    private static final float BF_degFull = 360;
+    private static final float BF_radToIndex = BF_SIN_COUNT / BF_radFull;
+    private static final float BF_degToIndex = BF_SIN_COUNT / BF_degFull;
+
+    public static final float BF_degreesToRadians = BF_PI / 180;
+
+    private static final float[] BF_table = new float[BF_SIN_COUNT];
+
+    static {
+        for(int i = 0; i < BF_SIN_COUNT; i++) {
+            BF_table[i] = (float)Math.sin((i + 0.5f) / BF_SIN_COUNT * BF_radFull);
+        }
+        for (int i = 0; i < 360; i += 90) {
+            BF_table[(int)(i * BF_degToIndex) & BF_SIN_MASK] = (float)Math.sin(i * BF_degreesToRadians);
+        }
+    }
+
+
     /**
      * sin looked up in a table
      */
-    public static float sin(float p_76126_0_) {
-        return fastMath ? SIN_TABLE_FAST[(int) (p_76126_0_ * radToIndex) & 4095] : SIN_TABLE[(int) (p_76126_0_ * 10430.378F) & 65535];
+    public static float sin(float radians) {
+        return BF_table[(int)(radians * BF_radToIndex) & BF_SIN_MASK];
     }
 
     /**
      * cos looked up in the sin table with the appropriate offset
      */
+    public static float cos(float radians) {
+        return BF_table[(int)((radians + BF_PI / 2) * BF_radToIndex) & BF_SIN_MASK];
+    }
+
+/*    public static float sin(float p_76126_0_) {
+        return fastMath ? SIN_TABLE_FAST[(int) (p_76126_0_ * radToIndex) & 4095] : SIN_TABLE[(int) (p_76126_0_ * 10430.378F) & 65535];
+    }
+
     public static float cos(float value) {
         return fastMath ? SIN_TABLE_FAST[(int) (value * radToIndex + 1024.0F) & 4095] : SIN_TABLE[(int) (value * 10430.378F + 16384.0F) & 65535];
-    }
+    }*/
 
     public static float sqrt_float(float value) {
         return (float) Math.sqrt(value);

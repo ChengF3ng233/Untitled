@@ -12,13 +12,15 @@ import net.minecraft.util.MathHelper;
 public class GuiTextField extends Gui {
     private final int id;
     private final FontRenderer fontRendererInstance;
+    public int xPosition;
+    public int yPosition;
+
     /**
      * The width of this text field.
      */
     private final int width;
     private final int height;
-    public int xPosition;
-    public int yPosition;
+
     /**
      * Has the current text being edited on the textbox.
      */
@@ -60,7 +62,7 @@ public class GuiTextField extends Gui {
      */
     private boolean visible = true;
     private GuiPageButtonList.GuiResponder field_175210_x;
-    private Predicate<String> validator = Predicates.alwaysTrue();
+    private Predicate<String> field_175209_y = Predicates.alwaysTrue();
 
     public GuiTextField(int componentId, FontRenderer fontrendererObj, int x, int y, int par5Width, int par6Height) {
         this.id = componentId;
@@ -83,17 +85,10 @@ public class GuiTextField extends Gui {
     }
 
     /**
-     * Returns the contents of the textbox
-     */
-    public String getText() {
-        return this.text;
-    }
-
-    /**
      * Sets the text of the textbox
      */
     public void setText(String p_146180_1_) {
-        if (this.validator.apply(p_146180_1_)) {
+        if (this.field_175209_y.apply(p_146180_1_)) {
             if (p_146180_1_.length() > this.maxStringLength) {
                 this.text = p_146180_1_.substring(0, this.maxStringLength);
             } else {
@@ -105,16 +100,23 @@ public class GuiTextField extends Gui {
     }
 
     /**
+     * Returns the contents of the textbox
+     */
+    public String getText() {
+        return this.text;
+    }
+
+    /**
      * returns the text between the cursor and selectionEnd
      */
     public String getSelectedText() {
-        int i = this.cursorPosition < this.selectionEnd ? this.cursorPosition : this.selectionEnd;
-        int j = this.cursorPosition < this.selectionEnd ? this.selectionEnd : this.cursorPosition;
+        int i = Math.min(this.cursorPosition, this.selectionEnd);
+        int j = Math.max(this.cursorPosition, this.selectionEnd);
         return this.text.substring(i, j);
     }
 
-    public void setValidator(Predicate<String> theValidator) {
-        this.validator = theValidator;
+    public void setValidator(Predicate<String> p_175205_1_) {
+        this.field_175209_y = p_175205_1_;
     }
 
     /**
@@ -123,12 +125,12 @@ public class GuiTextField extends Gui {
     public void writeText(String p_146191_1_) {
         String s = "";
         String s1 = ChatAllowedCharacters.filterAllowedCharacters(p_146191_1_);
-        int i = this.cursorPosition < this.selectionEnd ? this.cursorPosition : this.selectionEnd;
-        int j = this.cursorPosition < this.selectionEnd ? this.selectionEnd : this.cursorPosition;
+        int i = Math.min(this.cursorPosition, this.selectionEnd);
+        int j = Math.max(this.cursorPosition, this.selectionEnd);
         int k = this.maxStringLength - this.text.length() - (i - j);
         int l = 0;
 
-        if (this.text.length() > 0) {
+        if (!this.text.isEmpty()) {
             s = s + this.text.substring(0, i);
         }
 
@@ -140,11 +142,11 @@ public class GuiTextField extends Gui {
             l = s1.length();
         }
 
-        if (this.text.length() > 0 && j < this.text.length()) {
+        if (!this.text.isEmpty() && j < this.text.length()) {
             s = s + this.text.substring(j);
         }
 
-        if (this.validator.apply(s)) {
+        if (this.field_175209_y.apply(s)) {
             this.text = s;
             this.moveCursorBy(i - this.selectionEnd + l);
 
@@ -159,7 +161,7 @@ public class GuiTextField extends Gui {
      * the cursor.
      */
     public void deleteWords(int p_146177_1_) {
-        if (this.text.length() != 0) {
+        if (!this.text.isEmpty()) {
             if (this.selectionEnd != this.cursorPosition) {
                 this.writeText("");
             } else {
@@ -172,7 +174,7 @@ public class GuiTextField extends Gui {
      * delete the selected text, otherwsie deletes characters from either side of the cursor. params: delete num
      */
     public void deleteFromCursor(int p_146175_1_) {
-        if (this.text.length() != 0) {
+        if (!this.text.isEmpty()) {
             if (this.selectionEnd != this.cursorPosition) {
                 this.writeText("");
             } else {
@@ -189,7 +191,7 @@ public class GuiTextField extends Gui {
                     s = s + this.text.substring(j);
                 }
 
-                if (this.validator.apply(s)) {
+                if (this.field_175209_y.apply(s)) {
                     this.text = s;
 
                     if (flag) {
@@ -258,6 +260,16 @@ public class GuiTextField extends Gui {
      */
     public void moveCursorBy(int p_146182_1_) {
         this.setCursorPosition(this.selectionEnd + p_146182_1_);
+    }
+
+    /**
+     * sets the position of the cursor to the provided index
+     */
+    public void setCursorPosition(int p_146190_1_) {
+        this.cursorPosition = p_146190_1_;
+        int i = this.text.length();
+        this.cursorPosition = MathHelper.clamp_int(this.cursorPosition, 0, i);
+        this.setSelectionPos(this.cursorPosition);
     }
 
     /**
@@ -433,7 +445,7 @@ public class GuiTextField extends Gui {
                 k = s.length();
             }
 
-            if (s.length() > 0) {
+            if (!s.isEmpty()) {
                 String s1 = flag ? s.substring(0, j) : s;
                 j1 = this.fontRendererInstance.drawStringWithShadow(s1, (float) l, (float) i1, i);
             }
@@ -448,7 +460,7 @@ public class GuiTextField extends Gui {
                 --j1;
             }
 
-            if (s.length() > 0 && flag && j < s.length()) {
+            if (!s.isEmpty() && flag && j < s.length()) {
                 j1 = this.fontRendererInstance.drawStringWithShadow(s.substring(j), (float) j1, (float) i1, i);
             }
 
@@ -456,7 +468,7 @@ public class GuiTextField extends Gui {
                 if (flag2) {
                     Gui.drawRect(k1, i1 - 1, k1 + 1, i1 + 1 + this.fontRendererInstance.FONT_HEIGHT, -3092272);
                 } else {
-                    this.fontRendererInstance.drawStringWithShadow("_", this.xPosition + this.fontRendererInstance.getStringWidth(text) * 1.25f, (float) i1, i);
+                    this.fontRendererInstance.drawStringWithShadow("_", (float) k1, (float) i1, i);
                 }
             }
 
@@ -507,13 +519,6 @@ public class GuiTextField extends Gui {
         GlStateManager.enableTexture2D();
     }
 
-    /**
-     * returns the maximum number of character that can be contained in this textbox
-     */
-    public int getMaxStringLength() {
-        return this.maxStringLength;
-    }
-
     public void setMaxStringLength(int p_146203_1_) {
         this.maxStringLength = p_146203_1_;
 
@@ -523,20 +528,17 @@ public class GuiTextField extends Gui {
     }
 
     /**
+     * returns the maximum number of character that can be contained in this textbox
+     */
+    public int getMaxStringLength() {
+        return this.maxStringLength;
+    }
+
+    /**
      * returns the current position of the cursor
      */
     public int getCursorPosition() {
         return this.cursorPosition;
-    }
-
-    /**
-     * sets the position of the cursor to the provided index
-     */
-    public void setCursorPosition(int p_146190_1_) {
-        this.cursorPosition = p_146190_1_;
-        int i = this.text.length();
-        this.cursorPosition = MathHelper.clamp_int(this.cursorPosition, 0, i);
-        this.setSelectionPos(this.cursorPosition);
     }
 
     /**
@@ -565,13 +567,6 @@ public class GuiTextField extends Gui {
     }
 
     /**
-     * Getter for the focused field
-     */
-    public boolean isFocused() {
-        return this.isFocused;
-    }
-
-    /**
      * Sets focus to this gui element
      */
     public void setFocused(boolean p_146195_1_) {
@@ -580,6 +575,13 @@ public class GuiTextField extends Gui {
         }
 
         this.isFocused = p_146195_1_;
+    }
+
+    /**
+     * Getter for the focused field
+     */
+    public boolean isFocused() {
+        return this.isFocused;
     }
 
     public void setEnabled(boolean p_146184_1_) {
