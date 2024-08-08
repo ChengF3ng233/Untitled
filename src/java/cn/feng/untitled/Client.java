@@ -8,7 +8,6 @@ import cn.feng.untitled.network.NetworkManager;
 import cn.feng.untitled.ui.UIManager;
 import cn.feng.untitled.ui.font.awt.FontLoader;
 import cn.feng.untitled.ui.font.nano.NanoFontLoader;
-import cn.feng.untitled.ui.font.nano.NanoLoader;
 import cn.feng.untitled.util.misc.Logger;
 import de.florianmichael.viamcp.ViaMCP;
 import dev.tr7zw.entityculling.EntityCulling;
