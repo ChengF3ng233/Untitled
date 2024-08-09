@@ -1,6 +1,6 @@
 # Untitled Client
-> ***You know some birds are not meant to be caged,<br>
-> their feathers are just too bright.***
+> ***前言：如果你没有java基础，不建议看本文档，不建议开发本客户端，因为你可能不懂。<br>
+> 建议先去写水影之类的mod。***
 
 ## 基本内容
 - 客户端框架（命令系统、事件系统、配置系统、模块系统、HUD系统、参数系统）
