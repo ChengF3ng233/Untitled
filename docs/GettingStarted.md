@@ -11,12 +11,13 @@
 ## 配置开发环境 
 1. 自行添加mc自带依赖库，删除lwjgl2
 2. 添加如下jvm参数:
-- `--add-opens
-  java.base/jdk.internal.access=ALL-UNNAMED`
-- `--add-opens
-  java.base/java.nio=ALL-UNNAMED`
-- `--add-opens
-  java.base/jdk.internal.misc=ALL-UNNAMED`
+   - `--add-opens
+     java.base/jdk.internal.access=ALL-UNNAMED`
+   - `--add-opens
+     java.base/java.nio=ALL-UNNAMED`
+   - `--add-opens
+     java.base/jdk.internal.misc=ALL-UNNAMED`
+3. 从你的`.minecraft`文件夹复制`assets`文件夹到你的运行配置的Working Directory里面
 
 ## 创建一个Module
 以下是一个示例：
@@ -130,6 +131,6 @@ public void render() {
 ### *Q:提示某些OpenGL方法不存在*
 A:删除lwjgl2依赖
 ### *Q:提示某些类中的getter/setter不存在*
-A:启用lombok注解，IDEA会自动提示你
+A:启用lombok注解，在编译项目时IDEA会自动提示你（右下角）
 ### *Q:怎么构建/怎么用启动器启动*
-A:b站搜索全民写端，工件导出时依赖库只需添加lib/included目录下的jar
+A:看[我的b站](https://space.bilibili.com/538684595)
