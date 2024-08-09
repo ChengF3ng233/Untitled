@@ -1,7 +1,6 @@
 package net.minecraft.client.renderer.vertex;
 
 import net.minecraft.src.Config;
-import net.optifine.reflect.ReflectorClass;
 import net.optifine.reflect.ReflectorField;
 import net.optifine.shaders.SVertexFormat;
 
@@ -28,9 +27,6 @@ public class DefaultVertexFormats {
     private static final VertexFormat BLOCK_VANILLA = BLOCK;
     public static VertexFormat ITEM = new VertexFormat();
     private static final VertexFormat ITEM_VANILLA = ITEM;
-    public static ReflectorClass Attributes = new ReflectorClass("net.minecraftforge.client.model.Attributes");
-    public static ReflectorField Attributes_DEFAULT_BAKED_FORMAT = new ReflectorField(Attributes, "DEFAULT_BAKED_FORMAT");
-    private static final VertexFormat FORGE_BAKED = SVertexFormat.duplicate((VertexFormat) getFieldValue(Attributes_DEFAULT_BAKED_FORMAT));
 
     static {
         BLOCK.addElement(POSITION_3F);
@@ -80,17 +76,9 @@ public class DefaultVertexFormats {
         if (Config.isShaders()) {
             BLOCK = SVertexFormat.makeDefVertexFormatBlock();
             ITEM = SVertexFormat.makeDefVertexFormatItem();
-
-            if (Attributes_DEFAULT_BAKED_FORMAT.exists()) {
-                SVertexFormat.setDefBakedFormat((VertexFormat) Attributes_DEFAULT_BAKED_FORMAT.getValue());
-            }
         } else {
             BLOCK = BLOCK_VANILLA;
             ITEM = ITEM_VANILLA;
-
-            if (Attributes_DEFAULT_BAKED_FORMAT.exists()) {
-                SVertexFormat.copy(FORGE_BAKED, (VertexFormat) Attributes_DEFAULT_BAKED_FORMAT.getValue());
-            }
         }
     }
 

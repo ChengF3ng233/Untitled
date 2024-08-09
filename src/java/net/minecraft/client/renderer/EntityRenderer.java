@@ -2298,8 +2298,6 @@ public class EntityRenderer implements IResourceManagerReloadListener {
             if (s == null) {
                 return;
             }
-
-            Reflector.setFieldValue(p_updateMainScreen_1_, Reflector.MainMenu_splashText, s);
         } catch (Throwable var6) {
         }
     }

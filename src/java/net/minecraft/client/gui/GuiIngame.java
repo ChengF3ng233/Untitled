@@ -243,10 +243,6 @@ public class GuiIngame extends Gui {
             this.spectatorGui.renderSelectedItem(scaledresolution);
         }
 
-        if (this.mc.isDemo()) {
-            this.renderDemo(scaledresolution);
-        }
-
         if (this.mc.gameSettings.showDebugInfo) {
             this.overlayDebug.renderDebugInfo(scaledresolution);
         }
@@ -475,21 +471,6 @@ public class GuiIngame extends Gui {
             }
         }
 
-        this.mc.mcProfiler.endSection();
-    }
-
-    public void renderDemo(ScaledResolution scaledRes) {
-        this.mc.mcProfiler.startSection("demo");
-        String s = "";
-
-        if (this.mc.theWorld.getTotalWorldTime() >= 120500L) {
-            s = I18n.format("demo.demoExpired");
-        } else {
-            s = I18n.format("demo.remainingTime", StringUtils.ticksToElapsedTime((int) (120500L - this.mc.theWorld.getTotalWorldTime())));
-        }
-
-        int i = this.getFontRenderer().getStringWidth(s);
-        this.getFontRenderer().drawStringWithShadow(s, (float) (scaledRes.getScaledWidth() - i - 10), 5.0F, 16777215);
         this.mc.mcProfiler.endSection();
     }
 

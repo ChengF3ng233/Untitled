@@ -18,7 +18,6 @@ import net.minecraft.command.*;
 import net.minecraft.crash.CrashReport;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.network.NetworkSystem;
 import net.minecraft.network.ServerStatusResponse;
 import net.minecraft.network.play.server.S03PacketTimeUpdate;
@@ -30,7 +29,6 @@ import net.minecraft.server.management.ServerConfigurationManager;
 import net.minecraft.util.*;
 import net.minecraft.world.*;
 import net.minecraft.world.chunk.storage.AnvilSaveConverter;
-import net.minecraft.world.demo.DemoWorldServer;
 import net.minecraft.world.storage.ISaveFormat;
 import net.minecraft.world.storage.ISaveHandler;
 import net.minecraft.world.storage.WorldInfo;
@@ -43,7 +41,6 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
-import java.io.OutputStream;
 import java.net.Proxy;
 import java.security.KeyPair;
 import java.text.SimpleDateFormat;
@@ -76,10 +73,6 @@ public abstract class MinecraftServer implements Runnable, ICommandSender, IThre
     private final ServerStatusResponse statusResponse = new ServerStatusResponse();
     private final Random random = new Random();
 
-    /**
-     * The server's port.
-     */
-    private final int serverPort = -1;
 
     /**
      * The server world instances.
@@ -162,7 +155,6 @@ public abstract class MinecraftServer implements Runnable, ICommandSender, IThre
     private String serverOwner;
     private String folderName;
     private String worldName;
-    private boolean isDemo;
     private boolean enableBonusChest;
 
     /**
@@ -279,15 +271,12 @@ public abstract class MinecraftServer implements Runnable, ICommandSender, IThre
         WorldSettings worldsettings;
 
         if (worldinfo == null) {
-            if (this.isDemo()) {
-                worldsettings = DemoWorldServer.demoWorldSettings;
-            } else {
-                worldsettings = new WorldSettings(seed, this.getGameType(), this.canStructuresSpawn(), this.isHardcore(), type);
-                worldsettings.setWorldName(worldNameIn2);
 
-                if (this.enableBonusChest) {
-                    worldsettings.enableBonusChest();
-                }
+            worldsettings = new WorldSettings(seed, this.getGameType(), this.canStructuresSpawn(), this.isHardcore(), type);
+            worldsettings.setWorldName(worldNameIn2);
+
+            if (this.enableBonusChest) {
+                worldsettings.enableBonusChest();
             }
 
             worldinfo = new WorldInfo(worldsettings, worldNameIn);
@@ -308,11 +297,8 @@ public abstract class MinecraftServer implements Runnable, ICommandSender, IThre
             }
 
             if (i == 0) {
-                if (this.isDemo()) {
-                    this.worldServers[i] = (WorldServer) (new DemoWorldServer(this, isavehandler, worldinfo, j, this.theProfiler)).init();
-                } else {
-                    this.worldServers[i] = (WorldServer) (new WorldServer(this, isavehandler, worldinfo, j, this.theProfiler)).init();
-                }
+
+                this.worldServers[i] = (WorldServer) (new WorldServer(this, isavehandler, worldinfo, j, this.theProfiler)).init();
 
                 this.worldServers[i].initialize(worldsettings);
             } else {
@@ -933,20 +919,6 @@ public abstract class MinecraftServer implements Runnable, ICommandSender, IThre
 
     protected boolean allowSpawnMonsters() {
         return true;
-    }
-
-    /**
-     * Gets whether this is a demo or not.
-     */
-    public boolean isDemo() {
-        return this.isDemo;
-    }
-
-    /**
-     * Sets whether this is a demo or not.
-     */
-    public void setDemo(boolean demo) {
-        this.isDemo = demo;
     }
 
     public void canCreateBonusChest(boolean enable) {

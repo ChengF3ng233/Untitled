@@ -98,6 +98,7 @@ import org.lwjgl.opengl.*;
 import org.lwjgl.util.glu.GLU;
 
 import javax.imageio.ImageIO;
+import javax.swing.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -141,7 +142,6 @@ public class Minecraft implements IThreadListener, IPlayerUsage {
      */
     public final Profiler mcProfiler = new Profiler();
     private final File fileResourcepacks;
-    private final PropertyMap twitchDetails;
     /**
      * The player's GameProfile properties
      */
@@ -151,7 +151,6 @@ public class Minecraft implements IThreadListener, IPlayerUsage {
     private final String launchedVersion;
     private final Proxy proxy;
     private final boolean jvm64bit;
-    private final boolean isDemo;
     private final IMetadataSerializer metadataSerializer_ = new IMetadataSerializer();
     private final List<IResourcePack> defaultResourcePacks = Lists.newArrayList();
     private final DefaultResourcePack mcDefaultResourcePack;
@@ -159,10 +158,6 @@ public class Minecraft implements IThreadListener, IPlayerUsage {
     private final Queue<FutureTask<?>> scheduledTasks = Queues.newArrayDeque();
     private final Thread mcThread = Thread.currentThread();
     private final boolean enableGLErrorChecking = true;
-    /**
-     * True if the player is connected to a realms server
-     */
-    private final boolean connectedToRealms = false;
     public final Timer timer = new Timer(20.0F);
     /**
      * Instance of PlayerUsageSnooper.
@@ -176,7 +171,6 @@ public class Minecraft implements IThreadListener, IPlayerUsage {
      * Display height
      */
     private final int tempDisplayHeight;
-    private final long field_175615_aJ = 0L;
     public PlayerControllerMP playerController;
     public int displayWidth;
     public int displayHeight;
@@ -225,9 +219,6 @@ public class Minecraft implements IThreadListener, IPlayerUsage {
      * String that shows the debug information
      */
     public String debug = "";
-    public boolean field_175613_B = false;
-    public boolean field_175614_C = false;
-    public boolean field_175611_D = false;
     public boolean renderChunksMany = true;
     long systemTime = getSystemTime();
     /**
@@ -313,7 +304,6 @@ public class Minecraft implements IThreadListener, IPlayerUsage {
         this.fileAssets = gameConfig.folderInfo.assetsDir;
         this.fileResourcepacks = gameConfig.folderInfo.resourcePacksDir;
         this.launchedVersion = gameConfig.gameInfo.version;
-        this.twitchDetails = gameConfig.userInfo.userProperties;
         this.profileProperties = gameConfig.userInfo.profileProperties;
         this.mcDefaultResourcePack = new DefaultResourcePack((new ResourceIndex(gameConfig.folderInfo.assetsDir, gameConfig.folderInfo.assetIndex)).getResourceMap());
         this.proxy = gameConfig.userInfo.proxy == null ? Proxy.NO_PROXY : gameConfig.userInfo.proxy;
@@ -321,7 +311,6 @@ public class Minecraft implements IThreadListener, IPlayerUsage {
         this.session = gameConfig.userInfo.session;
         logger.info("Setting user: {}", this.session.getUsername());
         logger.info("(Session ID is {})", this.session.getSessionID());
-        this.isDemo = gameConfig.gameInfo.isDemo;
         this.displayWidth = gameConfig.displayInfo.width > 0 ? gameConfig.displayInfo.width : 1;
         this.displayHeight = gameConfig.displayInfo.height > 0 ? gameConfig.displayInfo.height : 1;
         this.tempDisplayWidth = gameConfig.displayInfo.width;
@@ -2048,13 +2037,6 @@ public class Minecraft implements IThreadListener, IPlayerUsage {
         if (this.currentScreen instanceof GuiGameOver) {
             this.displayGuiScreen(null);
         }
-    }
-
-    /**
-     * Gets whether this is a demo or not.
-     */
-    public final boolean isDemo() {
-        return this.isDemo;
     }
 
     public NetHandlerPlayClient getNetHandler() {

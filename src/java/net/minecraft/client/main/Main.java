@@ -42,7 +42,6 @@ public class Main {
         OptionSpec<Integer> optionspec13 = optionparser.accepts("width").withRequiredArg().ofType(Integer.class).defaultsTo(854);
         OptionSpec<Integer> optionspec14 = optionparser.accepts("height").withRequiredArg().ofType(Integer.class).defaultsTo(480);
         OptionSpec<String> optionspec15 = optionparser.accepts("userProperties").withRequiredArg().defaultsTo("{}");
-        OptionSpec<String> optionspec16 = optionparser.accepts("profileProperties").withRequiredArg().defaultsTo("{}");
         OptionSpec<String> optionspec17 = optionparser.accepts("assetIndex").withRequiredArg();
         OptionSpec<String> optionspec18 = optionparser.accepts("userType").withRequiredArg().defaultsTo("legacy");
         OptionSpec<String> optionspec19 = optionparser.nonOptions();
@@ -78,11 +77,9 @@ public class Main {
         int j = optionset.valueOf(optionspec14);
         boolean flag = optionset.has("fullscreen");
         boolean flag1 = optionset.has("checkGlErrors");
-        boolean flag2 = optionset.has("demo");
         String s3 = optionset.valueOf(optionspec12);
         Gson gson = (new GsonBuilder()).registerTypeAdapter(PropertyMap.class, new Serializer()).create();
         PropertyMap propertymap = gson.fromJson(optionset.valueOf(optionspec15), PropertyMap.class);
-        PropertyMap propertymap1 = gson.fromJson(optionset.valueOf(optionspec16), PropertyMap.class);
         File file1 = optionset.valueOf(optionspec2);
         File file2 = optionset.has(optionspec3) ? optionset.valueOf(optionspec3) : new File(file1, "assets/");
         File file3 = optionset.has(optionspec4) ? optionset.valueOf(optionspec4) : new File(file1, "resourcepacks/");
@@ -91,7 +88,7 @@ public class Main {
         String s6 = optionset.valueOf(optionspec);
         Integer integer = optionset.valueOf(optionspec1);
         Session session = new Session(optionspec9.value(optionset), s4, optionspec11.value(optionset), optionspec18.value(optionset));
-        GameConfiguration gameconfiguration = new GameConfiguration(new GameConfiguration.UserInformation(session, propertymap, propertymap1, proxy), new GameConfiguration.DisplayInformation(i, j, flag, flag1), new GameConfiguration.FolderInformation(file1, file3, file2, s5), new GameConfiguration.GameInformation(flag2, s3), new GameConfiguration.ServerInformation(s6, integer));
+        GameConfiguration gameconfiguration = new GameConfiguration(new GameConfiguration.UserInformation(session, propertymap, proxy), new GameConfiguration.DisplayInformation(i, j, flag, flag1), new GameConfiguration.FolderInformation(file1, file3, file2, s5), new GameConfiguration.GameInformation(s3), new GameConfiguration.ServerInformation(s6, integer));
         Runtime.getRuntime().addShutdownHook(new Thread("Client Shutdown Thread") {
             public void run() {
                 Minecraft.stopIntegratedServer();

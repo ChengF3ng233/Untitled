@@ -19,9 +19,7 @@ public class ReflectorClass implements IResolvable {
     }
 
     public Class getTargetClass() {
-        if (this.checked) {
-            return this.targetClass;
-        } else {
+        if (!this.checked) {
             this.checked = true;
 
             try {
@@ -32,8 +30,8 @@ public class ReflectorClass implements IResolvable {
                 throwable.printStackTrace();
             }
 
-            return this.targetClass;
         }
+        return this.targetClass;
     }
 
     public boolean exists() {

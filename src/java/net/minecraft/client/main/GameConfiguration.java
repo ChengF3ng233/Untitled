@@ -50,11 +50,9 @@ public class GameConfiguration {
     }
 
     public static class GameInformation {
-        public final boolean isDemo;
         public final String version;
 
-        public GameInformation(boolean isDemoIn, String versionIn) {
-            this.isDemo = isDemoIn;
+        public GameInformation(String versionIn) {
             this.version = versionIn;
         }
     }
@@ -71,13 +69,11 @@ public class GameConfiguration {
 
     public static class UserInformation {
         public final Session session;
-        public final PropertyMap userProperties;
         public final PropertyMap profileProperties;
         public final Proxy proxy;
 
-        public UserInformation(Session sessionIn, PropertyMap userPropertiesIn, PropertyMap profilePropertiesIn, Proxy proxyIn) {
+        public UserInformation(Session sessionIn, PropertyMap profilePropertiesIn, Proxy proxyIn) {
             this.session = sessionIn;
-            this.userProperties = userPropertiesIn;
             this.profileProperties = profilePropertiesIn;
             this.proxy = proxyIn;
         }
