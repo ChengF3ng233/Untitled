@@ -13,7 +13,7 @@ public class TestExpressions {
                 BufferedReader bufferedreader = new BufferedReader(inputstreamreader);
                 String s = bufferedreader.readLine();
 
-                if (s.length() <= 0) {
+                if (s.length() == 0) {
                     return;
                 }
 

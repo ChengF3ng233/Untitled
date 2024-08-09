@@ -38,7 +38,7 @@ public class CommandEmote extends CommandBase {
      * Callback when the command is invoked
      */
     public void processCommand(ICommandSender sender, String[] args) throws CommandException {
-        if (args.length <= 0) {
+        if (args.length == 0) {
             throw new WrongUsageException("commands.me.usage");
         } else {
             IChatComponent ichatcomponent = getChatComponentFromNthArg(sender, args, 0, !(sender instanceof EntityPlayer));

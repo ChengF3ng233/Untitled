@@ -54,12 +54,12 @@ public class ShaderOptionVariable extends ShaderOption {
             valuesStr = StrUtils.removeSuffix(valuesStr, "]");
             valuesStr = valuesStr.trim();
 
-            if (valuesStr.length() <= 0) {
+            if (valuesStr.length() == 0) {
                 return astring;
             } else {
                 String[] astring1 = Config.tokenize(valuesStr, " ");
 
-                if (astring1.length <= 0) {
+                if (astring1.length == 0) {
                     return astring;
                 } else {
                     if (!Arrays.asList(astring1).contains(value)) {

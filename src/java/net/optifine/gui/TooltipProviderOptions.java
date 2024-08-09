@@ -24,7 +24,7 @@ public class TooltipProviderOptions implements TooltipProvider {
             list.add(s1);
         }
 
-        if (list.size() <= 0) {
+        if (list.size() == 0) {
             return null;
         } else {
             String[] astring = list.toArray(new String[list.size()]);

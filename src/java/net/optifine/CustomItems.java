@@ -70,11 +70,11 @@ public class CustomItems {
 
             update(Config.getDefaultResourcePack());
 
-            if (itemProperties.length <= 0) {
+            if (itemProperties.length == 0) {
                 itemProperties = null;
             }
 
-            if (enchantmentProperties.length <= 0) {
+            if (enchantmentProperties.length == 0) {
                 enchantmentProperties = null;
             }
         }
@@ -656,7 +656,7 @@ public class CustomItems {
         } else {
             int[][] aint = getEnchantmentIdLevels(itemStack);
 
-            if (aint.length <= 0) {
+            if (aint.length == 0) {
                 return false;
             } else {
                 Set set = null;
@@ -728,7 +728,7 @@ public class CustomItems {
         } else {
             int[][] aint = getEnchantmentIdLevels(itemStack);
 
-            if (aint.length <= 0) {
+            if (aint.length == 0) {
                 return false;
             } else {
                 Set set = null;

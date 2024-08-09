@@ -787,7 +787,7 @@ public class Config {
         } else {
             IResourcePack[] airesourcepack = getResourcePacks();
 
-            if (airesourcepack.length <= 0) {
+            if (airesourcepack.length == 0) {
                 return getDefaultResourcePack().getPackName();
             } else {
                 String[] astring = new String[airesourcepack.length];
@@ -1112,7 +1112,7 @@ public class Config {
             }
         }
 
-        if (p_getDisplayMode_0_.length <= 0) {
+        if (p_getDisplayMode_0_.length == 0) {
             return null;
         } else {
             Arrays.sort(p_getDisplayMode_0_, new DisplayModeComparator());

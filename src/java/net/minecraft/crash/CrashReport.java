@@ -165,7 +165,7 @@ public class CrashReport {
      * Gets the various sections of the crash report into the given StringBuilder
      */
     public void getSectionsInStringBuilder(StringBuilder builder) {
-        if ((this.stacktrace == null || this.stacktrace.length <= 0) && this.crashReportSections.size() > 0) {
+        if ((this.stacktrace == null || this.stacktrace.length == 0) && this.crashReportSections.size() > 0) {
             this.stacktrace = ArrayUtils.subarray(this.crashReportSections.get(0).getStackTrace(), 0, 1);
         }
 

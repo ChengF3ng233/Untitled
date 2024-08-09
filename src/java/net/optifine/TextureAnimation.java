@@ -102,7 +102,7 @@ public class TextureAnimation {
     }
 
     public TextureAnimationFrame getFrame(int index) {
-        if (this.frames.length <= 0) {
+        if (this.frames.length == 0) {
             return null;
         } else {
             if (index < 0 || index >= this.frames.length) {

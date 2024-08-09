@@ -27,7 +27,7 @@ public class MathUtils {
     }
 
     public static int getAverage(int[] vals) {
-        if (vals.length <= 0) {
+        if (vals.length == 0) {
             return 0;
         } else {
             int i = getSum(vals);
@@ -37,7 +37,7 @@ public class MathUtils {
     }
 
     public static int getSum(int[] vals) {
-        if (vals.length <= 0) {
+        if (vals.length == 0) {
             return 0;
         } else {
             int i = 0;

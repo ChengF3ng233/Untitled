@@ -1807,7 +1807,7 @@ public class EntityRenderer implements IResourceManagerReloadListener {
                                 worldrenderer.pos((double) l1 - d3 + 0.5D, l2, (double) k1 - d4 + 0.5D).tex(0.0D, (double) l2 * 0.25D + d5).color(1.0F, 1.0F, 1.0F, f3).lightmap(k3, l3).endVertex();
                             } else {
                                 if (j1 != 1) {
-                                    if (j1 >= 0) {
+                                    if (j1 == 0) {
                                         tessellator.draw();
                                     }
 

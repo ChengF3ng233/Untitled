@@ -273,7 +273,7 @@ public class CustomColors {
         Integer[] ainteger = set.toArray(new Integer[set.size()]);
         Arrays.sort(ainteger);
 
-        if (ainteger.length <= 0) {
+        if (ainteger.length == 0) {
             return new ImmutablePair(null, 0);
         } else {
             int j1 = ainteger[0];
@@ -421,7 +421,7 @@ public class CustomColors {
             }
         }
 
-        if (list.size() <= 0) {
+        if (list.size() == 0) {
             return null;
         } else {
             CustomColormap[] acustomcolormap = (CustomColormap[]) list.toArray(new CustomColormap[list.size()]);
@@ -466,7 +466,7 @@ public class CustomColors {
             }
         }
 
-        if (list.size() <= 0) {
+        if (list.size() == 0) {
             return null;
         } else {
             CustomColormap[][] acustomcolormap = blockListToArray(list);

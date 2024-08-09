@@ -73,7 +73,7 @@ public class ReflectorMethod implements IResolvable {
                     if (this.targetMethodParameterTypes == null) {
                         Method[] amethod = getMethods(oclass, this.targetMethodName);
 
-                        if (amethod.length <= 0) {
+                        if (amethod.length == 0) {
                             Log.log("(Reflector) Method not present: " + oclass.getName() + "." + this.targetMethodName);
                             return null;
                         }

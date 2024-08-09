@@ -261,7 +261,7 @@ public class ConnectedParser {
         } else {
             blockStr = blockStr.trim();
 
-            if (blockStr.length() <= 0) {
+            if (blockStr.length() == 0) {
                 return null;
             } else {
                 String[] astring = Config.tokenize(blockStr, ":");
@@ -366,7 +366,7 @@ public class ConnectedParser {
     }
 
     public int[] parseBlockMetadatas(Block block, String[] params) {
-        if (params.length <= 0) {
+        if (params.length == 0) {
             return null;
         } else {
             String s = params[0];

@@ -1652,11 +1652,11 @@ public class ConnectedTextures {
             spriteQuadFullMaps = new Map[textureMap.getCountRegisteredSprites() + 1];
             spriteQuadCompactMaps = new Map[textureMap.getCountRegisteredSprites() + 1][];
 
-            if (blockProperties.length <= 0) {
+            if (blockProperties.length == 0) {
                 blockProperties = null;
             }
 
-            if (tileProperties.length <= 0) {
+            if (tileProperties.length == 0) {
                 tileProperties = null;
             }
         }

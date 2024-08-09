@@ -145,7 +145,7 @@ public class MacroState {
             }
         }
 
-        if (i >= 100) {
+        if (i == 100) {
             Config.warn("Too many iterations: " + i + ", when resolving: " + str);
             return true;
         } else {

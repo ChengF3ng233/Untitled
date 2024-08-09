@@ -55,7 +55,7 @@ public class HttpPipelineReceiver extends Thread {
             while (true) {
                 String s3 = this.readLine(in);
 
-                if (s3.length() <= 0) {
+                if (s3.length() == 0) {
                     byte[] abyte = null;
                     String s6 = map.get("Content-Length");
 

@@ -98,7 +98,7 @@ public class WorldGenCanopyTree extends WorldGenAbstractTree {
 
                 for (int k3 = -1; k3 <= 2; ++k3) {
                     for (int j4 = -1; j4 <= 2; ++j4) {
-                        if ((k3 < 0 || k3 > 1 || j4 < 0 || j4 > 1) && rand.nextInt(3) <= 0) {
+                        if ((k3 < 0 || k3 > 1 || j4 < 0 || j4 > 1) && rand.nextInt(3) == 0) {
                             int l4 = rand.nextInt(3) + 2;
 
                             for (int i5 = 0; i5 < l4; ++i5) {

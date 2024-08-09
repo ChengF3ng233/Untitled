@@ -173,7 +173,7 @@ public class CustomItemProperties {
         String s = "texture.";
         Map map = getMatchingProperties(props, s);
 
-        if (map.size() <= 0) {
+        if (map.size() == 0) {
             return null;
         } else {
             Set set = map.keySet();
@@ -237,7 +237,7 @@ public class CustomItemProperties {
         String s = "model.";
         Map map = getMatchingProperties(props, s);
 
-        if (map.size() <= 0) {
+        if (map.size() == 0) {
             return null;
         } else {
             Set set = map.keySet();
@@ -580,7 +580,7 @@ public class CustomItemProperties {
         String s = "nbt.";
         Map map = getMatchingProperties(props, s);
 
-        if (map.size() <= 0) {
+        if (map.size() == 0) {
             return null;
         } else {
             List list = new ArrayList();

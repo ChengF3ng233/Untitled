@@ -58,7 +58,7 @@ public class CustomLoadingScreens {
         Integer[] ainteger = set.toArray(new Integer[set.size()]);
         Arrays.sort(ainteger);
 
-        if (ainteger.length <= 0) {
+        if (ainteger.length == 0) {
             return new ImmutablePair(null, 0);
         } else {
             String s5 = "optifine/gui/loading/loading.properties";

@@ -64,7 +64,7 @@ public class EntityAIOcelotAttack extends EntityAIBase {
         this.attackCountdown = Math.max(this.attackCountdown - 1, 0);
 
         if (d1 <= d0) {
-            if (this.attackCountdown <= 0) {
+            if (this.attackCountdown == 0) {
                 this.attackCountdown = 20;
                 this.theEntity.attackEntityAsMob(this.theVictim);
             }

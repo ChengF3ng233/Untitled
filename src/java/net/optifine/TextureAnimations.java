@@ -82,7 +82,7 @@ public class TextureAnimations {
     private static TextureAnimation[] getTextureAnimations(IResourcePack rp) {
         String[] astring = ResUtils.collectFiles(rp, "mcpatcher/anim/", ".properties", null);
 
-        if (astring.length <= 0) {
+        if (astring.length == 0) {
             return null;
         } else {
             List list = new ArrayList();
