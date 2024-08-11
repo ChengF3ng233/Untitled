@@ -1,0 +1,26 @@
+plugins {
+    id("java")
+}
+
+group = "cn.feng"
+version = "1.0-SNAPSHOT"
+
+repositories {
+    mavenCentral()
+}
+
+tasks.withType(JavaCompile).configureEach {
+    options.encoding = 'UTF-8'
+}
+
+dependencies {
+    implementation fileTree(dir: 'lib/mc', includes: ['*.jar'])
+    implementation fileTree(dir: 'lib/included', includes: ['*.jar'])
+
+    implementation group: 'com.squareup.okhttp3', name: 'okhttp', version: '5.0.0-alpha.14'
+    implementation group: 'org.jetbrains', name: 'annotations', version: '24.1.0'
+    implementation group: 'org.yaml', name: 'snakeyaml', version: '2.2'
+
+    compileOnly group: 'org.projectlombok', name: 'lombok', version: '1.18.34'
+    annotationProcessor 'org.projectlombok:lombok:1.18.34'
+}
