@@ -20,10 +20,6 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.nio.ByteBuffer;
-import java.security.AccessController;
-import java.security.PrivilegedAction;
-import java.security.PrivilegedActionException;
-import java.security.PrivilegedExceptionAction;
 import java.util.*;
 
 import org.lwjgl.system.Platform;
@@ -365,8 +361,8 @@ public class LWJGLUtil {
         return possible_paths.toArray(new String[possible_paths.size()]);
     }
 
-    private static String getPrivilegedProperty(final String property_name) {
-        return AccessController.doPrivileged((PrivilegedAction<String>) () -> System.getProperty(property_name));
+    private static String getPrivilegedProperty(String property_name) {
+        return  System.getProperty(property_name);
     }
 
     /**
@@ -381,21 +377,10 @@ public class LWJGLUtil {
     private static String getPathFromClassLoader(final String libname, final ClassLoader classloader) {
         try {
             log("getPathFromClassLoader: searching for: " + libname);
-            Class<?> c = classloader.getClass();
-            while (c != null) {
-                final Class<?> clazz = c;
-                try {
-                    return AccessController.doPrivileged((PrivilegedExceptionAction<String>) () -> {
-                        Method findLibrary = clazz.getDeclaredMethod("findLibrary", String.class);
-                        findLibrary.setAccessible(true);
-                        String path = (String) findLibrary.invoke(classloader, libname);
-                        return path;
-                    });
-                } catch (PrivilegedActionException e) {
-                    log("Failed to locate findLibrary method: " + e.getCause());
-                    c = c.getSuperclass();
-                }
-            }
+            final Class<?> clazz = classloader.getClass();
+            Method findLibrary = clazz.getDeclaredMethod("findLibrary", String.class);
+            findLibrary.setAccessible(true);
+            return (String) findLibrary.invoke(classloader, libname);
         } catch (Exception e) {
             log("Failure locating " + e + " using classloader:" + e);
         }
@@ -405,8 +390,8 @@ public class LWJGLUtil {
     /**
      * Gets a boolean property as a privileged action.
      */
-    public static boolean getPrivilegedBoolean(final String property_name) {
-        return AccessController.doPrivileged((PrivilegedAction<Boolean>) () -> Boolean.getBoolean(property_name));
+    public static boolean getPrivilegedBoolean(String property_name) {
+        return Boolean.getBoolean(property_name);
     }
 
     /**
@@ -416,8 +401,8 @@ public class LWJGLUtil {
      *
      * @return the property value
      */
-    public static Integer getPrivilegedInteger(final String property_name) {
-        return AccessController.doPrivileged((PrivilegedAction<Integer>) () -> Integer.getInteger(property_name));
+    public static Integer getPrivilegedInteger(String property_name) {
+        return Integer.getInteger(property_name);
     }
 
     /**
@@ -428,9 +413,8 @@ public class LWJGLUtil {
      *
      * @return the property value
      */
-    public static Integer getPrivilegedInteger(final String property_name, final int default_val) {
-        return AccessController
-                .doPrivileged((PrivilegedAction<Integer>) () -> Integer.getInteger(property_name, default_val));
+    public static Integer getPrivilegedInteger(String property_name, int default_val) {
+        return Integer.getInteger(property_name, default_val);
     }
 
     /**

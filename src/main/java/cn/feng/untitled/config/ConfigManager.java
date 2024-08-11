@@ -2,6 +2,7 @@ package cn.feng.untitled.config;
 
 import cn.feng.untitled.Client;
 import cn.feng.untitled.config.impl.ModuleConfig;
+import cn.feng.untitled.config.impl.MusicConfig;
 import cn.feng.untitled.util.MinecraftInstance;
 import cn.feng.untitled.util.exception.MemberNotFoundException;
 import cn.feng.untitled.util.misc.Logger;
@@ -45,10 +46,12 @@ public class ConfigManager extends MinecraftInstance {
 
     public void registerConfigs() {
         configList.add(new ModuleConfig());
+        configList.add(new MusicConfig());
     }
 
     public void loadConfigs() {
         for (Config config : configList) {
+            if (!config.configFile.exists()) continue;
             try {
                 JsonObject object = ConfigManager.gson.fromJson(new FileReader(config.configFile), JsonObject.class);
                 config.loadConfig(object);

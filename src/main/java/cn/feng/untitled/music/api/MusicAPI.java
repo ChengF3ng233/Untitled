@@ -1,10 +1,8 @@
-package cn.feng.untitled.ui.screen.music.api;
+package cn.feng.untitled.music.api;
 
 import cn.feng.untitled.util.data.DataUtil;
 import com.google.gson.JsonObject;
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.Response;
+import okhttp3.*;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
@@ -18,30 +16,34 @@ import java.util.Base64;
  **/
 public class MusicAPI {
     public static final String host = "https://neteasecloudmusicapi.vercel.app";
-    private static String cookie = "";
+    public static String cookie = "";
 
-    private static String get(String url) {
+    private static String fetch(String url) {
         OkHttpClient client = new OkHttpClient.Builder().build();
-        // 创建 GET 请求，设置 Cookie 头
-        Request request = new Request.Builder()
-                .url(url)
-                .addHeader("Cookie", cookie) // 设置 Cookie 头
+        RequestBody body = new FormBody.Builder()
+                .add("cookie", cookie)
                 .build();
 
-        // 发送请求并处理响应
+        Request request = new Request.Builder()
+                .url(url)
+                .post(body)
+                .build();
+
         try (Response response = client.newCall(request).execute()) {
-            return response.body().string();
+            String string = response.body().string();
+            System.out.println(string);
+            return string;
         } catch (IOException e) {
             throw new NullPointerException("什么玩意这是");
         }
     }
 
     public static QRCode genQRCode() throws IOException {
-        String key = get(host + "/login/qr/key&timestamp=" + System.currentTimeMillis());
+        String key = fetch(host + "/login/qr/key");
         JsonObject keyObj = DataUtil.gson.fromJson(key, JsonObject.class);
         String uniqueKey = keyObj.get("data").getAsJsonObject().get("unikey").getAsString();
 
-        String code = get(host + "/login/qr/create?key=" + uniqueKey + "&qrimg=true&timestamp=" + System.currentTimeMillis());
+        String code = fetch(host + "/login/qr/create?key=" + uniqueKey + "&qrimg=true&timestamp=" + System.currentTimeMillis());
         JsonObject codeObj = DataUtil.gson.fromJson(code, JsonObject.class);
         String base64String = codeObj.get("data").getAsJsonObject().get("qrimg").getAsString();
 
@@ -56,7 +58,7 @@ public class MusicAPI {
     }
 
     public static QRCodeState getScanResult(String key) {
-        String response = get(host + "/login/qr/check?key=" + key + "&timestamp=" + System.currentTimeMillis());
+        String response = fetch(host + "/login/qr/check?key=" + key + "&timestamp=" + System.currentTimeMillis());
         JsonObject object = DataUtil.gson.fromJson(response, JsonObject.class);
         int code = object.get("code").getAsInt();
         if (code == 803) cookie = object.get("cookie").getAsString();
@@ -70,6 +72,6 @@ public class MusicAPI {
     }
 
     public static void getUserInfo() {
-        System.out.println(get(host + "/user/account"));
+        System.out.println(fetch(host + "/user/account"));
     }
 }

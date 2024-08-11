@@ -1,6 +1,6 @@
-import cn.feng.untitled.ui.screen.music.api.MusicAPI;
-import cn.feng.untitled.ui.screen.music.api.QRCode;
-import cn.feng.untitled.ui.screen.music.api.QRCodeState;
+import cn.feng.untitled.music.api.MusicAPI;
+import cn.feng.untitled.music.api.QRCode;
+import cn.feng.untitled.music.api.QRCodeState;
 
 import javax.imageio.ImageIO;
 import java.io.File;
@@ -15,12 +15,12 @@ public class Test {
         QRCode qrCode = MusicAPI.genQRCode();
         File f = new File("QRCode.png");
         f.createNewFile();
-        ImageIO.write(qrCode.getImage(), "png", f);
+        ImageIO.write(qrCode.image(), "png", f);
 
         QRCodeState result;
 
         do {
-            result = MusicAPI.getScanResult(qrCode.getKey());
+            result = MusicAPI.getScanResult(qrCode.key());
             System.out.println("Response: State: " + result.name());
             try {
                 Thread.sleep(1000);

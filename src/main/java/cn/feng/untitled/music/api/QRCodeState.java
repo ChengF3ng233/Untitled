@@ -1,4 +1,4 @@
-package cn.feng.untitled.ui.screen.music.api;
+package cn.feng.untitled.music.api;
 
 public enum QRCodeState {
     EXPIRED,

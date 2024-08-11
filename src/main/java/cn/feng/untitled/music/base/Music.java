@@ -1,4 +1,4 @@
-package cn.feng.untitled.ui.screen.music;
+package cn.feng.untitled.music.base;
 
 /**
  * @author ChengFeng
