@@ -80,6 +80,8 @@ public class NanoUtil extends MinecraftInstance {
                     english = new StringBuilder();
                 }
                 emoji.append(str);
+            } else if (str.equals("\\n")) {
+                renderList.add(new FontPair("ENTER", null));
             } else {
                 if (!english.isEmpty() && international.isEmpty()) {
                     renderList.add(new FontPair(english.toString(), defaultRenderer));
@@ -123,6 +125,73 @@ public class NanoUtil extends MinecraftInstance {
         nvgRestore(vg);
     }
 
+    /**
+     * 绘制折线（Polyline）
+     *
+     * @param vg NanoVG 上下文
+     * @param points 折线顶点数组，每两个浮点数为一个点 (x, y)
+     * @param color 线条颜色
+     * @param lineWidth 线条宽度
+     */
+    public static void drawPolyline(float[] points, int color, float lineWidth) {
+        if (points.length < 4) {
+            throw new IllegalArgumentException("At least two points are required to draw a line.");
+        }
+
+        // 开始绘制路径
+        nvgBeginPath(vg);
+
+        // 设置线条颜色和宽度
+        nvgStrokeColor(new Color(color));
+        nvgStrokeWidth(vg, lineWidth * 2f);
+
+        // 移动到第一个点
+        nvgMoveTo(vg, points[0] * 2f, points[1] * 2f);
+
+        // 添加折线的每个点
+        for (int i = 2; i < points.length; i += 2) {
+            nvgLineTo(vg, points[i] * 2f, points[i + 1] * 2f);
+        }
+
+        // 描边路径
+        nvgStroke(vg);
+    }
+
+    public static void drawInterpolatedLine(float[] points, int segments) {
+        if (points.length < 4) {
+            throw new IllegalArgumentException("At least two points are required to draw a line.");
+        }
+
+        // 开始绘制路径
+        nvgBeginPath(vg);
+
+        // 移动到第一个点
+        nvgMoveTo(vg, points[0] * 2f, points[1] * 2f);
+
+        // 线性插值
+        for (int i = 2; i < points.length; i += 2) {
+            float x1 = points[i - 2];
+            float y1 = points[i - 1];
+            float x2 = points[i];
+            float y2 = points[i + 1];
+
+            // 插值点数
+            for (int j = 0; j <= segments; j++) {
+                float t = j / (float) segments;
+                float x = x1 + t * (x2 - x1);
+                float y = y1 + t * (y2 - y1);
+                if (j == 0 && i == 2) {
+                    nvgMoveTo(vg, x * 2f, y * 2f); // 起始点
+                } else {
+                    nvgLineTo(vg, x * 2f, y * 2f); // 中间点
+                }
+            }
+        }
+
+        // 描边路径
+        nvgStroke(vg);
+    }
+
     public static void rotateStart(float centerX, float centerY, float angle) {
         // 保存当前状态
         nvgSave(vg);
@@ -159,6 +228,13 @@ public class NanoUtil extends MinecraftInstance {
         NVGColor nvgColor = NVGColor.calloc();
         nvgColor.r(color.getRed() / 255f).g(color.getGreen() / 255f).b(color.getBlue() / 255f).a(color.getAlpha() / 255f);
         nvgFillColor(NanoLoader.vg, nvgColor);
+        nvgColor.free();
+    }
+
+    public static void nvgStrokeColor(Color color) {
+        NVGColor nvgColor = NVGColor.calloc();
+        nvgColor.r(color.getRed() / 255f).g(color.getGreen() / 255f).b(color.getBlue() / 255f).a(color.getAlpha() / 255f);
+        NanoVG.nvgStrokeColor(vg, nvgColor);
         nvgColor.free();
     }
 

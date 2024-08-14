@@ -16,6 +16,7 @@ import cn.feng.untitled.util.render.RenderUtil;
 import cn.feng.untitled.util.render.RoundedUtil;
 import cn.feng.untitled.value.impl.ColorValue;
 import cn.feng.untitled.value.impl.NumberValue;
+import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.monster.EntityMob;
@@ -52,14 +53,14 @@ public class NameTag extends Module {
 
     @SubscribeEvent
     private void onNano(NanoEvent e) {
+        RenderUtil.scaleStart(0, 0, 2);
         for (Entity entity : entityPosition.keySet()) {
             if (!(entity instanceof EntityLivingBase elb)) continue;
 
             Vector4f pos = entityPosition.get(entity);
             float x = pos.getX(),
                     y = pos.getY(),
-                    right = pos.getZ(),
-                    bottom = pos.getW();
+                    right = pos.getZ();
 
             NanoFontRenderer font = NanoFontLoader.rubik;
 
@@ -128,6 +129,7 @@ public class NameTag extends Module {
 
             glPopMatrix();
         }
+        RenderUtil.scaleEnd();
     }
 
     @SubscribeEvent

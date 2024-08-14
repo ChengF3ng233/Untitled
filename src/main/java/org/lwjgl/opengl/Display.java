@@ -4,6 +4,8 @@ import cn.feng.untitled.Client;
 import cn.feng.untitled.event.impl.NanoEvent;
 import cn.feng.untitled.ui.font.nano.NanoLoader;
 import cn.feng.untitled.ui.font.nano.NanoUtil;
+import javafx.application.Platform;
+import javafx.embed.swing.JFXPanel;
 import org.lwjgl.BufferUtils;
 import org.lwjgl.Sys;
 import org.lwjgl.glfw.*;

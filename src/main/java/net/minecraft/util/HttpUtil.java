@@ -22,7 +22,7 @@ public class HttpUtil {
     public static final ListeningExecutorService field_180193_a = MoreExecutors.listeningDecorator(Executors.newCachedThreadPool((new ThreadFactoryBuilder()).setDaemon(true).setNameFormat("Downloader %d").build()));
 
     /**
-     * The number of download threads that we have started so far.
+     * The number of downloadImageInBytes threads that we have started so far.
      */
     private static final AtomicInteger downloadThreadsStarted = new AtomicInteger(0);
     private static final Logger logger = LogManager.getLogger();

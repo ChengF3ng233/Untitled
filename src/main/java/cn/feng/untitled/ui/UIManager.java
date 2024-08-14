@@ -11,6 +11,7 @@ import cn.feng.untitled.ui.screen.main.SkidMainScreen;
 import cn.feng.untitled.ui.screen.main.UntitledMainScreen;
 import cn.feng.untitled.ui.widget.Widget;
 import cn.feng.untitled.ui.widget.impl.ArraylistWidget;
+import cn.feng.untitled.ui.widget.impl.MusicVisualizerWidget;
 import cn.feng.untitled.util.MinecraftInstance;
 import net.minecraft.client.gui.GuiScreen;
 
@@ -34,6 +35,7 @@ public class UIManager extends MinecraftInstance {
 
     public void registerWidgets() {
         register(new ArraylistWidget());
+        register(new MusicVisualizerWidget());
     }
 
     private void register(Widget widget) {

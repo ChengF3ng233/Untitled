@@ -141,7 +141,7 @@ public class ThreadDownloadImageData extends SimpleTexture {
 
                         ThreadDownloadImageData.this.setBufferedImage(bufferedimage);
                     } catch (Exception exception) {
-                        ThreadDownloadImageData.logger.error("Couldn't download http texture: " + exception.getClass().getName() + ": " + exception.getMessage());
+                        ThreadDownloadImageData.logger.error("Couldn't downloadImageInBytes http texture: " + exception.getClass().getName() + ": " + exception.getMessage());
                     } finally {
                         if (httpurlconnection != null) {
                             httpurlconnection.disconnect();
@@ -191,7 +191,7 @@ public class ThreadDownloadImageData extends SimpleTexture {
 
             this.setBufferedImage(bufferedimage);
         } catch (Exception exception) {
-            logger.error("Couldn't download http texture: " + exception.getClass().getName() + ": " + exception.getMessage());
+            logger.error("Couldn't downloadImageInBytes http texture: " + exception.getClass().getName() + ": " + exception.getMessage());
         } finally {
             this.loadingFinished();
         }

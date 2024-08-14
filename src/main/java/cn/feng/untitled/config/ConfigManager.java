@@ -20,12 +20,14 @@ import java.util.List;
  **/
 public class ConfigManager extends MinecraftInstance {
     public static final File rootDir = new File(mc.mcDataDir, Client.instance.CLIENT_NAME);
+    public static final File cacheDir = new File(rootDir, "cache");
     public static final Gson gson = new GsonBuilder().setPrettyPrinting().create();
     private final List<Config> configList;
 
     public ConfigManager() {
         configList = new ArrayList<>();
         if (!rootDir.exists()) rootDir.mkdir();
+        if (!cacheDir.exists()) cacheDir.mkdir();
     }
 
     public Config getConfig(String name) {
@@ -42,6 +44,19 @@ public class ConfigManager extends MinecraftInstance {
         }
 
         throw new MemberNotFoundException("Config not found: " + klass.getName());
+    }
+
+    public void saveConfig(Class<? extends Config> klass) {
+        Config config = getConfig(klass);
+        JsonObject object = config.saveConfig();
+        try {
+            PrintWriter pw = new PrintWriter(config.configFile);
+            pw.write(ConfigManager.gson.toJson(object));
+            pw.flush();
+            pw.close();
+        } catch (FileNotFoundException e) {
+            Logger.error("Failed to write " + config.name + " klass.");
+        }
     }
 
     public void registerConfigs() {

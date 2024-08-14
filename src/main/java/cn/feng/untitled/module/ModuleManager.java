@@ -6,6 +6,7 @@ import cn.feng.untitled.module.impl.client.*;
 import cn.feng.untitled.module.impl.movement.ToggleSprint;
 import cn.feng.untitled.module.impl.render.Camera;
 import cn.feng.untitled.module.impl.render.FullBright;
+import cn.feng.untitled.module.impl.render.MusicPlayerMod;
 import cn.feng.untitled.module.impl.render.NameTag;
 import cn.feng.untitled.ui.font.awt.Font;
 import cn.feng.untitled.ui.widget.Widget;
@@ -83,6 +84,7 @@ public class ModuleManager {
         register(new NameTag());
         register(new Camera());
         register(new EntityCullingMod());
+        register(new MusicPlayerMod());
     }
 
     public Module getModule(Class<? extends Module> klass) {

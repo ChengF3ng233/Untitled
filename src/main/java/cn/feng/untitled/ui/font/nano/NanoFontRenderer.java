@@ -131,6 +131,11 @@ public class NanoFontRenderer extends MinecraftInstance {
         float renderY = y * 2 + size;
 
         for (FontPair fontPair : fontPairs) {
+            if (fontPair.renderer == null) {
+                renderY += size;
+                renderX = x * 2;
+                continue;
+            }
             renderX = fontPair.renderer.renderString(fontPair.text, renderX, renderY, size);
         }
         nvgRestore(NanoLoader.vg);

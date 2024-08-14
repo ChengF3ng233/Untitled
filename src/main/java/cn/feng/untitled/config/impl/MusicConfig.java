@@ -2,6 +2,8 @@ package cn.feng.untitled.config.impl;
 
 import cn.feng.untitled.config.Config;
 import cn.feng.untitled.music.api.MusicAPI;
+import cn.feng.untitled.music.api.User;
+import cn.feng.untitled.util.data.DataUtil;
 import com.google.gson.JsonObject;
 
 /**
@@ -15,13 +17,11 @@ public class MusicConfig extends Config {
 
     @Override
     public void loadConfig(JsonObject object) {
-        if (object.has("cookie")) MusicAPI.cookie = object.get("cookie").getAsString();
+        MusicAPI.user = DataUtil.gson.fromJson(object, User.class);
     }
 
     @Override
     public JsonObject saveConfig() {
-        JsonObject config = new JsonObject();
-        config.addProperty("cookie", MusicAPI.cookie);
-        return config;
+        return DataUtil.gson.fromJson(DataUtil.gson.toJson(MusicAPI.user), JsonObject.class);
     }
 }

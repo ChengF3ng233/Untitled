@@ -4,16 +4,22 @@ import cn.feng.untitled.util.MinecraftInstance;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.client.renderer.GlStateManager;
-import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.client.renderer.WorldRenderer;
-import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
+import net.minecraft.client.renderer.texture.DynamicTexture;
 import net.minecraft.client.shader.Framebuffer;
 import net.minecraft.util.ResourceLocation;
 import org.lwjgl.input.Mouse;
-import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL13;
+import org.lwjgl.stb.STBImage;
+import org.lwjgl.system.MemoryStack;
 
 import java.awt.*;
+import java.awt.image.BufferedImage;
+import java.awt.image.DataBufferByte;
+import java.awt.image.DataBufferInt;
+import java.nio.ByteBuffer;
+import java.nio.IntBuffer;
+import java.util.HashMap;
+import java.util.Map;
 
 import static org.lwjgl.opengl.GL11.*;
 
@@ -22,14 +28,33 @@ import static org.lwjgl.opengl.GL11.*;
  * @since 2024/7/28
  **/
 public class RenderUtil extends MinecraftInstance {
+    private static final Map<BufferedImage, Integer> textureMap = new HashMap<>();
+
     /**
      * This will set the alpha limit to a specified value ranging from 0-1
+     *
      * @param limit minimal alpha value
      */
     public static void setAlphaLimit(float limit) {
         GlStateManager.enableAlpha();
         GlStateManager.alphaFunc(GL_GREATER, (float) (limit * .01));
     }
+    public static void drawPolyline(float[] vertices) {
+        // 开始绘制折线
+        glBegin(GL_LINE_STRIP);
+        glEnable(GL_LINE_SMOOTH);
+        glHint(GL_LINE_SMOOTH_HINT, GL_NICEST);
+
+        // 提供顶点坐标
+        for (int i = 0; i < vertices.length; i += 2) {
+            glVertex2f(vertices[i], vertices[i + 1]);
+        }
+
+        // 结束绘制
+        glDisable(GL_LINE_SMOOTH);
+        glEnd();
+    }
+
 
     public static Framebuffer createFrameBuffer(Framebuffer framebuffer) {
         return createFrameBuffer(framebuffer, false);
@@ -44,6 +69,7 @@ public class RenderUtil extends MinecraftInstance {
         }
         return framebuffer;
     }
+
     public static void drawRect(final float x, final float y, final float x2, final float y2, final int color) {
         glEnable(GL_BLEND);
         glDisable(GL_TEXTURE_2D);
@@ -96,12 +122,30 @@ public class RenderUtil extends MinecraftInstance {
         glBindTexture(GL_TEXTURE_2D, texture);
     }
 
-
     public static void drawImage(ResourceLocation resourceLocation, float x, float y, float imgWidth, float imgHeight) {
         GLUtil.startBlend();
 
         // 绑定纹理并设置过滤参数
         mc.getTextureManager().bindTexture(resourceLocation);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+
+        // 启用多重采样
+        glEnable(GL13.GL_MULTISAMPLE);
+
+        Gui.drawModalRectWithCustomSizedTexture(x, y, 0, 0, imgWidth, imgHeight, imgWidth, imgHeight);
+
+        // 禁用多重采样
+        glDisable(GL13.GL_MULTISAMPLE);
+
+        GLUtil.endBlend();
+    }
+
+    public static void drawImage(DynamicTexture image, float x, float y, float imgWidth, float imgHeight) {
+        GLUtil.startBlend();
+
+        // 绑定纹理并设置过滤参数
+        GlStateManager.bindTexture(image.getGlTextureId());
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 
@@ -123,7 +167,7 @@ public class RenderUtil extends MinecraftInstance {
     }
 
     /**
-        Sometimes colors get messed up in for loops, so we use this method to reset it to allow new colors to be used
+     * Sometimes colors get messed up in for loops, so we use this method to reset it to allow new colors to be used
      */
     public static void resetColor() {
         GlStateManager.color(1, 1, 1, 1);
@@ -131,8 +175,9 @@ public class RenderUtil extends MinecraftInstance {
 
     /**
      * Scales the data that you put in the runnable
-     * @param x start x pos
-     * @param y start y pos
+     *
+     * @param x     start x pos
+     * @param y     start y pos
      * @param scale scale
      */
     public static void scaleStart(float x, float y, float scale) {
@@ -151,13 +196,14 @@ public class RenderUtil extends MinecraftInstance {
 
     /**
      * GL Scissor
-     * @param x x
-     * @param y y
-     * @param width width
+     *
+     * @param x      x
+     * @param y      y
+     * @param width  width
      * @param height height
      */
     public static void scissorStart(double x, double y, double width, double height) {
-        GL11.glPushMatrix();
+        glPushMatrix();
         glEnable(GL_SCISSOR_TEST);
         ScaledResolution sr = new ScaledResolution(mc);
         final double scale = sr.getScaleFactor();
@@ -173,16 +219,17 @@ public class RenderUtil extends MinecraftInstance {
      */
     public static void scissorEnd() {
         glDisable(GL_SCISSOR_TEST);
-        GL11.glPopMatrix();
+        glPopMatrix();
     }
 
     /**
      * Judge if cursor is hovering specific area.
+     *
      * @param mouseX mX
      * @param mouseY mY
-     * @param x x
-     * @param y y
-     * @param width width
+     * @param x      x
+     * @param y      y
+     * @param width  width
      * @param height height
      * @return boolean
      */
@@ -192,11 +239,12 @@ public class RenderUtil extends MinecraftInstance {
 
     /**
      * Judge if mouse button is down while the cursor in specific area.
+     *
      * @param mouseX mX
      * @param mouseY mY
-     * @param x x
-     * @param y y
-     * @param width width
+     * @param x      x
+     * @param y      y
+     * @param width  width
      * @param height height
      * @param button mouse button
      * @return boolean
@@ -206,8 +254,8 @@ public class RenderUtil extends MinecraftInstance {
     }
 
     /**
-     This method colors the next available texture with a specified alpha value ranging from 0-1
-      */
+     * This method colors the next available texture with a specified alpha value ranging from 0-1
+     */
     public static void color(int color, float alpha) {
         float r = (float) (color >> 16 & 255) / 255.0F;
         float g = (float) (color >> 8 & 255) / 255.0F;
@@ -217,6 +265,7 @@ public class RenderUtil extends MinecraftInstance {
 
     /**
      * Colors the next texture without a specified alpha value
+     *
      * @param color color
      */
     public static void color(int color) {

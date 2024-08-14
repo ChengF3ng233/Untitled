@@ -2545,7 +2545,7 @@ public class Minecraft implements IThreadListener, IPlayerUsage {
             try {
                 return Futures.immediateFuture(callableToSchedule.call());
             } catch (Exception exception) {
-                return Futures.immediateFailedCheckedFuture(exception);
+                return Futures.immediateFailedFuture(exception);
             }
         }
     }

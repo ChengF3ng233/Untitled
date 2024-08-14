@@ -4,6 +4,7 @@ import cn.feng.untitled.command.CommandManager;
 import cn.feng.untitled.config.ConfigManager;
 import cn.feng.untitled.event.EventBus;
 import cn.feng.untitled.module.ModuleManager;
+import cn.feng.untitled.music.MusicManager;
 import cn.feng.untitled.network.NetworkManager;
 import cn.feng.untitled.ui.UIManager;
 import cn.feng.untitled.ui.font.awt.FontLoader;
@@ -26,6 +27,7 @@ public enum Client {
     public UIManager uiManager;
     public NetworkManager networkManager;
     public ConfigManager configManager;
+    public MusicManager musicManager;
 
     public boolean loaded = false;
 
@@ -49,6 +51,7 @@ public enum Client {
         uiManager = new UIManager();
         networkManager = new NetworkManager();
         configManager = new ConfigManager();
+        musicManager = new MusicManager();
 
         Logger.info("Loading fonts...");
         FontLoader.registerFonts();
@@ -67,6 +70,7 @@ public enum Client {
         Logger.info("Miscellaneous...");
         configManager.loadConfigs();
         uiManager.initGUI();
+        musicManager.initGUI();
         Keyboard.enableRepeatEvents(false);
 
         Display.setTitle(CLIENT_NAME + " | LWJGL Version " + Sys.getVersion());
