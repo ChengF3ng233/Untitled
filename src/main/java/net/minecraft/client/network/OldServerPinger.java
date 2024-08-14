@@ -186,7 +186,7 @@ public class OldServerPinger {
                         }
                     }
 
-                    protected void channelRead0(ChannelHandlerContext p_channelRead0_1_, ByteBuf p_channelRead0_2_) throws Exception {
+                    protected void messageReceived(ChannelHandlerContext p_channelRead0_1_, ByteBuf p_channelRead0_2_) throws Exception {
                         short short1 = p_channelRead0_2_.readUnsignedByte();
 
                         if (short1 == 255) {

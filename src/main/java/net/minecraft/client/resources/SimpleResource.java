@@ -54,7 +54,7 @@ public class SimpleResource implements IResource {
 
                 try {
                     bufferedreader = new BufferedReader(new InputStreamReader(this.mcmetaInputStream));
-                    this.mcmetaJson = (new JsonParser()).parse(bufferedreader).getAsJsonObject();
+                    this.mcmetaJson = JsonParser.parseReader(bufferedreader).getAsJsonObject();
                 } finally {
                     IOUtils.closeQuietly(bufferedreader);
                 }

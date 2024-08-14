@@ -17,7 +17,6 @@ import io.netty.channel.epoll.Epoll;
 import io.netty.channel.epoll.EpollEventLoopGroup;
 import io.netty.channel.epoll.EpollSocketChannel;
 import io.netty.channel.local.LocalChannel;
-import io.netty.channel.local.LocalEventLoopGroup;
 import io.netty.channel.local.LocalServerChannel;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.SocketChannel;
@@ -39,25 +38,26 @@ import javax.crypto.SecretKey;
 import java.net.InetAddress;
 import java.net.SocketAddress;
 import java.util.Queue;
+import java.util.concurrent.Executors;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
 
 public class NetworkManager extends SimpleChannelInboundHandler<Packet> {
     public static final Marker logMarkerNetwork = MarkerManager.getMarker("NETWORK");
     public static final Marker logMarkerPackets = MarkerManager.getMarker("NETWORK_PACKETS", logMarkerNetwork);
     public static final AttributeKey<EnumConnectionState> attrKeyConnectionState = AttributeKey.valueOf("protocol");
-    public static final LazyLoadBase<NioEventLoopGroup> CLIENT_NIO_EVENTLOOP = new LazyLoadBase<NioEventLoopGroup>() {
+    public static final LazyLoadBase<NioEventLoopGroup> CLIENT_NIO_EVENTLOOP = new LazyLoadBase<>() {
         protected NioEventLoopGroup load() {
-            return new NioEventLoopGroup(0, (new ThreadFactoryBuilder()).setNameFormat("Netty Client IO #%d").setDaemon(true).build());
+            return new NioEventLoopGroup(0, Executors.newCachedThreadPool((new ThreadFactoryBuilder()).setNameFormat("Netty Client IO #%d").setDaemon(true).build()));
         }
     };
-    public static final LazyLoadBase<EpollEventLoopGroup> CLIENT_EPOLL_EVENTLOOP = new LazyLoadBase<EpollEventLoopGroup>() {
+    public static final LazyLoadBase<EpollEventLoopGroup> CLIENT_EPOLL_EVENTLOOP = new LazyLoadBase<>() {
         protected EpollEventLoopGroup load() {
-            return new EpollEventLoopGroup(0, (new ThreadFactoryBuilder()).setNameFormat("Netty Epoll Client IO #%d").setDaemon(true).build());
+            return new EpollEventLoopGroup(0, Executors.newCachedThreadPool((new ThreadFactoryBuilder()).setNameFormat("Netty Epoll Client IO #%d").setDaemon(true).build()));
         }
     };
-    public static final LazyLoadBase<LocalEventLoopGroup> CLIENT_LOCAL_EVENTLOOP = new LazyLoadBase<LocalEventLoopGroup>() {
-        protected LocalEventLoopGroup load() {
-            return new LocalEventLoopGroup(0, (new ThreadFactoryBuilder()).setNameFormat("Netty Local Client IO #%d").setDaemon(true).build());
+    public static final LazyLoadBase<DefaultEventLoop> CLIENT_LOCAL_EVENTLOOP = new LazyLoadBase<>() {
+        protected DefaultEventLoop load() {
+            return new DefaultEventLoop(Executors.newCachedThreadPool((new ThreadFactoryBuilder()).setNameFormat("Netty Local Client IO #%d").setDaemon(true).build()));
         }
     };
     private static final Logger logger = LogManager.getLogger();
@@ -184,7 +184,8 @@ public class NetworkManager extends SimpleChannelInboundHandler<Packet> {
         this.closeChannel(chatcomponenttranslation);
     }
 
-    protected void channelRead0(ChannelHandlerContext p_channelRead0_1_, Packet packet) {
+    @Override
+    protected void messageReceived(ChannelHandlerContext p_channelRead0_1_, Packet packet) {
         if (this.channel.isOpen()) {
             try {
                 PacketEvent e = new PacketEvent(packet);

@@ -28,6 +28,17 @@ public class PacketBuffer extends ByteBuf {
     public PacketBuffer(ByteBuf wrapped) {
         this.buf = wrapped;
     }
+
+    @Override
+    public ByteBuf touch() {
+        return this.buf.touch();
+    }
+
+    @Override
+    public ByteBuf touch(Object hint) {
+        return this.buf.touch(hint);
+    }
+
     /**
      * Calculates the number of bytes required to fit the supplied int (0-5) if it were to be read/written using
      * readVarIntFromBuffer or writeVarIntToBuffer
