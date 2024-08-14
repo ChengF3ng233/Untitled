@@ -90,7 +90,7 @@ public class MusicPlayerScreen extends GuiScreen {
 
     @Override
     public void initGui() {
-        windowAnim = new DecelerateAnimation(300, 1d);
+        windowAnim = new DecelerateAnimation(100, 1d);
     }
 
     float coverAngle = 0f;

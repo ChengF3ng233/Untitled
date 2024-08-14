@@ -32,7 +32,7 @@ public class MusicVisualizerWidget extends Widget {
     private final BoolValue fillValue = new BoolValue("Fill", true);
 
     private final ColorValue rectFirst = new ColorValue("RectFirstColor", ThemeColor.redColor);
-    private final ColorValue rectSecond = new ColorValue("RectFirstColor", ThemeColor.bgColor);
+    private final ColorValue rectSecond = new ColorValue("RectSecondColor", ThemeColor.bgColor);
     private final ColorValue lineColor = new ColorValue("LineColor", Color.WHITE);
     private final NumberValue rectSpace = new NumberValue("RectSpace", 3f, 5f, 1f, 1f);
     private final NumberValue indexOffset = new NumberValue("IndexOffset", 6f, 20f, 0f, 1f);
