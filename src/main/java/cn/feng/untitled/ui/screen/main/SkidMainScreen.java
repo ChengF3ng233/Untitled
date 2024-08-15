@@ -91,6 +91,8 @@ public class SkidMainScreen extends GuiScreen {
 
         NanoUtil.beginFrame();
 
+        NanoUtil.scaleStart(0, 0, sr.getScaleFactor() * 0.5f);
+
         NanoFontLoader.rubikBold.drawGlowString("Hello Minecraft", 30f, 20f, 40f, Color.WHITE);
         NanoFontLoader.greyCliffBold.drawGlowString("--- Untitled client, an experimental project", 35f, 50f, 18f, Color.GRAY);
 
