@@ -77,7 +77,7 @@ public class MusicVisualizerWidget extends Widget {
 
                 if (modeValue.value.equals("Rect"))
                 {
-                    RoundedUtil.drawGradientVertical(renderX - step, realY, step, Math.max(renderY + height - realY, 1), 2f, rectFirst.getColor(colorIndex), rectSecond.getColor(colorIndex));
+                    RoundedUtil.drawGradientVertical(renderX - step, realY + (renderY + heightValue.value.floatValue()) * (sr.getScaleFactor() * 0.5f - 1), step, Math.max(renderY + height - realY, 1), 2f, rectFirst.getColor(colorIndex), rectSecond.getColor(colorIndex));
                     colorIndex += indexOffset.value.intValue();
                 }
 
