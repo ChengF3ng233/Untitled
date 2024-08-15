@@ -53,7 +53,17 @@ public class MathUtil {
     }
 
     public static double lerp(double old, double newVal, double amount) {
-        return (1.0 - amount) * old + amount * newVal;
+
+        boolean increasing = old < newVal;
+
+        double result = (1.0 - amount) * old + amount * newVal;
+
+        if (increasing) {
+            return Math.min(newVal, result);
+        } else {
+            return Math.max(newVal, result);
+        }
+
     }
 
     public static Double interpolate(double oldValue, double newValue, double interpolationValue) {
