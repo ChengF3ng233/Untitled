@@ -9,15 +9,9 @@ import net.minecraft.client.shader.Framebuffer;
 import net.minecraft.util.ResourceLocation;
 import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.GL13;
-import org.lwjgl.stb.STBImage;
-import org.lwjgl.system.MemoryStack;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.awt.image.DataBufferByte;
-import java.awt.image.DataBufferInt;
-import java.nio.ByteBuffer;
-import java.nio.IntBuffer;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -29,6 +23,18 @@ import static org.lwjgl.opengl.GL11.*;
  **/
 public class RenderUtil extends MinecraftInstance {
     private static final Map<BufferedImage, Integer> textureMap = new HashMap<>();
+
+    // 上一帧的帧时间
+    public static double lastFrame = System.nanoTime();
+    public static double frameTime = 0;
+
+    /**
+     * calculates the delta frame time
+     */
+    public static void calcFrameDelta() {
+        frameTime = ((System.nanoTime() - lastFrame) / 10000000.0);
+        lastFrame = System.nanoTime();
+    }
 
     /**
      * This will set the alpha limit to a specified value ranging from 0-1

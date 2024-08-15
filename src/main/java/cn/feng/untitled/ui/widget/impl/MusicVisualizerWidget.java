@@ -4,6 +4,7 @@ import cn.feng.untitled.Client;
 import cn.feng.untitled.music.ui.ThemeColor;
 import cn.feng.untitled.ui.font.nano.NanoUtil;
 import cn.feng.untitled.ui.widget.Widget;
+import cn.feng.untitled.util.data.MathUtil;
 import cn.feng.untitled.util.render.RenderUtil;
 import cn.feng.untitled.util.render.RoundedUtil;
 import cn.feng.untitled.value.impl.BoolValue;
@@ -39,6 +40,8 @@ public class MusicVisualizerWidget extends Widget {
 
     private final ModeValue modeValue = new ModeValue("Mode", "Polyline", new String[]{"Polyline", "Rect"});
 
+    private float[] magnitudeInterp = null;
+
     @Override
     public void onRender() {
         GL11.glPushMatrix();
@@ -54,12 +57,20 @@ public class MusicVisualizerWidget extends Widget {
             float[] magnitudes = Client.instance.musicManager.screen.player.getMagnitudes();
             float[] vertex = new float[magnitudes.length * 2 + 2];
 
+            if (magnitudeInterp == null) {
+                magnitudeInterp = magnitudes;
+            }
+
+            for (int i = 0; i < magnitudeInterp.length; i++) {
+                magnitudeInterp[i] = (float) MathUtil.lerp(magnitudeInterp[i], magnitudes[i], RenderUtil.frameTime * 0.5);
+            }
+
             vertex[0] = renderX;
             vertex[1] = renderY + height;
             renderX += step;
             int vertexIndex = 2;
             int colorIndex = 0;
-            for (float magnitude : magnitudes) {
+            for (float magnitude : magnitudeInterp) {
                 float realY = renderY + heightValue.value.floatValue() - (1 - (-magnitude / 60f)) * 1.2f * heightValue.value.floatValue();
                 vertex[vertexIndex] = renderX;
                 vertex[vertexIndex + 1] = realY;

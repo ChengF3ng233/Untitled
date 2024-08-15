@@ -3,6 +3,7 @@ package net.minecraft.client;
 import cn.feng.untitled.Client;
 import cn.feng.untitled.event.impl.KeyEvent;
 import cn.feng.untitled.ui.screen.SplashScreen;
+import cn.feng.untitled.util.render.RenderUtil;
 import com.google.common.collect.*;
 import com.google.common.util.concurrent.Futures;
 import com.google.common.util.concurrent.ListenableFuture;
@@ -936,6 +937,10 @@ public class Minecraft implements IThreadListener, IPlayerUsage {
      * Called repeatedly from run()
      */
     private void runGameLoop() throws IOException {
+
+        // 计算帧时间
+        RenderUtil.calcFrameDelta();
+
         long i = System.nanoTime();
         this.mcProfiler.startSection("root");
 
