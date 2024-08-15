@@ -163,7 +163,7 @@ public class MusicPlayerScreen extends GuiScreen {
             float playerY = y + (height - bottomWidth);
             RoundedUtil.drawRound(x + 19f, playerY + 6f, 22f, 22f, 10f, ThemeColor.bgColor);
             if (!player.isPaused()) {
-                coverAngle += 1f;
+                coverAngle += (float) (0.5 * RenderUtil.frameTime);
             }
             GL11.glPushMatrix();
             GlStateManager.bindTexture(music.getTexture().getGlTextureId());
