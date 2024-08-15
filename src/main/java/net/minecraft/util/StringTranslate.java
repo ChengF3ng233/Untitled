@@ -35,24 +35,21 @@ public class StringTranslate {
     private long lastUpdateTimeInMilliseconds;
 
     public StringTranslate() {
-        try {
-            InputStream inputstream = StringTranslate.class.getResourceAsStream("/assets/minecraft/lang/en_US.lang");
+        InputStream inputstream = StringTranslate.class.getResourceAsStream("/assets/minecraft/lang/en_US.lang");
 
-            for (String s : IOUtils.readLines(inputstream, Charsets.UTF_8)) {
-                if (!s.isEmpty() && s.charAt(0) != 35) {
-                    String[] astring = Iterables.toArray(equalSignSplitter.split(s), String.class);
+        for (String s : IOUtils.readLines(inputstream, Charsets.UTF_8)) {
+            if (!s.isEmpty() && s.charAt(0) != 35) {
+                String[] astring = Iterables.toArray(equalSignSplitter.split(s), String.class);
 
-                    if (astring != null && astring.length == 2) {
-                        String s1 = astring[0];
-                        String s2 = numericVariablePattern.matcher(astring[1]).replaceAll("%$1s");
-                        this.languageList.put(s1, s2);
-                    }
+                if (astring != null && astring.length == 2) {
+                    String s1 = astring[0];
+                    String s2 = numericVariablePattern.matcher(astring[1]).replaceAll("%$1s");
+                    this.languageList.put(s1, s2);
                 }
             }
-
-            this.lastUpdateTimeInMilliseconds = System.currentTimeMillis();
-        } catch (IOException var7) {
         }
+
+        this.lastUpdateTimeInMilliseconds = System.currentTimeMillis();
     }
 
     /**
