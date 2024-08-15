@@ -1,0 +1,9 @@
+/.idea/
+/run/
+/lib/mc/
+/build/
+/.gradle/
+/src/main/java/cn/feng/untitled/ui/font/nano/
+/src/main/java/cn/feng/untitled/music/api/base/
+/ffmpeg/
+/src/main/java/Test.java
