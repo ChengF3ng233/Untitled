@@ -9,15 +9,9 @@
 [常见问题](#常见问题解决)
 
 ## 配置开发环境 
-1. 自行添加mc自带依赖库，删除lwjgl2
-2. 添加如下jvm参数:
-   - `--add-opens
-     java.base/jdk.internal.access=ALL-UNNAMED`
-   - `--add-opens
-     java.base/java.nio=ALL-UNNAMED`
-   - `--add-opens
-     java.base/jdk.internal.misc=ALL-UNNAMED`
-3. 从你的`.minecraft`文件夹复制`assets`文件夹到你的运行配置的Working Directory里面
+1. 添加如下jvm参数:
+   `--add-opens java.base/jdk.internal.access=ALL-UNNAMED --add-opens java.base/java.nio=ALL-UNNAMED --add-opens java.base/jdk.internal.misc=ALL-UNNAMED`
+2. 从你的`.minecraft`文件夹复制`assets`文件夹到你的运行配置的Working Directory里面
 
 ## 创建一个Module
 以下是一个示例：
