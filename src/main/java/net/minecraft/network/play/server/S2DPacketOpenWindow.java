@@ -1,5 +1,6 @@
 package net.minecraft.network.play.server;
 
+import lombok.Getter;
 import net.minecraft.network.Packet;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.network.play.INetHandlerPlayClient;
@@ -8,10 +9,14 @@ import net.minecraft.util.IChatComponent;
 import java.io.IOException;
 
 public class S2DPacketOpenWindow implements Packet<INetHandlerPlayClient> {
+    @Getter
     private int windowId;
     private String inventoryType;
+    @Getter
     private IChatComponent windowTitle;
+    @Getter
     private int slotCount;
+    @Getter
     private int entityId;
 
     public S2DPacketOpenWindow() {
@@ -68,24 +73,8 @@ public class S2DPacketOpenWindow implements Packet<INetHandlerPlayClient> {
         }
     }
 
-    public int getWindowId() {
-        return this.windowId;
-    }
-
     public String getGuiId() {
         return this.inventoryType;
-    }
-
-    public IChatComponent getWindowTitle() {
-        return this.windowTitle;
-    }
-
-    public int getSlotCount() {
-        return this.slotCount;
-    }
-
-    public int getEntityId() {
-        return this.entityId;
     }
 
     public boolean hasSlots() {

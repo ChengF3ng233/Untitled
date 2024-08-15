@@ -1,8 +1,13 @@
 package net.optifine.config;
 
+import lombok.Getter;
+
 public class GlVersion {
+    @Getter
     private final int major;
+    @Getter
     private final int minor;
+    @Getter
     private final int release;
     private final String suffix;
 
@@ -19,18 +24,6 @@ public class GlVersion {
         this.minor = minor;
         this.release = release;
         this.suffix = suffix;
-    }
-
-    public int getMajor() {
-        return this.major;
-    }
-
-    public int getMinor() {
-        return this.minor;
-    }
-
-    public int getRelease() {
-        return this.release;
     }
 
     public int toInt() {

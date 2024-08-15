@@ -1,5 +1,6 @@
 package net.minecraft.network.play.server;
 
+import lombok.Getter;
 import net.minecraft.entity.Entity;
 import net.minecraft.network.Packet;
 import net.minecraft.network.PacketBuffer;
@@ -7,6 +8,7 @@ import net.minecraft.network.play.INetHandlerPlayClient;
 
 import java.io.IOException;
 
+@Getter
 public class S1BPacketEntityAttach implements Packet<INetHandlerPlayClient> {
     private int leash;
     private int entityId;
@@ -46,15 +48,4 @@ public class S1BPacketEntityAttach implements Packet<INetHandlerPlayClient> {
         handler.handleEntityAttach(this);
     }
 
-    public int getLeash() {
-        return this.leash;
-    }
-
-    public int getEntityId() {
-        return this.entityId;
-    }
-
-    public int getVehicleEntityId() {
-        return this.vehicleEntityId;
-    }
 }

@@ -1,6 +1,7 @@
 package net.minecraft.client.shader;
 
 import com.google.common.collect.Lists;
+import lombok.Setter;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.Tessellator;
@@ -21,6 +22,7 @@ public class Shader {
     private final List<String> listAuxNames = Lists.newArrayList();
     private final List<Integer> listAuxWidths = Lists.newArrayList();
     private final List<Integer> listAuxHeights = Lists.newArrayList();
+    @Setter
     private Matrix4f projectionMatrix;
 
     public Shader(IResourceManager p_i45089_1_, String p_i45089_2_, Framebuffer p_i45089_3_, Framebuffer p_i45089_4_) throws IOException {
@@ -50,10 +52,6 @@ public class Shader {
         GlStateManager.disableColorMaterial();
         GlStateManager.enableTexture2D();
         GlStateManager.bindTexture(0);
-    }
-
-    public void setProjectionMatrix(Matrix4f p_148045_1_) {
-        this.projectionMatrix = p_148045_1_;
     }
 
     public void loadShader(float p_148042_1_) {

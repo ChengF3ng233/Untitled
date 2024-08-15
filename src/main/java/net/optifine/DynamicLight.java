@@ -1,5 +1,6 @@
 package net.optifine;
 
+import lombok.Getter;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.renderer.RenderGlobal;
@@ -17,12 +18,19 @@ import java.util.HashSet;
 import java.util.Set;
 
 public class DynamicLight {
+    @Getter
     private Entity entity = null;
+    @Getter
     private double offsetY = 0.0D;
+    @Getter
     private double lastPosX = -2.147483648E9D;
+    @Getter
     private double lastPosY = -2.147483648E9D;
+    @Getter
     private double lastPosZ = -2.147483648E9D;
+    @Getter
     private int lastLightLevel = 0;
+    @Getter
     private boolean underwater = false;
     private long timeCheckMs = 0L;
     private Set<BlockPos> setLitChunkPos = new HashSet();
@@ -134,34 +142,6 @@ public class DynamicLight {
             RenderChunk renderchunk = renderGlobal.getRenderChunk(blockpos);
             this.updateChunkLight(renderchunk, null, null);
         }
-    }
-
-    public Entity getEntity() {
-        return this.entity;
-    }
-
-    public double getLastPosX() {
-        return this.lastPosX;
-    }
-
-    public double getLastPosY() {
-        return this.lastPosY;
-    }
-
-    public double getLastPosZ() {
-        return this.lastPosZ;
-    }
-
-    public int getLastLightLevel() {
-        return this.lastLightLevel;
-    }
-
-    public boolean isUnderwater() {
-        return this.underwater;
-    }
-
-    public double getOffsetY() {
-        return this.offsetY;
     }
 
     public String toString() {

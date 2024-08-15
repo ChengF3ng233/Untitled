@@ -1,11 +1,13 @@
 package net.minecraft.tileentity;
 
+import lombok.Getter;
 import net.minecraft.item.Item;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.Packet;
 import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
 import net.minecraft.util.ResourceLocation;
 
+@Getter
 public class TileEntityFlowerPot extends TileEntity {
     private Item flowerPotItem;
     private int flowerPotData;
@@ -54,11 +56,4 @@ public class TileEntityFlowerPot extends TileEntity {
         this.flowerPotData = potData;
     }
 
-    public Item getFlowerPotItem() {
-        return this.flowerPotItem;
-    }
-
-    public int getFlowerPotData() {
-        return this.flowerPotData;
-    }
 }

@@ -1,11 +1,13 @@
 package net.minecraft.network.play.server;
 
+import lombok.Getter;
 import net.minecraft.network.Packet;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.network.play.INetHandlerPlayClient;
 
 import java.io.IOException;
 
+@Getter
 public class S03PacketTimeUpdate implements Packet<INetHandlerPlayClient> {
     private long totalWorldTime;
     private long worldTime;
@@ -49,11 +51,4 @@ public class S03PacketTimeUpdate implements Packet<INetHandlerPlayClient> {
         handler.handleTimeUpdate(this);
     }
 
-    public long getTotalWorldTime() {
-        return this.totalWorldTime;
-    }
-
-    public long getWorldTime() {
-        return this.worldTime;
-    }
 }

@@ -1,11 +1,13 @@
 package net.minecraft.network.play.client;
 
+import lombok.Getter;
 import net.minecraft.network.Packet;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.network.play.INetHandlerPlayServer;
 
 import java.io.IOException;
 
+@Getter
 public class C16PacketClientStatus implements Packet<INetHandlerPlayServer> {
     private C16PacketClientStatus.EnumState status;
 
@@ -35,10 +37,6 @@ public class C16PacketClientStatus implements Packet<INetHandlerPlayServer> {
      */
     public void processPacket(INetHandlerPlayServer handler) {
         handler.processClientStatus(this);
-    }
-
-    public C16PacketClientStatus.EnumState getStatus() {
-        return this.status;
     }
 
     public enum EnumState {

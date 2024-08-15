@@ -1,5 +1,8 @@
 package net.optifine.util;
 
+import lombok.Getter;
+
+@Getter
 public class SmoothFloat {
     private float valueLast;
     private float timeFadeUpSec;
@@ -39,22 +42,6 @@ public class SmoothFloat {
 
             return f1;
         }
-    }
-
-    public float getValueLast() {
-        return this.valueLast;
-    }
-
-    public float getTimeFadeUpSec() {
-        return this.timeFadeUpSec;
-    }
-
-    public float getTimeFadeDownSec() {
-        return this.timeFadeDownSec;
-    }
-
-    public long getTimeLastMs() {
-        return this.timeLastMs;
     }
 
     public float getSmoothValue(float value, float timeFadeUpSec, float timeFadeDownSec) {

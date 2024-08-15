@@ -1,5 +1,7 @@
 package net.minecraft.world;
 
+import lombok.Getter;
+import lombok.Setter;
 import net.minecraft.block.Block;
 import net.minecraft.util.BlockPos;
 
@@ -9,11 +11,13 @@ public class NextTickListEntry implements Comparable<NextTickListEntry> {
      */
     private static long nextTickEntryID;
     public final BlockPos position;
+    @Getter
     private final Block block;
     /**
      * Time this tick is scheduled to occur at
      */
     public long scheduledTime;
+    @Setter
     public int priority;
 
     /**
@@ -47,10 +51,6 @@ public class NextTickListEntry implements Comparable<NextTickListEntry> {
         return this;
     }
 
-    public void setPriority(int priorityIn) {
-        this.priority = priorityIn;
-    }
-
     public int compareTo(NextTickListEntry p_compareTo_1_) {
         return this.scheduledTime < p_compareTo_1_.scheduledTime ? -1 : (this.scheduledTime > p_compareTo_1_.scheduledTime ? 1 : (this.priority != p_compareTo_1_.priority ? this.priority - p_compareTo_1_.priority : (this.tickEntryID < p_compareTo_1_.tickEntryID ? -1 : (this.tickEntryID > p_compareTo_1_.tickEntryID ? 1 : 0))));
     }
@@ -59,7 +59,4 @@ public class NextTickListEntry implements Comparable<NextTickListEntry> {
         return Block.getIdFromBlock(this.block) + ": " + this.position + ", " + this.scheduledTime + ", " + this.priority + ", " + this.tickEntryID;
     }
 
-    public Block getBlock() {
-        return this.block;
-    }
 }

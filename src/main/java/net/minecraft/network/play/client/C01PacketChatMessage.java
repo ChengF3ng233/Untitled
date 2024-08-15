@@ -1,11 +1,13 @@
 package net.minecraft.network.play.client;
 
+import lombok.Getter;
 import net.minecraft.network.Packet;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.network.play.INetHandlerPlayServer;
 
 import java.io.IOException;
 
+@Getter
 public class C01PacketChatMessage implements Packet<INetHandlerPlayServer> {
     private String message;
 
@@ -41,7 +43,4 @@ public class C01PacketChatMessage implements Packet<INetHandlerPlayServer> {
         handler.processChatMessage(this);
     }
 
-    public String getMessage() {
-        return this.message;
-    }
 }

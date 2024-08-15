@@ -1,13 +1,19 @@
 package net.minecraft.client.player.inventory;
 
+import lombok.Getter;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Container;
 import net.minecraft.util.IChatComponent;
 import net.minecraft.world.IInteractionObject;
 
+@Getter
 public class LocalBlockIntercommunication implements IInteractionObject {
     private final String guiID;
+    /**
+     * -- GETTER --
+     *  Get the formatted ChatComponent that will be used for the sender's username in chat
+     */
     private final IChatComponent displayName;
 
     public LocalBlockIntercommunication(String guiIdIn, IChatComponent displayNameIn) {
@@ -33,14 +39,4 @@ public class LocalBlockIntercommunication implements IInteractionObject {
         return true;
     }
 
-    public String getGuiID() {
-        return this.guiID;
-    }
-
-    /**
-     * Get the formatted ChatComponent that will be used for the sender's username in chat
-     */
-    public IChatComponent getDisplayName() {
-        return this.displayName;
-    }
 }

@@ -1,5 +1,6 @@
 package net.minecraft.item;
 
+import lombok.Getter;
 import net.minecraft.block.material.MapColor;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.IStringSerializable;
@@ -33,9 +34,13 @@ public enum EnumDyeColor implements IStringSerializable {
     }
 
     private final int meta;
+    @Getter
     private final int dyeDamage;
+    @Getter
     private final String name;
+    @Getter
     private final String unlocalizedName;
+    @Getter
     private final MapColor mapColor;
     private final EnumChatFormatting chatColor;
 
@@ -68,23 +73,8 @@ public enum EnumDyeColor implements IStringSerializable {
         return this.meta;
     }
 
-    public int getDyeDamage() {
-        return this.dyeDamage;
-    }
-
-    public String getUnlocalizedName() {
-        return this.unlocalizedName;
-    }
-
-    public MapColor getMapColor() {
-        return this.mapColor;
-    }
-
     public String toString() {
         return this.unlocalizedName;
     }
 
-    public String getName() {
-        return this.name;
-    }
 }

@@ -2,6 +2,7 @@ package net.minecraft.entity.ai;
 
 import com.google.common.base.Predicate;
 import com.google.common.base.Predicates;
+import lombok.Getter;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockTallGrass;
 import net.minecraft.block.state.IBlockState;
@@ -15,7 +16,11 @@ public class EntityAIEatGrass extends EntityAIBase {
     private static final Predicate<IBlockState> field_179505_b = BlockStateHelper.forBlock(Blocks.tallgrass).where(BlockTallGrass.TYPE, Predicates.equalTo(BlockTallGrass.EnumType.GRASS));
     /**
      * Number of ticks since the entity started to eat grass
+     * -- GETTER --
+     *  Number of ticks since the entity started to eat grass
+
      */
+    @Getter
     int eatingGrassTimer;
     /**
      * The entity owner of this AITask
@@ -65,13 +70,6 @@ public class EntityAIEatGrass extends EntityAIBase {
      */
     public boolean continueExecuting() {
         return this.eatingGrassTimer > 0;
-    }
-
-    /**
-     * Number of ticks since the entity started to eat grass
-     */
-    public int getEatingGrassTimer() {
-        return this.eatingGrassTimer;
     }
 
     /**

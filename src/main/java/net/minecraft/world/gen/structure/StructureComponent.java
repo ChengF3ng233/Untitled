@@ -1,5 +1,6 @@
 package net.minecraft.world.gen.structure;
 
+import lombok.Getter;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockDirectional;
 import net.minecraft.block.BlockDoor;
@@ -20,6 +21,7 @@ import java.util.List;
 import java.util.Random;
 
 public abstract class StructureComponent {
+    @Getter
     protected StructureBoundingBox boundingBox;
 
     /**
@@ -29,7 +31,11 @@ public abstract class StructureComponent {
 
     /**
      * The type ID of this component.
+     * -- GETTER --
+     *  Returns the component type ID of this component.
+
      */
+    @Getter
     protected int componentType;
 
     public StructureComponent() {
@@ -105,17 +111,6 @@ public abstract class StructureComponent {
      * the end, it adds Fences...
      */
     public abstract boolean addComponentParts(World worldIn, Random randomIn, StructureBoundingBox structureBoundingBoxIn);
-
-    public StructureBoundingBox getBoundingBox() {
-        return this.boundingBox;
-    }
-
-    /**
-     * Returns the component type ID of this component.
-     */
-    public int getComponentType() {
-        return this.componentType;
-    }
 
     public BlockPos getBoundingBoxCenter() {
         return new BlockPos(this.boundingBox.getCenter());

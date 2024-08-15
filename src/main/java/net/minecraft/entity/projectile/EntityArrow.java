@@ -1,5 +1,7 @@
 package net.minecraft.entity.projectile;
 
+import lombok.Getter;
+import lombok.Setter;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
@@ -40,11 +42,17 @@ public class EntityArrow extends Entity implements IProjectile {
     private boolean inGround;
     private int ticksInGround;
     private int ticksInAir;
+    @Getter
+    @Setter
     private double damage = 2.0D;
 
     /**
      * The amount of knockback an arrow applies when it hits a mob.
+     * -- SETTER --
+     *  Sets the amount of knockback the arrow applies when it hits a mob.
+
      */
+    @Setter
     private int knockbackStrength;
 
     public EntityArrow(World worldIn) {
@@ -459,21 +467,6 @@ public class EntityArrow extends Entity implements IProjectile {
      */
     protected boolean canTriggerWalking() {
         return false;
-    }
-
-    public double getDamage() {
-        return this.damage;
-    }
-
-    public void setDamage(double damageIn) {
-        this.damage = damageIn;
-    }
-
-    /**
-     * Sets the amount of knockback the arrow applies when it hits a mob.
-     */
-    public void setKnockbackStrength(int knockbackStrengthIn) {
-        this.knockbackStrength = knockbackStrengthIn;
     }
 
     /**

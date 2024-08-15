@@ -533,7 +533,7 @@ public abstract class BiomeGenBase {
             BiomeGenBase biomegenbase = biomeList[biomeId];
             return biomegenbase == null ? biome : biomegenbase;
         } else {
-            logger.warn("Biome ID is out of bounds: " + biomeId + ", defaulting to 0 (Ocean)");
+            logger.warn("Biome ID is out of bounds: {}, defaulting to 0 (Ocean)", biomeId);
             return ocean;
         }
     }

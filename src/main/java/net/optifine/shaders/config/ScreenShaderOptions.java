@@ -1,5 +1,8 @@
 package net.optifine.shaders.config;
 
+import lombok.Getter;
+
+@Getter
 public class ScreenShaderOptions {
     private final String name;
     private final ShaderOption[] shaderOptions;
@@ -11,15 +14,4 @@ public class ScreenShaderOptions {
         this.columns = columns;
     }
 
-    public String getName() {
-        return this.name;
-    }
-
-    public ShaderOption[] getShaderOptions() {
-        return this.shaderOptions;
-    }
-
-    public int getColumns() {
-        return this.columns;
-    }
 }

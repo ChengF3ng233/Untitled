@@ -1,6 +1,7 @@
 package net.minecraft.client.gui;
 
 import com.google.common.collect.Lists;
+import lombok.Getter;
 import net.minecraft.client.resources.*;
 import net.minecraft.util.Util;
 import org.apache.logging.log4j.LogManager;
@@ -16,7 +17,9 @@ import java.util.List;
 public class GuiScreenResourcePacks extends GuiScreen {
     private static final Logger logger = LogManager.getLogger();
     private final GuiScreen parentScreen;
+    @Getter
     private List<ResourcePackListEntry> availableResourcePacks;
+    @Getter
     private List<ResourcePackListEntry> selectedResourcePacks;
 
     /**
@@ -84,14 +87,6 @@ public class GuiScreenResourcePacks extends GuiScreen {
 
     public List<ResourcePackListEntry> getListContaining(ResourcePackListEntry p_146962_1_) {
         return this.hasResourcePackEntry(p_146962_1_) ? this.selectedResourcePacks : this.availableResourcePacks;
-    }
-
-    public List<ResourcePackListEntry> getAvailableResourcePacks() {
-        return this.availableResourcePacks;
-    }
-
-    public List<ResourcePackListEntry> getSelectedResourcePacks() {
-        return this.selectedResourcePacks;
     }
 
     /**

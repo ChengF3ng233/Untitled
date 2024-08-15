@@ -2,6 +2,7 @@ package net.minecraft.item.crafting;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
+import lombok.Getter;
 import net.minecraft.block.*;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
@@ -19,7 +20,11 @@ import java.util.Map;
 public class CraftingManager {
     /**
      * The static instance of this class
+     * -- GETTER --
+     *  Returns the static instance of this class
+
      */
+    @Getter
     private static final CraftingManager instance = new CraftingManager();
     private final List<IRecipe> recipes = Lists.newArrayList();
 
@@ -177,13 +182,6 @@ public class CraftingManager {
                 return p_compare_1_ instanceof ShapelessRecipes && p_compare_2_ instanceof ShapedRecipes ? 1 : (p_compare_2_ instanceof ShapelessRecipes && p_compare_1_ instanceof ShapedRecipes ? -1 : (p_compare_2_.getRecipeSize() < p_compare_1_.getRecipeSize() ? -1 : (p_compare_2_.getRecipeSize() > p_compare_1_.getRecipeSize() ? 1 : 0)));
             }
         });
-    }
-
-    /**
-     * Returns the static instance of this class
-     */
-    public static CraftingManager getInstance() {
-        return instance;
     }
 
     /**

@@ -1,7 +1,9 @@
 package net.optifine.model;
 
+import lombok.Getter;
 import net.minecraft.util.EnumFacing;
 
+@Getter
 public class QuadBounds {
     private float minX = Float.MAX_VALUE;
     private float minY = Float.MAX_VALUE;
@@ -43,30 +45,6 @@ public class QuadBounds {
                 this.maxZ = f2;
             }
         }
-    }
-
-    public float getMinX() {
-        return this.minX;
-    }
-
-    public float getMinY() {
-        return this.minY;
-    }
-
-    public float getMinZ() {
-        return this.minZ;
-    }
-
-    public float getMaxX() {
-        return this.maxX;
-    }
-
-    public float getMaxY() {
-        return this.maxY;
-    }
-
-    public float getMaxZ() {
-        return this.maxZ;
     }
 
     public boolean isFaceQuad(EnumFacing face) {

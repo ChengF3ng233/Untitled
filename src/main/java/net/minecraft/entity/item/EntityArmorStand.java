@@ -2,6 +2,7 @@ package net.minecraft.entity.item;
 
 import java.util.List;
 
+import lombok.Getter;
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
@@ -40,11 +41,17 @@ public class EntityArmorStand extends EntityLivingBase {
     private long punchCooldown;
     private int disabledSlots;
     private boolean field_181028_bj;
+    @Getter
     private Rotations headRotation;
+    @Getter
     private Rotations bodyRotation;
+    @Getter
     private Rotations leftArmRotation;
+    @Getter
     private Rotations rightArmRotation;
+    @Getter
     private Rotations leftLegRotation;
+    @Getter
     private Rotations rightLegRotation;
 
     public EntityArmorStand(World worldIn) {
@@ -728,17 +735,9 @@ public class EntityArmorStand extends EntityLivingBase {
         return (this.dataWatcher.getWatchableObjectByte(10) & 16) != 0;
     }
 
-    public Rotations getHeadRotation() {
-        return this.headRotation;
-    }
-
     public void setHeadRotation(Rotations p_175415_1_) {
         this.headRotation = p_175415_1_;
         this.dataWatcher.updateObject(11, p_175415_1_);
-    }
-
-    public Rotations getBodyRotation() {
-        return this.bodyRotation;
     }
 
     public void setBodyRotation(Rotations p_175424_1_) {
@@ -746,17 +745,9 @@ public class EntityArmorStand extends EntityLivingBase {
         this.dataWatcher.updateObject(12, p_175424_1_);
     }
 
-    public Rotations getLeftArmRotation() {
-        return this.leftArmRotation;
-    }
-
     public void setLeftArmRotation(Rotations p_175405_1_) {
         this.leftArmRotation = p_175405_1_;
         this.dataWatcher.updateObject(13, p_175405_1_);
-    }
-
-    public Rotations getRightArmRotation() {
-        return this.rightArmRotation;
     }
 
     public void setRightArmRotation(Rotations p_175428_1_) {
@@ -764,17 +755,9 @@ public class EntityArmorStand extends EntityLivingBase {
         this.dataWatcher.updateObject(14, p_175428_1_);
     }
 
-    public Rotations getLeftLegRotation() {
-        return this.leftLegRotation;
-    }
-
     public void setLeftLegRotation(Rotations p_175417_1_) {
         this.leftLegRotation = p_175417_1_;
         this.dataWatcher.updateObject(15, p_175417_1_);
-    }
-
-    public Rotations getRightLegRotation() {
-        return this.rightLegRotation;
     }
 
     public void setRightLegRotation(Rotations p_175427_1_) {

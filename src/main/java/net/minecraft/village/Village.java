@@ -2,6 +2,7 @@ package net.minecraft.village;
 
 import com.google.common.collect.Lists;
 import com.mojang.authlib.GameProfile;
+import lombok.Getter;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockDoor;
 import net.minecraft.block.material.Material;
@@ -25,6 +26,7 @@ import java.util.TreeMap;
 import java.util.UUID;
 
 public class Village {
+    @Getter
     private final List<VillageDoorInfo> villageDoorInfoList = Lists.newArrayList();
     private World worldObj;
     /**
@@ -36,10 +38,13 @@ public class Village {
     /**
      * This is the actual village center.
      */
+    @Getter
     private BlockPos center = BlockPos.ORIGIN;
+    @Getter
     private int villageRadius;
     private int lastAddDoorTimestamp;
     private int tickCounter;
+    @Getter
     private int numVillagers;
 
     /**
@@ -138,14 +143,6 @@ public class Village {
         }
     }
 
-    public BlockPos getCenter() {
-        return this.center;
-    }
-
-    public int getVillageRadius() {
-        return this.villageRadius;
-    }
-
     /**
      * Actually get num village door info entries, but that boils down to number of doors. Called by
      * EntityAIVillagerMate and VillageSiege
@@ -158,16 +155,8 @@ public class Village {
         return this.tickCounter - this.lastAddDoorTimestamp;
     }
 
-    public int getNumVillagers() {
-        return this.numVillagers;
-    }
-
     public boolean func_179866_a(BlockPos pos) {
         return this.center.distanceSq(pos) < (double) (this.villageRadius * this.villageRadius);
-    }
-
-    public List<VillageDoorInfo> getVillageDoorInfoList() {
-        return this.villageDoorInfoList;
     }
 
     public VillageDoorInfo getNearestDoor(BlockPos pos) {

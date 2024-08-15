@@ -20,6 +20,7 @@ package de.florianmichael.vialoadingbase.model;
 
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import de.florianmichael.vialoadingbase.ViaLoadingBase;
+import lombok.Getter;
 
 import java.util.List;
 import java.util.function.BooleanSupplier;
@@ -29,6 +30,7 @@ import java.util.logging.Logger;
 public class Platform {
     public static int COUNT = 0;
 
+    @Getter
     private final String name;
     private final BooleanSupplier load;
     private final Runnable executor;
@@ -43,10 +45,6 @@ public class Platform {
         this.load = load;
         this.executor = executor;
         this.versionCallback = versionCallback;
-    }
-
-    public String getName() {
-        return name;
     }
 
     public void createProtocolPath() {

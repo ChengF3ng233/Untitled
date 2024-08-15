@@ -1,5 +1,6 @@
 package net.minecraft.tileentity;
 
+import lombok.Setter;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Container;
@@ -22,6 +23,7 @@ public class TileEntityEnchantmentTable extends TileEntity implements ITickable,
     public float bookRotation;
     public float bookRotationPrev;
     public float field_145924_q;
+    @Setter
     private String customName;
 
     public void writeToNBT(NBTTagCompound compound) {
@@ -118,10 +120,6 @@ public class TileEntityEnchantmentTable extends TileEntity implements ITickable,
      */
     public boolean hasCustomName() {
         return this.customName != null && this.customName.length() > 0;
-    }
-
-    public void setCustomName(String customNameIn) {
-        this.customName = customNameIn;
     }
 
     /**

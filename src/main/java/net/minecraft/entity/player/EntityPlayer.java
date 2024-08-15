@@ -3,6 +3,7 @@ package net.minecraft.entity.player;
 import com.google.common.base.Charsets;
 import com.google.common.collect.Lists;
 import com.mojang.authlib.GameProfile;
+import lombok.Getter;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockBed;
 import net.minecraft.block.BlockDirectional;
@@ -51,7 +52,11 @@ import java.util.UUID;
 public abstract class EntityPlayer extends EntityLivingBase {
     /**
      * The player's unique game profile
+     * -- GETTER --
+     *  Returns the GameProfile for this player
+
      */
+    @Getter
     private final GameProfile gameProfile;
     /**
      * Inventory of the player
@@ -108,7 +113,11 @@ public abstract class EntityPlayer extends EntityLivingBase {
     public EntityFishHook fishEntity;
     /**
      * The food object of the player, the general hunger logic.
+     * -- GETTER --
+     *  Returns the player's FoodStats object.
+
      */
+    @Getter
     protected FoodStats foodStats = new FoodStats();
     /**
      * Used to tell if the player pressed jump twice. If this is at 0 and it's pressed (And they are allowed to fly, as
@@ -122,6 +131,7 @@ public abstract class EntityPlayer extends EntityLivingBase {
     protected float speedOnGround = 0.1F;
     protected float speedInAir = 0.02F;
     private InventoryEnderChest theInventoryEnderChest = new InventoryEnderChest();
+    @Getter
     private int sleepTimer;
     /**
      * holds the spawn chunk of the player
@@ -130,6 +140,7 @@ public abstract class EntityPlayer extends EntityLivingBase {
     /**
      * Whether this player's spawn point is forced, preventing execution of bed checks.
      */
+    @Getter
     private boolean spawnForced;
     /**
      * Holds the coordinate of the player when enter a minecraft to ride.
@@ -138,11 +149,19 @@ public abstract class EntityPlayer extends EntityLivingBase {
     private int xpSeed;
     /**
      * This is the item that is in use when the player is holding down the useItemButton (e.g., bow, food, sword)
+     * -- GETTER --
+     *  returns the ItemStack containing the itemInUse
+
      */
+    @Getter
     private ItemStack itemInUse;
     /**
      * This field starts off equal to getMaxItemUseDuration and is decremented on each tick
+     * -- GETTER --
+     *  Returns the item in use count
+
      */
+    @Getter
     private int itemInUseCount;
     private int lastXPSound;
     private boolean hasReducedDebug = false;
@@ -207,20 +226,6 @@ public abstract class EntityPlayer extends EntityLivingBase {
         this.dataWatcher.addObject(17, 0.0F);
         this.dataWatcher.addObject(18, 0);
         this.dataWatcher.addObject(10, (byte) 0);
-    }
-
-    /**
-     * returns the ItemStack containing the itemInUse
-     */
-    public ItemStack getItemInUse() {
-        return this.itemInUse;
-    }
-
-    /**
-     * Returns the item in use count
-     */
-    public int getItemInUseCount() {
-        return this.itemInUseCount;
     }
 
     /**
@@ -1246,13 +1251,6 @@ public abstract class EntityPlayer extends EntityLivingBase {
         return false;
     }
 
-    /**
-     * Returns the GameProfile for this player
-     */
-    public GameProfile getGameProfile() {
-        return this.gameProfile;
-    }
-
     public EntityPlayer.EnumStatus trySleep(BlockPos bedLocation) {
         if (!this.worldObj.isRemote) {
             if (this.isPlayerSleeping() || !this.isEntityAlive()) {
@@ -1422,19 +1420,11 @@ public abstract class EntityPlayer extends EntityLivingBase {
         return this.sleeping && this.sleepTimer >= 100;
     }
 
-    public int getSleepTimer() {
-        return this.sleepTimer;
-    }
-
     public void addChatComponentMessage(IChatComponent chatComponent) {
     }
 
     public BlockPos getBedLocation() {
         return this.spawnChunk;
-    }
-
-    public boolean isSpawnForced() {
-        return this.spawnForced;
     }
 
     public void setSpawnPoint(BlockPos pos, boolean forced) {
@@ -1705,13 +1695,6 @@ public abstract class EntityPlayer extends EntityLivingBase {
                 this.foodStats.addExhaustion(p_71020_1_);
             }
         }
-    }
-
-    /**
-     * Returns the player's FoodStats object.
-     */
-    public FoodStats getFoodStats() {
-        return this.foodStats;
     }
 
     public boolean canEat(boolean ignoreHunger) {
@@ -2008,6 +1991,7 @@ public abstract class EntityPlayer extends EntityLivingBase {
         this.hasReducedDebug = reducedDebug;
     }
 
+    @Getter
     public enum EnumChatVisibility {
         FULL(0, "options.chat.visibility.full"),
         SYSTEM(1, "options.chat.visibility.system"),
@@ -2033,13 +2017,6 @@ public abstract class EntityPlayer extends EntityLivingBase {
             return ID_LOOKUP[id % ID_LOOKUP.length];
         }
 
-        public int getChatVisibility() {
-            return this.chatVisibility;
-        }
-
-        public String getResourceKey() {
-            return this.resourceKey;
-        }
     }
 
     public enum EnumStatus {

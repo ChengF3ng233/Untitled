@@ -1,5 +1,6 @@
 package net.optifine.shaders;
 
+import lombok.Getter;
 import net.minecraft.client.Minecraft;
 import net.minecraft.src.Config;
 import net.minecraft.util.ResourceLocation;
@@ -19,6 +20,7 @@ import java.util.Properties;
 
 public class BlockAliases {
     private static BlockAlias[][] blockAliases = null;
+    @Getter
     private static PropertiesOrdered blockLayerPropertes = null;
     private static boolean updateOnResourcesReloaded;
 
@@ -166,10 +168,6 @@ public class BlockAliases {
         }
 
         return ablockalias;
-    }
-
-    public static PropertiesOrdered getBlockLayerPropertes() {
-        return blockLayerPropertes;
     }
 
     public static void reset() {

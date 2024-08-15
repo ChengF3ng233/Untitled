@@ -1,6 +1,8 @@
 package net.minecraft.command.server;
 
 import io.netty.buffer.ByteBuf;
+import lombok.Getter;
+import lombok.Setter;
 import net.minecraft.command.CommandResultStats;
 import net.minecraft.command.ICommandManager;
 import net.minecraft.command.ICommandSender;
@@ -26,12 +28,22 @@ public abstract class CommandBlockLogic implements ICommandSender {
     private final CommandResultStats resultStats = new CommandResultStats();
     /**
      * The number of successful commands run. (used for redstone output)
+     * -- GETTER --
+     *  returns the successCount int.
+
      */
+    @Getter
     private int successCount;
+    @Setter
     private boolean trackOutput = true;
     /**
      * The previously run command.
+     * -- GETTER --
+     *  Returns the lastOutput.
+
      */
+    @Getter
+    @Setter
     private IChatComponent lastOutput = null;
     /**
      * The command stored in the command block.
@@ -41,24 +53,6 @@ public abstract class CommandBlockLogic implements ICommandSender {
      * The custom name of the command block. (defaults to "@")
      */
     private String customName = "@";
-
-    /**
-     * returns the successCount int.
-     */
-    public int getSuccessCount() {
-        return this.successCount;
-    }
-
-    /**
-     * Returns the lastOutput.
-     */
-    public IChatComponent getLastOutput() {
-        return this.lastOutput;
-    }
-
-    public void setLastOutput(IChatComponent lastOutputMessage) {
-        this.lastOutput = lastOutputMessage;
-    }
 
     /**
      * Stores data to NBT format.
@@ -198,10 +192,6 @@ public abstract class CommandBlockLogic implements ICommandSender {
     public abstract int func_145751_f();
 
     public abstract void func_145757_a(ByteBuf p_145757_1_);
-
-    public void setTrackOutput(boolean shouldTrackOutput) {
-        this.trackOutput = shouldTrackOutput;
-    }
 
     public boolean shouldTrackOutput() {
         return this.trackOutput;

@@ -1,5 +1,7 @@
 package net.minecraft.entity.player;
 
+import lombok.Getter;
+import lombok.Setter;
 import net.minecraft.block.Block;
 import net.minecraft.crash.CrashReport;
 import net.minecraft.crash.CrashReportCategory;
@@ -42,6 +44,15 @@ public class InventoryPlayer implements IInventory {
      * it and reset the value.
      */
     public boolean inventoryChanged;
+    /**
+     * -- SETTER --
+     *  Set the stack helds by mouse, used in GUI/Container
+     * -- GETTER --
+     *  Stack helds by mouse, used in GUI and Containers
+
+     */
+    @Getter
+    @Setter
     private ItemStack itemStack;
 
     public InventoryPlayer(EntityPlayer playerIn) {
@@ -641,20 +652,6 @@ public class InventoryPlayer implements IInventory {
      */
     public void markDirty() {
         this.inventoryChanged = true;
-    }
-
-    /**
-     * Stack helds by mouse, used in GUI and Containers
-     */
-    public ItemStack getItemStack() {
-        return this.itemStack;
-    }
-
-    /**
-     * Set the stack helds by mouse, used in GUI/Container
-     */
-    public void setItemStack(ItemStack itemStackIn) {
-        this.itemStack = itemStackIn;
     }
 
     /**

@@ -5,6 +5,8 @@ import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
 import com.mojang.authlib.GameProfile;
 import io.netty.buffer.Unpooled;
+import lombok.Getter;
+import lombok.Setter;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityList;
 import net.minecraft.entity.player.EntityPlayer;
@@ -57,7 +59,9 @@ public abstract class ServerConfigurationManager {
     private final MinecraftServer mcServer;
     private final List<EntityPlayerMP> playerEntityList = Lists.newArrayList();
     private final Map<UUID, EntityPlayerMP> uuidToPlayerMap = Maps.newHashMap();
+    @Getter
     private final UserListBans bannedPlayers;
+    @Getter
     private final BanList bannedIPs;
 
     /**
@@ -72,7 +76,11 @@ public abstract class ServerConfigurationManager {
     private final Map<UUID, StatisticsFile> playerStatFiles;
     /**
      * The maximum number of players that can be connected at a time.
+     * -- GETTER --
+     *  Returns the maximum number of players allowed on the server.
+
      */
+    @Getter
     protected int maxPlayers;
     /**
      * Reference to the PlayerNBTManager object.
@@ -82,12 +90,22 @@ public abstract class ServerConfigurationManager {
      * Server setting to only allow OPs and whitelisted players to join the server.
      */
     private boolean whiteListEnforced;
+    /**
+     * -- GETTER --
+     *  Gets the View Distance.
+     */
+    @Getter
     private int viewDistance;
+    @Setter
     private WorldSettings.GameType gameType;
 
     /**
      * True if all players are allowed to use commands (cheats).
+     * -- SETTER --
+     *  Sets whether all players are allowed to use commands (cheats) on the server.
+
      */
+    @Setter
     private boolean commandsAllowedForAll;
 
     /**
@@ -122,7 +140,7 @@ public abstract class ServerConfigurationManager {
             s1 = netManager.getRemoteAddress().toString();
         }
 
-        logger.info(playerIn.getName() + "[" + s1 + "] logged in with entity id " + playerIn.getEntityId() + " at (" + playerIn.posX + ", " + playerIn.posY + ", " + playerIn.posZ + ")");
+        logger.info("{}[{}] logged in with entity id {} at ({}, {}, {})", playerIn.getName(), s1, playerIn.getEntityId(), playerIn.posX, playerIn.posY, playerIn.posZ);
         WorldServer worldserver = this.mcServer.worldServerForDimension(playerIn.dimension);
         WorldInfo worldinfo = worldserver.getWorldInfo();
         BlockPos blockpos = worldserver.getSpawnPoint();
@@ -623,14 +641,6 @@ public abstract class ServerConfigurationManager {
         return agameprofile;
     }
 
-    public UserListBans getBannedPlayers() {
-        return this.bannedPlayers;
-    }
-
-    public BanList getBannedIPs() {
-        return this.bannedIPs;
-    }
-
     public void addOp(GameProfile profile) {
         this.ops.addEntry(new UserListOpsEntry(profile, this.mcServer.getOpPermissionLevel(), this.ops.bypassesPlayerLimit(profile)));
     }
@@ -753,13 +763,6 @@ public abstract class ServerConfigurationManager {
     }
 
     /**
-     * Returns the maximum number of players allowed on the server.
-     */
-    public int getMaxPlayers() {
-        return this.maxPlayers;
-    }
-
-    /**
      * Returns an array of usernames for which player.dat exists for.
      */
     public String[] getAvailablePlayerDat() {
@@ -780,13 +783,6 @@ public abstract class ServerConfigurationManager {
         }
 
         return list;
-    }
-
-    /**
-     * Gets the View Distance.
-     */
-    public int getViewDistance() {
-        return this.viewDistance;
     }
 
     public void setViewDistance(int distance) {
@@ -812,10 +808,6 @@ public abstract class ServerConfigurationManager {
         return null;
     }
 
-    public void setGameType(WorldSettings.GameType p_152604_1_) {
-        this.gameType = p_152604_1_;
-    }
-
     private void setPlayerGameTypeBasedOnOther(EntityPlayerMP p_72381_1_, EntityPlayerMP p_72381_2_, World worldIn) {
         if (p_72381_2_ != null) {
             p_72381_1_.theItemInWorldManager.setGameType(p_72381_2_.theItemInWorldManager.getGameType());
@@ -824,13 +816,6 @@ public abstract class ServerConfigurationManager {
         }
 
         p_72381_1_.theItemInWorldManager.initializeGameType(worldIn.getWorldInfo().getGameType());
-    }
-
-    /**
-     * Sets whether all players are allowed to use commands (cheats) on the server.
-     */
-    public void setCommandsAllowedForAll(boolean p_72387_1_) {
-        this.commandsAllowedForAll = p_72387_1_;
     }
 
     /**

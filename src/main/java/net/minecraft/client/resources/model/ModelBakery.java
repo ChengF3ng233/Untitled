@@ -146,10 +146,10 @@ public class ModelBakery {
                 try {
                     this.registerVariant(modelblockdefinition, modelresourcelocation);
                 } catch (Exception exception) {
-                    LOGGER.warn("Unable to load variant: " + modelresourcelocation.getVariant() + " from " + modelresourcelocation, exception);
+                    LOGGER.warn("Unable to load variant: {} from {}", modelresourcelocation.getVariant(), modelresourcelocation, exception);
                 }
             } catch (Exception exception1) {
-                LOGGER.warn("Unable to load definition " + modelresourcelocation, exception1);
+                LOGGER.warn("Unable to load definition {}", modelresourcelocation, exception1);
             }
         }
     }
@@ -204,7 +204,7 @@ public class ModelBakery {
                         ModelBlock modelblock = this.loadModel(resourcelocation);
                         this.models.put(resourcelocation, modelblock);
                     } catch (Exception exception) {
-                        LOGGER.warn("Unable to load block model: '" + resourcelocation + "' for variant: '" + modelresourcelocation + "'", exception);
+                        LOGGER.warn("Unable to load block model: '{}' for variant: '{}'", resourcelocation, modelresourcelocation, exception);
                     }
                 }
             }
@@ -284,7 +284,7 @@ public class ModelBakery {
                         ModelBlock modelblock = this.loadModel(resourcelocation);
                         this.models.put(resourcelocation, modelblock);
                     } catch (Exception exception) {
-                        LOGGER.warn("Unable to load item model: '" + resourcelocation + "' for item: '" + Item.itemRegistry.getNameForObject(item) + "'", exception);
+                        LOGGER.warn("Unable to load item model: '{}' for item: '{}'", resourcelocation, Item.itemRegistry.getNameForObject(item), exception);
                     }
                 }
             }
@@ -300,7 +300,7 @@ public class ModelBakery {
                 this.models.put(p_loadItemModel_2_, modelblock);
             } catch (Exception exception) {
                 LOGGER.warn("Unable to load item model: '{}' for item: '{}'", p_loadItemModel_2_, p_loadItemModel_3_);
-                LOGGER.warn(exception.getClass().getName() + ": " + exception.getMessage());
+                LOGGER.warn("{}: {}", exception.getClass().getName(), exception.getMessage());
             }
         }
     }
@@ -382,12 +382,12 @@ public class ModelBakery {
                     ++i;
                     weightedbakedmodel$builder.add(this.bakeModel(modelblock, modelblockdefinition$variant.getRotation(), modelblockdefinition$variant.isUvLocked()), modelblockdefinition$variant.getWeight());
                 } else {
-                    LOGGER.warn("Missing model for: " + modelresourcelocation);
+                    LOGGER.warn("Missing model for: {}", modelresourcelocation);
                 }
             }
 
             if (i == 0) {
-                LOGGER.warn("No weighted models for: " + modelresourcelocation);
+                LOGGER.warn("No weighted models for: {}", modelresourcelocation);
             } else if (i == 1) {
                 this.bakedRegistry.putObject(modelresourcelocation, weightedbakedmodel$builder.first());
             } else {
@@ -408,7 +408,7 @@ public class ModelBakery {
                     this.bakedRegistry.putObject(modelresourcelocation1, this.bakeModel(modelblock1, ModelRotation.X0_Y0, false));
                 }
             } else {
-                LOGGER.warn("Missing model for: " + resourcelocation);
+                LOGGER.warn("Missing model for: {}", resourcelocation);
             }
         }
     }
@@ -429,7 +429,7 @@ public class ModelBakery {
                 ModelBlock modelblock = this.models.get(modelblockdefinition$variant.getModelLocation());
 
                 if (modelblock == null) {
-                    LOGGER.warn("Missing model for: " + modelresourcelocation);
+                    LOGGER.warn("Missing model for: {}", modelresourcelocation);
                 } else {
                     set.addAll(this.getTextureLocations(modelblock));
                 }
@@ -503,7 +503,7 @@ public class ModelBakery {
                     deque.add(resourcelocation3);
                 }
             } catch (Exception var6) {
-                LOGGER.warn("In parent chain: " + JOINER.join(this.getParentPath(resourcelocation2)) + "; unable to load model: '" + resourcelocation2 + "'");
+                LOGGER.warn("In parent chain: {}; unable to load model: '{}'", JOINER.join(this.getParentPath(resourcelocation2)), resourcelocation2);
             }
 
             set.add(resourcelocation2);

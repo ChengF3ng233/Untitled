@@ -2,6 +2,7 @@ package cn.feng.untitled.music.thread;
 
 import cn.feng.untitled.Client;
 import cn.feng.untitled.music.api.base.LyricLine;
+import cn.feng.untitled.music.api.base.LyricPair;
 import cn.feng.untitled.music.api.base.Music;
 import cn.feng.untitled.music.api.MusicAPI;
 import cn.feng.untitled.music.api.base.PlayList;
@@ -31,19 +32,21 @@ public class ChangeMusicThread extends Thread {
     @Override
     public void run() {
         if (music.getSongURL() == null) {
-            music.setSongURL(MusicAPI.getMusicURL(music.getId()));
+            music.setSongURL(MusicAPI.getMusicURL(music.getId(), false));
         }
         List<LyricLine> lyrics = music.getLyrics();
+        LyricPair pair = null;
         if (lyrics.isEmpty()) {
             // 请求逐字歌词
-            music.setLyrics(MusicAPI.getLyrics(music.getId()));
+            pair = MusicAPI.getLyrics(music.getId());
+            music.setLyrics(pair.lyrics());
             // 纠正低级格式的duration
             music.correctLyricDuration();
         }
         List<LyricLine> translatedLyrics = music.getTranslatedLyrics();
         if (translatedLyrics.isEmpty() && music.isHasTranslate()) {
             // 请求翻译
-            music.setTranslatedLyrics(MusicAPI.getTranslatedLyrics(music.getId()));
+            music.setTranslatedLyrics(pair == null? MusicAPI.getLyrics(music.getId()).translatedLyrics() : pair.translatedLyrics());
             if (!music.getTranslatedLyrics().isEmpty()) {
                 music.generateTranslateMap();
             } else music.setHasTranslate(false);

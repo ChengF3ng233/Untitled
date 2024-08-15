@@ -1,37 +1,30 @@
 package net.minecraft.util;
 
+import lombok.Getter;
+import lombok.Setter;
 import net.minecraft.scoreboard.Score;
 import net.minecraft.scoreboard.ScoreObjective;
 import net.minecraft.scoreboard.Scoreboard;
 import net.minecraft.server.MinecraftServer;
 
 public class ChatComponentScore extends ChatComponentStyle {
+    @Getter
     private final String name;
+    @Getter
     private final String objective;
 
     /**
      * The value displayed instead of the real score (may be null)
+     * -- SETTER --
+     *  Sets the value displayed instead of the real score.
+
      */
+    @Setter
     private String value = "";
 
     public ChatComponentScore(String nameIn, String objectiveIn) {
         this.name = nameIn;
         this.objective = objectiveIn;
-    }
-
-    public String getName() {
-        return this.name;
-    }
-
-    public String getObjective() {
-        return this.objective;
-    }
-
-    /**
-     * Sets the value displayed instead of the real score.
-     */
-    public void setValue(String valueIn) {
-        this.value = valueIn;
     }
 
     /**

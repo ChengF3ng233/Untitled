@@ -3,6 +3,7 @@ package net.minecraft.network.login.server;
 import java.io.IOException;
 import java.security.PublicKey;
 
+import lombok.Getter;
 import net.minecraft.network.Packet;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.network.login.INetHandlerLoginClient;
@@ -10,7 +11,9 @@ import net.minecraft.util.CryptManager;
 
 public class S01PacketEncryptionRequest implements Packet<INetHandlerLoginClient> {
     private String hashedServerId;
+    @Getter
     private PublicKey publicKey;
+    @Getter
     private byte[] verifyToken;
 
     public S01PacketEncryptionRequest() {
@@ -51,11 +54,4 @@ public class S01PacketEncryptionRequest implements Packet<INetHandlerLoginClient
         return this.hashedServerId;
     }
 
-    public PublicKey getPublicKey() {
-        return this.publicKey;
-    }
-
-    public byte[] getVerifyToken() {
-        return this.verifyToken;
-    }
 }

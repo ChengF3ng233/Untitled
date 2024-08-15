@@ -1,5 +1,7 @@
 package net.optifine.render;
 
+import lombok.Getter;
+import lombok.Setter;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockLeaves;
 import net.minecraft.block.state.BlockStateBase;
@@ -24,28 +26,37 @@ public class RenderEnv {
     private static final int UNKNOWN = -1;
     private static final int FALSE = 0;
     private static final int TRUE = 1;
+    @Getter
     private IBlockState blockState;
     private BlockPos blockPos;
     private int blockId = -1;
     private int metadata = -1;
     private int breakingAnimation = -1;
     private int smartLeaves = -1;
+    @Getter
     private final float[] quadBounds = new float[EnumFacing.VALUES.length * 2];
+    @Getter
     private final BitSet boundsFlags = new BitSet(3);
+    @Getter
     private final BlockModelRenderer.AmbientOcclusionFace aoFace = new BlockModelRenderer.AmbientOcclusionFace();
     private BlockPosM colorizerBlockPosM = null;
     private boolean[] borderFlags = null;
     private boolean[] borderFlags2 = null;
     private boolean[] borderFlags3 = null;
     private EnumFacing[] borderDirections = null;
+    @Getter
     private final List<BakedQuad> listQuadsCustomizer = new ArrayList();
     private final List<BakedQuad> listQuadsCtmMultipass = new ArrayList();
     private final BakedQuad[] arrayQuadsCtm1 = new BakedQuad[1];
     private final BakedQuad[] arrayQuadsCtm2 = new BakedQuad[2];
     private final BakedQuad[] arrayQuadsCtm3 = new BakedQuad[3];
     private final BakedQuad[] arrayQuadsCtm4 = new BakedQuad[4];
+    @Getter
+    @Setter
     private RegionRenderCacheBuilder regionRenderCacheBuilder = null;
     private final ListQuadsOverlay[] listsQuadsOverlay = new ListQuadsOverlay[EnumWorldBlockLayer.values().length];
+    @Getter
+    @Setter
     private boolean overlaysRendered = false;
 
     public RenderEnv(IBlockState blockState, BlockPos blockPos) {
@@ -89,18 +100,6 @@ public class RenderEnv {
         return this.metadata;
     }
 
-    public float[] getQuadBounds() {
-        return this.quadBounds;
-    }
-
-    public BitSet getBoundsFlags() {
-        return this.boundsFlags;
-    }
-
-    public BlockModelRenderer.AmbientOcclusionFace getAoFace() {
-        return this.aoFace;
-    }
-
     public boolean isBreakingAnimation(List listQuads) {
         if (this.breakingAnimation == -1 && listQuads.size() > 0) {
             if (listQuads.get(0) instanceof BreakingFour) {
@@ -127,10 +126,6 @@ public class RenderEnv {
 
     public boolean isBreakingAnimation() {
         return this.breakingAnimation == 1;
-    }
-
-    public IBlockState getBlockState() {
-        return this.blockState;
     }
 
     public BlockPosM getColorizerBlockPosM() {
@@ -194,10 +189,6 @@ public class RenderEnv {
         return this.smartLeaves == 1;
     }
 
-    public List<BakedQuad> getListQuadsCustomizer() {
-        return this.listQuadsCustomizer;
-    }
-
     public BakedQuad[] getArrayQuadsCtm(BakedQuad quad) {
         this.arrayQuadsCtm1[0] = quad;
         return this.arrayQuadsCtm1;
@@ -234,14 +225,6 @@ public class RenderEnv {
         return this.listQuadsCtmMultipass;
     }
 
-    public RegionRenderCacheBuilder getRegionRenderCacheBuilder() {
-        return this.regionRenderCacheBuilder;
-    }
-
-    public void setRegionRenderCacheBuilder(RegionRenderCacheBuilder regionRenderCacheBuilder) {
-        this.regionRenderCacheBuilder = regionRenderCacheBuilder;
-    }
-
     public ListQuadsOverlay getListQuadsOverlay(EnumWorldBlockLayer layer) {
         ListQuadsOverlay listquadsoverlay = this.listsQuadsOverlay[layer.ordinal()];
 
@@ -253,11 +236,4 @@ public class RenderEnv {
         return listquadsoverlay;
     }
 
-    public boolean isOverlaysRendered() {
-        return this.overlaysRendered;
-    }
-
-    public void setOverlaysRendered(boolean overlaysRendered) {
-        this.overlaysRendered = overlaysRendered;
-    }
 }

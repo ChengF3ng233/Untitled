@@ -1,5 +1,7 @@
 package net.optifine.shaders;
 
+import lombok.Getter;
+import lombok.Setter;
 import net.optifine.render.GlAlphaState;
 import net.optifine.render.GlBlendState;
 import net.optifine.shaders.config.RenderScale;
@@ -7,6 +9,7 @@ import net.optifine.shaders.config.RenderScale;
 import java.nio.IntBuffer;
 import java.util.Arrays;
 
+@Getter
 public class Program {
     private final int index;
     private final String name;
@@ -14,15 +17,24 @@ public class Program {
     private final Program programBackup;
     private final Boolean[] buffersFlip = new Boolean[8];
     private final boolean[] toggleColorTextures = new boolean[8];
+    @Setter
     private GlAlphaState alphaState;
+    @Setter
     private GlBlendState blendState;
+    @Setter
     private RenderScale renderScale;
+    @Setter
     private int id;
+    @Setter
     private int ref;
+    @Setter
     private String drawBufSettings;
+    @Setter
     private IntBuffer drawBuffers;
     private IntBuffer drawBuffersBuffer;
+    @Setter
     private int compositeMipmapSetting;
+    @Setter
     private int countInstances;
 
     public Program(int index, String name, ProgramStage programStage, Program programBackup) {
@@ -72,106 +84,6 @@ public class Program {
         this.compositeMipmapSetting = p.getCompositeMipmapSetting();
         this.countInstances = p.getCountInstances();
         System.arraycopy(p.getToggleColorTextures(), 0, this.toggleColorTextures, 0, this.toggleColorTextures.length);
-    }
-
-    public int getIndex() {
-        return this.index;
-    }
-
-    public String getName() {
-        return this.name;
-    }
-
-    public ProgramStage getProgramStage() {
-        return this.programStage;
-    }
-
-    public Program getProgramBackup() {
-        return this.programBackup;
-    }
-
-    public int getId() {
-        return this.id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public int getRef() {
-        return this.ref;
-    }
-
-    public void setRef(int ref) {
-        this.ref = ref;
-    }
-
-    public String getDrawBufSettings() {
-        return this.drawBufSettings;
-    }
-
-    public void setDrawBufSettings(String drawBufSettings) {
-        this.drawBufSettings = drawBufSettings;
-    }
-
-    public IntBuffer getDrawBuffers() {
-        return this.drawBuffers;
-    }
-
-    public void setDrawBuffers(IntBuffer drawBuffers) {
-        this.drawBuffers = drawBuffers;
-    }
-
-    public IntBuffer getDrawBuffersBuffer() {
-        return this.drawBuffersBuffer;
-    }
-
-    public int getCompositeMipmapSetting() {
-        return this.compositeMipmapSetting;
-    }
-
-    public void setCompositeMipmapSetting(int compositeMipmapSetting) {
-        this.compositeMipmapSetting = compositeMipmapSetting;
-    }
-
-    public int getCountInstances() {
-        return this.countInstances;
-    }
-
-    public void setCountInstances(int countInstances) {
-        this.countInstances = countInstances;
-    }
-
-    public GlAlphaState getAlphaState() {
-        return this.alphaState;
-    }
-
-    public void setAlphaState(GlAlphaState alphaState) {
-        this.alphaState = alphaState;
-    }
-
-    public GlBlendState getBlendState() {
-        return this.blendState;
-    }
-
-    public void setBlendState(GlBlendState blendState) {
-        this.blendState = blendState;
-    }
-
-    public RenderScale getRenderScale() {
-        return this.renderScale;
-    }
-
-    public void setRenderScale(RenderScale renderScale) {
-        this.renderScale = renderScale;
-    }
-
-    public Boolean[] getBuffersFlip() {
-        return this.buffersFlip;
-    }
-
-    public boolean[] getToggleColorTextures() {
-        return this.toggleColorTextures;
     }
 
     public String getRealProgramName() {

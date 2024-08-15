@@ -6,6 +6,8 @@ import cn.feng.untitled.music.api.base.PlayList;
 import cn.feng.untitled.music.ui.gui.impl.PlayListGUI;
 import cn.feng.untitled.music.ui.gui.impl.PlayListListGUI;
 
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 
 /**
@@ -21,12 +23,12 @@ public class GetPlayListsThread extends Thread {
     public void run() {
         PlayListListGUI gui = (PlayListListGUI) Client.instance.musicManager.screen.categoryButtons.get(0).getGui();
 
-        List<PlayList> playLists = MusicAPI.getUserPlayLists();
+        List<PlayList> userPlayLists = MusicAPI.getUserPlayLists();
         List<PlayList> recommendedPlayLists = MusicAPI.getRecommendedPlayLists();
-        List<PlayList> personalizedPlayLists = MusicAPI.getPersonalizedPlayLists();
+        PlayList dailySongs = MusicAPI.getDailySongs();
 
         PlayList toRemove = null;
-        for (PlayList playList : playLists) {
+        for (PlayList playList : userPlayLists) {
             if (playList.getName().equalsIgnoreCase(MusicAPI.user.getNickname() + "喜欢的音乐")) {
                 PlayListGUI gui1 = (PlayListGUI) Client.instance.musicManager.screen.categoryButtons.get(1).getGui();
                 gui1.setPlayList(playList);
@@ -34,11 +36,14 @@ public class GetPlayListsThread extends Thread {
                 toRemove = playList;
             }
         }
-        if (toRemove != null) playLists.remove(toRemove);
+        if (toRemove != null) userPlayLists.remove(toRemove);
 
-        playLists.forEach(gui::addPlayList);
-        gui.addPlayList(MusicAPI.getDailySongs());
-        recommendedPlayLists.forEach(gui::addPlayList);
-        personalizedPlayLists.forEach(gui::addPlayList);
+
+        List<PlayList> playLists = new ArrayList<>(userPlayLists);
+        playLists.add(dailySongs);
+        playLists.addAll(recommendedPlayLists);
+
+        HashSet<PlayList> playLists1 = new HashSet<>(playLists);
+        new ArrayList<>(playLists1).forEach(gui::addPlayList);
     }
 }

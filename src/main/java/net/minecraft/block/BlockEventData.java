@@ -1,15 +1,22 @@
 package net.minecraft.block;
 
+import lombok.Getter;
 import net.minecraft.util.BlockPos;
 
 public class BlockEventData {
+    @Getter
     private final BlockPos position;
     private final Block blockType;
 
     /**
      * Different for each blockID
+     * -- GETTER --
+     *  Get the Event ID (different for each BlockID)
+
      */
+    @Getter
     private final int eventID;
+    @Getter
     private final int eventParameter;
 
     public BlockEventData(BlockPos pos, Block blockType, int eventId, int p_i45756_4_) {
@@ -17,21 +24,6 @@ public class BlockEventData {
         this.eventID = eventId;
         this.eventParameter = p_i45756_4_;
         this.blockType = blockType;
-    }
-
-    public BlockPos getPosition() {
-        return this.position;
-    }
-
-    /**
-     * Get the Event ID (different for each BlockID)
-     */
-    public int getEventID() {
-        return this.eventID;
-    }
-
-    public int getEventParameter() {
-        return this.eventParameter;
     }
 
     public Block getBlock() {

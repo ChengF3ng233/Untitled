@@ -1,6 +1,7 @@
 package net.minecraft.entity;
 
 import io.netty.buffer.ByteBuf;
+import lombok.Getter;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.command.server.CommandBlockLogic;
 import net.minecraft.entity.item.EntityMinecart;
@@ -13,6 +14,7 @@ import net.minecraft.util.Vec3;
 import net.minecraft.world.World;
 
 public class EntityMinecartCommandBlock extends EntityMinecart {
+    @Getter
     private final CommandBlockLogic commandBlockLogic = new CommandBlockLogic() {
         public void updateCommand() {
             EntityMinecartCommandBlock.this.getDataWatcher().updateObject(23, this.getCommand());
@@ -87,10 +89,6 @@ public class EntityMinecartCommandBlock extends EntityMinecart {
 
     public IBlockState getDefaultDisplayTile() {
         return Blocks.command_block.getDefaultState();
-    }
-
-    public CommandBlockLogic getCommandBlockLogic() {
-        return this.commandBlockLogic;
     }
 
     /**

@@ -1,5 +1,6 @@
 package net.minecraft.world.pathfinder;
 
+import lombok.Setter;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockDoor;
 import net.minecraft.block.BlockFence;
@@ -17,7 +18,9 @@ import net.minecraft.world.IBlockAccess;
 public class WalkNodeProcessor extends NodeProcessor {
     private boolean canEnterDoors;
     private boolean canBreakDoors;
+    @Setter
     private boolean avoidsWater;
+    @Setter
     private boolean canSwim;
     private boolean shouldAvoidWater;
 
@@ -237,15 +240,8 @@ public class WalkNodeProcessor extends NodeProcessor {
         return this.canSwim;
     }
 
-    public void setCanSwim(boolean canSwimIn) {
-        this.canSwim = canSwimIn;
-    }
-
     public boolean getAvoidsWater() {
         return this.avoidsWater;
     }
 
-    public void setAvoidsWater(boolean avoidsWaterIn) {
-        this.avoidsWater = avoidsWaterIn;
-    }
 }

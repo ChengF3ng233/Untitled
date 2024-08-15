@@ -1,5 +1,7 @@
 package net.minecraft.client.renderer.tileentity;
 
+import lombok.Getter;
+import lombok.Setter;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.renderer.WorldRenderer;
 import net.minecraft.client.renderer.texture.TextureManager;
@@ -10,8 +12,11 @@ import net.optifine.entity.model.IEntityRenderer;
 
 public abstract class TileEntitySpecialRenderer<T extends TileEntity> implements IEntityRenderer {
     protected static final ResourceLocation[] DESTROY_STAGES = new ResourceLocation[]{new ResourceLocation("textures/blocks/destroy_stage_0.png"), new ResourceLocation("textures/blocks/destroy_stage_1.png"), new ResourceLocation("textures/blocks/destroy_stage_2.png"), new ResourceLocation("textures/blocks/destroy_stage_3.png"), new ResourceLocation("textures/blocks/destroy_stage_4.png"), new ResourceLocation("textures/blocks/destroy_stage_5.png"), new ResourceLocation("textures/blocks/destroy_stage_6.png"), new ResourceLocation("textures/blocks/destroy_stage_7.png"), new ResourceLocation("textures/blocks/destroy_stage_8.png"), new ResourceLocation("textures/blocks/destroy_stage_9.png")};
+    @Setter
     protected TileEntityRendererDispatcher rendererDispatcher;
     private Class tileEntityClass = null;
+    @Getter
+    @Setter
     private ResourceLocation locationTextureCustom = null;
 
     public abstract void renderTileEntityAt(T te, double x, double y, double z, float partialTicks, int destroyStage);
@@ -26,10 +31,6 @@ public abstract class TileEntitySpecialRenderer<T extends TileEntity> implements
 
     protected World getWorld() {
         return this.rendererDispatcher.worldObj;
-    }
-
-    public void setRendererDispatcher(TileEntityRendererDispatcher rendererDispatcherIn) {
-        this.rendererDispatcher = rendererDispatcherIn;
     }
 
     public FontRenderer getFontRenderer() {
@@ -56,11 +57,4 @@ public abstract class TileEntitySpecialRenderer<T extends TileEntity> implements
         this.tileEntityClass = p_setEntityClass_1_;
     }
 
-    public ResourceLocation getLocationTextureCustom() {
-        return this.locationTextureCustom;
-    }
-
-    public void setLocationTextureCustom(ResourceLocation p_setLocationTextureCustom_1_) {
-        this.locationTextureCustom = p_setLocationTextureCustom_1_;
-    }
 }

@@ -3,6 +3,8 @@ package net.minecraft.client.gui;
 import com.google.common.base.Splitter;
 import com.google.common.collect.Lists;
 import de.florianmichael.viamcp.ViaMCP;
+import lombok.Getter;
+import lombok.Setter;
 import net.minecraft.client.multiplayer.GuiConnecting;
 import net.minecraft.client.multiplayer.ServerData;
 import net.minecraft.client.multiplayer.ServerList;
@@ -18,6 +20,7 @@ import java.util.List;
 
 public class GuiMultiplayer extends GuiScreen implements GuiYesNoCallback {
     private static final Logger logger = LogManager.getLogger();
+    @Getter
     private final OldServerPinger oldServerPinger = new OldServerPinger();
     private final GuiScreen parentScreen;
     private ServerSelectionList serverListSelector;
@@ -33,6 +36,7 @@ public class GuiMultiplayer extends GuiScreen implements GuiYesNoCallback {
     /**
      * The text to be displayed when the player's cursor hovers over a server listing.
      */
+    @Setter
     private String hoveringText;
     private ServerData selectedServer;
     private LanServerDetector.LanServerList lanServerList;
@@ -61,7 +65,7 @@ public class GuiMultiplayer extends GuiScreen implements GuiYesNoCallback {
                 this.lanServerDetector = new LanServerDetector.ThreadLanServerFind(this.lanServerList);
                 this.lanServerDetector.start();
             } catch (Exception exception) {
-                logger.warn("Unable to start LAN server detection: " + exception.getMessage());
+                logger.warn("Unable to start LAN server detection: {}", exception.getMessage());
             }
 
             this.serverListSelector = new ServerSelectionList(this, this.mc, this.width, this.height, 32, this.height - 64, 36);
@@ -330,14 +334,6 @@ public class GuiMultiplayer extends GuiScreen implements GuiYesNoCallback {
                 this.btnDeleteServer.enabled = true;
             }
         }
-    }
-
-    public OldServerPinger getOldServerPinger() {
-        return this.oldServerPinger;
-    }
-
-    public void setHoveringText(String p_146793_1_) {
-        this.hoveringText = p_146793_1_;
     }
 
     /**

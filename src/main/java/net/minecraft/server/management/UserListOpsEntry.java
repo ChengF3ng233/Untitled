@@ -2,10 +2,16 @@ package net.minecraft.server.management;
 
 import com.google.gson.JsonObject;
 import com.mojang.authlib.GameProfile;
+import lombok.Getter;
 
 import java.util.UUID;
 
 public class UserListOpsEntry extends UserListEntry<GameProfile> {
+    /**
+     * -- GETTER --
+     *  Gets the permission level of the user, as defined in the "level" attribute of the ops.json file
+     */
+    @Getter
     private final int permissionLevel;
     private final boolean bypassesPlayerLimit;
 
@@ -36,13 +42,6 @@ public class UserListOpsEntry extends UserListEntry<GameProfile> {
         } else {
             return null;
         }
-    }
-
-    /**
-     * Gets the permission level of the user, as defined in the "level" attribute of the ops.json file
-     */
-    public int getPermissionLevel() {
-        return this.permissionLevel;
     }
 
     public boolean bypassesPlayerLimit() {

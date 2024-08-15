@@ -1,5 +1,6 @@
 package net.minecraft.world.storage;
 
+import lombok.Getter;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.CompressedStreamTools;
 import net.minecraft.nbt.NBTTagCompound;
@@ -17,7 +18,11 @@ public class SaveHandler implements ISaveHandler, IPlayerFileData {
 
     /**
      * The directory in which to save world data.
+     * -- GETTER --
+     *  Gets the File object corresponding to the base directory of this world.
+
      */
+    @Getter
     private final File worldDirectory;
 
     /**
@@ -68,13 +73,6 @@ public class SaveHandler implements ISaveHandler, IPlayerFileData {
             ioexception.printStackTrace();
             throw new RuntimeException("Failed to check session lock, aborting");
         }
-    }
-
-    /**
-     * Gets the File object corresponding to the base directory of this world.
-     */
-    public File getWorldDirectory() {
-        return this.worldDirectory;
     }
 
     /**
@@ -220,7 +218,7 @@ public class SaveHandler implements ISaveHandler, IPlayerFileData {
 
             file1.renameTo(file2);
         } catch (Exception var5) {
-            logger.warn("Failed to save player data for " + player.getName());
+            logger.warn("Failed to save player data for {}", player.getName());
         }
     }
 
@@ -237,7 +235,7 @@ public class SaveHandler implements ISaveHandler, IPlayerFileData {
                 nbttagcompound = CompressedStreamTools.readCompressed(new FileInputStream(file1));
             }
         } catch (Exception var4) {
-            logger.warn("Failed to load player data for " + player.getName());
+            logger.warn("Failed to load player data for {}", player.getName());
         }
 
         if (nbttagcompound != null) {

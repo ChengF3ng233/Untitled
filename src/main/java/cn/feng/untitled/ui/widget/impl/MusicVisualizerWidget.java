@@ -43,9 +43,8 @@ public class MusicVisualizerWidget extends Widget {
     private float[] magnitudeInterp = null;
 
     @Override
-    public void onNano() {
+    public void onRender2D() {
         GL11.glPushMatrix();
-        GL11.glScalef(2f, 2f, 1f);
         width = fillValue.value? sr.getScaledWidth() : widthValue.value.floatValue();
         height = heightValue.value.floatValue();
         float renderX = sr.getScaledWidth() * x;

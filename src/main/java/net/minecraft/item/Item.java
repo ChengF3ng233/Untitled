@@ -10,6 +10,7 @@ import java.util.Map;
 import java.util.Random;
 import java.util.UUID;
 
+import lombok.Getter;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockDirt;
 import net.minecraft.block.BlockDoublePlant;
@@ -69,8 +70,13 @@ public class Item {
     private CreativeTabs tabToDisplayOn;
     /**
      * Maximum damage an item can handle.
+     * -- GETTER --
+     *  Returns the maximum damage an item can take.
+
      */
+    @Getter
     private int maxDamage;
+    @Getter
     private Item containerItem;
 
     /**
@@ -607,13 +613,6 @@ public class Item {
     }
 
     /**
-     * Returns the maximum damage an item can take.
-     */
-    public int getMaxDamage() {
-        return this.maxDamage;
-    }
-
-    /**
      * set max damage of an Item
      */
     protected Item setMaxDamage(int maxDamageIn) {
@@ -714,10 +713,6 @@ public class Item {
      */
     public boolean getShareTag() {
         return true;
-    }
-
-    public Item getContainerItem() {
-        return this.containerItem;
     }
 
     public Item setContainerItem(Item containerItem) {
@@ -886,6 +881,7 @@ public class Item {
         return HashMultimap.create();
     }
 
+    @Getter
     public enum ToolMaterial {
         WOOD(0, 59, 2.0F, 0.0F, 15),
         STONE(1, 131, 4.0F, 1.0F, 5),
@@ -905,26 +901,6 @@ public class Item {
             this.efficiencyOnProperMaterial = efficiency;
             this.damageVsEntity = damageVsEntity;
             this.enchantability = enchantability;
-        }
-
-        public int getMaxUses() {
-            return this.maxUses;
-        }
-
-        public float getEfficiencyOnProperMaterial() {
-            return this.efficiencyOnProperMaterial;
-        }
-
-        public float getDamageVsEntity() {
-            return this.damageVsEntity;
-        }
-
-        public int getHarvestLevel() {
-            return this.harvestLevel;
-        }
-
-        public int getEnchantability() {
-            return this.enchantability;
         }
 
         public Item getRepairItem() {

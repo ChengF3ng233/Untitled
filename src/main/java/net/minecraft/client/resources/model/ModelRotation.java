@@ -1,6 +1,7 @@
 package net.minecraft.client.resources.model;
 
 import com.google.common.collect.Maps;
+import lombok.Getter;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.MathHelper;
 import org.lwjgl.util.vector.Matrix4f;
@@ -35,6 +36,7 @@ public enum ModelRotation {
     }
 
     private final int combinedXY;
+    @Getter
     private final Matrix4f matrix4d;
     private final int quartersX;
     private final int quartersY;
@@ -59,10 +61,6 @@ public enum ModelRotation {
 
     public static ModelRotation getModelRotation(int p_177524_0_, int p_177524_1_) {
         return mapRotations.get(combineXY(MathHelper.normalizeAngle(p_177524_0_, 360), MathHelper.normalizeAngle(p_177524_1_, 360)));
-    }
-
-    public Matrix4f getMatrix4d() {
-        return this.matrix4d;
     }
 
     public EnumFacing rotateFace(EnumFacing p_177523_1_) {

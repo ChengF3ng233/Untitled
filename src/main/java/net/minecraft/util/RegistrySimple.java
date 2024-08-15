@@ -30,7 +30,7 @@ public class RegistrySimple<K, V> implements IRegistry<K, V> {
         Validate.notNull(value);
 
         if (this.registryObjects.containsKey(key)) {
-            logger.debug("Adding duplicate key '" + key + "' to registry");
+            logger.debug("Adding duplicate key '{}' to registry", key);
         }
 
         this.registryObjects.put(key, value);

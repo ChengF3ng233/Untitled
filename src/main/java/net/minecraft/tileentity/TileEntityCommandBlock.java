@@ -1,6 +1,7 @@
 package net.minecraft.tileentity;
 
 import io.netty.buffer.ByteBuf;
+import lombok.Getter;
 import net.minecraft.command.CommandResultStats;
 import net.minecraft.command.server.CommandBlockLogic;
 import net.minecraft.entity.Entity;
@@ -11,6 +12,7 @@ import net.minecraft.util.BlockPos;
 import net.minecraft.util.Vec3;
 import net.minecraft.world.World;
 
+@Getter
 public class TileEntityCommandBlock extends TileEntity {
     private final CommandBlockLogic commandBlockLogic = new CommandBlockLogic() {
         public BlockPos getPosition() {
@@ -71,10 +73,6 @@ public class TileEntityCommandBlock extends TileEntity {
 
     public boolean func_183000_F() {
         return true;
-    }
-
-    public CommandBlockLogic getCommandBlockLogic() {
-        return this.commandBlockLogic;
     }
 
     public CommandResultStats getCommandResultStats() {

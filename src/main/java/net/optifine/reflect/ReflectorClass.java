@@ -1,8 +1,10 @@
 package net.optifine.reflect;
 
+import lombok.Getter;
 import net.optifine.Log;
 
 public class ReflectorClass implements IResolvable {
+    @Getter
     private String targetClassName = null;
     private boolean checked = false;
     private Class targetClass = null;
@@ -36,10 +38,6 @@ public class ReflectorClass implements IResolvable {
 
     public boolean exists() {
         return this.getTargetClass() != null;
-    }
-
-    public String getTargetClassName() {
-        return this.targetClassName;
     }
 
     public boolean isInstance(Object obj) {

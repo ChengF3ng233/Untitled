@@ -1,5 +1,8 @@
 package net.optifine.texture;
 
+import lombok.Getter;
+
+@Getter
 public enum TextureType {
     TEXTURE_1D(3552),
     TEXTURE_2D(3553),
@@ -12,7 +15,4 @@ public enum TextureType {
         this.id = id;
     }
 
-    public int getId() {
-        return this.id;
-    }
 }

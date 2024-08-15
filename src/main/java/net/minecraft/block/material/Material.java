@@ -1,5 +1,7 @@
 package net.minecraft.block.material;
 
+import lombok.Getter;
+
 public class Material {
     public static final Material air = new MaterialTransparent(MapColor.airColor);
     public static final Material grass = new Material(MapColor.grassColor);
@@ -50,7 +52,11 @@ public class Material {
     public static final Material barrier = (new Material(MapColor.airColor)).setRequiresTool().setImmovableMobility();
     /**
      * The color index used to render the blocks of this material on maps.
+     * -- GETTER --
+     *  Retrieves the color index of the block. This is is the same color used by vanilla maps to represent this block.
+
      */
+    @Getter
     private final MapColor materialMapColor;
     /**
      * Bool defining if the block can burn or not.
@@ -59,7 +65,11 @@ public class Material {
     /**
      * Determines whether blocks with this material can be "overwritten" by other blocks when placed - eg snow, vines
      * and tall grass.
+     * -- GETTER --
+     *  Returns whether the material can be replaced by other blocks when placed - eg snow, vines and tall grass.
+
      */
+    @Getter
     private boolean replaceable;
     /**
      * Indicates if the material is translucent
@@ -149,13 +159,6 @@ public class Material {
     }
 
     /**
-     * Returns whether the material can be replaced by other blocks when placed - eg snow, vines and tall grass.
-     */
-    public boolean isReplaceable() {
-        return this.replaceable;
-    }
-
-    /**
      * Indicate if the material is opaque
      */
     public boolean isOpaque() {
@@ -201,10 +204,4 @@ public class Material {
         return this;
     }
 
-    /**
-     * Retrieves the color index of the block. This is is the same color used by vanilla maps to represent this block.
-     */
-    public MapColor getMaterialMapColor() {
-        return this.materialMapColor;
-    }
 }

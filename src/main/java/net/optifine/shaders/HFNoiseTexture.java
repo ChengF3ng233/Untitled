@@ -1,5 +1,6 @@
 package net.optifine.shaders;
 
+import lombok.Getter;
 import net.minecraft.client.renderer.GlStateManager;
 import org.lwjgl.BufferUtils;
 import org.lwjgl.opengl.GL11;
@@ -8,6 +9,7 @@ import java.nio.ByteBuffer;
 
 public class HFNoiseTexture implements ICustomTexture {
     private int texID = GL11.glGenTextures();
+    @Getter
     private final int textureUnit = 15;
 
     public HFNoiseTexture(int width, int height) {
@@ -62,10 +64,6 @@ public class HFNoiseTexture implements ICustomTexture {
 
     public int getTextureId() {
         return this.texID;
-    }
-
-    public int getTextureUnit() {
-        return this.textureUnit;
     }
 
     public int getTarget() {

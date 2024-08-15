@@ -19,10 +19,12 @@
 package de.florianmichael.viamcp.protocolinfo;
 
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
+import lombok.Getter;
 
 import java.util.Arrays;
 import java.util.List;
 
+@Getter
 public class ProtocolInfo {
     private static final String NO_DESC = "No Description Available";
 
@@ -82,22 +84,6 @@ public class ProtocolInfo {
         this.description = description;
         this.releaseDate = releaseDate;
         this.protocolVersion = protocolVersion;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public String getReleaseDate() {
-        return releaseDate;
-    }
-
-    public ProtocolVersion getProtocolVersion() {
-        return protocolVersion;
     }
 
     public static ProtocolInfo fromProtocolVersion(final ProtocolVersion protocolVersion) {

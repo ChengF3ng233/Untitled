@@ -1,5 +1,8 @@
 package net.optifine.util;
 
+import lombok.Getter;
+
+@Getter
 public class LockCounter {
     private int lockCount;
 
@@ -19,10 +22,6 @@ public class LockCounter {
 
     public boolean isLocked() {
         return this.lockCount > 0;
-    }
-
-    public int getLockCount() {
-        return this.lockCount;
     }
 
     public String toString() {

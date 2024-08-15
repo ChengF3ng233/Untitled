@@ -61,10 +61,10 @@ public class MusicButton extends Button {
         String s2 = font.trimStringToWidth(music.getArtist(), 100f, 15f, false, true);
         font.drawString(s2, textX + 30f, textY + 9f, 12f, ThemeColor.greyColor);
 
-        Gui.drawNewRect(textX + 130f, textY, 0.5f, 20f, ColorUtil.applyOpacity(ThemeColor.greyColor, 0.2f).getRGB());
+        Gui.drawNewRect(textX + 150f, textY, 0.5f, 20f, ColorUtil.applyOpacity(ThemeColor.greyColor, 0.2f).getRGB());
 
-        String s = font.trimStringToWidth(music.getAlbum(), 100f, 15f, false, true);
-        font.drawString(s, textX + 150f, textY + 4f, 15f, ThemeColor.greyColor);
+        String s = font.trimStringToWidth(music.getAlbum(), 80f, 15f, false, true);
+        font.drawString(s, textX + 160f, textY + 5f, 15f, ThemeColor.greyColor);
 
         long totalSeconds = music.getDuration() / 1000;
 
@@ -73,7 +73,7 @@ public class MusicButton extends Button {
         long seconds = totalSeconds % 60;
         String timeFormatted = String.format("%d:%02d", minutes, seconds);
         Gui.drawNewRect(textX + 270f, textY, 0.5f, 20f, ColorUtil.applyOpacity(ThemeColor.greyColor, 0.2f).getRGB());
-        font.drawString(timeFormatted, textX + 300f, textY + 4f, 15f, ThemeColor.greyColor);
+        font.drawString(timeFormatted, textX + 280f, textY + 5f, 15f, ThemeColor.greyColor);
     }
 
     private TimerUtil clickTimer = new TimerUtil();

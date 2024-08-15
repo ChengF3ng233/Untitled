@@ -1,5 +1,6 @@
 package net.minecraft.entity.item;
 
+import lombok.Getter;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
@@ -28,7 +29,11 @@ public class EntityXPOrb extends Entity {
 
     /**
      * This is how much XP this orb has.
+     * -- GETTER --
+     *  Returns the XP value of this XP orb.
+
      */
+    @Getter
     private int xpValue;
 
     /**
@@ -229,13 +234,6 @@ public class EntityXPOrb extends Entity {
                 this.setDead();
             }
         }
-    }
-
-    /**
-     * Returns the XP value of this XP orb.
-     */
-    public int getXpValue() {
-        return this.xpValue;
     }
 
     /**

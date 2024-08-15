@@ -8,6 +8,7 @@ import cn.feng.untitled.util.render.blur.BlurUtil;
 import com.google.common.base.Predicate;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
+import lombok.Getter;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GlStateManager;
@@ -60,12 +61,14 @@ public class GuiIngame extends Gui {
     /**
      * The spectator GUI for this in-game GUI instance
      */
+    @Getter
     private final GuiSpectator spectatorGui;
     private final GuiPlayerTabOverlay overlayPlayerList;
     /**
      * Previous frame vignette brightness (slowly changes by 1% each frame)
      */
     public float prevVignetteBrightness = 1.0F;
+    @Getter
     private int updateCounter;
     /**
      * The string specifying which record music is playing
@@ -1017,16 +1020,8 @@ public class GuiIngame extends Gui {
         return this.persistantChatGUI;
     }
 
-    public int getUpdateCounter() {
-        return this.updateCounter;
-    }
-
     public FontRenderer getFontRenderer() {
         return this.mc.fontRendererObj;
-    }
-
-    public GuiSpectator getSpectatorGui() {
-        return this.spectatorGui;
     }
 
     public GuiPlayerTabOverlay getTabList() {

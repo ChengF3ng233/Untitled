@@ -1,11 +1,13 @@
 package net.optifine.entity.model;
 
+import lombok.Getter;
 import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.model.ModelRenderer;
 
 import java.util.ArrayList;
 import java.util.List;
 
+@Getter
 public abstract class ModelAdapter {
     private final Class entityClass;
     private final String name;
@@ -23,22 +25,6 @@ public abstract class ModelAdapter {
         this.name = name;
         this.shadowSize = shadowSize;
         this.aliases = aliases;
-    }
-
-    public Class getEntityClass() {
-        return this.entityClass;
-    }
-
-    public String getName() {
-        return this.name;
-    }
-
-    public String[] getAliases() {
-        return this.aliases;
-    }
-
-    public float getShadowSize() {
-        return this.shadowSize;
     }
 
     public abstract ModelBase makeModel();

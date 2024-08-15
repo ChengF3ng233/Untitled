@@ -1,5 +1,7 @@
 package net.minecraft.world.chunk.storage;
 
+import lombok.Getter;
+import lombok.Setter;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
@@ -15,6 +17,7 @@ public class ExtendedBlockStorage {
     /**
      * A total count of the number of non-air blocks in this block storage's Chunk.
      */
+    @Getter
     private int blockRefCount;
 
     /**
@@ -22,16 +25,34 @@ public class ExtendedBlockStorage {
      * Chunk from random tick updates for performance reasons.
      */
     private int tickRefCount;
+    @Getter
+    @Setter
     private char[] data;
 
     /**
      * The NibbleArray containing a block of Block-light data.
+     * -- SETTER --
+     *  Sets the NibbleArray instance used for Block-light values in this particular storage block.
+     * -- GETTER --
+     *  Returns the NibbleArray instance containing Block-light data.
+
+
      */
+    @Getter
+    @Setter
     private NibbleArray blocklightArray;
 
     /**
      * The NibbleArray containing a block of Sky-light data.
+     * -- SETTER --
+     *  Sets the NibbleArray instance used for Sky-light values in this particular storage block.
+     * -- GETTER --
+     *  Returns the NibbleArray instance containing Sky-light data.
+
+
      */
+    @Getter
+    @Setter
     private NibbleArray skylightArray;
 
     public ExtendedBlockStorage(int y, boolean storeSkylight) {
@@ -164,43 +185,4 @@ public class ExtendedBlockStorage {
         this.tickRefCount = j;
     }
 
-    public char[] getData() {
-        return this.data;
-    }
-
-    public void setData(char[] dataArray) {
-        this.data = dataArray;
-    }
-
-    /**
-     * Returns the NibbleArray instance containing Block-light data.
-     */
-    public NibbleArray getBlocklightArray() {
-        return this.blocklightArray;
-    }
-
-    /**
-     * Sets the NibbleArray instance used for Block-light values in this particular storage block.
-     */
-    public void setBlocklightArray(NibbleArray newBlocklightArray) {
-        this.blocklightArray = newBlocklightArray;
-    }
-
-    /**
-     * Returns the NibbleArray instance containing Sky-light data.
-     */
-    public NibbleArray getSkylightArray() {
-        return this.skylightArray;
-    }
-
-    /**
-     * Sets the NibbleArray instance used for Sky-light values in this particular storage block.
-     */
-    public void setSkylightArray(NibbleArray newSkylightArray) {
-        this.skylightArray = newSkylightArray;
-    }
-
-    public int getBlockRefCount() {
-        return this.blockRefCount;
-    }
 }

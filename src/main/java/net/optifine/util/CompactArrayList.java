@@ -1,11 +1,14 @@
 package net.optifine.util;
 
+import lombok.Getter;
+
 import java.util.ArrayList;
 
 public class CompactArrayList {
     private ArrayList list;
     private int initialCapacity;
     private float loadFactor;
+    @Getter
     private int countValid;
 
     public CompactArrayList() {
@@ -117,7 +120,4 @@ public class CompactArrayList {
         return this.list.size();
     }
 
-    public int getCountValid() {
-        return this.countValid;
-    }
 }

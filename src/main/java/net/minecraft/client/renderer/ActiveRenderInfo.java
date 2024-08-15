@@ -1,5 +1,6 @@
 package net.minecraft.client.renderer;
 
+import lombok.Getter;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockLiquid;
 import net.minecraft.block.state.IBlockState;
@@ -35,31 +36,37 @@ public class ActiveRenderInfo {
      * The computed view object coordinates
      */
     private static final FloatBuffer OBJECTCOORDS = GLAllocation.createDirectFloatBuffer(3);
+    @Getter
     private static Vec3 position = new Vec3(0.0D, 0.0D, 0.0D);
 
     /**
      * The X component of the entity's yaw rotation
      */
+    @Getter
     private static float rotationX;
 
     /**
      * The combined X and Z components of the entity's pitch rotation
      */
+    @Getter
     private static float rotationXZ;
 
     /**
      * The Z component of the entity's yaw rotation
      */
+    @Getter
     private static float rotationZ;
 
     /**
      * The Y component (scaled along the Z axis) of the entity's pitch rotation
      */
+    @Getter
     private static float rotationYZ;
 
     /**
      * The Y component (scaled along the X axis) of the entity's pitch rotation
      */
+    @Getter
     private static float rotationXY;
 
     /**
@@ -116,27 +123,4 @@ public class ActiveRenderInfo {
         return block;
     }
 
-    public static Vec3 getPosition() {
-        return position;
-    }
-
-    public static float getRotationX() {
-        return rotationX;
-    }
-
-    public static float getRotationXZ() {
-        return rotationXZ;
-    }
-
-    public static float getRotationZ() {
-        return rotationZ;
-    }
-
-    public static float getRotationYZ() {
-        return rotationYZ;
-    }
-
-    public static float getRotationXY() {
-        return rotationXY;
-    }
 }

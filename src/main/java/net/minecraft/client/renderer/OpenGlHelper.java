@@ -1,5 +1,6 @@
 package net.minecraft.client.renderer;
 
+import lombok.Getter;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.settings.GameSettings;
 import net.minecraft.src.Config;
@@ -82,6 +83,7 @@ public class OpenGlHelper {
     private static boolean arbMultitexture;
     private static boolean arbTextureEnvCombine;
     private static boolean openGL14;
+    @Getter
     private static String logText = "";
     private static String cpu;
     private static boolean arbVbo;
@@ -298,10 +300,6 @@ public class OpenGlHelper {
 
     public static boolean areShadersSupported() {
         return shadersSupported;
-    }
-
-    public static String getLogText() {
-        return logText;
     }
 
     public static int glGetProgrami(int program, int pname) {

@@ -1,6 +1,7 @@
 package net.minecraft.client.renderer;
 
 import com.google.common.collect.Maps;
+import lombok.Getter;
 import net.minecraft.block.*;
 import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.state.IBlockState;
@@ -21,16 +22,14 @@ import java.util.Map.Entry;
 
 public class BlockModelShapes {
     private final Map<IBlockState, IBakedModel> bakedModelStore = Maps.newIdentityHashMap();
+    @Getter
     private final BlockStateMapper blockStateMapper = new BlockStateMapper();
+    @Getter
     private final ModelManager modelManager;
 
     public BlockModelShapes(ModelManager manager) {
         this.modelManager = manager;
         this.registerAllBlocks();
-    }
-
-    public BlockStateMapper getBlockStateMapper() {
-        return this.blockStateMapper;
     }
 
     public TextureAtlasSprite getTexture(IBlockState state) {
@@ -78,10 +77,6 @@ public class BlockModelShapes {
         }
 
         return ibakedmodel;
-    }
-
-    public ModelManager getModelManager() {
-        return this.modelManager;
     }
 
     public void reloadModels() {

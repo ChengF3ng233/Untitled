@@ -1,6 +1,7 @@
 package net.minecraft.potion;
 
 import com.google.common.collect.Maps;
+import lombok.Getter;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.SharedMonsterAttributes;
@@ -98,8 +99,13 @@ public class Potion {
     public static final Potion field_180146_G = null;
     /**
      * The Id of a Potion object.
+     * -- GETTER --
+     *  returns the ID of the potion
+
      */
+    @Getter
     public final int id;
+    @Getter
     private final Map<IAttribute, AttributeModifier> attributeModifierMap = Maps.newHashMap();
 
     /**
@@ -109,19 +115,33 @@ public class Potion {
 
     /**
      * Is the color of the liquid for this potion.
+     * -- GETTER --
+     *  Returns the color of the potion liquid.
+
      */
+    @Getter
     private final int liquidColor;
 
     /**
      * The name of the Potion.
+     * -- GETTER --
+     *  returns the name of the potion
+
      */
+    @Getter
     private String name = "";
 
     /**
      * The index for the icon displayed when the potion effect is active.
+     * -- GETTER --
+     *  Returns the index for the icon to display when the potion is active.
+
      */
+    @Getter
     private int statusIconIndex = -1;
+    @Getter
     private double effectiveness;
+    @Getter
     private boolean usable;
 
     protected Potion(int potionID, ResourceLocation location, boolean badEffect, int potionColor) {
@@ -162,13 +182,6 @@ public class Potion {
     protected Potion setIconIndex(int p_76399_1_, int p_76399_2_) {
         this.statusIconIndex = p_76399_1_ + p_76399_2_ * 8;
         return this;
-    }
-
-    /**
-     * returns the ID of the potion
-     */
-    public int getId() {
-        return this.id;
     }
 
     public void performEffect(EntityLivingBase entityLivingBaseIn, int p_76394_2_) {
@@ -248,24 +261,10 @@ public class Potion {
     }
 
     /**
-     * returns the name of the potion
-     */
-    public String getName() {
-        return this.name;
-    }
-
-    /**
      * Returns true if the potion has a associated status icon to display in then inventory when active.
      */
     public boolean hasStatusIcon() {
         return this.statusIconIndex >= 0;
-    }
-
-    /**
-     * Returns the index for the icon to display when the potion is active.
-     */
-    public int getStatusIconIndex() {
-        return this.statusIconIndex;
     }
 
     /**
@@ -275,24 +274,9 @@ public class Potion {
         return this.isBadEffect;
     }
 
-    public double getEffectiveness() {
-        return this.effectiveness;
-    }
-
     protected Potion setEffectiveness(double effectivenessIn) {
         this.effectiveness = effectivenessIn;
         return this;
-    }
-
-    public boolean isUsable() {
-        return this.usable;
-    }
-
-    /**
-     * Returns the color of the potion liquid.
-     */
-    public int getLiquidColor() {
-        return this.liquidColor;
     }
 
     /**
@@ -302,10 +286,6 @@ public class Potion {
         AttributeModifier attributemodifier = new AttributeModifier(UUID.fromString(p_111184_2_), this.getName(), p_111184_3_, p_111184_5_);
         this.attributeModifierMap.put(p_111184_1_, attributemodifier);
         return this;
-    }
-
-    public Map<IAttribute, AttributeModifier> getAttributeModifierMap() {
-        return this.attributeModifierMap;
     }
 
     public void removeAttributesModifiersFromEntity(EntityLivingBase entityLivingBaseIn, BaseAttributeMap p_111187_2_, int amplifier) {

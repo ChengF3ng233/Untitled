@@ -1,5 +1,6 @@
 package net.minecraft.block;
 
+import lombok.Getter;
 import net.minecraft.block.material.MapColor;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.IProperty;
@@ -81,8 +82,11 @@ public class BlockPlanks extends Block {
         }
 
         private final int meta;
+        @Getter
         private final String name;
+        @Getter
         private final String unlocalizedName;
+        @Getter
         private final MapColor mapColor;
 
         EnumType(int p_i46388_3_, String p_i46388_4_, MapColor p_i46388_5_) {
@@ -108,20 +112,9 @@ public class BlockPlanks extends Block {
             return this.meta;
         }
 
-        public MapColor getMapColor() {
-            return this.mapColor;
-        }
-
         public String toString() {
             return this.name;
         }
 
-        public String getName() {
-            return this.name;
-        }
-
-        public String getUnlocalizedName() {
-            return this.unlocalizedName;
-        }
     }
 }

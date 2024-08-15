@@ -1,5 +1,6 @@
 package net.minecraft.tileentity;
 
+import lombok.Setter;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockChest;
 import net.minecraft.entity.player.EntityPlayer;
@@ -55,6 +56,7 @@ public class TileEntityChest extends TileEntityLockable implements ITickable, II
      */
     private int ticksSinceSync;
     private int cachedChestType;
+    @Setter
     private String customName;
 
     public TileEntityChest() {
@@ -142,10 +144,6 @@ public class TileEntityChest extends TileEntityLockable implements ITickable, II
      */
     public boolean hasCustomName() {
         return this.customName != null && this.customName.length() > 0;
-    }
-
-    public void setCustomName(String name) {
-        this.customName = name;
     }
 
     public void readFromNBT(NBTTagCompound compound) {

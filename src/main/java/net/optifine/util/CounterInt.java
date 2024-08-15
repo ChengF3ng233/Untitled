@@ -1,7 +1,10 @@
 package net.optifine.util;
 
+import lombok.Getter;
+
 public class CounterInt {
     private final int startValue;
+    @Getter
     private int value;
 
     public CounterInt(int startValue) {
@@ -18,7 +21,4 @@ public class CounterInt {
         this.value = this.startValue;
     }
 
-    public int getValue() {
-        return this.value;
-    }
 }

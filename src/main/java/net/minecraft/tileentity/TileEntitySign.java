@@ -1,6 +1,8 @@
 package net.minecraft.tileentity;
 
 import com.google.gson.JsonParseException;
+import lombok.Getter;
+import lombok.Setter;
 import net.minecraft.command.CommandException;
 import net.minecraft.command.CommandResultStats;
 import net.minecraft.command.ICommandSender;
@@ -16,6 +18,7 @@ import net.minecraft.world.World;
 
 public class TileEntitySign extends TileEntity {
     public final IChatComponent[] signText = new IChatComponent[]{new ChatComponentText(""), new ChatComponentText(""), new ChatComponentText(""), new ChatComponentText("")};
+    @Getter
     private final CommandResultStats stats = new CommandResultStats();
     /**
      * The index of the line currently being edited. Only used on client side, but defined on both. Note this is only
@@ -23,6 +26,8 @@ public class TileEntitySign extends TileEntity {
      */
     public int lineBeingEdited = -1;
     private boolean isEditable = true;
+    @Getter
+    @Setter
     private EntityPlayer player;
 
     public void writeToNBT(NBTTagCompound compound) {
@@ -127,14 +132,6 @@ public class TileEntitySign extends TileEntity {
         }
     }
 
-    public EntityPlayer getPlayer() {
-        return this.player;
-    }
-
-    public void setPlayer(EntityPlayer playerIn) {
-        this.player = playerIn;
-    }
-
     public boolean executeCommand(final EntityPlayer playerIn) {
         ICommandSender icommandsender = new ICommandSender() {
             public String getName() {
@@ -192,7 +189,4 @@ public class TileEntitySign extends TileEntity {
         return true;
     }
 
-    public CommandResultStats getStats() {
-        return this.stats;
-    }
 }

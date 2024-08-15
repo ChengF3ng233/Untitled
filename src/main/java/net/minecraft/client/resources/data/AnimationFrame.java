@@ -1,5 +1,8 @@
 package net.minecraft.client.resources.data;
 
+import lombok.Getter;
+
+@Getter
 public class AnimationFrame {
     private final int frameIndex;
     private final int frameTime;
@@ -17,11 +20,4 @@ public class AnimationFrame {
         return this.frameTime == -1;
     }
 
-    public int getFrameTime() {
-        return this.frameTime;
-    }
-
-    public int getFrameIndex() {
-        return this.frameIndex;
-    }
 }

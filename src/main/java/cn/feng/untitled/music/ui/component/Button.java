@@ -17,7 +17,7 @@ public abstract class Button {
     public void updateState(float x, float y, int mouseX, int mouseY) {
         posX = x;
         posY = y;
-        hovering = RenderUtil.hovering(mouseX, mouseY, x, y + height / 4f, width, height);
+        hovering = RenderUtil.hovering(mouseX, mouseY, x, y, width, height);
     }
 
     public void mouseClicked(int mouseX, int mouseY, int button) {

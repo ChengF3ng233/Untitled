@@ -3,6 +3,7 @@ package net.minecraft.network;
 import com.google.common.collect.BiMap;
 import com.google.common.collect.HashBiMap;
 import com.google.common.collect.Maps;
+import lombok.Getter;
 import net.minecraft.network.handshake.client.C00Handshake;
 import net.minecraft.network.login.client.C00PacketLoginStart;
 import net.minecraft.network.login.client.C01PacketEncryptionResponse;
@@ -182,6 +183,7 @@ public enum EnumConnectionState {
         }
     }
 
+    @Getter
     private final int id;
     private final Map<EnumPacketDirection, BiMap<Integer, Class<? extends Packet>>> directionMaps;
 
@@ -225,7 +227,4 @@ public enum EnumConnectionState {
         return oclass == null ? null : oclass.newInstance();
     }
 
-    public int getId() {
-        return this.id;
-    }
 }

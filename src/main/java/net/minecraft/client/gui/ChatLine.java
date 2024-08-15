@@ -1,5 +1,6 @@
 package net.minecraft.client.gui;
 
+import lombok.Getter;
 import net.minecraft.util.IChatComponent;
 
 public class ChatLine {
@@ -12,6 +13,7 @@ public class ChatLine {
     /**
      * int value to refer to existing Chat Lines, can be 0 which means unreferrable
      */
+    @Getter
     private final int chatLineID;
 
     public ChatLine(int p_i45000_1_, IChatComponent p_i45000_2_, int p_i45000_3_) {
@@ -28,7 +30,4 @@ public class ChatLine {
         return this.updateCounterCreated;
     }
 
-    public int getChatLineID() {
-        return this.chatLineID;
-    }
 }

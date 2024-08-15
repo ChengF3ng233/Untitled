@@ -1,7 +1,9 @@
 package net.optifine.http;
 
+import lombok.Getter;
 import net.minecraft.client.Minecraft;
 
+@Getter
 public class FileDownloadThread extends Thread {
     private String urlString = null;
     private IFileDownloadListener listener = null;
@@ -20,11 +22,4 @@ public class FileDownloadThread extends Thread {
         }
     }
 
-    public String getUrlString() {
-        return this.urlString;
-    }
-
-    public IFileDownloadListener getListener() {
-        return this.listener;
-    }
 }

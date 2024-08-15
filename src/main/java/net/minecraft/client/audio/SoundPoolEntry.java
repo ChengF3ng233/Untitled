@@ -1,11 +1,18 @@
 package net.minecraft.client.audio;
 
+import lombok.Getter;
+import lombok.Setter;
 import net.minecraft.util.ResourceLocation;
 
 public class SoundPoolEntry {
     private final ResourceLocation location;
+    @Getter
     private final boolean streamingSound;
+    @Getter
+    @Setter
     private double pitch;
+    @Getter
+    @Setter
     private double volume;
 
     public SoundPoolEntry(ResourceLocation locationIn, double pitchIn, double volumeIn, boolean streamingSoundIn) {
@@ -26,23 +33,4 @@ public class SoundPoolEntry {
         return this.location;
     }
 
-    public double getPitch() {
-        return this.pitch;
-    }
-
-    public void setPitch(double pitchIn) {
-        this.pitch = pitchIn;
-    }
-
-    public double getVolume() {
-        return this.volume;
-    }
-
-    public void setVolume(double volumeIn) {
-        this.volume = volumeIn;
-    }
-
-    public boolean isStreamingSound() {
-        return this.streamingSound;
-    }
 }

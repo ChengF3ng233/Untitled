@@ -1,6 +1,7 @@
 package net.minecraft.tileentity;
 
 import com.google.common.collect.Lists;
+import lombok.Getter;
 import net.minecraft.block.BlockFlower;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
@@ -14,11 +15,13 @@ import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
 import java.util.List;
 
 public class TileEntityBanner extends TileEntity {
+    @Getter
     private int baseColor;
 
     /**
      * A list of all the banner patterns.
      */
+    @Getter
     private NBTTagList patterns;
     private boolean field_175119_g;
     private List<TileEntityBanner.EnumBannerPattern> patternList;
@@ -123,17 +126,9 @@ public class TileEntityBanner extends TileEntity {
         return new S35PacketUpdateTileEntity(this.pos, 6, nbttagcompound);
     }
 
-    public int getBaseColor() {
-        return this.baseColor;
-    }
-
     public List<TileEntityBanner.EnumBannerPattern> getPatternList() {
         this.initializeBannerData();
         return this.patternList;
-    }
-
-    public NBTTagList getPatterns() {
-        return this.patterns;
     }
 
     public List<EnumDyeColor> getColorList() {
@@ -219,8 +214,11 @@ public class TileEntityBanner extends TileEntity {
         FLOWER("flower", "flo", new ItemStack(Blocks.red_flower, 1, BlockFlower.EnumFlowerType.OXEYE_DAISY.getMeta())),
         MOJANG("mojang", "moj", new ItemStack(Items.golden_apple, 1, 1));
 
+        @Getter
         private final String patternName;
+        @Getter
         private final String patternID;
+        @Getter
         private final String[] craftingLayers;
         private ItemStack patternCraftingStack;
 
@@ -250,18 +248,6 @@ public class TileEntityBanner extends TileEntity {
             }
 
             return null;
-        }
-
-        public String getPatternName() {
-            return this.patternName;
-        }
-
-        public String getPatternID() {
-            return this.patternID;
-        }
-
-        public String[] getCraftingLayers() {
-            return this.craftingLayers;
         }
 
         public boolean hasValidCrafting() {

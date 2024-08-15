@@ -1,6 +1,8 @@
 package net.minecraft.entity.passive;
 
 import com.google.common.base.Predicate;
+import lombok.Getter;
+import lombok.Setter;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.*;
@@ -41,16 +43,21 @@ public class EntityHorse extends EntityAnimal implements IInvBasic {
     private static final String[] HORSE_MARKING_TEXTURES_ABBR = new String[]{"", "wo_", "wmo", "wdo", "bdo"};
     public int field_110278_bp;
     public int field_110279_bq;
+    @Getter
+    @Setter
     protected boolean horseJumping;
     /**
      * "The higher this value, the more likely the horse is to be tamed next time a player rides it."
      */
+    @Getter
+    @Setter
     protected int temper;
     protected float jumpPower;
     private int eatingHaystackCounter;
     private int openMouthCounter;
     private int jumpRearingCounter;
     private AnimalChest horseChest;
+    @Setter
     private boolean hasReproduced;
     private boolean field_110294_bI;
     private float headLean;
@@ -193,14 +200,6 @@ public class EntityHorse extends EntityAnimal implements IInvBasic {
         }
     }
 
-    public boolean isHorseJumping() {
-        return this.horseJumping;
-    }
-
-    public void setHorseJumping(boolean jumping) {
-        this.horseJumping = jumping;
-    }
-
     public void setHorseTamed(boolean tamed) {
         this.setHorseWatchableBoolean(2, tamed);
     }
@@ -274,24 +273,12 @@ public class EntityHorse extends EntityAnimal implements IInvBasic {
         return this.hasReproduced;
     }
 
-    public void setHasReproduced(boolean hasReproducedIn) {
-        this.hasReproduced = hasReproducedIn;
-    }
-
     /**
      * Set horse armor stack (for example: new ItemStack(Items.iron_horse_armor))
      */
     public void setHorseArmorStack(ItemStack itemStackIn) {
         this.dataWatcher.updateObject(22, this.getHorseArmorIndex(itemStackIn));
         this.resetTexturePrefix();
-    }
-
-    public int getTemper() {
-        return this.temper;
-    }
-
-    public void setTemper(int temperIn) {
-        this.temper = temperIn;
     }
 
     public int increaseTemper(int p_110198_1_) {

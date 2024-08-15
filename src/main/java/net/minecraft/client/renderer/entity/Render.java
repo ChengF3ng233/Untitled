@@ -1,6 +1,8 @@
 package net.minecraft.client.renderer.entity;
 
 import dev.tr7zw.entityculling.access.EntityRendererInter;
+import lombok.Getter;
+import lombok.Setter;
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
@@ -24,6 +26,7 @@ import org.lwjgl.opengl.GL11;
 
 public abstract class Render<T extends Entity> implements IEntityRenderer, EntityRendererInter<T> {
     private static final ResourceLocation shadowTextures = new ResourceLocation("textures/misc/shadow.png");
+    @Getter
     protected final RenderManager renderManager;
     public float shadowSize;
 
@@ -31,7 +34,11 @@ public abstract class Render<T extends Entity> implements IEntityRenderer, Entit
      * Determines the darkness of the object's shadow. Higher value makes a darker shadow.
      */
     protected float shadowOpaque = 1.0F;
+    @Getter
+    @Setter
     private Class entityClass = null;
+    @Getter
+    @Setter
     private ResourceLocation locationTextureCustom = null;
 
     protected Render(RenderManager renderManager) {
@@ -375,10 +382,6 @@ public abstract class Render<T extends Entity> implements IEntityRenderer, Entit
         }
     }
 
-    public RenderManager getRenderManager() {
-        return this.renderManager;
-    }
-
     public boolean isMultipass() {
         return false;
     }
@@ -386,19 +389,4 @@ public abstract class Render<T extends Entity> implements IEntityRenderer, Entit
     public void renderMultipass(T p_renderMultipass_1_, double p_renderMultipass_2_, double p_renderMultipass_4_, double p_renderMultipass_6_, float p_renderMultipass_8_, float p_renderMultipass_9_) {
     }
 
-    public Class getEntityClass() {
-        return this.entityClass;
-    }
-
-    public void setEntityClass(Class p_setEntityClass_1_) {
-        this.entityClass = p_setEntityClass_1_;
-    }
-
-    public ResourceLocation getLocationTextureCustom() {
-        return this.locationTextureCustom;
-    }
-
-    public void setLocationTextureCustom(ResourceLocation p_setLocationTextureCustom_1_) {
-        this.locationTextureCustom = p_setLocationTextureCustom_1_;
-    }
 }

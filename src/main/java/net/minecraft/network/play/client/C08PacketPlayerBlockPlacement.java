@@ -1,5 +1,6 @@
 package net.minecraft.network.play.client;
 
+import lombok.Getter;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.Packet;
 import net.minecraft.network.PacketBuffer;
@@ -10,8 +11,11 @@ import java.io.IOException;
 
 public class C08PacketPlayerBlockPlacement implements Packet<INetHandlerPlayServer> {
     private static final BlockPos field_179726_a = new BlockPos(-1, -1, -1);
+    @Getter
     private BlockPos position;
+    @Getter
     private int placedBlockDirection;
+    @Getter
     private ItemStack stack;
     private float facingX;
     private float facingY;
@@ -62,18 +66,6 @@ public class C08PacketPlayerBlockPlacement implements Packet<INetHandlerPlayServ
      */
     public void processPacket(INetHandlerPlayServer handler) {
         handler.processPlayerBlockPlacement(this);
-    }
-
-    public BlockPos getPosition() {
-        return this.position;
-    }
-
-    public int getPlacedBlockDirection() {
-        return this.placedBlockDirection;
-    }
-
-    public ItemStack getStack() {
-        return this.stack;
     }
 
     /**

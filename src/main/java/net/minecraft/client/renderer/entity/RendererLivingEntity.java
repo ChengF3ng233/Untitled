@@ -3,6 +3,8 @@ package net.minecraft.client.renderer.entity;
 import cn.feng.untitled.Client;
 import cn.feng.untitled.event.impl.NameTagEvent;
 import com.google.common.collect.Lists;
+import lombok.Getter;
+import lombok.Setter;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.client.gui.FontRenderer;
@@ -48,6 +50,7 @@ public abstract class RendererLivingEntity<T extends EntityLivingBase> extends R
         textureBrightness.updateDynamicTexture();
     }
 
+    @Getter
     public ModelBase mainModel;
     public EntityLivingBase renderEntity;
     public float renderLimbSwing;
@@ -58,7 +61,9 @@ public abstract class RendererLivingEntity<T extends EntityLivingBase> extends R
     public float renderScaleFactor;
     public float renderPartialTicks;
     protected FloatBuffer brightnessBuffer = GLAllocation.createDirectFloatBuffer(4);
+    @Getter
     protected List<LayerRenderer<T>> layerRenderers = Lists.newArrayList();
+    @Setter
     protected boolean renderOutlines = false;
     private boolean renderModelPushMatrix;
     private boolean renderLayersPushMatrix;
@@ -76,10 +81,6 @@ public abstract class RendererLivingEntity<T extends EntityLivingBase> extends R
 
     protected <V extends EntityLivingBase, U extends LayerRenderer<V>> boolean removeLayer(U layer) {
         return this.layerRenderers.remove(layer);
-    }
-
-    public ModelBase getMainModel() {
-        return this.mainModel;
     }
 
     /**
@@ -617,11 +618,4 @@ public abstract class RendererLivingEntity<T extends EntityLivingBase> extends R
         return Minecraft.isGuiEnabled() && entity != this.renderManager.livingPlayer && !entity.isInvisibleToPlayer(entityplayersp) && entity.riddenByEntity == null;
     }
 
-    public void setRenderOutlines(boolean renderOutlinesIn) {
-        this.renderOutlines = renderOutlinesIn;
-    }
-
-    public List<LayerRenderer<T>> getLayerRenderers() {
-        return this.layerRenderers;
-    }
 }

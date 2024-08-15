@@ -1,5 +1,6 @@
 package net.minecraft.entity;
 
+import lombok.Getter;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.monster.IMob;
 import net.minecraft.entity.passive.EntityAmbientCreature;
@@ -13,7 +14,9 @@ public enum EnumCreatureType {
     AMBIENT(EntityAmbientCreature.class, 15, Material.air, true, false),
     WATER_CREATURE(EntityWaterMob.class, 5, Material.water, true, false);
 
+    @Getter
     private final Class<? extends IAnimals> creatureClass;
+    @Getter
     private final int maxNumberOfCreature;
     private final Material creatureMaterial;
 
@@ -33,14 +36,6 @@ public enum EnumCreatureType {
         this.creatureMaterial = creatureMaterialIn;
         this.isPeacefulCreature = isPeacefulCreatureIn;
         this.isAnimal = isAnimalIn;
-    }
-
-    public Class<? extends IAnimals> getCreatureClass() {
-        return this.creatureClass;
-    }
-
-    public int getMaxNumberOfCreature() {
-        return this.maxNumberOfCreature;
     }
 
     /**

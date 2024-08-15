@@ -3,6 +3,8 @@ package net.minecraft.tileentity;
 import com.google.common.collect.Iterables;
 import com.mojang.authlib.GameProfile;
 import com.mojang.authlib.properties.Property;
+import lombok.Getter;
+import lombok.Setter;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTUtil;
 import net.minecraft.network.Packet;
@@ -12,8 +14,10 @@ import net.minecraft.util.StringUtils;
 
 import java.util.UUID;
 
+@Getter
 public class TileEntitySkull extends TileEntity {
     private int skullType;
+    @Setter
     private int skullRotation;
     private GameProfile playerProfile = null;
 
@@ -74,10 +78,6 @@ public class TileEntitySkull extends TileEntity {
         }
     }
 
-    public GameProfile getPlayerProfile() {
-        return this.playerProfile;
-    }
-
     public void setPlayerProfile(GameProfile playerProfile) {
         this.skullType = 3;
         this.playerProfile = playerProfile;
@@ -104,15 +104,4 @@ public class TileEntitySkull extends TileEntity {
         this.markDirty();
     }
 
-    public int getSkullType() {
-        return this.skullType;
-    }
-
-    public int getSkullRotation() {
-        return this.skullRotation;
-    }
-
-    public void setSkullRotation(int rotation) {
-        this.skullRotation = rotation;
-    }
 }

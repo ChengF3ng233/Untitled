@@ -1,5 +1,6 @@
 package net.minecraft.network.play.server;
 
+import lombok.Getter;
 import net.minecraft.entity.item.EntityXPOrb;
 import net.minecraft.network.Packet;
 import net.minecraft.network.PacketBuffer;
@@ -9,6 +10,7 @@ import net.minecraft.util.MathHelper;
 import java.io.IOException;
 
 public class S11PacketSpawnExperienceOrb implements Packet<INetHandlerPlayClient> {
+    @Getter
     private int entityID;
     private int posX;
     private int posY;
@@ -53,10 +55,6 @@ public class S11PacketSpawnExperienceOrb implements Packet<INetHandlerPlayClient
      */
     public void processPacket(INetHandlerPlayClient handler) {
         handler.handleSpawnExperienceOrb(this);
-    }
-
-    public int getEntityID() {
-        return this.entityID;
     }
 
     public int getX() {

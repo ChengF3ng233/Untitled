@@ -1,5 +1,6 @@
 package net.optifine;
 
+import lombok.Getter;
 import net.minecraft.util.ResourceLocation;
 import net.optifine.config.ConnectedParser;
 
@@ -7,14 +8,23 @@ import java.util.Properties;
 
 public class CustomPanoramaProperties {
     private final String path;
+    @Getter
     private final ResourceLocation[] panoramaLocations;
+    @Getter
     private int weight = 1;
+    @Getter
     private int blur1 = 64;
+    @Getter
     private int blur2 = 3;
+    @Getter
     private int blur3 = 3;
+    @Getter
     private int overlay1Top = -2130706433;
+    @Getter
     private int overlay1Bottom = 16777215;
+    @Getter
     private int overlay2Top = 0;
+    @Getter
     private int overlay2Bottom = Integer.MIN_VALUE;
 
     public CustomPanoramaProperties(String path, Properties props) {
@@ -34,42 +44,6 @@ public class CustomPanoramaProperties {
         this.overlay1Bottom = ConnectedParser.parseColor4(props.getProperty("overlay1.bottom"), 16777215);
         this.overlay2Top = ConnectedParser.parseColor4(props.getProperty("overlay2.top"), 0);
         this.overlay2Bottom = ConnectedParser.parseColor4(props.getProperty("overlay2.bottom"), Integer.MIN_VALUE);
-    }
-
-    public ResourceLocation[] getPanoramaLocations() {
-        return this.panoramaLocations;
-    }
-
-    public int getWeight() {
-        return this.weight;
-    }
-
-    public int getBlur1() {
-        return this.blur1;
-    }
-
-    public int getBlur2() {
-        return this.blur2;
-    }
-
-    public int getBlur3() {
-        return this.blur3;
-    }
-
-    public int getOverlay1Top() {
-        return this.overlay1Top;
-    }
-
-    public int getOverlay1Bottom() {
-        return this.overlay1Bottom;
-    }
-
-    public int getOverlay2Top() {
-        return this.overlay2Top;
-    }
-
-    public int getOverlay2Bottom() {
-        return this.overlay2Bottom;
     }
 
     public String toString() {

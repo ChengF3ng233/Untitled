@@ -1,6 +1,7 @@
 package net.minecraft.client.renderer;
 
 import com.google.common.primitives.Floats;
+import lombok.Getter;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.renderer.vertex.VertexFormat;
@@ -41,8 +42,10 @@ public class WorldRenderer {
     private double xOffset;
     private double yOffset;
     private double zOffset;
+    @Getter
     private VertexFormat vertexFormat;
     private boolean isDrawing;
+    @Getter
     private EnumWorldBlockLayer blockLayer = null;
     private boolean[] drawnIcons = new boolean[256];
     private TextureAtlasSprite[] quadSprites = null;
@@ -86,7 +89,7 @@ public class WorldRenderer {
             int i = this.byteBuffer.capacity();
             int j = i % 2097152;
             int k = j + (((this.rawIntBuffer.position() + p_181670_1_) * 4 - j) / 2097152 + 1) * 2097152;
-            LogManager.getLogger().warn("Needed to grow BufferBuilder buffer: Old size " + i + " bytes, new size " + k + " bytes.");
+            LogManager.getLogger().warn("Needed to grow BufferBuilder buffer: Old size {} bytes, new size {} bytes.", i, k);
             int l = this.rawIntBuffer.position();
             ByteBuffer bytebuffer = GLAllocation.createDirectByteBuffer(k);
             this.byteBuffer.position(0);
@@ -633,10 +636,6 @@ public class WorldRenderer {
         return this.modeTriangles ? this.byteBufferTriangles : this.byteBuffer;
     }
 
-    public VertexFormat getVertexFormat() {
-        return this.vertexFormat;
-    }
-
     public int getVertexCount() {
         return this.modeTriangles ? this.vertexCount / 4 * 6 : this.vertexCount;
     }
@@ -806,10 +805,6 @@ public class WorldRenderer {
 
     public double getZOffset() {
         return this.zOffset;
-    }
-
-    public EnumWorldBlockLayer getBlockLayer() {
-        return this.blockLayer;
     }
 
     public void setBlockLayer(EnumWorldBlockLayer p_setBlockLayer_1_) {

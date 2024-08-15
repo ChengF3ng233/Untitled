@@ -1,7 +1,9 @@
 package net.minecraft.util;
 
+import lombok.Getter;
 import org.apache.commons.lang3.Validate;
 
+@Getter
 public class ResourceLocation {
     protected final String resourceDomain;
     protected final String resourcePath;
@@ -37,14 +39,6 @@ public class ResourceLocation {
         }
 
         return astring;
-    }
-
-    public String getResourcePath() {
-        return this.resourcePath;
-    }
-
-    public String getResourceDomain() {
-        return this.resourceDomain;
     }
 
     public String toString() {

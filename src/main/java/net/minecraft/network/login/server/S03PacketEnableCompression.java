@@ -1,11 +1,13 @@
 package net.minecraft.network.login.server;
 
+import lombok.Getter;
 import net.minecraft.network.Packet;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.network.login.INetHandlerLoginClient;
 
 import java.io.IOException;
 
+@Getter
 public class S03PacketEnableCompression implements Packet<INetHandlerLoginClient> {
     private int compressionTreshold;
 
@@ -37,7 +39,4 @@ public class S03PacketEnableCompression implements Packet<INetHandlerLoginClient
         handler.handleEnableCompression(this);
     }
 
-    public int getCompressionTreshold() {
-        return this.compressionTreshold;
-    }
 }

@@ -1,5 +1,6 @@
 package net.optifine.shaders;
 
+import lombok.Getter;
 import net.minecraft.src.Config;
 import net.optifine.config.MatchBlock;
 
@@ -9,16 +10,13 @@ import java.util.List;
 import java.util.Set;
 
 public class BlockAlias {
+    @Getter
     private final int blockAliasId;
     private final MatchBlock[] matchBlocks;
 
     public BlockAlias(int blockAliasId, MatchBlock[] matchBlocks) {
         this.blockAliasId = blockAliasId;
         this.matchBlocks = matchBlocks;
-    }
-
-    public int getBlockAliasId() {
-        return this.blockAliasId;
     }
 
     public boolean matches(int id, int metadata) {

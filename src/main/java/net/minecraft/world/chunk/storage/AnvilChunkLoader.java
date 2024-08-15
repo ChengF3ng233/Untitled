@@ -69,19 +69,19 @@ public class AnvilChunkLoader implements IChunkLoader, IThreadedFileIO {
      */
     protected Chunk checkedReadChunkFromNBT(World worldIn, int x, int z, NBTTagCompound p_75822_4_) {
         if (!p_75822_4_.hasKey("Level", 10)) {
-            logger.error("Chunk file at " + x + "," + z + " is missing level data, skipping");
+            logger.error("Chunk file at {},{} is missing level data, skipping", x, z);
             return null;
         } else {
             NBTTagCompound nbttagcompound = p_75822_4_.getCompoundTag("Level");
 
             if (!nbttagcompound.hasKey("Sections", 9)) {
-                logger.error("Chunk file at " + x + "," + z + " is missing block data, skipping");
+                logger.error("Chunk file at {},{} is missing block data, skipping", x, z);
                 return null;
             } else {
                 Chunk chunk = this.readChunkFromNBT(worldIn, nbttagcompound);
 
                 if (!chunk.isAtLocation(x, z)) {
-                    logger.error("Chunk file at " + x + "," + z + " is in the wrong location; relocating. (Expected " + x + ", " + z + ", got " + chunk.xPosition + ", " + chunk.zPosition + ")");
+                    logger.error("Chunk file at {},{} is in the wrong location; relocating. (Expected {}, {}, got {}, {})", x, z, x, z, chunk.xPosition, chunk.zPosition);
                     nbttagcompound.setInteger("xPos", x);
                     nbttagcompound.setInteger("zPos", z);
                     chunk = this.readChunkFromNBT(worldIn, nbttagcompound);

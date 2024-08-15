@@ -1,7 +1,9 @@
 package net.minecraft.block.properties;
 
 import com.google.common.base.Objects;
+import lombok.Getter;
 
+@Getter
 public abstract class PropertyHelper<T extends Comparable<T>> implements IProperty<T> {
     private final Class<T> valueClass;
     private final String name;
@@ -9,14 +11,6 @@ public abstract class PropertyHelper<T extends Comparable<T>> implements IProper
     protected PropertyHelper(String name, Class<T> valueClass) {
         this.valueClass = valueClass;
         this.name = name;
-    }
-
-    public String getName() {
-        return this.name;
-    }
-
-    public Class<T> getValueClass() {
-        return this.valueClass;
     }
 
     public String toString() {

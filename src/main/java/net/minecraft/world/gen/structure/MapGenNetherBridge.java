@@ -1,6 +1,7 @@
 package net.minecraft.world.gen.structure;
 
 import com.google.common.collect.Lists;
+import lombok.Getter;
 import net.minecraft.entity.monster.EntityBlaze;
 import net.minecraft.entity.monster.EntityMagmaCube;
 import net.minecraft.entity.monster.EntityPigZombie;
@@ -11,6 +12,7 @@ import net.minecraft.world.biome.BiomeGenBase;
 import java.util.List;
 import java.util.Random;
 
+@Getter
 public class MapGenNetherBridge extends MapGenStructure {
     private final List<BiomeGenBase.SpawnListEntry> spawnList = Lists.newArrayList();
 
@@ -23,10 +25,6 @@ public class MapGenNetherBridge extends MapGenStructure {
 
     public String getStructureName() {
         return "Fortress";
-    }
-
-    public List<BiomeGenBase.SpawnListEntry> getSpawnList() {
-        return this.spawnList;
     }
 
     protected boolean canSpawnStructureAtCoords(int chunkX, int chunkZ) {

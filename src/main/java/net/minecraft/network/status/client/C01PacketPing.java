@@ -1,11 +1,13 @@
 package net.minecraft.network.status.client;
 
+import lombok.Getter;
 import net.minecraft.network.Packet;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.network.status.INetHandlerStatusServer;
 
 import java.io.IOException;
 
+@Getter
 public class C01PacketPing implements Packet<INetHandlerStatusServer> {
     private long clientTime;
 
@@ -37,7 +39,4 @@ public class C01PacketPing implements Packet<INetHandlerStatusServer> {
         handler.processPing(this);
     }
 
-    public long getClientTime() {
-        return this.clientTime;
-    }
 }

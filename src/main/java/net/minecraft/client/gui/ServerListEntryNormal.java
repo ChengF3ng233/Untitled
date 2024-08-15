@@ -204,7 +204,7 @@ public class ServerListEntryNormal implements GuiListExtended.IGuiListEntry {
                     Validate.validState(bufferedimage.getHeight() == 64, "Must be 64 pixels high");
                     break label101;
                 } catch (Throwable throwable) {
-                    logger.error("Invalid icon for server " + this.server.serverName + " (" + this.server.serverIP + ")", throwable);
+                    logger.error("Invalid icon for server {} ({})", this.server.serverName, this.server.serverIP, throwable);
                     this.server.setBase64EncodedIconData(null);
                 } finally {
                     bytebuf.release();

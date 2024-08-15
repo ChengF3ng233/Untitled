@@ -2,6 +2,7 @@ package net.minecraft.client.renderer.block.model;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
+import lombok.Getter;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.util.EnumFacing;
@@ -219,6 +220,7 @@ public class ItemModelGenerator {
         LEFT(EnumFacing.EAST, -1, 0),
         RIGHT(EnumFacing.WEST, 1, 0);
 
+        @Getter
         private final EnumFacing facing;
         private final int field_178373_f;
         private final int field_178374_g;
@@ -227,10 +229,6 @@ public class ItemModelGenerator {
             this.facing = facing;
             this.field_178373_f = p_i46215_4_;
             this.field_178374_g = p_i46215_5_;
-        }
-
-        public EnumFacing getFacing() {
-            return this.facing;
         }
 
         public int func_178372_b() {

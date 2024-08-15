@@ -1,6 +1,7 @@
 package net.minecraft.crash;
 
 import com.google.common.collect.Lists;
+import lombok.Getter;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.util.BlockPos;
@@ -12,6 +13,7 @@ public class CrashReportCategory {
     private final CrashReport crashReport;
     private final String name;
     private final List<CrashReportCategory.Entry> children = Lists.newArrayList();
+    @Getter
     private StackTraceElement[] stackTrace = new StackTraceElement[0];
 
     public CrashReportCategory(CrashReport report, String name) {
@@ -209,10 +211,7 @@ public class CrashReportCategory {
         }
     }
 
-    public StackTraceElement[] getStackTrace() {
-        return this.stackTrace;
-    }
-
+    @Getter
     static class Entry {
         private final String key;
         private final String value;
@@ -229,12 +228,5 @@ public class CrashReportCategory {
             }
         }
 
-        public String getKey() {
-            return this.key;
-        }
-
-        public String getValue() {
-            return this.value;
-        }
     }
 }

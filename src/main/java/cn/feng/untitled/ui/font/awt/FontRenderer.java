@@ -2,6 +2,7 @@ package cn.feng.untitled.ui.font.awt;
 
 import cn.feng.untitled.util.data.CharUtil;
 import cn.feng.untitled.util.misc.Logger;
+import lombok.Getter;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.util.MathHelper;
 import org.lwjgl.BufferUtils;
@@ -31,6 +32,7 @@ public class FontRenderer extends Font {
     }
 
     private final java.awt.Font font;
+    @Getter
     private final float fontHeight;
     private final Map<Character, FontCharacter> defaultCharacters = new HashMap<>();
     private final Map<Character, FontCharacter> boldCharacters = new HashMap<>();
@@ -377,10 +379,6 @@ public class FontRenderer extends Font {
 
             return width / 2;
         }
-    }
-
-    public float getFontHeight() {
-        return this.fontHeight;
     }
 
     private boolean isChinese(String text) {

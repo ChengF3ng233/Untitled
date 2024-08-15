@@ -1,6 +1,8 @@
 package net.minecraft.client.entity;
 
 import com.mojang.authlib.GameProfile;
+import lombok.Getter;
+import lombok.Setter;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.network.NetworkPlayerInfo;
 import net.minecraft.client.renderer.ImageBufferDownload;
@@ -27,9 +29,16 @@ import java.io.File;
 public abstract class AbstractClientPlayer extends EntityPlayer {
     private static final ResourceLocation TEXTURE_ELYTRA = new ResourceLocation("textures/entity/elytra.png");
     private NetworkPlayerInfo playerInfo;
+    @Getter
+    @Setter
     private ResourceLocation locationOfCape = null;
+    @Getter
+    @Setter
     private long reloadCapeTimeMs = 0L;
+    @Getter
+    @Setter
     private boolean elytraOfCape = false;
+    @Getter
     private String nameClear = null;
 
     public AbstractClientPlayer(World worldIn, GameProfile playerProfile) {
@@ -155,37 +164,9 @@ public abstract class AbstractClientPlayer extends EntityPlayer {
         return f;
     }
 
-    public String getNameClear() {
-        return this.nameClear;
-    }
-
-    public ResourceLocation getLocationOfCape() {
-        return this.locationOfCape;
-    }
-
-    public void setLocationOfCape(ResourceLocation p_setLocationOfCape_1_) {
-        this.locationOfCape = p_setLocationOfCape_1_;
-    }
-
     public boolean hasElytraCape() {
         ResourceLocation resourcelocation = this.getLocationCape();
         return resourcelocation != null && (resourcelocation != this.locationOfCape || this.elytraOfCape);
-    }
-
-    public boolean isElytraOfCape() {
-        return this.elytraOfCape;
-    }
-
-    public void setElytraOfCape(boolean p_setElytraOfCape_1_) {
-        this.elytraOfCape = p_setElytraOfCape_1_;
-    }
-
-    public long getReloadCapeTimeMs() {
-        return this.reloadCapeTimeMs;
-    }
-
-    public void setReloadCapeTimeMs(long p_setReloadCapeTimeMs_1_) {
-        this.reloadCapeTimeMs = p_setReloadCapeTimeMs_1_;
     }
 
     /**

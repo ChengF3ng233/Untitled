@@ -111,7 +111,7 @@ public class CommandDebug extends CommandBase {
             filewriter.write(this.getProfileResults(timeSpan, tickSpan));
             filewriter.close();
         } catch (Throwable throwable) {
-            logger.error("Could not save profiler results to " + file1, throwable);
+            logger.error("Could not save profiler results to {}", file1, throwable);
         }
     }
 

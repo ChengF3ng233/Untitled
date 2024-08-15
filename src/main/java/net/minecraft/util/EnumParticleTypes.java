@@ -2,6 +2,7 @@ package net.minecraft.util;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
+import lombok.Getter;
 
 import java.util.List;
 import java.util.Map;
@@ -67,9 +68,12 @@ public enum EnumParticleTypes {
         PARTICLE_NAMES = list.toArray(new String[list.size()]);
     }
 
+    @Getter
     private final String particleName;
+    @Getter
     private final int particleID;
     private final boolean shouldIgnoreRange;
+    @Getter
     private final int argumentCount;
 
     EnumParticleTypes(String particleNameIn, int particleIDIn, boolean p_i46011_5_, int argumentCountIn) {
@@ -92,18 +96,6 @@ public enum EnumParticleTypes {
      */
     public static EnumParticleTypes getParticleFromId(int particleId) {
         return PARTICLES.get(particleId);
-    }
-
-    public String getParticleName() {
-        return this.particleName;
-    }
-
-    public int getParticleID() {
-        return this.particleID;
-    }
-
-    public int getArgumentCount() {
-        return this.argumentCount;
     }
 
     public boolean getShouldIgnoreRange() {

@@ -1,7 +1,9 @@
 package net.minecraft.util;
 
 import com.google.common.base.Objects;
+import lombok.Getter;
 
+@Getter
 public class Vec3i implements Comparable<Vec3i> {
     /**
      * The Null vector constant (0, 0, 0)
@@ -10,16 +12,25 @@ public class Vec3i implements Comparable<Vec3i> {
 
     /**
      * X coordinate
+     * -- GETTER --
+     *  Get the X coordinate
+
      */
     private final int x;
 
     /**
      * Y coordinate
+     * -- GETTER --
+     *  Get the Y coordinate
+
      */
     private final int y;
 
     /**
      * Z coordinate
+     * -- GETTER --
+     *  Get the Z coordinate
+
      */
     private final int z;
 
@@ -49,27 +60,6 @@ public class Vec3i implements Comparable<Vec3i> {
 
     public int compareTo(Vec3i p_compareTo_1_) {
         return this.getY() == p_compareTo_1_.getY() ? (this.getZ() == p_compareTo_1_.getZ() ? this.getX() - p_compareTo_1_.getX() : this.getZ() - p_compareTo_1_.getZ()) : this.getY() - p_compareTo_1_.getY();
-    }
-
-    /**
-     * Get the X coordinate
-     */
-    public int getX() {
-        return this.x;
-    }
-
-    /**
-     * Get the Y coordinate
-     */
-    public int getY() {
-        return this.y;
-    }
-
-    /**
-     * Get the Z coordinate
-     */
-    public int getZ() {
-        return this.z;
     }
 
     /**

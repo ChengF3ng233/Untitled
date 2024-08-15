@@ -1,5 +1,6 @@
 package net.minecraft.client.particle;
 
+import lombok.Setter;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.WorldRenderer;
 import net.minecraft.entity.Entity;
@@ -48,7 +49,9 @@ public class EntityFirework {
     public static class SparkFX extends EntityFX {
         private final EffectRenderer field_92047_az;
         private final int baseTextureIndex = 160;
+        @Setter
         private boolean trail;
+        @Setter
         private boolean twinkle;
         private float fadeColourRed;
         private float fadeColourGreen;
@@ -64,14 +67,6 @@ public class EntityFirework {
             this.particleScale *= 0.75F;
             this.particleMaxAge = 48 + this.rand.nextInt(12);
             this.noClip = false;
-        }
-
-        public void setTrail(boolean trailIn) {
-            this.trail = trailIn;
-        }
-
-        public void setTwinkle(boolean twinkleIn) {
-            this.twinkle = twinkleIn;
         }
 
         public void setColour(int colour) {

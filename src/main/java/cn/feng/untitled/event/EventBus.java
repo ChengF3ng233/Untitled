@@ -6,11 +6,13 @@ import cn.feng.untitled.event.api.PseudoSubscriber;
 import cn.feng.untitled.event.api.SubscribeEvent;
 import cn.feng.untitled.event.type.EventPriority;
 import cn.feng.untitled.event.type.SubscriberDepth;
+import lombok.Getter;
 
 import java.lang.reflect.Method;
 import java.util.*;
 import java.util.function.Consumer;
 
+@Getter
 public class EventBus {
     private final Map<Class<? extends Event>, List<EventData>> registry = new HashMap<>();
 
@@ -145,7 +147,4 @@ public class EventBus {
         }
     }
 
-    public Map<Class<? extends Event>, List<EventData>> getRegistry() {
-        return registry;
-    }
 }

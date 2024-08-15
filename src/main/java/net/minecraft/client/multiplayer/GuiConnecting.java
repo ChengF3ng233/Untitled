@@ -44,7 +44,7 @@ public class GuiConnecting extends GuiScreen {
     }
 
     private void connect(final String ip, final int port) {
-        logger.info("Connecting to " + ip + ", " + port);
+        logger.info("Connecting to {}, {}", ip, port);
         (new Thread("Server Connector #" + CONNECTION_ID.incrementAndGet()) {
             public void run() {
                 InetAddress inetaddress = null;

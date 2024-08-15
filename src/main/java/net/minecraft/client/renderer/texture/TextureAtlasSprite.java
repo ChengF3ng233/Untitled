@@ -1,6 +1,8 @@
 package net.minecraft.client.renderer.texture;
 
 import com.google.common.collect.Lists;
+import lombok.Getter;
+import lombok.Setter;
 import net.minecraft.client.resources.IResourceManager;
 import net.minecraft.client.resources.data.AnimationFrame;
 import net.minecraft.client.resources.data.AnimationMetadataSection;
@@ -22,8 +24,11 @@ import java.util.List;
 import java.util.concurrent.Callable;
 
 public class TextureAtlasSprite {
+    @Setter
     private static String locationNameClock = "builtin/clock";
+    @Setter
     private static String locationNameCompass = "builtin/compass";
+    @Getter
     private final String iconName;
     public float baseU;
     public float baseV;
@@ -41,19 +46,55 @@ public class TextureAtlasSprite {
     protected List<int[][]> framesTextureData = Lists.newArrayList();
     protected int[][] interpolatedFrameData;
     protected boolean rotated;
+    /**
+     * -- GETTER --
+     *  Returns the X position of this icon on its texture sheet, in pixels.
+     */
+    @Getter
     protected int originX;
+    /**
+     * -- GETTER --
+     *  Returns the Y position of this icon on its texture sheet, in pixels.
+     */
+    @Getter
     protected int originY;
     protected int width;
     protected int height;
     protected int frameCounter;
     protected int tickCounter;
+    @Getter
+    @Setter
     private AnimationMetadataSection animationMetadata;
+    /**
+     * -- GETTER --
+     *  Returns the minimum U coordinate to use when rendering with this icon.
+     */
+    @Getter
     private float minU;
+    /**
+     * -- GETTER --
+     *  Returns the maximum U coordinate to use when rendering with this icon.
+     */
+    @Getter
     private float maxU;
+    /**
+     * -- GETTER --
+     *  Returns the minimum V coordinate to use when rendering with this icon.
+     */
+    @Getter
     private float minV;
+    /**
+     * -- GETTER --
+     *  Returns the maximum V coordinate to use when rendering with this icon.
+     */
+    @Getter
     private float maxV;
+    @Getter
+    @Setter
     private int indexInMap = -1;
+    @Getter
     private int animationIndex = -1;
+    @Getter
     private boolean animationActive = false;
 
     private TextureAtlasSprite(String p_i7_1_, boolean p_i7_2_) {
@@ -72,14 +113,6 @@ public class TextureAtlasSprite {
     protected static TextureAtlasSprite makeAtlasSprite(ResourceLocation spriteResourceLocation) {
         String s = spriteResourceLocation.toString();
         return locationNameClock.equals(s) ? new TextureClock(s) : (locationNameCompass.equals(s) ? new TextureCompass(s) : new TextureAtlasSprite(s));
-    }
-
-    public static void setLocationNameClock(String clockName) {
-        locationNameClock = clockName;
-    }
-
-    public static void setLocationNameCompass(String compassName) {
-        locationNameCompass = compassName;
     }
 
     private static int[][] getFrameTextureData(int[][] data, int rows, int columns, int p_147962_3_) {
@@ -153,20 +186,6 @@ public class TextureAtlasSprite {
     }
 
     /**
-     * Returns the X position of this icon on its texture sheet, in pixels.
-     */
-    public int getOriginX() {
-        return this.originX;
-    }
-
-    /**
-     * Returns the Y position of this icon on its texture sheet, in pixels.
-     */
-    public int getOriginY() {
-        return this.originY;
-    }
-
-    /**
      * Returns the width of the icon, in pixels.
      */
     public int getIconWidth() {
@@ -197,20 +216,6 @@ public class TextureAtlasSprite {
     }
 
     /**
-     * Returns the minimum U coordinate to use when rendering with this icon.
-     */
-    public float getMinU() {
-        return this.minU;
-    }
-
-    /**
-     * Returns the maximum U coordinate to use when rendering with this icon.
-     */
-    public float getMaxU() {
-        return this.maxU;
-    }
-
-    /**
      * Gets a U coordinate on the icon. 0 returns uMin and 16 returns uMax. Other arguments return in-between values.
      */
     public float getInterpolatedU(double u) {
@@ -219,29 +224,11 @@ public class TextureAtlasSprite {
     }
 
     /**
-     * Returns the minimum V coordinate to use when rendering with this icon.
-     */
-    public float getMinV() {
-        return this.minV;
-    }
-
-    /**
-     * Returns the maximum V coordinate to use when rendering with this icon.
-     */
-    public float getMaxV() {
-        return this.maxV;
-    }
-
-    /**
      * Gets a V coordinate on the icon. 0 returns vMin and 16 returns vMax. Other arguments return in-between values.
      */
     public float getInterpolatedV(double v) {
         float f = this.maxV - this.minV;
         return this.minV + f * ((float) v / 16.0F);
-    }
-
-    public String getIconName() {
-        return this.iconName;
     }
 
     public void updateAnimation() {
@@ -494,22 +481,10 @@ public class TextureAtlasSprite {
         return true;
     }
 
-    public int getIndexInMap() {
-        return this.indexInMap;
-    }
-
-    public void setIndexInMap(int p_setIndexInMap_1_) {
-        this.indexInMap = p_setIndexInMap_1_;
-    }
-
     public void updateIndexInMap(CounterInt p_updateIndexInMap_1_) {
         if (this.indexInMap < 0) {
             this.indexInMap = p_updateIndexInMap_1_.nextValue();
         }
-    }
-
-    public int getAnimationIndex() {
-        return this.animationIndex;
     }
 
     public void setAnimationIndex(int p_setAnimationIndex_1_) {
@@ -522,10 +497,6 @@ public class TextureAtlasSprite {
         if (this.spriteSpecular != null) {
             this.spriteSpecular.setAnimationIndex(p_setAnimationIndex_1_);
         }
-    }
-
-    public boolean isAnimationActive() {
-        return this.animationActive;
     }
 
     private void fixTransparentColor(int[] p_fixTransparentColor_1_) {
@@ -620,14 +591,6 @@ public class TextureAtlasSprite {
         if (this.spriteSingle != null) {
             this.spriteSingle.setFramesTextureData(newFramesTextureData);
         }
-    }
-
-    public AnimationMetadataSection getAnimationMetadata() {
-        return this.animationMetadata;
-    }
-
-    public void setAnimationMetadata(AnimationMetadataSection p_setAnimationMetadata_1_) {
-        this.animationMetadata = p_setAnimationMetadata_1_;
     }
 
     private void loadShadersSprites() {

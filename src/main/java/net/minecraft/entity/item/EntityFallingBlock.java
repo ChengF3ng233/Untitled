@@ -1,6 +1,7 @@
 package net.minecraft.entity.item;
 
 import com.google.common.collect.Lists;
+import lombok.Setter;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockAnvil;
 import net.minecraft.block.BlockFalling;
@@ -25,6 +26,7 @@ public class EntityFallingBlock extends Entity {
     public NBTTagCompound tileEntityData;
     private IBlockState fallTile;
     private boolean canSetAsBlock;
+    @Setter
     private boolean hurtEntities;
     private int fallHurtMax = 40;
     private float fallHurtAmount = 2.0F;
@@ -235,10 +237,6 @@ public class EntityFallingBlock extends Entity {
 
     public World getWorldObj() {
         return this.worldObj;
-    }
-
-    public void setHurtEntities(boolean p_145806_1_) {
-        this.hurtEntities = p_145806_1_;
     }
 
     /**

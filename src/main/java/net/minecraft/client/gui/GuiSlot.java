@@ -1,5 +1,7 @@
 package net.minecraft.client.gui;
 
+import lombok.Getter;
+import lombok.Setter;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.Tessellator;
@@ -13,6 +15,7 @@ public abstract class GuiSlot {
     /**
      * The height of a slot.
      */
+    @Getter
     protected final int slotHeight;
     protected int width;
     protected int height;
@@ -54,6 +57,7 @@ public abstract class GuiSlot {
     /**
      * Set to true if a selected element in this gui will show an outline box
      */
+    @Setter
     protected boolean showSelectionBox = true;
     protected boolean hasListHeader;
     protected int headerPadding;
@@ -65,6 +69,7 @@ public abstract class GuiSlot {
      * The buttonID of the button used to scroll down
      */
     private int scrollDownButtonID;
+    @Setter
     private boolean enabled = true;
 
     public GuiSlot(Minecraft mcIn, int width, int height, int topIn, int bottomIn, int slotHeightIn) {
@@ -85,10 +90,6 @@ public abstract class GuiSlot {
         this.bottom = bottomIn;
         this.left = 0;
         this.right = widthIn;
-    }
-
-    public void setShowSelectionBox(boolean showSelectionBoxIn) {
-        this.showSelectionBox = showSelectionBoxIn;
     }
 
     /**
@@ -374,10 +375,6 @@ public abstract class GuiSlot {
         return this.enabled;
     }
 
-    public void setEnabled(boolean enabledIn) {
-        this.enabled = enabledIn;
-    }
-
     /**
      * Gets the width of the list
      */
@@ -452,10 +449,6 @@ public abstract class GuiSlot {
     public void setSlotXBoundsFromLeft(int leftIn) {
         this.left = leftIn;
         this.right = leftIn + this.width;
-    }
-
-    public int getSlotHeight() {
-        return this.slotHeight;
     }
 
     protected void drawContainerBackground(Tessellator p_drawContainerBackground_1_) {

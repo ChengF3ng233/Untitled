@@ -1,5 +1,6 @@
 package net.optifine;
 
+import lombok.Getter;
 import net.minecraft.client.resources.IResourcePack;
 import net.minecraft.client.settings.GameSettings;
 import net.minecraft.src.Config;
@@ -22,6 +23,7 @@ import java.util.Properties;
 
 public class TextureAnimations {
     private static TextureAnimation[] textureAnimations = null;
+    @Getter
     private static int countAnimationsActive = 0;
     private static int frameCountAnimations = 0;
 
@@ -271,7 +273,4 @@ public class TextureAnimations {
         return textureAnimations == null ? 0 : textureAnimations.length;
     }
 
-    public static int getCountAnimationsActive() {
-        return countAnimationsActive;
-    }
 }

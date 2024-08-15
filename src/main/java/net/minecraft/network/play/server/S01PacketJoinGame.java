@@ -1,5 +1,6 @@
 package net.minecraft.network.play.server;
 
+import lombok.Getter;
 import net.minecraft.network.Packet;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.network.play.INetHandlerPlayClient;
@@ -9,6 +10,7 @@ import net.minecraft.world.WorldType;
 
 import java.io.IOException;
 
+@Getter
 public class S01PacketJoinGame implements Packet<INetHandlerPlayClient> {
     private int entityId;
     private boolean hardcoreMode;
@@ -80,35 +82,4 @@ public class S01PacketJoinGame implements Packet<INetHandlerPlayClient> {
         handler.handleJoinGame(this);
     }
 
-    public int getEntityId() {
-        return this.entityId;
-    }
-
-    public boolean isHardcoreMode() {
-        return this.hardcoreMode;
-    }
-
-    public WorldSettings.GameType getGameType() {
-        return this.gameType;
-    }
-
-    public int getDimension() {
-        return this.dimension;
-    }
-
-    public EnumDifficulty getDifficulty() {
-        return this.difficulty;
-    }
-
-    public int getMaxPlayers() {
-        return this.maxPlayers;
-    }
-
-    public WorldType getWorldType() {
-        return this.worldType;
-    }
-
-    public boolean isReducedDebugInfo() {
-        return this.reducedDebugInfo;
-    }
 }

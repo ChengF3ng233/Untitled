@@ -1,5 +1,6 @@
 package net.optifine.expr;
 
+import lombok.Getter;
 import net.minecraft.client.Minecraft;
 import net.minecraft.src.Config;
 import net.minecraft.util.MathHelper;
@@ -10,6 +11,7 @@ import net.optifine.util.MathUtils;
 import java.util.HashMap;
 import java.util.Map;
 
+@Getter
 public enum FunctionType {
     PLUS(10, ExpressionType.FLOAT, "+", new ExpressionType[]{ExpressionType.FLOAT, ExpressionType.FLOAT}),
     MINUS(10, ExpressionType.FLOAT, "-", new ExpressionType[]{ExpressionType.FLOAT, ExpressionType.FLOAT}),
@@ -106,22 +108,6 @@ public enum FunctionType {
         }
 
         return null;
-    }
-
-    public String getName() {
-        return this.name;
-    }
-
-    public int getPrecedence() {
-        return this.precedence;
-    }
-
-    public ExpressionType getExpressionType() {
-        return this.expressionType;
-    }
-
-    public IParameters getParameters() {
-        return this.parameters;
     }
 
     public int getParameterCount(IExpression[] arguments) {

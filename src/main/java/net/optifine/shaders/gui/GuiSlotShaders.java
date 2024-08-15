@@ -1,5 +1,6 @@
 package net.optifine.shaders.gui;
 
+import lombok.Getter;
 import net.minecraft.client.gui.GuiSlot;
 import net.minecraft.client.gui.GuiYesNo;
 import net.minecraft.client.gui.GuiYesNoCallback;
@@ -17,6 +18,7 @@ import java.util.Properties;
 class GuiSlotShaders extends GuiSlot {
     final GuiShaders shadersGui;
     private ArrayList shaderslist;
+    @Getter
     private int selectedIndex;
     private long lastClickedCached = 0L;
 
@@ -156,7 +158,4 @@ class GuiSlotShaders extends GuiSlot {
         this.shadersGui.drawCenteredString(s, this.width / 2, posY + 1, 14737632);
     }
 
-    public int getSelectedIndex() {
-        return this.selectedIndex;
-    }
 }

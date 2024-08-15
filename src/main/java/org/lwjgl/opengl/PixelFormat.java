@@ -15,6 +15,8 @@
  */
 package org.lwjgl.opengl;
 
+import lombok.Getter;
+
 /**
  * This class describes pixel format properties for an OpenGL context. Instances of this class is used as arguments to
  * Display.create(), Pbuffer.create() and AWTGLCanvas, to indicate minimum required properties.
@@ -43,6 +45,7 @@ public final class PixelFormat implements PixelFormatLWJGL {
     /**
      * The number of samples to use in anti-aliasing. 0 means that anti-aliasing is disabled.
      */
+    @Getter
     private int samples;
     /**
      * The number of COLOR_SAMPLES_NV to use for Coverage Sample Anti-aliasing (CSAA). When this number is greater than
@@ -58,6 +61,7 @@ public final class PixelFormat implements PixelFormatLWJGL {
     /** The number of alpha bits in the accumulation buffer */
     private int accum_alpha;
     /** Whether this format requires a stereo buffer */
+    @Getter
     private boolean stereo;
     /** Whether this format specifies a floating point format */
     private boolean floating_point;
@@ -213,10 +217,6 @@ public final class PixelFormat implements PixelFormatLWJGL {
         return pf;
     }
 
-    public int getSamples() {
-        return samples;
-    }
-
     /**
      * Returns a new PixelFormat object with the same properties as this PixelFormat and the new samples value.
      *
@@ -329,10 +329,6 @@ public final class PixelFormat implements PixelFormatLWJGL {
         final PixelFormat pf = new PixelFormat(this);
         pf.accum_alpha = accum_alpha;
         return pf;
-    }
-
-    public boolean isStereo() {
-        return stereo;
     }
 
     /**

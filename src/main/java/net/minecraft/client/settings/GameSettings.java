@@ -5,6 +5,8 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
 import com.google.gson.Gson;
+import lombok.Getter;
+import lombok.Setter;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.audio.SoundCategory;
 import net.minecraft.client.gui.GuiNewChat;
@@ -929,7 +931,7 @@ public class GameSettings {
                                 }
                             }
                         } catch (Exception exception) {
-                            logger.warn("Skipping bad option: " + s);
+                            logger.warn("Skipping bad option: {}", s);
                             exception.printStackTrace();
                         }
                     }
@@ -2570,9 +2572,12 @@ public class GameSettings {
 
         private final boolean enumFloat;
         private final boolean enumBoolean;
+        @Getter
         private final String enumString;
         private final float valueStep;
         private final float valueMin;
+        @Getter
+        @Setter
         private float valueMax;
 
         Options(String str, boolean isFloat, boolean isBoolean) {
@@ -2608,18 +2613,6 @@ public class GameSettings {
 
         public int returnEnumOrdinal() {
             return this.ordinal();
-        }
-
-        public String getEnumString() {
-            return this.enumString;
-        }
-
-        public float getValueMax() {
-            return this.valueMax;
-        }
-
-        public void setValueMax(float value) {
-            this.valueMax = value;
         }
 
         public float normalizeValue(float value) {

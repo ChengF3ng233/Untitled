@@ -1,5 +1,6 @@
 package net.minecraft.block;
 
+import lombok.Getter;
 import net.minecraft.block.material.MapColor;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.IProperty;
@@ -110,8 +111,11 @@ public class BlockDirt extends Block {
             }
         }
 
+        @Getter
         private final int metadata;
+        @Getter
         private final String name;
+        @Getter
         private final String unlocalizedName;
         private final MapColor field_181067_h;
 
@@ -134,14 +138,6 @@ public class BlockDirt extends Block {
             return METADATA_LOOKUP[metadata];
         }
 
-        public int getMetadata() {
-            return this.metadata;
-        }
-
-        public String getUnlocalizedName() {
-            return this.unlocalizedName;
-        }
-
         public MapColor func_181066_d() {
             return this.field_181067_h;
         }
@@ -150,8 +146,5 @@ public class BlockDirt extends Block {
             return this.name;
         }
 
-        public String getName() {
-            return this.name;
-        }
     }
 }

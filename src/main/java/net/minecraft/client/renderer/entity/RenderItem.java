@@ -1,5 +1,6 @@
 package net.minecraft.client.renderer.entity;
 
+import lombok.Getter;
 import net.minecraft.block.*;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
@@ -38,6 +39,7 @@ import java.util.concurrent.Callable;
 
 public class RenderItem implements IResourceManagerReloadListener {
     private static final ResourceLocation RES_ITEM_GLINT = new ResourceLocation("textures/misc/enchanted_item_glint.png");
+    @Getter
     private final ItemModelMesher itemModelMesher;
     private final TextureManager textureManager;
     /**
@@ -92,10 +94,6 @@ public class RenderItem implements IResourceManagerReloadListener {
      */
     public void isNotRenderingEffectsInGUI(boolean isNot) {
         this.notRenderingEffectsInGUI = isNot;
-    }
-
-    public ItemModelMesher getItemModelMesher() {
-        return this.itemModelMesher;
     }
 
     protected void registerItem(Item itm, int subType, String identifier) {

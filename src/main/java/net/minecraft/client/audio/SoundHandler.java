@@ -115,7 +115,7 @@ public class SoundHandler implements IResourceManagerReloadListener, ITickable {
                         logger.warn("File {} does not exist, cannot add it to event {}", resourcelocation1, location);
                         continue;
                     } catch (IOException ioexception) {
-                        logger.warn("Could not load sound file " + resourcelocation1 + ", cannot add it to event " + location, ioexception);
+                        logger.warn("Could not load sound file {}, cannot add it to event {}", resourcelocation1, location, ioexception);
                         continue;
                     } finally {
                         IOUtils.closeQuietly(inputstream);

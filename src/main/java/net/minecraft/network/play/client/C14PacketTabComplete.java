@@ -1,5 +1,6 @@
 package net.minecraft.network.play.client;
 
+import lombok.Getter;
 import net.minecraft.network.Packet;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.network.play.INetHandlerPlayServer;
@@ -8,6 +9,7 @@ import org.apache.commons.lang3.StringUtils;
 
 import java.io.IOException;
 
+@Getter
 public class C14PacketTabComplete implements Packet<INetHandlerPlayServer> {
     private String message;
     private BlockPos targetBlock;
@@ -56,11 +58,4 @@ public class C14PacketTabComplete implements Packet<INetHandlerPlayServer> {
         handler.processTabComplete(this);
     }
 
-    public String getMessage() {
-        return this.message;
-    }
-
-    public BlockPos getTargetBlock() {
-        return this.targetBlock;
-    }
 }

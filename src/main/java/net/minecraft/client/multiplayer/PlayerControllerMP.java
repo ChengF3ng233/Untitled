@@ -1,5 +1,6 @@
 package net.minecraft.client.multiplayer;
 
+import lombok.Getter;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
@@ -55,6 +56,7 @@ public class PlayerControllerMP {
     /**
      * Current game type for the player
      */
+    @Getter
     private WorldSettings.GameType currentGameType = WorldSettings.GameType.SURVIVAL;
 
     /**
@@ -513,10 +515,6 @@ public class PlayerControllerMP {
 
     public boolean isSpectatorMode() {
         return this.currentGameType == WorldSettings.GameType.SPECTATOR;
-    }
-
-    public WorldSettings.GameType getCurrentGameType() {
-        return this.currentGameType;
     }
 
     /**

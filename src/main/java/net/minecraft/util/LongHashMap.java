@@ -1,5 +1,7 @@
 package net.minecraft.util;
 
+import lombok.Getter;
+
 import java.util.Objects;
 
 public class LongHashMap<V> {
@@ -11,6 +13,7 @@ public class LongHashMap<V> {
     /**
      * the number of elements in the hash array
      */
+    @Getter
     private transient int numHashElements;
     private int mask;
     /**
@@ -46,10 +49,6 @@ public class LongHashMap<V> {
      */
     private static int getHashIndex(int p_76158_0_, int p_76158_1_) {
         return p_76158_0_ & p_76158_1_;
-    }
-
-    public int getNumHashElements() {
-        return this.numHashElements;
     }
 
     /**

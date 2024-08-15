@@ -5,6 +5,7 @@ import cn.feng.untitled.ui.font.awt.FontLoader;
 import cn.feng.untitled.util.animation.advanced.Direction;
 import cn.feng.untitled.util.animation.advanced.composed.ColorAnimation;
 import cn.feng.untitled.util.render.RoundedUtil;
+import lombok.Setter;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.audio.PositionedSoundRecord;
 import net.minecraft.client.audio.SoundHandler;
@@ -42,6 +43,7 @@ public class GuiButton extends Gui {
     /**
      * UntitledButton width in pixels
      */
+    @Setter
     protected int width;
     /**
      * UntitledButton height in pixels
@@ -135,7 +137,4 @@ public class GuiButton extends Gui {
         return this.width;
     }
 
-    public void setWidth(int width) {
-        this.width = width;
-    }
 }

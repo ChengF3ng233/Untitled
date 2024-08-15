@@ -1,5 +1,6 @@
 package net.optifine;
 
+import lombok.Getter;
 import net.minecraft.src.Config;
 import net.minecraft.util.ResourceLocation;
 import net.optifine.util.MathUtils;
@@ -14,11 +15,8 @@ import java.util.Random;
 
 public class CustomPanorama {
     private static final Random random = new Random();
+    @Getter
     private static CustomPanoramaProperties customPanoramaProperties = null;
-
-    public static CustomPanoramaProperties getCustomPanoramaProperties() {
-        return customPanoramaProperties;
-    }
 
     public static void update() {
         customPanoramaProperties = null;

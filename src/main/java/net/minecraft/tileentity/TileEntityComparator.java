@@ -1,7 +1,11 @@
 package net.minecraft.tileentity;
 
+import lombok.Getter;
+import lombok.Setter;
 import net.minecraft.nbt.NBTTagCompound;
 
+@Getter
+@Setter
 public class TileEntityComparator extends TileEntity {
     private int outputSignal;
 
@@ -15,11 +19,4 @@ public class TileEntityComparator extends TileEntity {
         this.outputSignal = compound.getInteger("OutputSignal");
     }
 
-    public int getOutputSignal() {
-        return this.outputSignal;
-    }
-
-    public void setOutputSignal(int p_145995_1_) {
-        this.outputSignal = p_145995_1_;
-    }
 }

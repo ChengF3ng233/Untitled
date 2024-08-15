@@ -1,5 +1,6 @@
 package net.minecraft.network.play.server;
 
+import lombok.Getter;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.network.Packet;
@@ -10,6 +11,7 @@ import net.minecraft.world.World;
 
 import java.io.IOException;
 
+@Getter
 public class S23PacketBlockChange implements Packet<INetHandlerPlayClient> {
     private BlockPos blockPosition;
     private IBlockState blockState;
@@ -45,11 +47,4 @@ public class S23PacketBlockChange implements Packet<INetHandlerPlayClient> {
         handler.handleBlockChange(this);
     }
 
-    public IBlockState getBlockState() {
-        return this.blockState;
-    }
-
-    public BlockPos getBlockPosition() {
-        return this.blockPosition;
-    }
 }

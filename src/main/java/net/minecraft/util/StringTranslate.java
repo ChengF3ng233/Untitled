@@ -3,6 +3,7 @@ package net.minecraft.util;
 import com.google.common.base.Splitter;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Maps;
+import lombok.Getter;
 import org.apache.commons.io.Charsets;
 import org.apache.commons.io.IOUtils;
 
@@ -31,7 +32,11 @@ public class StringTranslate {
 
     /**
      * The time, in milliseconds since epoch, that this instance was last updated
+     * -- GETTER --
+     *  Gets the time, in milliseconds since epoch, that this instance was last updated
+
      */
+    @Getter
     private long lastUpdateTimeInMilliseconds;
 
     public StringTranslate() {
@@ -103,10 +108,4 @@ public class StringTranslate {
         return this.languageList.containsKey(key);
     }
 
-    /**
-     * Gets the time, in milliseconds since epoch, that this instance was last updated
-     */
-    public long getLastUpdateTimeInMilliseconds() {
-        return this.lastUpdateTimeInMilliseconds;
-    }
 }

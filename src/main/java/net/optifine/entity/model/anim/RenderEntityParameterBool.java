@@ -1,5 +1,6 @@
 package net.optifine.entity.model.anim;
 
+import lombok.Getter;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.entity.Render;
 import net.minecraft.client.renderer.entity.RenderManager;
@@ -25,6 +26,7 @@ public enum RenderEntityParameterBool implements IExpressionBool {
     IS_WET("is_wet");
 
     private static final RenderEntityParameterBool[] VALUES = values();
+    @Getter
     private final String name;
     private final RenderManager renderManager;
 
@@ -45,10 +47,6 @@ public enum RenderEntityParameterBool implements IExpressionBool {
 
             return null;
         }
-    }
-
-    public String getName() {
-        return this.name;
     }
 
     public ExpressionType getExpressionType() {

@@ -1,18 +1,16 @@
 package net.minecraft.world;
 
+import lombok.Getter;
 import net.minecraft.util.MathHelper;
 
 public class DifficultyInstance {
     private final EnumDifficulty worldDifficulty;
+    @Getter
     private final float additionalDifficulty;
 
     public DifficultyInstance(EnumDifficulty worldDifficulty, long worldTime, long chunkInhabitedTime, float moonPhaseFactor) {
         this.worldDifficulty = worldDifficulty;
         this.additionalDifficulty = this.calculateAdditionalDifficulty(worldDifficulty, worldTime, chunkInhabitedTime, moonPhaseFactor);
-    }
-
-    public float getAdditionalDifficulty() {
-        return this.additionalDifficulty;
     }
 
     public float getClampedAdditionalDifficulty() {

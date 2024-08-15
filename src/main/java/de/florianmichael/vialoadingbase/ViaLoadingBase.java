@@ -32,6 +32,7 @@ import de.florianmichael.vialoadingbase.platform.viaversion.VLBViaProviders;
 import de.florianmichael.vialoadingbase.platform.ViaVersionPlatformImpl;
 import de.florianmichael.vialoadingbase.platform.viaversion.VLBViaInjector;
 import de.florianmichael.vialoadingbase.util.JLoggerToLog4j;
+import lombok.Getter;
 import org.apache.logging.log4j.LogManager;
 
 import java.io.File;
@@ -53,13 +54,18 @@ public class ViaLoadingBase {
 
     public final static List<ProtocolVersion> PROTOCOLS = new ArrayList<>();
 
+    @Getter
     private static ViaLoadingBase instance;
 
     private final LinkedList<Platform> platforms;
+    @Getter
     private final File runDirectory;
+    @Getter
     private final int nativeVersion;
     private final BooleanSupplier forceNativeVersionCondition;
+    @Getter
     private final Supplier<JsonObject> dumpSupplier;
+    @Getter
     private final Consumer<ViaProviders> providers;
     private final Consumer<ViaManagerImpl.ViaManagerBuilder> managerBuilderConsumer;
     private final Consumer<ProtocolVersion> onProtocolReload;
@@ -126,28 +132,8 @@ public class ViaLoadingBase {
         ViaLoadingBase.LOGGER.info("ViaLoadingBase has loaded " + Platform.COUNT + "/" + platforms.size() + " platforms");
     }
 
-    public static ViaLoadingBase getInstance() {
-        return instance;
-    }
-
     public List<Platform> getSubPlatforms() {
         return platforms;
-    }
-
-    public File getRunDirectory() {
-        return runDirectory;
-    }
-
-    public int getNativeVersion() {
-        return nativeVersion;
-    }
-
-    public Supplier<JsonObject> getDumpSupplier() {
-        return dumpSupplier;
-    }
-
-    public Consumer<ViaProviders> getProviders() {
-        return providers;
     }
 
     public static boolean inClassPath(final String name) {

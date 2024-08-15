@@ -1,20 +1,19 @@
 package net.minecraft.util;
 
+import lombok.Getter;
+
+@Getter
 public class ChatComponentSelector extends ChatComponentStyle {
     /**
      * The selector used to find the matching entities of this text component
+     * -- GETTER --
+     *  Gets the selector of this component, in plain text.
+
      */
     private final String selector;
 
     public ChatComponentSelector(String selectorIn) {
         this.selector = selectorIn;
-    }
-
-    /**
-     * Gets the selector of this component, in plain text.
-     */
-    public String getSelector() {
-        return this.selector;
     }
 
     /**

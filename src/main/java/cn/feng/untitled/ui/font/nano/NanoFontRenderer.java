@@ -1,6 +1,7 @@
 package cn.feng.untitled.ui.font.nano;
 
 import cn.feng.untitled.util.MinecraftInstance;
+import lombok.Getter;
 import lombok.Setter;
 import net.minecraft.util.ResourceLocation;
 import org.lwjgl.system.MemoryUtil;
@@ -19,11 +20,14 @@ import static org.lwjgl.nanovg.NanoVG.*;
  * @since 2024/8/3
  **/
 public class NanoFontRenderer extends MinecraftInstance {
+    @Getter
+    private final String name;
     private final int font;
     @Setter
     private float size;
 
     public NanoFontRenderer(String name, ResourceLocation resource) {
+        this.name = name;
         try (InputStream inputStream = mc.getResourceManager().getResource(resource).getInputStream()) {
             byte[] data = inputStream.readAllBytes();
             ByteBuffer buffer = MemoryUtil.memAlloc(data.length);

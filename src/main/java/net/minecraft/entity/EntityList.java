@@ -168,7 +168,7 @@ public class EntityList {
         if (entity != null) {
             entity.readFromNBT(nbt);
         } else {
-            logger.warn("Skipping Entity with id " + nbt.getString("id"));
+            logger.warn("Skipping Entity with id {}", nbt.getString("id"));
         }
 
         return entity;
@@ -191,7 +191,7 @@ public class EntityList {
         }
 
         if (entity == null) {
-            logger.warn("Skipping Entity with id " + entityID);
+            logger.warn("Skipping Entity with id {}", entityID);
         }
 
         return entity;

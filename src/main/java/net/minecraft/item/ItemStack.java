@@ -9,6 +9,8 @@ import java.util.List;
 import java.util.Random;
 import java.util.Map.Entry;
 
+import lombok.Getter;
+import lombok.Setter;
 import net.minecraft.block.Block;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentDurability;
@@ -47,17 +49,32 @@ public final class ItemStack {
      * Number of animation frames to go when receiving an item (by walking into it, for example).
      */
     public int animationsToGo;
+    /**
+     * -- GETTER --
+     *  Returns the object corresponding to the stack.
+     */
+    @Getter
+    @Setter
     private Item item;
 
     /**
      * A NBTTagMap containing data about an ItemStack. Can only be used for non stackable items
      */
     private NBTTagCompound stackTagCompound;
+    @Getter
     private int itemDamage;
 
     /**
      * Item frame this stack is on, or null if not on an item frame.
+     * -- SETTER --
+     *  Set the item frame this stack is on.
+     * -- GETTER --
+     *  Return the item frame this stack is on. Returns null if not on an item frame.
+
+
      */
+    @Getter
+    @Setter
     private EntityItemFrame itemFrame;
     private Block canDestroyCacheBlock;
     private boolean canDestroyCacheResult;
@@ -148,17 +165,6 @@ public final class ItemStack {
 
         this.stackSize -= amount;
         return itemstack;
-    }
-
-    /**
-     * Returns the object corresponding to the stack.
-     */
-    public Item getItem() {
-        return this.item;
-    }
-
-    public void setItem(Item newItem) {
-        this.item = newItem;
     }
 
     /**
@@ -266,10 +272,6 @@ public final class ItemStack {
      */
     public boolean isItemDamaged() {
         return this.isItemStackDamageable() && this.itemDamage > 0;
-    }
-
-    public int getItemDamage() {
-        return this.itemDamage;
     }
 
     public void setItemDamage(int meta) {
@@ -777,20 +779,6 @@ public final class ItemStack {
      */
     public boolean isOnItemFrame() {
         return this.itemFrame != null;
-    }
-
-    /**
-     * Return the item frame this stack is on. Returns null if not on an item frame.
-     */
-    public EntityItemFrame getItemFrame() {
-        return this.itemFrame;
-    }
-
-    /**
-     * Set the item frame this stack is on.
-     */
-    public void setItemFrame(EntityItemFrame frame) {
-        this.itemFrame = frame;
     }
 
     /**

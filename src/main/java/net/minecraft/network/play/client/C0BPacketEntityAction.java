@@ -1,5 +1,6 @@
 package net.minecraft.network.play.client;
 
+import lombok.Getter;
 import net.minecraft.entity.Entity;
 import net.minecraft.network.Packet;
 import net.minecraft.network.PacketBuffer;
@@ -9,7 +10,9 @@ import java.io.IOException;
 
 public class C0BPacketEntityAction implements Packet<INetHandlerPlayServer> {
     private int entityID;
+    @Getter
     private C0BPacketEntityAction.Action action;
+    @Getter
     private int auxData;
 
     public C0BPacketEntityAction() {
@@ -48,14 +51,6 @@ public class C0BPacketEntityAction implements Packet<INetHandlerPlayServer> {
      */
     public void processPacket(INetHandlerPlayServer handler) {
         handler.processEntityAction(this);
-    }
-
-    public C0BPacketEntityAction.Action getAction() {
-        return this.action;
-    }
-
-    public int getAuxData() {
-        return this.auxData;
     }
 
     public enum Action {

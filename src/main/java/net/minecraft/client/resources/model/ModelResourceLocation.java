@@ -1,8 +1,10 @@
 package net.minecraft.client.resources.model;
 
+import lombok.Getter;
 import net.minecraft.util.ResourceLocation;
 import org.apache.commons.lang3.StringUtils;
 
+@Getter
 public class ModelResourceLocation extends ResourceLocation {
     private final String variant;
 
@@ -38,10 +40,6 @@ public class ModelResourceLocation extends ResourceLocation {
 
         System.arraycopy(ResourceLocation.splitObjectName(s), 0, astring, 0, 2);
         return astring;
-    }
-
-    public String getVariant() {
-        return this.variant;
     }
 
     public boolean equals(Object p_equals_1_) {

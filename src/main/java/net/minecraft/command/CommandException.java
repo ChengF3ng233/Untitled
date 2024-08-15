@@ -1,5 +1,8 @@
 package net.minecraft.command;
 
+import lombok.Getter;
+
+@Getter
 public class CommandException extends Exception {
     private final Object[] errorObjects;
 
@@ -8,7 +11,4 @@ public class CommandException extends Exception {
         this.errorObjects = objects;
     }
 
-    public Object[] getErrorObjects() {
-        return this.errorObjects;
-    }
 }

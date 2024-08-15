@@ -3,6 +3,8 @@ package net.minecraft.entity;
 import com.google.common.base.Predicate;
 import com.google.common.base.Predicates;
 import com.google.common.collect.Maps;
+import lombok.Getter;
+import lombok.Setter;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
@@ -77,11 +79,23 @@ public abstract class EntityLivingBase extends Entity {
     public float cameraPitch;
     public float randomUnused2;
     public float randomUnused1;
+    /**
+     * -- SETTER --
+     *  Set the render yaw offset
+     *
+     * @param offset The render yaw offset
+     */
+    @Setter
     public float renderYawOffset;
     public float prevRenderYawOffset;
     /**
      * Entity head rotation yaw
+     * -- SETTER --
+     *  Sets the head's yaw rotation of the entity.
+
      */
+    @Getter
+    @Setter
     public float rotationYawHead;
     /**
      * Entity head rotation yaw at previous tick
@@ -159,12 +173,15 @@ public abstract class EntityLivingBase extends Entity {
      * is only being set, has no uses as of MC 1.1
      */
     private EntityLivingBase entityLivingToAttack;
+    @Getter
     private int revengeTimer;
+    @Getter
     private EntityLivingBase lastAttacker;
 
     /**
      * Holds the value of ticksExisted when setLastAttacker was last called.
      */
+    @Getter
     private int lastAttackerTime;
 
     /**
@@ -177,6 +194,7 @@ public abstract class EntityLivingBase extends Entity {
      * Number of ticks since last jump
      */
     private int jumpTicks;
+    @Getter
     private float absorptionAmount;
 
     public EntityLivingBase(World worldIn) {
@@ -412,17 +430,9 @@ public abstract class EntityLivingBase extends Entity {
         return this.entityLivingToAttack;
     }
 
-    public int getRevengeTimer() {
-        return this.revengeTimer;
-    }
-
     public void setRevengeTarget(EntityLivingBase livingBase) {
         this.entityLivingToAttack = livingBase;
         this.revengeTimer = this.ticksExisted;
-    }
-
-    public EntityLivingBase getLastAttacker() {
-        return this.lastAttacker;
     }
 
     public void setLastAttacker(Entity entityIn) {
@@ -433,10 +443,6 @@ public abstract class EntityLivingBase extends Entity {
         }
 
         this.lastAttackerTime = this.ticksExisted;
-    }
-
-    public int getLastAttackerTime() {
-        return this.lastAttackerTime;
     }
 
     public int getAge() {
@@ -1855,30 +1861,6 @@ public abstract class EntityLivingBase extends Entity {
      */
     protected void setBeenAttacked() {
         this.velocityChanged = this.rand.nextDouble() >= this.getEntityAttribute(SharedMonsterAttributes.knockbackResistance).getAttributeValue();
-    }
-
-    public float getRotationYawHead() {
-        return this.rotationYawHead;
-    }
-
-    /**
-     * Sets the head's yaw rotation of the entity.
-     */
-    public void setRotationYawHead(float rotation) {
-        this.rotationYawHead = rotation;
-    }
-
-    /**
-     * Set the render yaw offset
-     *
-     * @param offset The render yaw offset
-     */
-    public void setRenderYawOffset(float offset) {
-        this.renderYawOffset = offset;
-    }
-
-    public float getAbsorptionAmount() {
-        return this.absorptionAmount;
     }
 
     public void setAbsorptionAmount(float amount) {

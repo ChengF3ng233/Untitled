@@ -1,5 +1,8 @@
 package net.minecraft.world;
 
+import lombok.Getter;
+
+@Getter
 public enum EnumDifficulty {
     PEACEFUL(0, "options.difficulty.peaceful"),
     EASY(1, "options.difficulty.easy"),
@@ -26,11 +29,4 @@ public enum EnumDifficulty {
         return difficultyEnums[p_151523_0_ % difficultyEnums.length];
     }
 
-    public int getDifficultyId() {
-        return this.difficultyId;
-    }
-
-    public String getDifficultyResourceKey() {
-        return this.difficultyResourceKey;
-    }
 }

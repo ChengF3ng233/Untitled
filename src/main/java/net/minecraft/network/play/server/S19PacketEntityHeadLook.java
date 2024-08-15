@@ -1,5 +1,6 @@
 package net.minecraft.network.play.server;
 
+import lombok.Getter;
 import net.minecraft.entity.Entity;
 import net.minecraft.network.Packet;
 import net.minecraft.network.PacketBuffer;
@@ -10,6 +11,7 @@ import java.io.IOException;
 
 public class S19PacketEntityHeadLook implements Packet<INetHandlerPlayClient> {
     private int entityId;
+    @Getter
     private byte yaw;
 
     public S19PacketEntityHeadLook() {
@@ -47,7 +49,4 @@ public class S19PacketEntityHeadLook implements Packet<INetHandlerPlayClient> {
         return worldIn.getEntityByID(this.entityId);
     }
 
-    public byte getYaw() {
-        return this.yaw;
-    }
 }

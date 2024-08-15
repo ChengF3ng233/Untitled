@@ -1,6 +1,7 @@
 package net.minecraft.client.gui;
 
 import io.netty.buffer.Unpooled;
+import lombok.Getter;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.renderer.GlStateManager;
@@ -33,6 +34,7 @@ public class GuiMerchant extends GuiContainer {
     /**
      * The current IMerchant instance in use for this specific merchant.
      */
+    @Getter
     private final IMerchant merchant;
 
     /**
@@ -210,10 +212,6 @@ public class GuiMerchant extends GuiContainer {
             GlStateManager.enableDepth();
             RenderHelper.enableStandardItemLighting();
         }
-    }
-
-    public IMerchant getMerchant() {
-        return this.merchant;
     }
 
     static class MerchantButton extends GuiButton {

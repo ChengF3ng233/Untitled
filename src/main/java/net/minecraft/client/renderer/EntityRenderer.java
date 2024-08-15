@@ -311,11 +311,11 @@ public class EntityRenderer implements IResourceManagerReloadListener {
                 this.theShaderGroup.createBindFramebuffers(this.mc.displayWidth, this.mc.displayHeight);
                 this.useShader = true;
             } catch (IOException ioexception) {
-                logger.warn("Failed to load shader: " + resourceLocationIn, ioexception);
+                logger.warn("Failed to load shader: {}", resourceLocationIn, ioexception);
                 this.shaderIndex = shaderCount;
                 this.useShader = false;
             } catch (JsonSyntaxException jsonsyntaxexception) {
-                logger.warn("Failed to load shader: " + resourceLocationIn, jsonsyntaxexception);
+                logger.warn("Failed to load shader: {}", resourceLocationIn, jsonsyntaxexception);
                 this.shaderIndex = shaderCount;
                 this.useShader = false;
             }

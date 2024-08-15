@@ -1,5 +1,6 @@
 package net.minecraft.network.play.server;
 
+import lombok.Getter;
 import net.minecraft.entity.DataWatcher;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
@@ -16,10 +17,15 @@ import java.util.UUID;
 public class S0CPacketSpawnPlayer implements Packet<INetHandlerPlayClient> {
     private int entityId;
     private UUID playerId;
+    @Getter
     private int x;
+    @Getter
     private int y;
+    @Getter
     private int z;
+    @Getter
     private byte yaw;
+    @Getter
     private byte pitch;
     private int currentItem;
     private DataWatcher watcher;
@@ -92,26 +98,6 @@ public class S0CPacketSpawnPlayer implements Packet<INetHandlerPlayClient> {
 
     public UUID getPlayer() {
         return this.playerId;
-    }
-
-    public int getX() {
-        return this.x;
-    }
-
-    public int getY() {
-        return this.y;
-    }
-
-    public int getZ() {
-        return this.z;
-    }
-
-    public byte getYaw() {
-        return this.yaw;
-    }
-
-    public byte getPitch() {
-        return this.pitch;
     }
 
     public int getCurrentItemID() {

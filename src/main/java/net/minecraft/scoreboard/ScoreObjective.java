@@ -1,14 +1,19 @@
 package net.minecraft.scoreboard;
 
+import lombok.Getter;
+
 public class ScoreObjective {
     private final Scoreboard theScoreboard;
+    @Getter
     private final String name;
 
     /**
      * The ScoreObjectiveCriteria for this objetive
      */
     private final IScoreObjectiveCriteria objectiveCriteria;
+    @Getter
     private IScoreObjectiveCriteria.EnumRenderType renderType;
+    @Getter
     private String displayName;
 
     public ScoreObjective(Scoreboard theScoreboardIn, String nameIn, IScoreObjectiveCriteria objectiveCriteriaIn) {
@@ -23,25 +28,13 @@ public class ScoreObjective {
         return this.theScoreboard;
     }
 
-    public String getName() {
-        return this.name;
-    }
-
     public IScoreObjectiveCriteria getCriteria() {
         return this.objectiveCriteria;
-    }
-
-    public String getDisplayName() {
-        return this.displayName;
     }
 
     public void setDisplayName(String nameIn) {
         this.displayName = nameIn;
         this.theScoreboard.onObjectiveDisplayNameChanged(this);
-    }
-
-    public IScoreObjectiveCriteria.EnumRenderType getRenderType() {
-        return this.renderType;
     }
 
     public void setRenderType(IScoreObjectiveCriteria.EnumRenderType type) {

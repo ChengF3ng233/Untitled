@@ -1,6 +1,7 @@
 package net.minecraft.client.renderer;
 
 import com.google.common.collect.Maps;
+import lombok.Getter;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.resources.model.IBakedModel;
 import net.minecraft.client.resources.model.ModelManager;
@@ -17,6 +18,7 @@ public class ItemModelMesher {
     private final Map<Integer, ModelResourceLocation> simpleShapes = Maps.newHashMap();
     private final Map<Integer, IBakedModel> simpleShapesCache = Maps.newHashMap();
     private final Map<Item, ItemMeshDefinition> shapers = Maps.newHashMap();
+    @Getter
     private final ModelManager modelManager;
 
     public ItemModelMesher(ModelManager modelManager) {
@@ -73,10 +75,6 @@ public class ItemModelMesher {
 
     public void register(Item item, ItemMeshDefinition definition) {
         this.shapers.put(item, definition);
-    }
-
-    public ModelManager getModelManager() {
-        return this.modelManager;
     }
 
     public void rebuildCache() {

@@ -1,8 +1,10 @@
 package net.optifine.shaders.uniform;
 
+import lombok.Getter;
 import net.optifine.expr.IExpression;
 import net.optifine.shaders.SMCLog;
 
+@Getter
 public class CustomUniform {
     private final String name;
     private final UniformType type;
@@ -35,22 +37,6 @@ public class CustomUniform {
 
     public void reset() {
         this.shaderUniform.reset();
-    }
-
-    public String getName() {
-        return this.name;
-    }
-
-    public UniformType getType() {
-        return this.type;
-    }
-
-    public IExpression getExpression() {
-        return this.expression;
-    }
-
-    public ShaderUniformBase getShaderUniform() {
-        return this.shaderUniform;
     }
 
     public String toString() {

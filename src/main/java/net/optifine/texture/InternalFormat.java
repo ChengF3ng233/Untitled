@@ -1,5 +1,8 @@
 package net.optifine.texture;
 
+import lombok.Getter;
+
+@Getter
 public enum InternalFormat {
     R8(33321),
     RG8(33323),
@@ -45,7 +48,4 @@ public enum InternalFormat {
         this.id = id;
     }
 
-    public int getId() {
-        return this.id;
-    }
 }

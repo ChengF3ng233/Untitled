@@ -3,6 +3,7 @@ package org.lwjgl.input;
 import java.nio.ByteBuffer;
 import java.nio.IntBuffer;
 
+import lombok.Getter;
 import org.apache.commons.lang3.StringUtils;
 import org.lwjgl.BufferUtils;
 import org.lwjgl.glfw.GLFW;
@@ -18,6 +19,7 @@ public class Mouse {
     private static IntBuffer coord_buffer = BufferUtils.createIntBuffer(32);
     private static ByteBuffer readBuffer = BufferUtils.createByteBuffer(32);
 
+    @Getter
     private static boolean grabbed = false;
 
     private static int lastEventX = 0;
@@ -26,7 +28,9 @@ public class Mouse {
     private static int latestX = 0;
     private static int latestY = 0;
 
+    @Getter
     private static int x = 0;
+    @Getter
     private static int y = 0;
 
     private static int dx = 0, dy = 0, dwheel = 0;
@@ -190,10 +194,6 @@ public class Mouse {
         }
     }
 
-    public static boolean isGrabbed() {
-        return grabbed;
-    }
-
     public static boolean isButtonDown(int button) {
         return GLFW.glfwGetMouseButton(Display.getWindow(), button) == GLFW.GLFW_PRESS;
     }
@@ -232,14 +232,6 @@ public class Mouse {
 
     public static int getEventDWheel() {
         return wheelEvents[queue.getCurrentPos()];
-    }
-
-    public static int getX() {
-        return x;
-    }
-
-    public static int getY() {
-        return y;
     }
 
     public static int getDX() {

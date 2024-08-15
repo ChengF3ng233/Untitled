@@ -1,8 +1,13 @@
 package net.optifine.http;
 
+import lombok.Getter;
+import lombok.Setter;
+
+@Getter
 public class HttpPipelineRequest {
     private HttpRequest httpRequest = null;
     private HttpListener httpListener = null;
+    @Setter
     private boolean closed = false;
 
     public HttpPipelineRequest(HttpRequest httpRequest, HttpListener httpListener) {
@@ -10,19 +15,4 @@ public class HttpPipelineRequest {
         this.httpListener = httpListener;
     }
 
-    public HttpRequest getHttpRequest() {
-        return this.httpRequest;
-    }
-
-    public HttpListener getHttpListener() {
-        return this.httpListener;
-    }
-
-    public boolean isClosed() {
-        return this.closed;
-    }
-
-    public void setClosed(boolean closed) {
-        this.closed = closed;
-    }
 }

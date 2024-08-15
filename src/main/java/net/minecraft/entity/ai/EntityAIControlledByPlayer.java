@@ -1,5 +1,6 @@
 package net.minecraft.entity.ai;
 
+import lombok.Getter;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockSlab;
 import net.minecraft.block.BlockStairs;
@@ -20,7 +21,11 @@ public class EntityAIControlledByPlayer extends EntityAIBase {
 
     /**
      * Whether the entity's speed is boosted.
+     * -- GETTER --
+     *  Return whether the entity's speed is boosted.
+
      */
+    @Getter
     private boolean speedBoosted;
 
     /**
@@ -175,13 +180,6 @@ public class EntityAIControlledByPlayer extends EntityAIBase {
      */
     private boolean isStairOrSlab(Block blockIn) {
         return blockIn instanceof BlockStairs || blockIn instanceof BlockSlab;
-    }
-
-    /**
-     * Return whether the entity's speed is boosted.
-     */
-    public boolean isSpeedBoosted() {
-        return this.speedBoosted;
     }
 
     /**

@@ -1,5 +1,6 @@
 package net.minecraft.network.play.server;
 
+import lombok.Getter;
 import net.minecraft.network.Packet;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.network.play.INetHandlerPlayClient;
@@ -7,6 +8,7 @@ import net.minecraft.util.BlockPos;
 
 import java.io.IOException;
 
+@Getter
 public class S36PacketSignEditorOpen implements Packet<INetHandlerPlayClient> {
     private BlockPos signPosition;
 
@@ -38,7 +40,4 @@ public class S36PacketSignEditorOpen implements Packet<INetHandlerPlayClient> {
         buf.writeBlockPos(this.signPosition);
     }
 
-    public BlockPos getSignPosition() {
-        return this.signPosition;
-    }
 }

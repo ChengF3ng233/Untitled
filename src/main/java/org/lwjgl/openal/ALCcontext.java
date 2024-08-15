@@ -17,6 +17,7 @@ package org.lwjgl.openal;
 
 import java.nio.IntBuffer;
 
+import lombok.Getter;
 import org.lwjgl.openal.ALC10;
 import org.lwjgl.BufferUtils;
 
@@ -36,7 +37,12 @@ public final class ALCcontext {
     /** Address of actual context */
     final long context;
 
-    /** Whether this context is valid */
+    /** Whether this context is valid
+     * -- GETTER --
+     *
+     * @return true if this context is still valid
+     */
+    @Getter
     private boolean valid;
 
     /**
@@ -89,10 +95,4 @@ public final class ALCcontext {
         valid = false;
     }
 
-    /**
-     * @return true if this context is still valid
-     */
-    public boolean isValid() {
-        return valid;
-    }
 }

@@ -1,5 +1,6 @@
 package net.minecraft.util;
 
+import lombok.Getter;
 import net.minecraft.entity.Entity;
 
 public class MovingObjectPosition {
@@ -16,6 +17,7 @@ public class MovingObjectPosition {
      * The hit entity
      */
     public Entity entityHit;
+    @Getter
     private BlockPos blockPos;
 
     public MovingObjectPosition(Vec3 hitVecIn, EnumFacing facing, BlockPos blockPosIn) {
@@ -41,10 +43,6 @@ public class MovingObjectPosition {
         this.typeOfHit = MovingObjectPosition.MovingObjectType.ENTITY;
         this.entityHit = entityHitIn;
         this.hitVec = hitVecIn;
-    }
-
-    public BlockPos getBlockPos() {
-        return this.blockPos;
     }
 
     public String toString() {

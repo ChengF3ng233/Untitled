@@ -1,11 +1,13 @@
 package net.minecraft.network.play.server;
 
+import lombok.Getter;
 import net.minecraft.network.Packet;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.network.play.INetHandlerPlayClient;
 
 import java.io.IOException;
 
+@Getter
 public class S46PacketSetCompressionLevel implements Packet<INetHandlerPlayClient> {
     private int threshold;
 
@@ -30,7 +32,4 @@ public class S46PacketSetCompressionLevel implements Packet<INetHandlerPlayClien
         handler.handleSetCompressionLevel(this);
     }
 
-    public int getThreshold() {
-        return this.threshold;
-    }
 }

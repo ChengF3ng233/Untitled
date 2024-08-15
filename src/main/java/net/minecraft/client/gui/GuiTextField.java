@@ -2,6 +2,8 @@ package net.minecraft.client.gui;
 
 import com.google.common.base.Predicate;
 import com.google.common.base.Predicates;
+import lombok.Getter;
+import lombok.Setter;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.WorldRenderer;
@@ -10,6 +12,7 @@ import net.minecraft.util.ChatAllowedCharacters;
 import net.minecraft.util.MathHelper;
 
 public class GuiTextField extends Gui {
+    @Getter
     private final int id;
     private final FontRenderer fontRendererInstance;
     public int xPosition;
@@ -23,15 +26,33 @@ public class GuiTextField extends Gui {
 
     /**
      * Has the current text being edited on the textbox.
+     * -- GETTER --
+     *  Returns the contents of the textbox
+
      */
+    @Getter
     private String text = "";
+    /**
+     * -- GETTER --
+     *  returns the maximum number of character that can be contained in this textbox
+     */
+    @Getter
     private int maxStringLength = 32;
     private int cursorCounter;
+    /**
+     * -- SETTER --
+     *  enable drawing background and outline
+     */
+    @Setter
     private boolean enableBackgroundDrawing = true;
 
     /**
      * if true the textbox can lose focus by clicking elsewhere on the screen
+     * -- SETTER --
+     *  if true the textbox can lose focus by clicking elsewhere on the screen
+
      */
+    @Setter
     private boolean canLoseFocus = true;
 
     /**
@@ -48,18 +69,31 @@ public class GuiTextField extends Gui {
      * The current character index that should be used as start of the rendered text.
      */
     private int lineScrollOffset;
+    /**
+     * -- GETTER --
+     *  returns the current position of the cursor
+     */
+    @Getter
     private int cursorPosition;
 
     /**
      * other selection position, maybe the same as the cursor
+     * -- GETTER --
+     *  the side of the selection that is not the cursor, may be the same as the cursor
+
      */
+    @Getter
     private int selectionEnd;
     private int enabledColor = 14737632;
     private int disabledColor = 7368816;
 
     /**
      * True if this textbox is visible
+     * -- SETTER --
+     *  Sets whether or not this textbox is visible
+
      */
+    @Setter
     private boolean visible = true;
     private GuiPageButtonList.GuiResponder field_175210_x;
     private Predicate<String> field_175209_y = Predicates.alwaysTrue();
@@ -97,13 +131,6 @@ public class GuiTextField extends Gui {
 
             this.setCursorPositionEnd();
         }
-    }
-
-    /**
-     * Returns the contents of the textbox
-     */
-    public String getText() {
-        return this.text;
     }
 
     /**
@@ -204,10 +231,6 @@ public class GuiTextField extends Gui {
                 }
             }
         }
-    }
-
-    public int getId() {
-        return this.id;
     }
 
     /**
@@ -528,31 +551,10 @@ public class GuiTextField extends Gui {
     }
 
     /**
-     * returns the maximum number of character that can be contained in this textbox
-     */
-    public int getMaxStringLength() {
-        return this.maxStringLength;
-    }
-
-    /**
-     * returns the current position of the cursor
-     */
-    public int getCursorPosition() {
-        return this.cursorPosition;
-    }
-
-    /**
      * get enable drawing background and outline
      */
     public boolean getEnableBackgroundDrawing() {
         return this.enableBackgroundDrawing;
-    }
-
-    /**
-     * enable drawing background and outline
-     */
-    public void setEnableBackgroundDrawing(boolean p_146185_1_) {
-        this.enableBackgroundDrawing = p_146185_1_;
     }
 
     /**
@@ -586,13 +588,6 @@ public class GuiTextField extends Gui {
 
     public void setEnabled(boolean p_146184_1_) {
         this.isEnabled = p_146184_1_;
-    }
-
-    /**
-     * the side of the selection that is not the cursor, may be the same as the cursor
-     */
-    public int getSelectionEnd() {
-        return this.selectionEnd;
     }
 
     /**
@@ -642,23 +637,10 @@ public class GuiTextField extends Gui {
     }
 
     /**
-     * if true the textbox can lose focus by clicking elsewhere on the screen
-     */
-    public void setCanLoseFocus(boolean p_146205_1_) {
-        this.canLoseFocus = p_146205_1_;
-    }
-
-    /**
      * returns true if this textbox is visible
      */
     public boolean getVisible() {
         return this.visible;
     }
 
-    /**
-     * Sets whether or not this textbox is visible
-     */
-    public void setVisible(boolean p_146189_1_) {
-        this.visible = p_146189_1_;
-    }
 }

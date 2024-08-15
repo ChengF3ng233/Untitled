@@ -1,12 +1,14 @@
 package net.minecraft.block.state;
 
 import com.google.common.base.Predicate;
+import lombok.Getter;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockPos;
 import net.minecraft.world.World;
 
 public class BlockWorldState {
     private final World world;
+    @Getter
     private final BlockPos pos;
     private final boolean field_181628_c;
     private IBlockState state;
@@ -44,7 +46,4 @@ public class BlockWorldState {
         return this.tileEntity;
     }
 
-    public BlockPos getPos() {
-        return this.pos;
-    }
 }

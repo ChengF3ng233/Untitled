@@ -1,6 +1,7 @@
 package net.minecraft.entity.item;
 
 import com.google.common.collect.Maps;
+import lombok.Getter;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockRailBase;
 import net.minecraft.block.BlockRailPowered;
@@ -931,6 +932,7 @@ public abstract class EntityMinecart extends Entity implements IWorldNameable {
         }
     }
 
+    @Getter
     public enum EnumMinecartType {
         RIDEABLE(0, "MinecartRideable"),
         CHEST(1, "MinecartChest"),
@@ -961,12 +963,5 @@ public abstract class EntityMinecart extends Entity implements IWorldNameable {
             return entityminecart$enumminecarttype == null ? RIDEABLE : entityminecart$enumminecarttype;
         }
 
-        public int getNetworkID() {
-            return this.networkID;
-        }
-
-        public String getName() {
-            return this.name;
-        }
     }
 }

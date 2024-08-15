@@ -4,6 +4,8 @@ import cn.feng.untitled.Client;
 import cn.feng.untitled.event.impl.MotionEvent;
 import cn.feng.untitled.event.impl.UpdateEvent;
 import cn.feng.untitled.event.type.EventType;
+import lombok.Getter;
+import lombok.Setter;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.audio.MovingSoundMinecartRiding;
 import net.minecraft.client.audio.PositionedSoundRecord;
@@ -95,8 +97,11 @@ public class EntityPlayerSP extends AbstractClientPlayer {
      */
     private int positionUpdateTicks;
     private boolean hasValidHealth;
+    @Getter
+    @Setter
     private String clientBrand;
     private int horseJumpPowerCounter;
+    @Getter
     private float horseJumpPower;
 
     public EntityPlayerSP(Minecraft mcIn, World worldIn, NetHandlerPlayClient netHandler, StatFileWriter statFile) {
@@ -348,14 +353,6 @@ public class EntityPlayerSP extends AbstractClientPlayer {
         this.sendQueue.addToSendQueue(new C0BPacketEntityAction(this, C0BPacketEntityAction.Action.OPEN_INVENTORY));
     }
 
-    public String getClientBrand() {
-        return this.clientBrand;
-    }
-
-    public void setClientBrand(String brand) {
-        this.clientBrand = brand;
-    }
-
     public StatFileWriter getStatFileWriter() {
         return this.statWriter;
     }
@@ -478,10 +475,6 @@ public class EntityPlayerSP extends AbstractClientPlayer {
 
     public boolean isRidingHorse() {
         return this.ridingEntity != null && this.ridingEntity instanceof EntityHorse && ((EntityHorse) this.ridingEntity).isHorseSaddled();
-    }
-
-    public float getHorseJumpPower() {
-        return this.horseJumpPower;
     }
 
     public void openEditSign(TileEntitySign signTile) {

@@ -353,7 +353,7 @@ public class IntegratedServer extends MinecraftServer {
             }
 
             this.getNetworkSystem().addLanEndpoint(null, i);
-            logger.info("Started on " + i);
+            logger.info("Started on {}", i);
             this.isPublic = true;
             this.lanServerPing = new ThreadLanServerPing(this.getMOTD(), i + "");
             this.lanServerPing.start();

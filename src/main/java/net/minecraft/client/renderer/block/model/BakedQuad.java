@@ -1,5 +1,6 @@
 package net.minecraft.client.renderer.block.model;
 
+import lombok.Getter;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.src.Config;
@@ -7,6 +8,7 @@ import net.minecraft.util.EnumFacing;
 import net.optifine.model.QuadBounds;
 
 public class BakedQuad {
+    @Getter
     protected final int tintIndex;
     /**
      * Joined 4 vertex records, each has 7 fields (x, y, z, shadeColor, u, v, <unused>), see
@@ -114,10 +116,6 @@ public class BakedQuad {
 
     public boolean hasTintIndex() {
         return this.tintIndex != -1;
-    }
-
-    public int getTintIndex() {
-        return this.tintIndex;
     }
 
     public EnumFacing getFace() {

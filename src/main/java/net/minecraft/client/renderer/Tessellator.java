@@ -1,21 +1,20 @@
 package net.minecraft.client.renderer;
 
+import lombok.Getter;
 import net.optifine.SmartAnimations;
 
 public class Tessellator {
     /**
      * The static instance of the Tessellator.
      */
+    @Getter
     private static final Tessellator instance = new Tessellator(2097152);
+    @Getter
     private final WorldRenderer worldRenderer;
     private final WorldVertexBufferUploader vboUploader = new WorldVertexBufferUploader();
 
     public Tessellator(int bufferSize) {
         this.worldRenderer = new WorldRenderer(bufferSize);
-    }
-
-    public static Tessellator getInstance() {
-        return instance;
     }
 
     /**
@@ -30,7 +29,4 @@ public class Tessellator {
         this.vboUploader.draw(this.worldRenderer);
     }
 
-    public WorldRenderer getWorldRenderer() {
-        return this.worldRenderer;
-    }
 }

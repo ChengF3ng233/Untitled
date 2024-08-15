@@ -1,6 +1,7 @@
 package net.minecraft.world.border;
 
 import com.google.common.collect.Lists;
+import lombok.Getter;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.BlockPos;
@@ -10,16 +11,22 @@ import java.util.List;
 
 public class WorldBorder {
     private final List<IBorderListener> listeners = Lists.newArrayList();
+    @Getter
     private double centerX = 0.0D;
+    @Getter
     private double centerZ = 0.0D;
     private double startDiameter = 6.0E7D;
     private double endDiameter;
     private long endTime;
     private long startTime;
     private int worldSize;
+    @Getter
     private double damageAmount;
+    @Getter
     private double damageBuffer;
+    @Getter
     private int warningTime;
+    @Getter
     private int warningDistance;
 
     public WorldBorder() {
@@ -101,14 +108,6 @@ public class WorldBorder {
         return d0;
     }
 
-    public double getCenterX() {
-        return this.centerX;
-    }
-
-    public double getCenterZ() {
-        return this.centerZ;
-    }
-
     public void setCenter(double x, double z) {
         this.centerX = x;
         this.centerZ = z;
@@ -178,20 +177,12 @@ public class WorldBorder {
         this.worldSize = size;
     }
 
-    public double getDamageBuffer() {
-        return this.damageBuffer;
-    }
-
     public void setDamageBuffer(double bufferSize) {
         this.damageBuffer = bufferSize;
 
         for (IBorderListener iborderlistener : this.getListeners()) {
             iborderlistener.onDamageBufferChanged(this, bufferSize);
         }
-    }
-
-    public double getDamageAmount() {
-        return this.damageAmount;
     }
 
     public void setDamageAmount(double newAmount) {
@@ -206,20 +197,12 @@ public class WorldBorder {
         return this.endTime == this.startTime ? 0.0D : Math.abs(this.startDiameter - this.endDiameter) / (double) (this.endTime - this.startTime);
     }
 
-    public int getWarningTime() {
-        return this.warningTime;
-    }
-
     public void setWarningTime(int warningTime) {
         this.warningTime = warningTime;
 
         for (IBorderListener iborderlistener : this.getListeners()) {
             iborderlistener.onWarningTimeChanged(this, warningTime);
         }
-    }
-
-    public int getWarningDistance() {
-        return this.warningDistance;
     }
 
     public void setWarningDistance(int warningDistance) {

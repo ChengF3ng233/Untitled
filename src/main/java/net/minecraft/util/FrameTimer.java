@@ -1,14 +1,24 @@
 package net.minecraft.util;
 
+import lombok.Getter;
+
 public class FrameTimer {
     /**
      * An array with the last 240 frames
+     * -- GETTER --
+     *  Return the array of frames
+
      */
+    @Getter
     private final long[] frames = new long[240];
 
     /**
      * The last index used when 240 frames have been set
+     * -- GETTER --
+     *  Return the last index used when 240 frames have been set
+
      */
+    @Getter
     private int lastIndex;
 
     /**
@@ -18,7 +28,11 @@ public class FrameTimer {
 
     /**
      * The next index to use in the array
+     * -- GETTER --
+     *  Return the index of the next frame in the array
+
      */
+    @Getter
     private int index;
 
     /**
@@ -54,20 +68,6 @@ public class FrameTimer {
     }
 
     /**
-     * Return the last index used when 240 frames have been set
-     */
-    public int getLastIndex() {
-        return this.lastIndex;
-    }
-
-    /**
-     * Return the index of the next frame in the array
-     */
-    public int getIndex() {
-        return this.index;
-    }
-
-    /**
      * Change 240 to 0
      *
      * @param rawIndex The index to parse
@@ -76,10 +76,4 @@ public class FrameTimer {
         return rawIndex % 240;
     }
 
-    /**
-     * Return the array of frames
-     */
-    public long[] getFrames() {
-        return this.frames;
-    }
 }

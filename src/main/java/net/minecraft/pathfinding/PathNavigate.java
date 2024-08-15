@@ -1,5 +1,6 @@
 package net.minecraft.pathfinding;
 
+import lombok.Setter;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.SharedMonsterAttributes;
@@ -25,6 +26,11 @@ public abstract class PathNavigate {
      * The PathEntity being followed.
      */
     protected PathEntity currentPath;
+    /**
+     * -- SETTER --
+     *  Sets the speed
+     */
+    @Setter
     protected double speed;
     /**
      * Time, in number of ticks, following the current path
@@ -38,6 +44,11 @@ public abstract class PathNavigate {
      * Coordinates of the entity's position last time a check was done (part of monitoring getting 'stuck')
      */
     private Vec3 lastPosCheck = new Vec3(0.0D, 0.0D, 0.0D);
+    /**
+     * -- SETTER --
+     *  Sets vertical space requirement for path
+     */
+    @Setter
     private float heightRequirement = 1.0F;
 
     public PathNavigate(EntityLiving entitylivingIn, World worldIn) {
@@ -48,13 +59,6 @@ public abstract class PathNavigate {
     }
 
     protected abstract PathFinder getPathFinder();
-
-    /**
-     * Sets the speed
-     */
-    public void setSpeed(double speedIn) {
-        this.speed = speedIn;
-    }
 
     /**
      * Gets the maximum distance that the path finding will search in.
@@ -94,13 +98,6 @@ public abstract class PathNavigate {
     public boolean tryMoveToXYZ(double x, double y, double z, double speedIn) {
         PathEntity pathentity = this.getPathToXYZ(MathHelper.floor_double(x), (int) y, MathHelper.floor_double(z));
         return this.setPath(pathentity, speedIn);
-    }
-
-    /**
-     * Sets vertical space requirement for path
-     */
-    public void setHeightRequirement(float jumpHeight) {
-        this.heightRequirement = jumpHeight;
     }
 
     /**

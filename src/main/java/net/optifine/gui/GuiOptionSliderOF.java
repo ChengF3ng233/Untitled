@@ -1,8 +1,10 @@
 package net.optifine.gui;
 
+import lombok.Getter;
 import net.minecraft.client.gui.GuiOptionSlider;
 import net.minecraft.client.settings.GameSettings;
 
+@Getter
 public class GuiOptionSliderOF extends GuiOptionSlider implements IOptionControl {
     private GameSettings.Options option = null;
 
@@ -11,7 +13,4 @@ public class GuiOptionSliderOF extends GuiOptionSlider implements IOptionControl
         this.option = option;
     }
 
-    public GameSettings.Options getOption() {
-        return this.option;
-    }
 }

@@ -1,5 +1,6 @@
 package net.optifine.shaders.config;
 
+import lombok.Getter;
 import net.minecraft.src.Config;
 import net.optifine.util.StrUtils;
 import org.lwjgl.util.vector.Vector4f;
@@ -13,8 +14,11 @@ public class ShaderLine {
     public static final int TYPE_PROPERTY = 6;
     public static final int TYPE_EXTENSION = 7;
     public static final int TYPE_CONST_VEC4 = 8;
+    @Getter
     private final int type;
+    @Getter
     private final String name;
+    @Getter
     private final String value;
     private final String line;
 
@@ -23,18 +27,6 @@ public class ShaderLine {
         this.name = name;
         this.value = value;
         this.line = line;
-    }
-
-    public int getType() {
-        return this.type;
-    }
-
-    public String getName() {
-        return this.name;
-    }
-
-    public String getValue() {
-        return this.value;
     }
 
     public boolean isUniform() {

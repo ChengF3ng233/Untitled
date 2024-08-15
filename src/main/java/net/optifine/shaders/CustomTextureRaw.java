@@ -1,5 +1,6 @@
 package net.optifine.shaders;
 
+import lombok.Getter;
 import net.optifine.texture.InternalFormat;
 import net.optifine.texture.PixelFormat;
 import net.optifine.texture.PixelType;
@@ -11,7 +12,9 @@ import java.nio.ByteBuffer;
 
 public class CustomTextureRaw implements ICustomTexture {
     private final TextureType type;
+    @Getter
     private final int textureUnit;
+    @Getter
     private int textureId;
 
     public CustomTextureRaw(TextureType type, InternalFormat internalFormat, int width, int height, int depth, PixelFormat pixelFormat, PixelType pixelType, ByteBuffer data, int textureUnit, boolean blur, boolean clamp) {
@@ -60,14 +63,6 @@ public class CustomTextureRaw implements ICustomTexture {
 
     public int getTarget() {
         return this.type.getId();
-    }
-
-    public int getTextureId() {
-        return this.textureId;
-    }
-
-    public int getTextureUnit() {
-        return this.textureUnit;
     }
 
     public void deleteTexture() {

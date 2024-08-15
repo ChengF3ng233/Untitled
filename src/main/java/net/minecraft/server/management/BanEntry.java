@@ -1,6 +1,7 @@
 package net.minecraft.server.management;
 
 import com.google.gson.JsonObject;
+import lombok.Getter;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -10,6 +11,7 @@ public abstract class BanEntry<T> extends UserListEntry<T> {
     public static final SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss Z");
     protected final Date banStartDate;
     protected final String bannedBy;
+    @Getter
     protected final Date banEndDate;
     protected final String reason;
 
@@ -43,10 +45,6 @@ public abstract class BanEntry<T> extends UserListEntry<T> {
 
         this.banEndDate = date1;
         this.reason = json.has("reason") ? json.get("reason").getAsString() : "Banned by an operator.";
-    }
-
-    public Date getBanEndDate() {
-        return this.banEndDate;
     }
 
     public String getBanReason() {

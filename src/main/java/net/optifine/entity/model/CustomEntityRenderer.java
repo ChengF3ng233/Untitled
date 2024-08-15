@@ -1,7 +1,9 @@
 package net.optifine.entity.model;
 
+import lombok.Getter;
 import net.minecraft.util.ResourceLocation;
 
+@Getter
 public class CustomEntityRenderer {
     private String name = null;
     private String basePath = null;
@@ -17,23 +19,4 @@ public class CustomEntityRenderer {
         this.shadowSize = shadowSize;
     }
 
-    public String getName() {
-        return this.name;
-    }
-
-    public String getBasePath() {
-        return this.basePath;
-    }
-
-    public ResourceLocation getTextureLocation() {
-        return this.textureLocation;
-    }
-
-    public CustomModelRenderer[] getCustomModelRenderers() {
-        return this.customModelRenderers;
-    }
-
-    public float getShadowSize() {
-        return this.shadowSize;
-    }
 }

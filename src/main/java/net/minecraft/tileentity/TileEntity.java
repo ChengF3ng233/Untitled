@@ -3,6 +3,8 @@ package net.minecraft.tileentity;
 import com.google.common.collect.Maps;
 import dev.tr7zw.entityculling.EntityCulling;
 import dev.tr7zw.entityculling.access.Cullable;
+import lombok.Getter;
+import lombok.Setter;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockJukebox;
 import net.minecraft.block.state.IBlockState;
@@ -88,8 +90,14 @@ public abstract class TileEntity implements Cullable {
 
     /**
      * the instance of the world the tile entity is in.
+     * -- SETTER --
+     *  Sets the worldObj for this tileEntity.
+
      */
+    @Setter
     protected World worldObj;
+    @Getter
+    @Setter
     protected BlockPos pos = BlockPos.ORIGIN;
     protected boolean tileEntityInvalid;
     /**
@@ -129,7 +137,7 @@ public abstract class TileEntity implements Cullable {
         if (tileentity != null) {
             tileentity.readFromNBT(nbt);
         } else {
-            logger.warn("Skipping BlockEntity with id " + nbt.getString("id"));
+            logger.warn("Skipping BlockEntity with id {}", nbt.getString("id"));
         }
 
         return tileentity;
@@ -140,13 +148,6 @@ public abstract class TileEntity implements Cullable {
      */
     public World getWorld() {
         return this.worldObj;
-    }
-
-    /**
-     * Sets the worldObj for this tileEntity.
-     */
-    public void setWorldObj(World worldIn) {
-        this.worldObj = worldIn;
     }
 
     /**
@@ -210,14 +211,6 @@ public abstract class TileEntity implements Cullable {
 
     public double getMaxRenderDistanceSquared() {
         return 4096.0D;
-    }
-
-    public BlockPos getPos() {
-        return this.pos;
-    }
-
-    public void setPos(BlockPos posIn) {
-        this.pos = posIn;
     }
 
     /**

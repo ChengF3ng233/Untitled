@@ -1,5 +1,6 @@
 package net.minecraft.client.renderer.vertex;
 
+import lombok.Getter;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -74,6 +75,7 @@ public class VertexFormatElement {
         return i;
     }
 
+    @Getter
     public enum EnumType {
         FLOAT(4, "Float", 5126),
         UBYTE(1, "Unsigned Byte", 5121),
@@ -93,19 +95,9 @@ public class VertexFormatElement {
             this.glConstant = glConstantIn;
         }
 
-        public int getSize() {
-            return this.size;
-        }
-
-        public String getDisplayName() {
-            return this.displayName;
-        }
-
-        public int getGlConstant() {
-            return this.glConstant;
-        }
     }
 
+    @Getter
     public enum EnumUsage {
         POSITION("Position"),
         NORMAL("Normal"),
@@ -121,8 +113,5 @@ public class VertexFormatElement {
             this.displayName = displayNameIn;
         }
 
-        public String getDisplayName() {
-            return this.displayName;
-        }
     }
 }

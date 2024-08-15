@@ -1,12 +1,17 @@
 package net.minecraft.world;
 
+import lombok.Getter;
 import net.minecraft.entity.player.PlayerCapabilities;
 import net.minecraft.world.storage.WorldInfo;
 
 public final class WorldSettings {
     /**
      * The seed for the map.
+     * -- GETTER --
+     *  Returns the seed for the world.
+
      */
+    @Getter
     private final long seed;
 
     /**
@@ -16,13 +21,18 @@ public final class WorldSettings {
 
     /**
      * Switch for the map features. 'true' for enabled, 'false' for disabled.
+     * -- GETTER --
+     *  Get whether the map features (e.g. strongholds) generation is enabled or disabled.
+
      */
+    @Getter
     private final boolean mapFeaturesEnabled;
 
     /**
      * True if hardcore mode is enabled
      */
     private final boolean hardcoreEnabled;
+    @Getter
     private final WorldType terrainType;
 
     /**
@@ -32,8 +42,13 @@ public final class WorldSettings {
 
     /**
      * True if the Bonus Chest is enabled.
+     * -- GETTER --
+     *  Returns true if the Bonus Chest is enabled.
+
      */
+    @Getter
     private boolean bonusChestEnabled;
+    @Getter
     private String worldName;
 
     public WorldSettings(long seedIn, WorldSettings.GameType gameType, boolean enableMapFeatures, boolean hardcoreMode, WorldType worldTypeIn) {
@@ -73,20 +88,6 @@ public final class WorldSettings {
     }
 
     /**
-     * Returns true if the Bonus Chest is enabled.
-     */
-    public boolean isBonusChestEnabled() {
-        return this.bonusChestEnabled;
-    }
-
-    /**
-     * Returns the seed for the world.
-     */
-    public long getSeed() {
-        return this.seed;
-    }
-
-    /**
      * Gets the game type.
      */
     public WorldSettings.GameType getGameType() {
@@ -101,25 +102,10 @@ public final class WorldSettings {
     }
 
     /**
-     * Get whether the map features (e.g. strongholds) generation is enabled or disabled.
-     */
-    public boolean isMapFeaturesEnabled() {
-        return this.mapFeaturesEnabled;
-    }
-
-    public WorldType getTerrainType() {
-        return this.terrainType;
-    }
-
-    /**
      * Returns true if Commands (cheats) are allowed.
      */
     public boolean areCommandsAllowed() {
         return this.commandsAllowed;
-    }
-
-    public String getWorldName() {
-        return this.worldName;
     }
 
     public WorldSettings setWorldName(String name) {
@@ -135,6 +121,7 @@ public final class WorldSettings {
         SPECTATOR(3, "spectator");
 
         int id;
+        @Getter
         String name;
 
         GameType(int typeId, String nameIn) {
@@ -164,10 +151,6 @@ public final class WorldSettings {
 
         public int getID() {
             return this.id;
-        }
-
-        public String getName() {
-            return this.name;
         }
 
         public void configurePlayerCapabilities(PlayerCapabilities capabilities) {

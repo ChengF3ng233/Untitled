@@ -1,9 +1,22 @@
 package net.minecraft.entity.ai;
 
+import lombok.Getter;
+import lombok.Setter;
+
+@Getter
+@Setter
 public abstract class EntityAIBase {
     /**
      * A bitmask telling which other tasks may not run concurrently. The test is a simple bitwise AND - if it yields
      * zero, the two tasks may run concurrently, if not - they must run exclusively from each other.
+     * -- SETTER --
+     *  Sets a bitmask telling which other tasks may not run concurrently. The test is a simple bitwise AND - if it
+     *  yields zero, the two tasks may run concurrently, if not - they must run exclusively from each other.
+     * -- GETTER --
+     *  Get a bitmask telling which other tasks may not run concurrently. The test is a simple bitwise AND - if it yields
+     *  zero, the two tasks may run concurrently, if not - they must run exclusively from each other.
+
+
      */
     private int mutexBits;
 
@@ -45,19 +58,4 @@ public abstract class EntityAIBase {
     public void updateTask() {
     }
 
-    /**
-     * Get a bitmask telling which other tasks may not run concurrently. The test is a simple bitwise AND - if it yields
-     * zero, the two tasks may run concurrently, if not - they must run exclusively from each other.
-     */
-    public int getMutexBits() {
-        return this.mutexBits;
-    }
-
-    /**
-     * Sets a bitmask telling which other tasks may not run concurrently. The test is a simple bitwise AND - if it
-     * yields zero, the two tasks may run concurrently, if not - they must run exclusively from each other.
-     */
-    public void setMutexBits(int mutexBitsIn) {
-        this.mutexBits = mutexBitsIn;
-    }
 }

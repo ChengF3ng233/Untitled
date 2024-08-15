@@ -1,6 +1,7 @@
 package net.minecraft.entity.ai.attributes;
 
 import com.google.common.collect.Sets;
+import lombok.Getter;
 import net.minecraft.server.management.LowerStringMap;
 
 import java.util.Collection;
@@ -9,6 +10,7 @@ import java.util.Set;
 
 public class ServersideAttributeMap extends BaseAttributeMap {
     protected final Map<String, IAttributeInstance> descriptionToAttributeInstanceMap = new LowerStringMap();
+    @Getter
     private final Set<IAttributeInstance> attributeInstanceSet = Sets.newHashSet();
 
     public ModifiableAttributeInstance getAttributeInstance(IAttribute attribute) {
@@ -54,10 +56,6 @@ public class ServersideAttributeMap extends BaseAttributeMap {
                 modifiableattributeinstance.flagForUpdate();
             }
         }
-    }
-
-    public Set<IAttributeInstance> getAttributeInstanceSet() {
-        return this.attributeInstanceSet;
     }
 
     public Collection<IAttributeInstance> getWatchedAttributes() {

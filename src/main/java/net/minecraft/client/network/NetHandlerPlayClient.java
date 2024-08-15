@@ -1498,7 +1498,7 @@ public class NetHandlerPlayClient implements INetHandlerPlayClient {
             try {
                 this.clientWorldController.spawnParticle(packetIn.getParticleType(), packetIn.isLongDistance(), packetIn.getXCoordinate(), packetIn.getYCoordinate(), packetIn.getZCoordinate(), d0, d2, d4, packetIn.getParticleArgs());
             } catch (Throwable var17) {
-                logger.warn("Could not spawn particle effect " + packetIn.getParticleType());
+                logger.warn("Could not spawn particle effect {}", packetIn.getParticleType());
             }
         } else {
             for (int i = 0; i < packetIn.getParticleCount(); ++i) {
@@ -1512,7 +1512,7 @@ public class NetHandlerPlayClient implements INetHandlerPlayClient {
                 try {
                     this.clientWorldController.spawnParticle(packetIn.getParticleType(), packetIn.isLongDistance(), packetIn.getXCoordinate() + d1, packetIn.getYCoordinate() + d3, packetIn.getZCoordinate() + d5, d6, d7, d8, packetIn.getParticleArgs());
                 } catch (Throwable var16) {
-                    logger.warn("Could not spawn particle effect " + packetIn.getParticleType());
+                    logger.warn("Could not spawn particle effect {}", packetIn.getParticleType());
                     return;
                 }
             }

@@ -1,8 +1,10 @@
 package net.optifine.shaders;
 
+import lombok.Getter;
 import net.minecraft.client.renderer.texture.ITextureObject;
 import net.minecraft.client.renderer.texture.TextureUtil;
 
+@Getter
 public class CustomTexture implements ICustomTexture {
     private int textureUnit = -1;
     private String path = null;
@@ -12,18 +14,6 @@ public class CustomTexture implements ICustomTexture {
         this.textureUnit = textureUnit;
         this.path = path;
         this.texture = texture;
-    }
-
-    public int getTextureUnit() {
-        return this.textureUnit;
-    }
-
-    public String getPath() {
-        return this.path;
-    }
-
-    public ITextureObject getTexture() {
-        return this.texture;
     }
 
     public int getTextureId() {

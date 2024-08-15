@@ -1,5 +1,6 @@
 package net.minecraft.world;
 
+import lombok.Getter;
 import net.minecraft.init.Blocks;
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.MathHelper;
@@ -19,6 +20,7 @@ public abstract class WorldProvider {
     /**
      * Light to brightness conversion table
      */
+    @Getter
     protected final float[] lightBrightnessTable = new float[16];
     /**
      * Array for sunrise/sunset colors (RGBA)
@@ -44,7 +46,11 @@ public abstract class WorldProvider {
     protected boolean hasNoSky;
     /**
      * The id for the dimension (ex. -1: Nether, 0: Overworld, 1: The End)
+     * -- GETTER --
+     *  Gets the dimension of the provider
+
      */
+    @Getter
     protected int dimensionId;
     private WorldType terrainType;
     private String generatorSettings;
@@ -233,17 +239,6 @@ public abstract class WorldProvider {
 
     public boolean getHasNoSky() {
         return this.hasNoSky;
-    }
-
-    public float[] getLightBrightnessTable() {
-        return this.lightBrightnessTable;
-    }
-
-    /**
-     * Gets the dimension of the provider
-     */
-    public int getDimensionId() {
-        return this.dimensionId;
     }
 
     public WorldBorder getWorldBorder() {

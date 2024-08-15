@@ -1,6 +1,7 @@
 package net.minecraft.item;
 
 import com.google.common.collect.Maps;
+import lombok.Getter;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.potion.Potion;
@@ -83,10 +84,15 @@ public class ItemFishFood extends ItemFood {
         }
 
         private final int meta;
+        @Getter
         private final String unlocalizedName;
+        @Getter
         private final int uncookedHealAmount;
+        @Getter
         private final float uncookedSaturationModifier;
+        @Getter
         private final int cookedHealAmount;
+        @Getter
         private final float cookedSaturationModifier;
         private boolean cookable = false;
 
@@ -121,26 +127,6 @@ public class ItemFishFood extends ItemFood {
 
         public int getMetadata() {
             return this.meta;
-        }
-
-        public String getUnlocalizedName() {
-            return this.unlocalizedName;
-        }
-
-        public int getUncookedHealAmount() {
-            return this.uncookedHealAmount;
-        }
-
-        public float getUncookedSaturationModifier() {
-            return this.uncookedSaturationModifier;
-        }
-
-        public int getCookedHealAmount() {
-            return this.cookedHealAmount;
-        }
-
-        public float getCookedSaturationModifier() {
-            return this.cookedSaturationModifier;
         }
 
         public boolean canCook() {

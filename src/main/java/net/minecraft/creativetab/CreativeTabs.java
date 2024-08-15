@@ -1,5 +1,6 @@
 package net.minecraft.creativetab;
 
+import lombok.Getter;
 import net.minecraft.block.BlockDoublePlant;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentData;
@@ -77,7 +78,9 @@ public abstract class CreativeTabs {
             return Item.getItemFromBlock(Blocks.chest);
         }
     }).setBackgroundImageName("inventory.png").setNoScrollbar().setNoTitle();
+    @Getter
     private final int tabIndex;
+    @Getter
     private final String tabLabel;
 
     /**
@@ -97,14 +100,6 @@ public abstract class CreativeTabs {
         this.tabIndex = index;
         this.tabLabel = label;
         creativeTabArray[index] = this;
-    }
-
-    public int getTabIndex() {
-        return this.tabIndex;
-    }
-
-    public String getTabLabel() {
-        return this.tabLabel;
     }
 
     /**

@@ -1,8 +1,11 @@
 package net.minecraft.entity.ai.attributes;
 
+import lombok.Getter;
+
 public abstract class BaseAttribute implements IAttribute {
     private final IAttribute field_180373_a;
     private final String unlocalizedName;
+    @Getter
     private final double defaultValue;
     private boolean shouldWatch;
 
@@ -18,10 +21,6 @@ public abstract class BaseAttribute implements IAttribute {
 
     public String getAttributeUnlocalizedName() {
         return this.unlocalizedName;
-    }
-
-    public double getDefaultValue() {
-        return this.defaultValue;
     }
 
     public boolean getShouldWatch() {

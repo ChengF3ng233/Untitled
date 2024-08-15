@@ -1,5 +1,7 @@
 package net.minecraft.network.play.server;
 
+import lombok.Getter;
+import lombok.Setter;
 import net.minecraft.entity.Entity;
 import net.minecraft.network.Packet;
 import net.minecraft.network.PacketBuffer;
@@ -10,14 +12,29 @@ import java.io.IOException;
 
 public class S0EPacketSpawnObject implements Packet<INetHandlerPlayClient> {
     private int entityId;
+    @Getter
+    @Setter
     private int x;
+    @Getter
+    @Setter
     private int y;
+    @Getter
+    @Setter
     private int z;
+    @Getter
+    @Setter
     private int speedX;
+    @Getter
+    @Setter
     private int speedY;
+    @Getter
+    @Setter
     private int speedZ;
+    @Getter
     private int pitch;
+    @Getter
     private int yaw;
+    @Getter
     private int type;
     private int field_149020_k;
 
@@ -123,66 +140,6 @@ public class S0EPacketSpawnObject implements Packet<INetHandlerPlayClient> {
 
     public int getEntityID() {
         return this.entityId;
-    }
-
-    public int getX() {
-        return this.x;
-    }
-
-    public void setX(int newX) {
-        this.x = newX;
-    }
-
-    public int getY() {
-        return this.y;
-    }
-
-    public void setY(int newY) {
-        this.y = newY;
-    }
-
-    public int getZ() {
-        return this.z;
-    }
-
-    public void setZ(int newZ) {
-        this.z = newZ;
-    }
-
-    public int getSpeedX() {
-        return this.speedX;
-    }
-
-    public void setSpeedX(int newSpeedX) {
-        this.speedX = newSpeedX;
-    }
-
-    public int getSpeedY() {
-        return this.speedY;
-    }
-
-    public void setSpeedY(int newSpeedY) {
-        this.speedY = newSpeedY;
-    }
-
-    public int getSpeedZ() {
-        return this.speedZ;
-    }
-
-    public void setSpeedZ(int newSpeedZ) {
-        this.speedZ = newSpeedZ;
-    }
-
-    public int getPitch() {
-        return this.pitch;
-    }
-
-    public int getYaw() {
-        return this.yaw;
-    }
-
-    public int getType() {
-        return this.type;
     }
 
     public int func_149009_m() {

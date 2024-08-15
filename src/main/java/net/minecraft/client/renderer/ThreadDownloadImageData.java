@@ -1,5 +1,6 @@
 package net.minecraft.client.renderer;
 
+import lombok.Getter;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.texture.SimpleTexture;
 import net.minecraft.client.renderer.texture.TextureUtil;
@@ -31,6 +32,7 @@ public class ThreadDownloadImageData extends SimpleTexture {
     private static final AtomicInteger threadDownloadCounter = new AtomicInteger(0);
     private final File cacheFile;
     private final String imageUrl;
+    @Getter
     private final IImageBuffer imageBuffer;
     public Boolean imageFound = null;
     public boolean pipeline = false;
@@ -94,7 +96,7 @@ public class ThreadDownloadImageData extends SimpleTexture {
 
                     this.loadingFinished();
                 } catch (IOException ioexception) {
-                    logger.error("Couldn't load skin " + this.cacheFile, ioexception);
+                    logger.error("Couldn't load skin {}", this.cacheFile, ioexception);
                     this.loadTextureFromServer();
                 }
             } else {
@@ -141,7 +143,7 @@ public class ThreadDownloadImageData extends SimpleTexture {
 
                         ThreadDownloadImageData.this.setBufferedImage(bufferedimage);
                     } catch (Exception exception) {
-                        ThreadDownloadImageData.logger.error("Couldn't downloadImageInBytes http texture: " + exception.getClass().getName() + ": " + exception.getMessage());
+                        ThreadDownloadImageData.logger.error("Couldn't downloadImageInBytes http texture: {}: {}", exception.getClass().getName(), exception.getMessage());
                     } finally {
                         if (httpurlconnection != null) {
                             httpurlconnection.disconnect();
@@ -191,7 +193,7 @@ public class ThreadDownloadImageData extends SimpleTexture {
 
             this.setBufferedImage(bufferedimage);
         } catch (Exception exception) {
-            logger.error("Couldn't downloadImageInBytes http texture: " + exception.getClass().getName() + ": " + exception.getMessage());
+            logger.error("Couldn't downloadImageInBytes http texture: {}: {}", exception.getClass().getName(), exception.getMessage());
         } finally {
             this.loadingFinished();
         }
@@ -205,7 +207,4 @@ public class ThreadDownloadImageData extends SimpleTexture {
         }
     }
 
-    public IImageBuffer getImageBuffer() {
-        return this.imageBuffer;
-    }
 }

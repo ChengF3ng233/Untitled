@@ -1,6 +1,7 @@
 package net.minecraft.item.crafting;
 
 import com.google.common.collect.Maps;
+import lombok.Getter;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockStoneBrick;
 import net.minecraft.init.Blocks;
@@ -15,6 +16,7 @@ import java.util.Map.Entry;
 
 public class FurnaceRecipes {
     private static final FurnaceRecipes smeltingBase = new FurnaceRecipes();
+    @Getter
     private final Map<ItemStack, ItemStack> smeltingList = Maps.newHashMap();
     private final Map<ItemStack, Float> experienceList = Maps.newHashMap();
 
@@ -99,10 +101,6 @@ public class FurnaceRecipes {
      */
     private boolean compareItemStacks(ItemStack stack1, ItemStack stack2) {
         return stack2.getItem() == stack1.getItem() && (stack2.getMetadata() == 32767 || stack2.getMetadata() == stack1.getMetadata());
-    }
-
-    public Map<ItemStack, ItemStack> getSmeltingList() {
-        return this.smeltingList;
     }
 
     public float getSmeltingExperience(ItemStack stack) {

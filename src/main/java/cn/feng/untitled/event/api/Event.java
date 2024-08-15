@@ -2,28 +2,18 @@ package cn.feng.untitled.event.api;
 
 import cn.feng.untitled.event.type.EventType;
 import cn.feng.untitled.event.type.PacketType;
+import lombok.Getter;
+import lombok.Setter;
 
 public abstract class Event {
 
     private boolean cancelled;
+    @Getter
+    @Setter
     private EventType eventType = EventType.PRE;
+    @Getter
+    @Setter
     private PacketType packetType = PacketType.SEND;
-
-    public EventType getEventType() {
-        return eventType;
-    }
-
-    public void setEventType(EventType eventType) {
-        this.eventType = eventType;
-    }
-
-    public PacketType getPacketType() {
-        return packetType;
-    }
-
-    public void setPacketType(PacketType packetType) {
-        this.packetType = packetType;
-    }
 
     public boolean isCancellable() {
         return this instanceof CancellableEvent || getClass().isAnnotationPresent(Cancellable.class);

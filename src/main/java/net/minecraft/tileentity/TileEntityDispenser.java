@@ -1,5 +1,6 @@
 package net.minecraft.tileentity;
 
+import lombok.Setter;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Container;
@@ -13,6 +14,7 @@ import java.util.Random;
 
 public class TileEntityDispenser extends TileEntityLockable implements IInventory {
     private static final Random RNG = new Random();
+    @Setter
     protected String customName;
     private ItemStack[] stacks = new ItemStack[9];
 
@@ -114,10 +116,6 @@ public class TileEntityDispenser extends TileEntityLockable implements IInventor
      */
     public String getName() {
         return this.hasCustomName() ? this.customName : "container.dispenser";
-    }
-
-    public void setCustomName(String customName) {
-        this.customName = customName;
     }
 
     /**

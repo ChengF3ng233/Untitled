@@ -1,5 +1,6 @@
 package net.optifine;
 
+import lombok.Getter;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.*;
 import net.minecraft.client.gui.inventory.*;
@@ -20,6 +21,7 @@ import java.util.*;
 public class CustomGuis {
     public static boolean isChristmas = isChristmas();
     private static final Minecraft mc = Config.getMinecraft();
+    @Getter
     private static final PlayerControllerOF playerControllerOF = null;
     private static CustomGuiProperties[][] guiProperties = null;
 
@@ -224,10 +226,6 @@ public class CustomGuis {
 
             list.add(cgp);
         }
-    }
-
-    public static PlayerControllerOF getPlayerControllerOF() {
-        return playerControllerOF;
     }
 
     public static void setPlayerControllerOF(PlayerControllerOF playerControllerOF) {

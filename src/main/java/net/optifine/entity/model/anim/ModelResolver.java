@@ -1,5 +1,6 @@
 package net.optifine.entity.model.anim;
 
+import lombok.Setter;
 import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.model.ModelRenderer;
 import net.minecraft.src.Config;
@@ -12,7 +13,9 @@ public class ModelResolver implements IModelResolver {
     private final ModelAdapter modelAdapter;
     private final ModelBase model;
     private final CustomModelRenderer[] customModelRenderers;
+    @Setter
     private ModelRenderer thisModelRenderer;
+    @Setter
     private ModelRenderer partModelRenderer;
     private final IRenderResolver renderResolver;
 
@@ -107,11 +110,4 @@ public class ModelResolver implements IModelResolver {
         }
     }
 
-    public void setPartModelRenderer(ModelRenderer partModelRenderer) {
-        this.partModelRenderer = partModelRenderer;
-    }
-
-    public void setThisModelRenderer(ModelRenderer thisModelRenderer) {
-        this.thisModelRenderer = thisModelRenderer;
-    }
 }

@@ -1,6 +1,7 @@
 package net.optifine.shaders;
 
 import com.google.common.base.Charsets;
+import lombok.Getter;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.Minecraft;
@@ -109,7 +110,9 @@ public class Shaders {
     public static boolean isEntitiesGlowing = false;
     public static boolean isSleeping;
     public static boolean renderItemKeepDepthMask = false;
+    @Getter
     public static boolean itemToRenderMainTranslucent = false;
+    @Getter
     public static boolean itemToRenderOffTranslucent = false;
     public static float wetnessHalfLife = 600.0F;
     public static float drynessHalfLife = 200.0F;
@@ -436,10 +439,13 @@ public class Shaders {
     private static final ProgramStack programStack = new ProgramStack();
     private static boolean hasDeferredPrograms = false;
     private static int activeCompositeMipmapSetting = 0;
+    @Getter
     private static IShaderPack shaderPack = null;
+    @Getter
     private static ShaderOption[] shaderPackOptions = null;
     private static Set<String> shaderPackOptionSliders = null;
     private static Map<String, String> shaderPackResources = new HashMap();
+    @Getter
     private static World currentWorld = null;
     private static final List<Integer> shaderPackDimensions = new ArrayList();
     private static ICustomTexture[] customTexturesGbuffers = null;
@@ -771,10 +777,6 @@ public class Shaders {
                 return null;
             }
         }
-    }
-
-    public static IShaderPack getShaderPack() {
-        return shaderPack;
     }
 
     public static void setShaderPack(String par1name) {
@@ -1330,10 +1332,6 @@ public class Shaders {
 
     public static ShaderOption getShaderOption(String name) {
         return ShaderUtils.getShaderOption(name, shaderPackOptions);
-    }
-
-    public static ShaderOption[] getShaderPackOptions() {
-        return shaderPackOptions;
     }
 
     public static boolean isShaderPackOptionSlider(String name) {
@@ -4615,14 +4613,6 @@ public class Shaders {
         itemToRenderOffTranslucent = isTranslucentBlock(itemToRenderOff);
     }
 
-    public static boolean isItemToRenderMainTranslucent() {
-        return itemToRenderMainTranslucent;
-    }
-
-    public static boolean isItemToRenderOffTranslucent() {
-        return itemToRenderOffTranslucent;
-    }
-
     public static boolean isBothHandsRendered() {
         return isHandRenderedMain && isHandRenderedOff;
     }
@@ -4698,10 +4688,6 @@ public class Shaders {
         if (isRenderingWorld) {
             useProgram(ProgramBlock);
         }
-    }
-
-    public static World getCurrentWorld() {
-        return currentWorld;
     }
 
     public static BlockPos getCameraPosition() {

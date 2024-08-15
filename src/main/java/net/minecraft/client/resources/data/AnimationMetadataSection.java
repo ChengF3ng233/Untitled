@@ -1,15 +1,20 @@
 package net.minecraft.client.resources.data;
 
 import com.google.common.collect.Sets;
+import lombok.Getter;
 
 import java.util.List;
 import java.util.Set;
 
 public class AnimationMetadataSection implements IMetadataSection {
     private final List<AnimationFrame> animationFrames;
+    @Getter
     private final int frameWidth;
+    @Getter
     private final int frameHeight;
+    @Getter
     private final int frameTime;
+    @Getter
     private final boolean interpolate;
 
     public AnimationMetadataSection(List<AnimationFrame> p_i46088_1_, int p_i46088_2_, int p_i46088_3_, int p_i46088_4_, boolean p_i46088_5_) {
@@ -20,24 +25,8 @@ public class AnimationMetadataSection implements IMetadataSection {
         this.interpolate = p_i46088_5_;
     }
 
-    public int getFrameHeight() {
-        return this.frameHeight;
-    }
-
-    public int getFrameWidth() {
-        return this.frameWidth;
-    }
-
     public int getFrameCount() {
         return this.animationFrames.size();
-    }
-
-    public int getFrameTime() {
-        return this.frameTime;
-    }
-
-    public boolean isInterpolate() {
-        return this.interpolate;
     }
 
     private AnimationFrame getAnimationFrame(int p_130072_1_) {

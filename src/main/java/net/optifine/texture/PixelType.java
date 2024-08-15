@@ -1,5 +1,8 @@
 package net.optifine.texture;
 
+import lombok.Getter;
+
+@Getter
 public enum PixelType {
     BYTE(5120),
     SHORT(5122),
@@ -28,7 +31,4 @@ public enum PixelType {
         this.id = id;
     }
 
-    public int getId() {
-        return this.id;
-    }
 }

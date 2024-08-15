@@ -1,6 +1,7 @@
 package net.minecraft.profiler;
 
 import com.google.common.collect.Maps;
+import lombok.Getter;
 import net.minecraft.util.HttpUtil;
 
 import java.lang.management.ManagementFactory;
@@ -13,6 +14,7 @@ import java.util.Map.Entry;
 public class PlayerUsageSnooper {
     private final Map<String, Object> snooperStats = Maps.newHashMap();
     private final Map<String, Object> clientStats = Maps.newHashMap();
+    @Getter
     private final String uniqueID = UUID.randomUUID().toString();
 
     /**
@@ -148,10 +150,6 @@ public class PlayerUsageSnooper {
 
     public void stopSnooper() {
         this.threadTrigger.cancel();
-    }
-
-    public String getUniqueID() {
-        return this.uniqueID;
     }
 
     /**

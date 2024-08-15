@@ -1,5 +1,6 @@
 package net.minecraft.network.play.server;
 
+import lombok.Getter;
 import net.minecraft.block.Block;
 import net.minecraft.network.Packet;
 import net.minecraft.network.PacketBuffer;
@@ -9,6 +10,7 @@ import net.minecraft.util.BlockPos;
 import java.io.IOException;
 
 public class S24PacketBlockAction implements Packet<INetHandlerPlayClient> {
+    @Getter
     private BlockPos blockPosition;
     private int instrument;
     private int pitch;
@@ -49,10 +51,6 @@ public class S24PacketBlockAction implements Packet<INetHandlerPlayClient> {
      */
     public void processPacket(INetHandlerPlayClient handler) {
         handler.handleBlockAction(this);
-    }
-
-    public BlockPos getBlockPosition() {
-        return this.blockPosition;
     }
 
     /**

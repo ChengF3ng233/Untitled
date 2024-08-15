@@ -14,6 +14,7 @@ import com.mojang.authlib.properties.PropertyMap;
 import com.mojang.authlib.yggdrasil.YggdrasilAuthenticationService;
 import de.florianmichael.viamcp.fixes.AttackOrder;
 import dev.tr7zw.entityculling.EntityCulling;
+import lombok.Getter;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.audio.MusicTicker;
@@ -130,11 +131,16 @@ public class Minecraft implements IThreadListener, IPlayerUsage {
      * This is set to fpsCounter every debug screen update, and is shown on the debug screen. It's also sent as part of
      * the usage snooping.
      */
+    @Getter
     private static int debugFPS;
     public final File mcDataDir;
     /**
      * The FrameTimer's instance
+     * -- GETTER --
+     *  Return the FrameTimer's instance
+
      */
+    @Getter
     public final FrameTimer frameTimer = new FrameTimer();
     /**
      * The profiler instance
@@ -145,14 +151,17 @@ public class Minecraft implements IThreadListener, IPlayerUsage {
      * The player's GameProfile properties
      */
     private final PropertyMap profileProperties;
+    @Getter
     private final Session session;
     private final File fileAssets;
     private final String launchedVersion;
+    @Getter
     private final Proxy proxy;
     private final boolean jvm64bit;
     private final IMetadataSerializer metadataSerializer_ = new IMetadataSerializer();
     private final List<IResourcePack> defaultResourcePacks = Lists.newArrayList();
     private final DefaultResourcePack mcDefaultResourcePack;
+    @Getter
     private final MinecraftSessionService sessionService;
     private final Queue<FutureTask<?>> scheduledTasks = Queues.newArrayDeque();
     private final Thread mcThread = Thread.currentThread();
@@ -237,6 +246,7 @@ public class Minecraft implements IThreadListener, IPlayerUsage {
      */
     int fpsCounter;
     long prevFrameTime = -1L;
+    @Getter
     private ServerData currentServerData;
     /**
      * The RenderEngine instance used by Minecraft
@@ -248,9 +258,13 @@ public class Minecraft implements IThreadListener, IPlayerUsage {
      * Instance of CrashReport.
      */
     private CrashReport crashReporter;
+    @Getter
     private RenderManager renderManager;
+    @Getter
     private RenderItem renderItem;
+    @Getter
     private ItemRenderer itemRenderer;
+    @Getter
     private Entity renderViewEntity;
     private boolean isGamePaused;
     /**
@@ -261,6 +275,11 @@ public class Minecraft implements IThreadListener, IPlayerUsage {
      * Instance of IntegratedServer.
      */
     private IntegratedServer theIntegratedServer;
+    /**
+     * -- GETTER --
+     *  Returns the save loader that is currently being used
+     */
+    @Getter
     private ISaveFormat saveLoader;
     /**
      * When you place a block, it's set to 6, decremented once per tick, when it's 0, you can place another block.
@@ -282,10 +301,12 @@ public class Minecraft implements IThreadListener, IPlayerUsage {
     private ResourcePackRepository mcResourcePackRepository;
     private LanguageManager mcLanguageManager;
     private Framebuffer framebufferMc;
+    @Getter
     private TextureMap textureMapBlocks;
     private SoundHandler mcSoundHandler;
     private MusicTicker mcMusicTicker;
     private ResourceLocation mojangLogo;
+    @Getter
     private SkinManager skinManager;
     private ModelManager modelManager;
     /**
@@ -394,10 +415,6 @@ public class Minecraft implements IThreadListener, IPlayerUsage {
      */
     public static long getSystemTime() {
         return Sys.getTime() * 1000L / Sys.getTimerResolution();
-    }
-
-    public static int getDebugFPS() {
-        return debugFPS;
     }
 
     public static Map<String, String> getSessionInfo() {
@@ -838,13 +855,6 @@ public class Minecraft implements IThreadListener, IPlayerUsage {
         worldrenderer.pos(posX + width, posY, 0.0D).tex((float) (texU + width) * f, (float) texV * f1).color(red, green, blue, alpha).endVertex();
         worldrenderer.pos(posX, posY, 0.0D).tex((float) texU * f, (float) texV * f1).color(red, green, blue, alpha).endVertex();
         Tessellator.getInstance().draw();
-    }
-
-    /**
-     * Returns the save loader that is currently being used
-     */
-    public ISaveFormat getSaveLoader() {
-        return this.saveLoader;
     }
 
     /**
@@ -2411,10 +2421,6 @@ public class Minecraft implements IThreadListener, IPlayerUsage {
         this.currentServerData = serverDataIn;
     }
 
-    public ServerData getCurrentServerData() {
-        return this.currentServerData;
-    }
-
     public boolean isIntegratedServerRunning() {
         return this.integratedServerIsRunning;
     }
@@ -2447,10 +2453,6 @@ public class Minecraft implements IThreadListener, IPlayerUsage {
         return this.fullscreen;
     }
 
-    public Session getSession() {
-        return this.session;
-    }
-
     /**
      * Return the player's GameProfile properties
      */
@@ -2461,10 +2463,6 @@ public class Minecraft implements IThreadListener, IPlayerUsage {
         }
 
         return this.profileProperties;
-    }
-
-    public Proxy getProxy() {
-        return this.proxy;
     }
 
     public TextureManager getTextureManager() {
@@ -2481,10 +2479,6 @@ public class Minecraft implements IThreadListener, IPlayerUsage {
 
     public LanguageManager getLanguageManager() {
         return this.mcLanguageManager;
-    }
-
-    public TextureMap getTextureMapBlocks() {
-        return this.textureMapBlocks;
     }
 
     public boolean isJava64bit() {
@@ -2517,18 +2511,6 @@ public class Minecraft implements IThreadListener, IPlayerUsage {
                 }
             }
         }
-    }
-
-    public MinecraftSessionService getSessionService() {
-        return this.sessionService;
-    }
-
-    public SkinManager getSkinManager() {
-        return this.skinManager;
-    }
-
-    public Entity getRenderViewEntity() {
-        return this.renderViewEntity;
     }
 
     public void setRenderViewEntity(Entity viewingEntity) {
@@ -2568,22 +2550,4 @@ public class Minecraft implements IThreadListener, IPlayerUsage {
         return this.blockRenderDispatcher;
     }
 
-    public RenderManager getRenderManager() {
-        return this.renderManager;
-    }
-
-    public RenderItem getRenderItem() {
-        return this.renderItem;
-    }
-
-    public ItemRenderer getItemRenderer() {
-        return this.itemRenderer;
-    }
-
-    /**
-     * Return the FrameTimer's instance
-     */
-    public FrameTimer getFrameTimer() {
-        return this.frameTimer;
-    }
 }

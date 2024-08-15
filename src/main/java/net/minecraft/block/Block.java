@@ -1,5 +1,6 @@
 package net.minecraft.block;
 
+import lombok.Getter;
 import net.minecraft.block.material.MapColor;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.IProperty;
@@ -88,6 +89,7 @@ public class Block {
      * The Block's MapColor
      */
     protected final MapColor blockMapColor;
+    @Getter
     protected final BlockState blockState;
     /**
      * Sound of stepping on the block
@@ -98,15 +100,23 @@ public class Block {
      * Determines how much velocity is maintained while moving on top of this block
      */
     public float slipperiness;
+    @Getter
     protected boolean fullBlock;
     /**
      * How much light is subtracted for going through this block
      */
+    @Getter
     protected int lightOpacity;
+    /**
+     * -- GETTER --
+     *  Used in the renderer to apply ambient occlusion
+     */
+    @Getter
     protected boolean translucent;
     /**
      * Amount of light emitted
      */
+    @Getter
     protected int lightValue;
     /**
      * Flag if block should use the brightest neighbor light value as its own
@@ -470,31 +480,12 @@ public class Block {
         registerBlock(id, new ResourceLocation(textualID), block_);
     }
 
-    public boolean isFullBlock() {
-        return this.fullBlock;
-    }
-
-    public int getLightOpacity() {
-        return this.lightOpacity;
-    }
-
     /**
      * Sets how much light is blocked going through this block. Returns the object for convenience in constructing.
      */
     protected Block setLightOpacity(int opacity) {
         this.lightOpacity = opacity;
         return this;
-    }
-
-    /**
-     * Used in the renderer to apply ambient occlusion
-     */
-    public boolean isTranslucent() {
-        return this.translucent;
-    }
-
-    public int getLightValue() {
-        return this.lightValue;
     }
 
     /**
@@ -1287,10 +1278,6 @@ public class Block {
         return new BlockState(this);
     }
 
-    public BlockState getBlockState() {
-        return this.blockState;
-    }
-
     public final IBlockState getDefaultState() {
         return this.defaultBlockState;
     }
@@ -1318,21 +1305,15 @@ public class Block {
 
     public static class SoundType {
         public final String soundName;
+        @Getter
         public final float volume;
+        @Getter
         public final float frequency;
 
         public SoundType(String name, float volume, float frequency) {
             this.soundName = name;
             this.volume = volume;
             this.frequency = frequency;
-        }
-
-        public float getVolume() {
-            return this.volume;
-        }
-
-        public float getFrequency() {
-            return this.frequency;
         }
 
         public String getBreakSound() {

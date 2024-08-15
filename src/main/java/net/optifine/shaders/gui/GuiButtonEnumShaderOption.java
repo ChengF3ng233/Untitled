@@ -1,10 +1,12 @@
 package net.optifine.shaders.gui;
 
+import lombok.Getter;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.resources.I18n;
 import net.optifine.shaders.Shaders;
 import net.optifine.shaders.config.EnumShaderOption;
 
+@Getter
 public class GuiButtonEnumShaderOption extends GuiButton {
     private EnumShaderOption enumShaderOption = null;
 
@@ -30,10 +32,6 @@ public class GuiButtonEnumShaderOption extends GuiButton {
             case TWEAK_BLOCK_DAMAGE -> s + GuiShaders.toStringOnOff(Shaders.configTweakBlockDamage);
             default -> s + Shaders.getEnumShaderOption(eso);
         };
-    }
-
-    public EnumShaderOption getEnumShaderOption() {
-        return this.enumShaderOption;
     }
 
     public void updateButtonText() {

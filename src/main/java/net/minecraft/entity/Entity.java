@@ -2,6 +2,8 @@ package net.minecraft.entity;
 
 import dev.tr7zw.entityculling.EntityCulling;
 import dev.tr7zw.entityculling.access.Cullable;
+import lombok.Getter;
+import lombok.Setter;
 import net.minecraft.block.*;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
@@ -208,10 +210,16 @@ public abstract class Entity implements ICommandSender, Cullable {
     protected Random rand;
     /**
      * Whether this entity is currently inside of water (if it handles water movement that is)
+     * -- GETTER --
+     *  Checks if this entity is inside water (if inWater field is true as a result of handleWaterMovement() returning
+     *  true)
+
      */
+    @Getter
     protected boolean inWater;
     protected boolean firstUpdate;
     protected boolean isImmuneToFire;
+    @Getter
     protected DataWatcher dataWatcher;
     /**
      * Whether the entity is inside a Portal
@@ -229,8 +237,11 @@ public abstract class Entity implements ICommandSender, Cullable {
     /**
      * A direction related to the position of the last portal the entity was in
      */
+    @Getter
     protected EnumFacing teleportDirection;
     protected UUID entityUniqueID;
+    @Getter
+    @Setter
     private int entityId;
     /**
      * Axis aligned bounding box.
@@ -313,14 +324,6 @@ public abstract class Entity implements ICommandSender, Cullable {
         this.entityInit();
     }
 
-    public int getEntityId() {
-        return this.entityId;
-    }
-
-    public void setEntityId(int id) {
-        this.entityId = id;
-    }
-
     /**
      * Called by the /kill command.
      */
@@ -329,10 +332,6 @@ public abstract class Entity implements ICommandSender, Cullable {
     }
 
     protected abstract void entityInit();
-
-    public DataWatcher getDataWatcher() {
-        return this.dataWatcher;
-    }
 
     public boolean equals(Object p_equals_1_) {
         return p_equals_1_ instanceof Entity && ((Entity) p_equals_1_).entityId == this.entityId;
@@ -984,14 +983,6 @@ public abstract class Entity implements ICommandSender, Cullable {
      */
     public boolean isWet() {
         return this.inWater || this.worldObj.isRainingAt(new BlockPos(this.posX, this.posY, this.posZ)) || this.worldObj.isRainingAt(new BlockPos(this.posX, this.posY + (double) this.height, this.posZ));
-    }
-
-    /**
-     * Checks if this entity is inside water (if inWater field is true as a result of handleWaterMovement() returning
-     * true)
-     */
-    public boolean isInWater() {
-        return this.inWater;
     }
 
     /**
@@ -2190,10 +2181,6 @@ public abstract class Entity implements ICommandSender, Cullable {
 
     public Vec3 func_181014_aG() {
         return this.lastPortalVec;
-    }
-
-    public EnumFacing getTeleportDirection() {
-        return this.teleportDirection;
     }
 
     /**

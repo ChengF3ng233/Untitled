@@ -1,5 +1,6 @@
 package net.minecraft.network.play.server;
 
+import lombok.Getter;
 import net.minecraft.entity.DataWatcher;
 import net.minecraft.network.Packet;
 import net.minecraft.network.PacketBuffer;
@@ -9,6 +10,7 @@ import java.io.IOException;
 import java.util.List;
 
 public class S1CPacketEntityMetadata implements Packet<INetHandlerPlayClient> {
+    @Getter
     private int entityId;
     private List<DataWatcher.WatchableObject> field_149378_b;
 
@@ -52,7 +54,4 @@ public class S1CPacketEntityMetadata implements Packet<INetHandlerPlayClient> {
         return this.field_149378_b;
     }
 
-    public int getEntityId() {
-        return this.entityId;
-    }
 }

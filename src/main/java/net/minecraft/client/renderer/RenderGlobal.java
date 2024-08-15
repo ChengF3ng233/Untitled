@@ -4,6 +4,7 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
 import com.google.gson.JsonSyntaxException;
+import lombok.Getter;
 import net.minecraft.block.*;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
@@ -162,6 +163,7 @@ public class RenderGlobal implements IWorldAccess, IResourceManagerReloadListene
     /**
      * Count entities rendered
      */
+    @Getter
     private int countEntitiesRendered;
     /**
      * Count entities hidden
@@ -185,6 +187,7 @@ public class RenderGlobal implements IWorldAccess, IResourceManagerReloadListene
     private final List renderInfosTileEntitiesShadow = new ArrayList(1024);
     private int renderDistance = 0;
     private int renderDistanceSq = 0;
+    @Getter
     private int countTileEntitiesRendered;
     private IChunkProvider worldChunkProvider = null;
     private LongHashMap worldChunkProviderMap = null;
@@ -305,11 +308,11 @@ public class RenderGlobal implements IWorldAccess, IResourceManagerReloadListene
                 this.entityOutlineShader.createBindFramebuffers(this.mc.displayWidth, this.mc.displayHeight);
                 this.entityOutlineFramebuffer = this.entityOutlineShader.getFramebufferRaw("final");
             } catch (IOException ioexception) {
-                logger.warn("Failed to load shader: " + resourcelocation, ioexception);
+                logger.warn("Failed to load shader: {}", resourcelocation, ioexception);
                 this.entityOutlineShader = null;
                 this.entityOutlineFramebuffer = null;
             } catch (JsonSyntaxException jsonsyntaxexception) {
-                logger.warn("Failed to load shader: " + resourcelocation, jsonsyntaxexception);
+                logger.warn("Failed to load shader: {}", resourcelocation, jsonsyntaxexception);
                 this.entityOutlineShader = null;
                 this.entityOutlineFramebuffer = null;
             }
@@ -2713,14 +2716,6 @@ public class RenderGlobal implements IWorldAccess, IResourceManagerReloadListene
 
     public int getCountActiveRenderers() {
         return this.renderInfos.size();
-    }
-
-    public int getCountEntitiesRendered() {
-        return this.countEntitiesRendered;
-    }
-
-    public int getCountTileEntitiesRendered() {
-        return this.countTileEntitiesRendered;
     }
 
     public int getCountLoadedChunks() {

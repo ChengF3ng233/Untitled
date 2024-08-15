@@ -1,5 +1,7 @@
 package net.minecraft.entity.player;
 
+import lombok.Getter;
+import lombok.Setter;
 import net.minecraft.nbt.NBTTagCompound;
 
 public class PlayerCapabilities {
@@ -27,7 +29,10 @@ public class PlayerCapabilities {
      * Indicates whether the player is allowed to modify the surroundings
      */
     public boolean allowEdit = true;
+    @Getter
+    @Setter
     private float flySpeed = 0.05F;
+    @Getter
     private float walkSpeed = 0.1F;
 
     public void writeCapabilitiesToNBT(NBTTagCompound tagCompound) {
@@ -59,18 +64,6 @@ public class PlayerCapabilities {
                 this.allowEdit = nbttagcompound.getBoolean("mayBuild");
             }
         }
-    }
-
-    public float getFlySpeed() {
-        return this.flySpeed;
-    }
-
-    public void setFlySpeed(float speed) {
-        this.flySpeed = speed;
-    }
-
-    public float getWalkSpeed() {
-        return this.walkSpeed;
     }
 
     public void setPlayerWalkSpeed(float speed) {

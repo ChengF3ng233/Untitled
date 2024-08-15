@@ -8,6 +8,7 @@ import java.util.Map;
 import java.util.Queue;
 import java.util.concurrent.ArrayBlockingQueue;
 
+import lombok.Getter;
 import org.apache.commons.lang3.StringUtils;
 import org.lwjgl.glfw.GLFW;
 import org.lwjgl.LWJGLException;
@@ -159,6 +160,7 @@ public class Keyboard {
     public static final int KEY_POWER = 0xDE;
     public static final int KEY_SLEEP = 0xDF;
 
+    @Getter
     public static final int keyCount;
 
     public enum KeyState {
@@ -249,10 +251,6 @@ public class Keyboard {
 
     public static boolean areRepeatEventsEnabled() {
         return doRepeatEvents;
-    }
-
-    public static int getKeyCount() {
-        return keyCount;
     }
 
     public static int getNumKeyboardEvents() {

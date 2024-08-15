@@ -1,9 +1,15 @@
 package net.minecraft.inventory;
 
+import lombok.Getter;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 
 public class ContainerChest extends Container {
+    /**
+     * -- GETTER --
+     *  Return this chest container's lower chest inventory.
+     */
+    @Getter
     private final IInventory lowerChestInventory;
     private final int numRows;
 
@@ -71,10 +77,4 @@ public class ContainerChest extends Container {
         this.lowerChestInventory.closeInventory(playerIn);
     }
 
-    /**
-     * Return this chest container's lower chest inventory.
-     */
-    public IInventory getLowerChestInventory() {
-        return this.lowerChestInventory;
-    }
 }

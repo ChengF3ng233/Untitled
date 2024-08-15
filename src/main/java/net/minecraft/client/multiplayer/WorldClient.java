@@ -1,6 +1,7 @@
 package net.minecraft.client.multiplayer;
 
 import com.google.common.collect.Sets;
+import lombok.Getter;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
@@ -50,6 +51,7 @@ public class WorldClient extends World {
      * The ChunkProviderClient instance
      */
     private ChunkProviderClient clientChunkProvider;
+    @Getter
     private boolean playerUpdate = false;
 
     public WorldClient(NetHandlerPlayClient netHandler, WorldSettings settings, int dimension, EnumDifficulty difficulty, Profiler profilerIn) {
@@ -446,7 +448,4 @@ public class WorldClient extends World {
         }
     }
 
-    public boolean isPlayerUpdate() {
-        return this.playerUpdate;
-    }
 }

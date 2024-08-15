@@ -1,13 +1,18 @@
 package net.optifine.expr;
 
+import lombok.Getter;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
 public class ParametersVariable implements IParameters {
     private static final ExpressionType[] EMPTY = new ExpressionType[0];
+    @Getter
     private final ExpressionType[] first;
+    @Getter
     private final ExpressionType[] repeat;
+    @Getter
     private final ExpressionType[] last;
     private int maxCount;
 
@@ -29,18 +34,6 @@ public class ParametersVariable implements IParameters {
 
     private static ExpressionType[] normalize(ExpressionType[] exprs) {
         return exprs == null ? EMPTY : exprs;
-    }
-
-    public ExpressionType[] getFirst() {
-        return this.first;
-    }
-
-    public ExpressionType[] getRepeat() {
-        return this.repeat;
-    }
-
-    public ExpressionType[] getLast() {
-        return this.last;
     }
 
     public int getCountRepeat() {

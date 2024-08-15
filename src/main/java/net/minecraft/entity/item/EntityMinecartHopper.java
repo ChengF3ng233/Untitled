@@ -1,5 +1,6 @@
 package net.minecraft.entity.item;
 
+import lombok.Setter;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
@@ -22,6 +23,11 @@ public class EntityMinecartHopper extends EntityMinecartContainer implements IHo
      * Whether this hopper minecart is being blocked by an activator rail.
      */
     private boolean isBlocked = true;
+    /**
+     * -- SETTER --
+     *  Sets the transfer ticker, used to determine the delay between transfers.
+     */
+    @Setter
     private int transferTicker = -1;
     private final BlockPos field_174900_c = BlockPos.ORIGIN;
 
@@ -178,13 +184,6 @@ public class EntityMinecartHopper extends EntityMinecartContainer implements IHo
     protected void readEntityFromNBT(NBTTagCompound tagCompund) {
         super.readEntityFromNBT(tagCompund);
         this.transferTicker = tagCompund.getInteger("TransferCooldown");
-    }
-
-    /**
-     * Sets the transfer ticker, used to determine the delay between transfers.
-     */
-    public void setTransferTicker(int p_98042_1_) {
-        this.transferTicker = p_98042_1_;
     }
 
     /**

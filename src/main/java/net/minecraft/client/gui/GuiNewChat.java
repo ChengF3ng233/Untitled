@@ -1,6 +1,7 @@
 package net.minecraft.client.gui;
 
 import com.google.common.collect.Lists;
+import lombok.Getter;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.entity.player.EntityPlayer;
@@ -16,6 +17,7 @@ import java.util.List;
 public class GuiNewChat extends Gui {
     private static final Logger logger = LogManager.getLogger();
     private final Minecraft mc;
+    @Getter
     private final List<String> sentMessages = Lists.newArrayList();
     private final List<ChatLine> chatLines = Lists.newArrayList();
     private final List<ChatLine> drawnChatLines = Lists.newArrayList();
@@ -131,7 +133,7 @@ public class GuiNewChat extends Gui {
      */
     public void printChatMessageWithOptionalDeletion(IChatComponent chatComponent, int chatLineId) {
         this.setChatLine(chatComponent, chatLineId, this.mc.ingameGUI.getUpdateCounter(), false);
-        logger.info("[CHAT] " + chatComponent.getUnformattedText());
+        logger.info("[CHAT] {}", chatComponent.getUnformattedText());
     }
 
     private void setChatLine(IChatComponent chatComponent, int chatLineId, int updateCounter, boolean displayOnly) {
@@ -173,10 +175,6 @@ public class GuiNewChat extends Gui {
             ChatLine chatline = this.chatLines.get(i);
             this.setChatLine(chatline.getChatComponent(), chatline.getChatLineID(), chatline.getUpdatedCounter(), true);
         }
-    }
-
-    public List<String> getSentMessages() {
-        return this.sentMessages;
     }
 
     /**

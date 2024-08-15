@@ -4,6 +4,7 @@ import com.google.common.collect.Multimap;
 
 import java.util.Set;
 
+import lombok.Getter;
 import net.minecraft.block.Block;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.EntityLivingBase;
@@ -17,6 +18,7 @@ public class ItemTool extends Item {
     /**
      * The material this tool is made from.
      */
+    @Getter
     protected Item.ToolMaterial toolMaterial;
     private final Set<Block> effectiveBlocks;
     /**
@@ -63,10 +65,6 @@ public class ItemTool extends Item {
      */
     public boolean isFull3D() {
         return true;
-    }
-
-    public Item.ToolMaterial getToolMaterial() {
-        return this.toolMaterial;
     }
 
     /**

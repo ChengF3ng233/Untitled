@@ -1,11 +1,13 @@
 package net.minecraft.network.play.client;
 
+import lombok.Getter;
 import net.minecraft.network.Packet;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.network.play.INetHandlerPlayServer;
 
 import java.io.IOException;
 
+@Getter
 public class C11PacketEnchantItem implements Packet<INetHandlerPlayServer> {
     private int windowId;
     private int button;
@@ -41,11 +43,4 @@ public class C11PacketEnchantItem implements Packet<INetHandlerPlayServer> {
         buf.writeByte(this.button);
     }
 
-    public int getWindowId() {
-        return this.windowId;
-    }
-
-    public int getButton() {
-        return this.button;
-    }
 }

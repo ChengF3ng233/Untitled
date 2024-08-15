@@ -10,6 +10,8 @@ import cn.feng.untitled.ui.widget.Widget;
 import cn.feng.untitled.util.animation.advanced.composed.CustomAnimation;
 import cn.feng.untitled.util.animation.advanced.impl.SmoothStepAnimation;
 import cn.feng.untitled.util.render.RenderUtil;
+import cn.feng.untitled.value.impl.BoolValue;
+import cn.feng.untitled.value.impl.FontValue;
 import cn.feng.untitled.value.impl.NumberValue;
 import net.minecraft.client.gui.Gui;
 
@@ -28,6 +30,8 @@ public class MusicLyricWidget extends Widget {
         y = 0.7f;
     }
 
+    private final BoolValue blurValue = new BoolValue("Blur", true);
+    private final BoolValue bloomValue = new BoolValue("Bloom", true);
     private final NumberValue heightValue = new NumberValue("Height", 100, 150, 30, 0.1);
     private final NumberValue spaceValue = new NumberValue("Space", 20, 30, 15, 0.1);
     private final CustomAnimation scrollAnim = new CustomAnimation(SmoothStepAnimation.class, 150, 0f, 0f);
@@ -83,11 +87,21 @@ public class MusicLyricWidget extends Widget {
         for (LyricLine lyricLine : lyrics) {
             float addY = player.getMusic().isHasTranslate() && translateMap.containsKey(lyricLine) ? spaceValue.value.floatValue() + 10f : spaceValue.value.floatValue();
             float lyricWidth = NanoFontLoader.misans.getStringWidth(lyricLine.getLine(), 17f);
-            Gui.drawNewRect(lyricX + width / 2f - lyricWidth / 2f - 2f, lyricY - 1f, lyricWidth + 4f, 11f, Color.BLACK.getRGB());
+            if (bloomValue.value && event.bloom) {
+                Gui.drawNewRect(lyricX + width / 2f - lyricWidth / 2f - 2f, lyricY - 1f, lyricWidth + 4f, 11f, Color.BLACK.getRGB());
+            }
+            if (blurValue.value && !event.bloom) {
+                Gui.drawNewRect(lyricX + width / 2f - lyricWidth / 2f - 2f, lyricY - 1f, lyricWidth + 4f, 11f, Color.BLACK.getRGB());
+            }
             if (translateMap.containsKey(lyricLine)) {
                 LyricLine translateLine = translateMap.get(lyricLine);
                 float translateWidth = NanoFontLoader.misans.getStringWidth(translateLine.getLine(), 15f);
-                Gui.drawNewRect(lyricX + width / 2f - translateWidth / 2f - 2f, lyricY + 9f, translateWidth + 4f, 12f, Color.BLACK.getRGB());
+                if (bloomValue.value && event.bloom) {
+                    Gui.drawNewRect(lyricX + width / 2f - translateWidth / 2f - 2f, lyricY + 9f, translateWidth + 4f, 12f, Color.BLACK.getRGB());
+                }
+                if (blurValue.value && !event.bloom) {
+                    Gui.drawNewRect(lyricX + width / 2f - translateWidth / 2f - 2f, lyricY + 9f, translateWidth + 4f, 12f, Color.BLACK.getRGB());
+                }
             }
             lyricY += addY;
         }

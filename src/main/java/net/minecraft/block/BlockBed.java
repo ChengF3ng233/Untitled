@@ -1,5 +1,6 @@
 package net.minecraft.block;
 
+import lombok.Getter;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.properties.PropertyBool;
@@ -251,6 +252,7 @@ public class BlockBed extends BlockDirectional {
         return new BlockState(this, FACING, PART, OCCUPIED);
     }
 
+    @Getter
     public enum EnumPartType implements IStringSerializable {
         HEAD("head"),
         FOOT("foot");
@@ -265,8 +267,5 @@ public class BlockBed extends BlockDirectional {
             return this.name;
         }
 
-        public String getName() {
-            return this.name;
-        }
     }
 }

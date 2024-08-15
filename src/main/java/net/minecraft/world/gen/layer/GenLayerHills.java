@@ -31,7 +31,7 @@ public class GenLayerHills extends GenLayer {
                 boolean flag = (l - 2) % 29 == 0;
 
                 if (k > 255) {
-                    logger.debug("old! " + k);
+                    logger.debug("old! {}", k);
                 }
 
                 if (k != 0 && l >= 2 && (l - 2) % 29 == 1 && k < 128) {

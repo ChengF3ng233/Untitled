@@ -1,5 +1,6 @@
 package net.minecraft.network.play.server;
 
+import lombok.Getter;
 import net.minecraft.network.Packet;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.network.play.INetHandlerPlayClient;
@@ -8,9 +9,13 @@ import net.minecraft.potion.PotionEffect;
 import java.io.IOException;
 
 public class S1DPacketEntityEffect implements Packet<INetHandlerPlayClient> {
+    @Getter
     private int entityId;
+    @Getter
     private byte effectId;
+    @Getter
     private byte amplifier;
+    @Getter
     private int duration;
     private byte hideParticles;
 
@@ -62,22 +67,6 @@ public class S1DPacketEntityEffect implements Packet<INetHandlerPlayClient> {
      */
     public void processPacket(INetHandlerPlayClient handler) {
         handler.handleEntityEffect(this);
-    }
-
-    public int getEntityId() {
-        return this.entityId;
-    }
-
-    public byte getEffectId() {
-        return this.effectId;
-    }
-
-    public byte getAmplifier() {
-        return this.amplifier;
-    }
-
-    public int getDuration() {
-        return this.duration;
     }
 
     public boolean func_179707_f() {

@@ -48,7 +48,7 @@ public class StatisticsFile extends StatFileWriter {
                 try {
                     jsonobject1.add("progress", entry.getValue().getJsonSerializableValue().getSerializableElement());
                 } catch (Throwable throwable) {
-                    logger.warn("Couldn't save statistic " + entry.getKey().getStatName() + ": error serializing progress", throwable);
+                    logger.warn("Couldn't save statistic {}: error serializing progress", entry.getKey().getStatName(), throwable);
                 }
 
                 jsonobject.add(entry.getKey().statId, jsonobject1);
@@ -66,9 +66,9 @@ public class StatisticsFile extends StatFileWriter {
                 this.statsData.clear();
                 this.statsData.putAll(this.parseJson(FileUtils.readFileToString(this.statsFile)));
             } catch (IOException ioexception) {
-                logger.error("Couldn't read statistics file " + this.statsFile, ioexception);
+                logger.error("Couldn't read statistics file {}", this.statsFile, ioexception);
             } catch (JsonParseException jsonparseexception) {
-                logger.error("Couldn't parse statistics file " + this.statsFile, jsonparseexception);
+                logger.error("Couldn't parse statistics file {}", this.statsFile, jsonparseexception);
             }
         }
     }
@@ -144,14 +144,14 @@ public class StatisticsFile extends StatFileWriter {
                                 ijsonserializable.fromJson(jsonobject1.get("progress"));
                                 tupleintjsonserializable.setJsonSerializableValue(ijsonserializable);
                             } catch (Throwable throwable) {
-                                logger.warn("Invalid statistic progress in " + this.statsFile, throwable);
+                                logger.warn("Invalid statistic progress in {}", this.statsFile, throwable);
                             }
                         }
                     }
 
                     map.put(statbase, tupleintjsonserializable);
                 } else {
-                    logger.warn("Invalid statistic in " + this.statsFile + ": Don't know what " + entry.getKey() + " is");
+                    logger.warn("Invalid statistic in {}: Don't know what {} is", this.statsFile, entry.getKey());
                 }
             }
 

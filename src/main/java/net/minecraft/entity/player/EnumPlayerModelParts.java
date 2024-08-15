@@ -1,5 +1,6 @@
 package net.minecraft.entity.player;
 
+import lombok.Getter;
 import net.minecraft.util.ChatComponentTranslation;
 import net.minecraft.util.IChatComponent;
 
@@ -12,8 +13,11 @@ public enum EnumPlayerModelParts {
     RIGHT_PANTS_LEG(5, "right_pants_leg"),
     HAT(6, "hat");
 
+    @Getter
     private final int partId;
+    @Getter
     private final int partMask;
+    @Getter
     private final String partName;
     private final IChatComponent field_179339_k;
 
@@ -22,18 +26,6 @@ public enum EnumPlayerModelParts {
         this.partMask = 1 << partIdIn;
         this.partName = partNameIn;
         this.field_179339_k = new ChatComponentTranslation("options.modelPart." + partNameIn);
-    }
-
-    public int getPartMask() {
-        return this.partMask;
-    }
-
-    public int getPartId() {
-        return this.partId;
-    }
-
-    public String getPartName() {
-        return this.partName;
     }
 
     public IChatComponent func_179326_d() {

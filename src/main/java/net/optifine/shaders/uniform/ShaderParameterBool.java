@@ -1,5 +1,6 @@
 package net.optifine.shaders.uniform;
 
+import lombok.Getter;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.entity.Entity;
@@ -24,6 +25,7 @@ public enum ShaderParameterBool implements IExpressionBool {
     IS_WET("is_wet");
 
     private static final ShaderParameterBool[] VALUES = values();
+    @Getter
     private final String name;
     private final RenderManager renderManager;
 
@@ -44,10 +46,6 @@ public enum ShaderParameterBool implements IExpressionBool {
 
             return null;
         }
-    }
-
-    public String getName() {
-        return this.name;
     }
 
     public ExpressionType getExpressionType() {

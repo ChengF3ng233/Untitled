@@ -1,15 +1,14 @@
 package net.minecraft.util;
 
+import lombok.Getter;
+
 import java.util.Random;
 
 public class EnchantmentNameParts {
+    @Getter
     private static final EnchantmentNameParts instance = new EnchantmentNameParts();
     private final Random rand = new Random();
     private final String[] namePartsArray = "the elder scrolls klaatu berata niktu xyzzy bless curse light darkness fire air earth water hot dry cold wet ignite snuff embiggen twist shorten stretch fiddle destroy imbue galvanize enchant free limited range of towards inside sphere cube self other ball mental physical grow shrink demon elemental spirit animal creature beast humanoid undead fresh stale ".split(" ");
-
-    public static EnchantmentNameParts getInstance() {
-        return instance;
-    }
 
     /**
      * Randomly generates a new name built up of 3 or 4 randomly selected words.

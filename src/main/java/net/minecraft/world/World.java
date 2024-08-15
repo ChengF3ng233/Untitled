@@ -16,6 +16,8 @@ import java.util.concurrent.Callable;
 
 import de.florianmichael.viamcp.fixes.FixedSoundEngine;
 import dev.tr7zw.entityculling.EntityCulling;
+import lombok.Getter;
+import lombok.Setter;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockHopper;
 import net.minecraft.block.BlockLiquid;
@@ -59,6 +61,7 @@ import net.minecraft.world.storage.MapStorage;
 import net.minecraft.world.storage.WorldInfo;
 
 public abstract class World implements IBlockAccess {
+    @Getter
     public final List<Entity> loadedEntityList = Lists.newArrayList();
     public final List<TileEntity> loadedTileEntityList = Lists.newArrayList();
     public final List<TileEntity> tickableTileEntities = Lists.newArrayList();
@@ -84,10 +87,16 @@ public abstract class World implements IBlockAccess {
      * magic number used to generate fast random numbers for 3d distribution within a chunk
      */
     protected final int DIST_HASH_MAGIC = 1013904223;
+    /**
+     * -- GETTER --
+     *  Returns this world's current save handler
+     */
+    @Getter
     protected final ISaveHandler saveHandler;
     private final List<TileEntity> addedTileEntityList = Lists.newArrayList();
     private final List<TileEntity> tileEntitiesToBeRemoved = Lists.newArrayList();
     private final Calendar theCalendar = Calendar.getInstance();
+    @Getter
     private final WorldBorder worldBorder;
     /**
      * boolean; if true updates scheduled by scheduleBlockUpdate happen immediately
@@ -106,18 +115,28 @@ public abstract class World implements IBlockAccess {
     protected List<IWorldAccess> worldAccesses = Lists.newArrayList();
     /**
      * Handles chunk operations and caching
+     * -- GETTER --
+     *  gets the world's chunk provider
+
      */
+    @Getter
     protected IChunkProvider chunkProvider;
     /**
      * holds information about a world (size on disk, time, spawn point, seed, ...)
+     * -- GETTER --
+     *  Returns the world's WorldInfo object
+
      */
+    @Getter
     protected WorldInfo worldInfo;
 
     /**
      * if set, this flag forces a request to load a chunk to load the chunk rather than defaulting to the world's
      * chunkprovider's dummy if possible
      */
+    @Getter
     protected boolean findingSpawnPoint;
+    @Getter
     protected MapStorage mapStorage;
     protected VillageCollection villageCollectionObj;
     protected Scoreboard worldScoreboard = new Scoreboard();
@@ -137,16 +156,26 @@ public abstract class World implements IBlockAccess {
      * the original block, plus 32 (i.e. value of 31 would mean a -1 offset
      */
     int[] lightUpdateBlockList;
+    /**
+     * -- SETTER --
+     *  Warning this value may not be respected in all cases as it is still hardcoded in many places.
+     */
+    @Getter
+    @Setter
     private int seaLevel = 63;
     private final long cloudColour = 16777215L;
     /**
      * How much light is subtracted from full daylight
      */
+    @Getter
+    @Setter
     private int skylightSubtracted;
     /**
      * Set to 2 whenever a lightning bolt is generated in SSP. Decrements if > 0 in updateWeather(). Value appears to be
      * unused.
      */
+    @Getter
+    @Setter
     private int lastLightningBolt;
     /**
      * number of ticks until the next random ambients play
@@ -2524,10 +2553,6 @@ public abstract class World implements IBlockAccess {
         return this.entitiesById.lookup(id);
     }
 
-    public List<Entity> getLoadedEntityList() {
-        return this.loadedEntityList;
-    }
-
     public void markChunkDirty(BlockPos pos, TileEntity unusedTileEntity) {
         if (this.isBlockLoaded(pos)) {
             this.getChunkFromBlockCoords(pos).setChunkModified();
@@ -2565,17 +2590,6 @@ public abstract class World implements IBlockAccess {
         Block block = this.getBlockState(pos).getBlock();
         AxisAlignedBB axisalignedbb = p_175716_3_ ? null : blockIn.getCollisionBoundingBox(this, pos, blockIn.getDefaultState());
         return (axisalignedbb == null || this.checkNoEntityCollision(axisalignedbb, entityIn)) && (block.getMaterial() == Material.circuits && blockIn == Blocks.anvil || block.getMaterial().isReplaceable() && blockIn.canReplace(this, pos, side, itemStackIn));
-    }
-
-    public int getSeaLevel() {
-        return this.seaLevel;
-    }
-
-    /**
-     * Warning this value may not be respected in all cases as it is still hardcoded in many places.
-     */
-    public void setSeaLevel(int p_181544_1_) {
-        this.seaLevel = p_181544_1_;
     }
 
     public int getStrongPower(BlockPos pos, EnumFacing direction) {
@@ -2814,29 +2828,8 @@ public abstract class World implements IBlockAccess {
     public void setEntityState(Entity entityIn, byte state) {
     }
 
-    /**
-     * gets the world's chunk provider
-     */
-    public IChunkProvider getChunkProvider() {
-        return this.chunkProvider;
-    }
-
     public void addBlockEvent(BlockPos pos, Block blockIn, int eventID, int eventParam) {
         blockIn.onBlockEventReceived(this, pos, this.getBlockState(pos), eventID, eventParam);
-    }
-
-    /**
-     * Returns this world's current save handler
-     */
-    public ISaveHandler getSaveHandler() {
-        return this.saveHandler;
-    }
-
-    /**
-     * Returns the world's WorldInfo object
-     */
-    public WorldInfo getWorldInfo() {
-        return this.worldInfo;
     }
 
     /**
@@ -2912,10 +2905,6 @@ public abstract class World implements IBlockAccess {
     public boolean isBlockinHighHumidity(BlockPos pos) {
         BiomeGenBase biomegenbase = this.getBiomeGenForCoords(pos);
         return biomegenbase.isHighHumidity();
-    }
-
-    public MapStorage getMapStorage() {
-        return this.mapStorage;
     }
 
     /**
@@ -3096,32 +3085,8 @@ public abstract class World implements IBlockAccess {
         return this.getWorldInfo().getDifficulty();
     }
 
-    public int getSkylightSubtracted() {
-        return this.skylightSubtracted;
-    }
-
-    public void setSkylightSubtracted(int newSkylightSubtracted) {
-        this.skylightSubtracted = newSkylightSubtracted;
-    }
-
-    public int getLastLightningBolt() {
-        return this.lastLightningBolt;
-    }
-
-    public void setLastLightningBolt(int lastLightningBoltIn) {
-        this.lastLightningBolt = lastLightningBoltIn;
-    }
-
-    public boolean isFindingSpawnPoint() {
-        return this.findingSpawnPoint;
-    }
-
     public VillageCollection getVillageCollection() {
         return this.villageCollectionObj;
-    }
-
-    public WorldBorder getWorldBorder() {
-        return this.worldBorder;
     }
 
     /**

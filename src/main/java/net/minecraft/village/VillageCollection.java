@@ -1,6 +1,7 @@
 package net.minecraft.village;
 
 import com.google.common.collect.Lists;
+import lombok.Getter;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockDoor;
 import net.minecraft.block.material.Material;
@@ -18,6 +19,7 @@ import java.util.List;
 public class VillageCollection extends WorldSavedData {
     private final List<BlockPos> villagerPositionsList = Lists.newArrayList();
     private final List<VillageDoorInfo> newDoors = Lists.newArrayList();
+    @Getter
     private final List<Village> villageList = Lists.newArrayList();
     private World worldObj;
     private int tickCounter;
@@ -82,10 +84,6 @@ public class VillageCollection extends WorldSavedData {
                 this.markDirty();
             }
         }
-    }
-
-    public List<Village> getVillageList() {
-        return this.villageList;
     }
 
     public Village getNearestVillage(BlockPos doorBlock, int radius) {

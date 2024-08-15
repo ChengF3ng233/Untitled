@@ -1,6 +1,7 @@
 package net.minecraft.client.gui;
 
 import com.google.common.collect.Lists;
+import lombok.Setter;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ServerList;
 import net.minecraft.client.network.LanServerDetector;
@@ -12,6 +13,7 @@ public class ServerSelectionList extends GuiListExtended {
     private final List<ServerListEntryNormal> serverListInternet = Lists.newArrayList();
     private final List<ServerListEntryLanDetected> serverListLan = Lists.newArrayList();
     private final GuiListExtended.IGuiListEntry lanScanEntry = new ServerListEntryLanScan();
+    @Setter
     private int selectedSlotIndex = -1;
 
     public ServerSelectionList(GuiMultiplayer ownerIn, Minecraft mcIn, int widthIn, int heightIn, int topIn, int bottomIn, int slotHeightIn) {
@@ -39,10 +41,6 @@ public class ServerSelectionList extends GuiListExtended {
 
     protected int getSize() {
         return this.serverListInternet.size() + 1 + this.serverListLan.size();
-    }
-
-    public void setSelectedSlotIndex(int selectedSlotIndexIn) {
-        this.selectedSlotIndex = selectedSlotIndexIn;
     }
 
     /**

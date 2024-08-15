@@ -6,6 +6,7 @@ import cn.feng.untitled.ui.font.nano.NanoLoader;
 import cn.feng.untitled.ui.font.nano.NanoUtil;
 import javafx.application.Platform;
 import javafx.embed.swing.JFXPanel;
+import lombok.Getter;
 import org.lwjgl.BufferUtils;
 import org.lwjgl.Sys;
 import org.lwjgl.glfw.*;
@@ -33,6 +34,7 @@ public class Display {
     private static boolean startFullscreen = false;
 
     private static DisplayMode mode = new DisplayMode(1280, 720);
+    @Getter
     private static DisplayMode desktopDisplayMode = new DisplayMode(854, 480);
 
     private static int latestEventKey = 0;
@@ -424,10 +426,6 @@ public class Display {
         }
 
         return displayModes;
-    }
-
-    public static DisplayMode getDesktopDisplayMode() {
-        return desktopDisplayMode;
     }
 
     public static boolean wasResized() {

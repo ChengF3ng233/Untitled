@@ -1,5 +1,7 @@
 package net.minecraft.entity.item;
 
+import lombok.Getter;
+import lombok.Setter;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
@@ -26,13 +28,18 @@ public class EntityItem extends Entity {
     /**
      * The age of this EntityItem (used to animate it up and down as well as expire it)
      */
+    @Getter
     private int age;
     private int delayBeforeCanPickup;
     /**
      * The health of this EntityItem. (For example, damage for tools)
      */
     private int health;
+    @Getter
+    @Setter
     private String thrower;
+    @Getter
+    @Setter
     private String owner;
 
     public EntityItem(World worldIn, double x, double y, double z) {
@@ -372,7 +379,7 @@ public class EntityItem extends Entity {
 
         if (itemstack == null) {
             if (this.worldObj != null) {
-                logger.error("Item entity " + this.getEntityId() + " has no item?!");
+                logger.error("Item entity {} has no item?!", this.getEntityId());
             }
 
             return new ItemStack(Blocks.stone);
@@ -387,26 +394,6 @@ public class EntityItem extends Entity {
     public void setEntityItemStack(ItemStack stack) {
         this.getDataWatcher().updateObject(10, stack);
         this.getDataWatcher().setObjectWatched(10);
-    }
-
-    public String getOwner() {
-        return this.owner;
-    }
-
-    public void setOwner(String owner) {
-        this.owner = owner;
-    }
-
-    public String getThrower() {
-        return this.thrower;
-    }
-
-    public void setThrower(String thrower) {
-        this.thrower = thrower;
-    }
-
-    public int getAge() {
-        return this.age;
     }
 
     public void setDefaultPickupDelay() {

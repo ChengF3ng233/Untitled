@@ -1,5 +1,6 @@
 package net.minecraft.network.play.server;
 
+import lombok.Getter;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.Packet;
 import net.minecraft.network.PacketBuffer;
@@ -7,6 +8,7 @@ import net.minecraft.network.play.INetHandlerPlayClient;
 
 import java.io.IOException;
 
+@Getter
 public class S04PacketEntityEquipment implements Packet<INetHandlerPlayClient> {
     private int entityID;
     private int equipmentSlot;
@@ -46,15 +48,4 @@ public class S04PacketEntityEquipment implements Packet<INetHandlerPlayClient> {
         handler.handleEntityEquipment(this);
     }
 
-    public ItemStack getItemStack() {
-        return this.itemStack;
-    }
-
-    public int getEntityID() {
-        return this.entityID;
-    }
-
-    public int getEquipmentSlot() {
-        return this.equipmentSlot;
-    }
 }

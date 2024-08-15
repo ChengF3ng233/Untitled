@@ -1,31 +1,27 @@
 package net.minecraft.event;
 
 import com.google.common.collect.Maps;
+import lombok.Getter;
 
 import java.util.Map;
 
+@Getter
 public class ClickEvent {
+    /**
+     * -- GETTER --
+     *  Gets the action to perform when this event is raised.
+     */
     private final ClickEvent.Action action;
+    /**
+     * -- GETTER --
+     *  Gets the value to perform the action on when this event is raised.  For example, if the action is "open URL",
+     *  this would be the URL to open.
+     */
     private final String value;
 
     public ClickEvent(ClickEvent.Action theAction, String theValue) {
         this.action = theAction;
         this.value = theValue;
-    }
-
-    /**
-     * Gets the action to perform when this event is raised.
-     */
-    public ClickEvent.Action getAction() {
-        return this.action;
-    }
-
-    /**
-     * Gets the value to perform the action on when this event is raised.  For example, if the action is "open URL",
-     * this would be the URL to open.
-     */
-    public String getValue() {
-        return this.value;
     }
 
     public boolean equals(Object p_equals_1_) {
@@ -72,6 +68,7 @@ public class ClickEvent {
         }
 
         private final boolean allowedInChat;
+        @Getter
         private final String canonicalName;
 
         Action(String canonicalNameIn, boolean allowedInChatIn) {
@@ -87,8 +84,5 @@ public class ClickEvent {
             return this.allowedInChat;
         }
 
-        public String getCanonicalName() {
-            return this.canonicalName;
-        }
     }
 }

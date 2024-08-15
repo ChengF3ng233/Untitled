@@ -1,5 +1,6 @@
 package net.optifine.player;
 
+import lombok.Getter;
 import net.minecraft.client.entity.AbstractClientPlayer;
 import net.minecraft.client.renderer.ImageBufferDownload;
 import net.minecraft.util.ResourceLocation;
@@ -9,6 +10,7 @@ import java.awt.image.BufferedImage;
 public class CapeImageBuffer extends ImageBufferDownload {
     private AbstractClientPlayer player;
     private final ResourceLocation resourceLocation;
+    @Getter
     private boolean elytraOfCape;
 
     public CapeImageBuffer(AbstractClientPlayer player, ResourceLocation resourceLocation) {
@@ -35,7 +37,4 @@ public class CapeImageBuffer extends ImageBufferDownload {
         this.player = null;
     }
 
-    public boolean isElytraOfCape() {
-        return this.elytraOfCape;
-    }
 }

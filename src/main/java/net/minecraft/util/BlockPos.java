@@ -1,6 +1,7 @@
 package net.minecraft.util;
 
 import com.google.common.collect.AbstractIterator;
+import lombok.Getter;
 import net.minecraft.entity.Entity;
 
 import java.util.Iterator;
@@ -269,6 +270,7 @@ public class BlockPos extends Vec3i {
         return ((long) this.getX() & X_MASK) << X_SHIFT | ((long) this.getY() & Y_MASK) << Y_SHIFT | ((long) this.getZ() & Z_MASK) << 0;
     }
 
+    @Getter
     public static final class MutableBlockPos extends BlockPos {
         private int x;
         private int y;
@@ -283,18 +285,6 @@ public class BlockPos extends Vec3i {
             this.x = x_;
             this.y = y_;
             this.z = z_;
-        }
-
-        public int getX() {
-            return this.x;
-        }
-
-        public int getY() {
-            return this.y;
-        }
-
-        public int getZ() {
-            return this.z;
         }
 
         public BlockPos.MutableBlockPos set(int xIn, int yIn, int zIn) {

@@ -1,5 +1,7 @@
 package net.minecraft.pathfinding;
 
+import lombok.Getter;
+import lombok.Setter;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.Vec3;
 
@@ -12,6 +14,8 @@ public class PathEntity {
     /**
      * PathEntity Array Index the Entity is currently targeting
      */
+    @Getter
+    @Setter
     private int currentPathIndex;
 
     /**
@@ -58,14 +62,6 @@ public class PathEntity {
 
     public void setCurrentPathLength(int length) {
         this.pathLength = length;
-    }
-
-    public int getCurrentPathIndex() {
-        return this.currentPathIndex;
-    }
-
-    public void setCurrentPathIndex(int currentPathIndexIn) {
-        this.currentPathIndex = currentPathIndexIn;
     }
 
     /**

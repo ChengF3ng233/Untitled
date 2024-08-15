@@ -1,6 +1,7 @@
 package net.minecraft.network.play.server;
 
 import com.google.common.collect.Lists;
+import lombok.Getter;
 import net.minecraft.network.Packet;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.network.play.INetHandlerPlayClient;
@@ -11,7 +12,9 @@ import java.io.IOException;
 import java.util.List;
 
 public class S21PacketChunkData implements Packet<INetHandlerPlayClient> {
+    @Getter
     private int chunkX;
+    @Getter
     private int chunkZ;
     private S21PacketChunkData.Extracted extractedData;
     private boolean field_149279_g;
@@ -114,14 +117,6 @@ public class S21PacketChunkData implements Packet<INetHandlerPlayClient> {
 
     public byte[] getExtractedDataBytes() {
         return this.extractedData.data;
-    }
-
-    public int getChunkX() {
-        return this.chunkX;
-    }
-
-    public int getChunkZ() {
-        return this.chunkZ;
     }
 
     public int getExtractedSize() {

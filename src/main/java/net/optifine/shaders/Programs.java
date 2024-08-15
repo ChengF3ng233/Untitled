@@ -1,10 +1,13 @@
 package net.optifine.shaders;
 
+import lombok.Getter;
+
 import java.util.ArrayList;
 import java.util.List;
 
 public class Programs {
     private final List<Program> programs = new ArrayList();
+    @Getter
     private final Program programNone = this.make("", ProgramStage.NONE, true);
 
     public Program make(String name, ProgramStage programStage, Program backupProgram) {
@@ -61,10 +64,6 @@ public class Programs {
         }
 
         return aprogram;
-    }
-
-    public Program getProgramNone() {
-        return this.programNone;
     }
 
     public int getCount() {

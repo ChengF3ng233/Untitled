@@ -7,6 +7,7 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+import lombok.Getter;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.client.renderer.texture.ITextureObject;
@@ -36,13 +37,16 @@ public class ShaderManager {
     private final List<ShaderUniform> shaderUniforms = Lists.newArrayList();
     private final List<Integer> shaderUniformLocations = Lists.newArrayList();
     private final Map<String, ShaderUniform> mappedShaderUniforms = Maps.newHashMap();
+    @Getter
     private final int program;
     private final String programFilename;
     private final boolean useFaceCulling;
     private final JsonBlendingMode field_148016_p;
     private final List<Integer> attribLocations;
     private final List<String> attributes;
+    @Getter
     private final ShaderLoader vertexShaderLoader;
+    @Getter
     private final ShaderLoader fragmentShaderLoader;
     private boolean isDirty;
 
@@ -231,7 +235,7 @@ public class ShaderManager {
             int k = OpenGlHelper.glGetUniformLocation(this.program, s);
 
             if (k == -1) {
-                logger.warn("Shader " + this.programFilename + "could not find sampler named " + s + " in the specified shader program.");
+                logger.warn("Shader {}could not find sampler named {} in the specified shader program.", this.programFilename, s);
                 this.shaderSamplers.remove(s);
                 this.samplerNames.remove(j);
                 --j;
@@ -247,7 +251,7 @@ public class ShaderManager {
             int l = OpenGlHelper.glGetUniformLocation(this.program, s1);
 
             if (l == -1) {
-                logger.warn("Could not find uniform named " + s1 + " in the specified" + " shader program.");
+                logger.warn("Could not find uniform named {} in the specified shader program.", s1);
             } else {
                 this.shaderUniformLocations.add(l);
                 shaderuniform.setUniformLocation(l);
@@ -325,15 +329,4 @@ public class ShaderManager {
         }
     }
 
-    public ShaderLoader getVertexShaderLoader() {
-        return this.vertexShaderLoader;
-    }
-
-    public ShaderLoader getFragmentShaderLoader() {
-        return this.fragmentShaderLoader;
-    }
-
-    public int getProgram() {
-        return this.program;
-    }
 }

@@ -1,5 +1,6 @@
 package net.optifine.http;
 
+import lombok.Getter;
 import net.minecraft.src.Config;
 
 import java.io.*;
@@ -14,8 +15,11 @@ public class HttpPipelineConnection {
     public static final int TIMEOUT_READ_MS = 5000;
     private static final String LF = "\n";
     private static final Pattern patternFullUrl = Pattern.compile("^[a-zA-Z]+://.*");
+    @Getter
     private String host;
+    @Getter
     private int port;
+    @Getter
     private Proxy proxy;
     private final List<HttpPipelineRequest> listRequests;
     private final List<HttpPipelineRequest> listRequestsSend;
@@ -24,6 +28,7 @@ public class HttpPipelineConnection {
     private OutputStream outputStream;
     private HttpPipelineSender httpPipelineSender;
     private HttpPipelineReceiver httpPipelineReceiver;
+    @Getter
     private int countRequests;
     private boolean responseReceived;
     private long keepaliveTimeoutMs;
@@ -318,23 +323,8 @@ public class HttpPipelineConnection {
         return this.terminated || this.countRequests >= this.keepaliveMaxCount;
     }
 
-    public int getCountRequests() {
-        return this.countRequests;
-    }
-
     public synchronized boolean hasActiveRequests() {
         return this.listRequests.size() > 0;
     }
 
-    public String getHost() {
-        return this.host;
-    }
-
-    public int getPort() {
-        return this.port;
-    }
-
-    public Proxy getProxy() {
-        return this.proxy;
-    }
 }

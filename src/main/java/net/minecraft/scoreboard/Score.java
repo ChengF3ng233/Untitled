@@ -1,5 +1,7 @@
 package net.minecraft.scoreboard;
 
+import lombok.Getter;
+import lombok.Setter;
 import net.minecraft.entity.player.EntityPlayer;
 
 import java.util.Comparator;
@@ -14,7 +16,10 @@ public class Score {
     private final Scoreboard theScoreboard;
     private final ScoreObjective theScoreObjective;
     private final String scorePlayerName;
+    @Getter
     private int scorePoints;
+    @Getter
+    @Setter
     private boolean locked;
     private boolean forceUpdate;
 
@@ -49,10 +54,6 @@ public class Score {
         }
     }
 
-    public int getScorePoints() {
-        return this.scorePoints;
-    }
-
     public void setScorePoints(int points) {
         int i = this.scorePoints;
         this.scorePoints = points;
@@ -76,14 +77,6 @@ public class Score {
 
     public Scoreboard getScoreScoreboard() {
         return this.theScoreboard;
-    }
-
-    public boolean isLocked() {
-        return this.locked;
-    }
-
-    public void setLocked(boolean locked) {
-        this.locked = locked;
     }
 
     public void func_96651_a(List<EntityPlayer> p_96651_1_) {

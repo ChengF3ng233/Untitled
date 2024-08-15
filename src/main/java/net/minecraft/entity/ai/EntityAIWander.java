@@ -1,5 +1,6 @@
 package net.minecraft.entity.ai;
 
+import lombok.Setter;
 import net.minecraft.entity.EntityCreature;
 import net.minecraft.util.Vec3;
 
@@ -9,6 +10,11 @@ public class EntityAIWander extends EntityAIBase {
     private double yPosition;
     private double zPosition;
     private final double speed;
+    /**
+     * -- SETTER --
+     *  Changes task random possibility for execution
+     */
+    @Setter
     private int executionChance;
     private boolean mustUpdate;
 
@@ -71,10 +77,4 @@ public class EntityAIWander extends EntityAIBase {
         this.mustUpdate = true;
     }
 
-    /**
-     * Changes task random possibility for execution
-     */
-    public void setExecutionChance(int newchance) {
-        this.executionChance = newchance;
-    }
 }

@@ -1,5 +1,8 @@
 package net.optifine.util;
 
+import lombok.Getter;
+
+@Getter
 public class IntArray {
     private int[] array = null;
     private int position = 0;
@@ -47,20 +50,9 @@ public class IntArray {
         return this.array[pos];
     }
 
-    public int[] getArray() {
-        return this.array;
-    }
-
     public void clear() {
         this.position = 0;
         this.limit = 0;
     }
 
-    public int getLimit() {
-        return this.limit;
-    }
-
-    public int getPosition() {
-        return this.position;
-    }
 }

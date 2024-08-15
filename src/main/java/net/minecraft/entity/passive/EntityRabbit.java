@@ -1,5 +1,7 @@
 package net.minecraft.entity.passive;
 
+import lombok.Getter;
+import lombok.Setter;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockCarrot;
 import net.minecraft.block.state.IBlockState;
@@ -24,6 +26,7 @@ public class EntityRabbit extends EntityAnimal {
     private boolean field_175536_bo = false;
     private boolean field_175537_bp = false;
     private int currentMoveTypeDuration = 0;
+    @Setter
     private EntityRabbit.EnumMoveType moveType = EntityRabbit.EnumMoveType.HOP;
     private int carrotTicks = 0;
     private final EntityPlayer field_175543_bt = null;
@@ -51,10 +54,6 @@ public class EntityRabbit extends EntityAnimal {
 
     protected float getJumpUpwardsMotion() {
         return this.moveHelper.isUpdating() && this.moveHelper.getY() > this.posY + 0.5D ? 0.5F : this.moveType.func_180074_b();
-    }
-
-    public void setMoveType(EntityRabbit.EnumMoveType type) {
-        this.moveType = type;
     }
 
     public float func_175521_o(float p_175521_1_) {
@@ -407,8 +406,10 @@ public class EntityRabbit extends EntityAnimal {
         SPRINT(1.75F, 0.4F, 1, 8),
         ATTACK(2.0F, 0.7F, 7, 8);
 
+        @Getter
         private final float speed;
         private final float field_180077_g;
+        @Getter
         private final int duration;
         private final int field_180085_i;
 
@@ -419,16 +420,8 @@ public class EntityRabbit extends EntityAnimal {
             this.field_180085_i = p_i45866_6_;
         }
 
-        public float getSpeed() {
-            return this.speed;
-        }
-
         public float func_180074_b() {
             return this.field_180077_g;
-        }
-
-        public int getDuration() {
-            return this.duration;
         }
 
         public int func_180073_d() {

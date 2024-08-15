@@ -129,7 +129,7 @@ public class OldServerPinger {
 
             public void onDisconnect(IChatComponent reason) {
                 if (!this.field_147403_d) {
-                    OldServerPinger.logger.error("Can't ping " + server.serverIP + ": " + reason.getUnformattedText());
+                    OldServerPinger.logger.error("Can't ping {}: {}", server.serverIP, reason.getUnformattedText());
                     server.serverMOTD = EnumChatFormatting.DARK_RED + "Can't connect to server.";
                     server.populationInfo = "";
                     OldServerPinger.this.tryCompatibilityPing(server);

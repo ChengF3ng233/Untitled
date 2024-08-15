@@ -1,14 +1,18 @@
 package net.minecraft.entity.ai.attributes;
 
 import io.netty.util.internal.ThreadLocalRandom;
+import lombok.Getter;
 import net.minecraft.util.MathHelper;
 import org.apache.commons.lang3.Validate;
 
 import java.util.UUID;
 
 public class AttributeModifier {
+    @Getter
     private final double amount;
+    @Getter
     private final int operation;
+    @Getter
     private final String name;
     private final UUID id;
 
@@ -33,18 +37,6 @@ public class AttributeModifier {
 
     public UUID getID() {
         return this.id;
-    }
-
-    public String getName() {
-        return this.name;
-    }
-
-    public int getOperation() {
-        return this.operation;
-    }
-
-    public double getAmount() {
-        return this.amount;
     }
 
     /**

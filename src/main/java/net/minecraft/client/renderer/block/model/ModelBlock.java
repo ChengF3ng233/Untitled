@@ -3,6 +3,7 @@ package net.minecraft.client.renderer.block.model;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.gson.*;
+import lombok.Getter;
 import net.minecraft.util.JsonUtils;
 import net.minecraft.util.ResourceLocation;
 import org.apache.commons.lang3.StringUtils;
@@ -22,10 +23,12 @@ public class ModelBlock {
     private static final Logger LOGGER = LogManager.getLogger();
     protected final Map<String, String> textures;
     private final List<BlockPart> elements;
+    @Getter
     private final boolean gui3d;
     private final boolean ambientOcclusion;
     public String name;
     protected ModelBlock parent;
+    @Getter
     protected ResourceLocation parentLocation;
     private final ItemCameraTransforms cameraTransforms;
 
@@ -82,10 +85,6 @@ public class ModelBlock {
         return this.hasParent() ? this.parent.isAmbientOcclusion() : this.ambientOcclusion;
     }
 
-    public boolean isGui3d() {
-        return this.gui3d;
-    }
-
     public boolean isResolved() {
         return this.parentLocation == null || this.parent != null && this.parent.isResolved();
     }
@@ -111,7 +110,7 @@ public class ModelBlock {
     private String resolveTextureName(String textureName, ModelBlock.Bookkeep p_178302_2_) {
         if (this.startsWithHash(textureName)) {
             if (this == p_178302_2_.modelExt) {
-                LOGGER.warn("Unable to resolve texture due to upward reference: " + textureName + " in " + this.name);
+                LOGGER.warn("Unable to resolve texture due to upward reference: {} in {}", textureName, this.name);
                 return "missingno";
             } else {
                 String s = this.textures.get(textureName.substring(1));
@@ -135,10 +134,6 @@ public class ModelBlock {
 
     private boolean startsWithHash(String hash) {
         return hash.charAt(0) == 35;
-    }
-
-    public ResourceLocation getParentLocation() {
-        return this.parentLocation;
     }
 
     public ModelBlock getRootModel() {

@@ -1,6 +1,7 @@
 package net.minecraft.entity.monster;
 
 import com.google.common.base.Predicate;
+import lombok.Getter;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockFlower;
 import net.minecraft.block.material.Material;
@@ -26,7 +27,9 @@ public class EntityIronGolem extends EntityGolem {
      * deincrements, and a distance-to-home check is done at 0
      */
     private int homeCheckTimer;
+    @Getter
     private int attackTimer;
+    @Getter
     private int holdRoseTick;
 
     public EntityIronGolem(World worldIn) {
@@ -168,10 +171,6 @@ public class EntityIronGolem extends EntityGolem {
         return this.villageObj;
     }
 
-    public int getAttackTimer() {
-        return this.attackTimer;
-    }
-
     public void setHoldingRose(boolean p_70851_1_) {
         this.holdRoseTick = p_70851_1_ ? 400 : 0;
         this.worldObj.setEntityState(this, (byte) 11);
@@ -214,10 +213,6 @@ public class EntityIronGolem extends EntityGolem {
         for (int k = 0; k < l; ++k) {
             this.dropItem(Items.iron_ingot, 1);
         }
-    }
-
-    public int getHoldRoseTick() {
-        return this.holdRoseTick;
     }
 
     public boolean isPlayerCreated() {

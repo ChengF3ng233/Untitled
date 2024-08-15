@@ -1,5 +1,6 @@
 package net.minecraft.block;
 
+import lombok.Getter;
 import net.minecraft.block.material.MapColor;
 import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.properties.PropertyDirection;
@@ -644,6 +645,7 @@ public class BlockStairs extends Block {
         return new BlockState(this, FACING, HALF, SHAPE);
     }
 
+    @Getter
     public enum EnumHalf implements IStringSerializable {
         TOP("top"),
         BOTTOM("bottom");
@@ -658,11 +660,9 @@ public class BlockStairs extends Block {
             return this.name;
         }
 
-        public String getName() {
-            return this.name;
-        }
     }
 
+    @Getter
     public enum EnumShape implements IStringSerializable {
         STRAIGHT("straight"),
         INNER_LEFT("inner_left"),
@@ -680,8 +680,5 @@ public class BlockStairs extends Block {
             return this.name;
         }
 
-        public String getName() {
-            return this.name;
-        }
     }
 }

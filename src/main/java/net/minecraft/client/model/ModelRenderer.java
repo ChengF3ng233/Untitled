@@ -1,6 +1,8 @@
 package net.minecraft.client.model;
 
 import com.google.common.collect.Lists;
+import lombok.Getter;
+import lombok.Setter;
 import net.minecraft.client.renderer.*;
 import net.minecraft.src.Config;
 import net.minecraft.util.ResourceLocation;
@@ -56,11 +58,17 @@ public class ModelRenderer {
     /**
      * The GL display list rendered by the Tessellator for this model
      */
+    @Getter
     private int displayList;
     private final ModelBase baseModel;
     private int countResetDisplayList;
+    @Getter
+    @Setter
     private ResourceLocation textureLocation;
+    @Getter
+    @Setter
     private String id;
+    @Setter
     private ModelUpdater modelUpdater;
     private final RenderGlobal renderGlobal;
 
@@ -376,31 +384,11 @@ public class ModelRenderer {
         return this.compiled;
     }
 
-    public int getDisplayList() {
-        return this.displayList;
-    }
-
     private void checkResetDisplayList() {
         if (this.countResetDisplayList != Shaders.countResetDisplayLists) {
             this.compiled = false;
             this.countResetDisplayList = Shaders.countResetDisplayLists;
         }
-    }
-
-    public ResourceLocation getTextureLocation() {
-        return this.textureLocation;
-    }
-
-    public void setTextureLocation(ResourceLocation p_setTextureLocation_1_) {
-        this.textureLocation = p_setTextureLocation_1_;
-    }
-
-    public String getId() {
-        return this.id;
-    }
-
-    public void setId(String p_setId_1_) {
-        this.id = p_setId_1_;
     }
 
     public void addBox(int[][] p_addBox_1_, float p_addBox_2_, float p_addBox_3_, float p_addBox_4_, float p_addBox_5_, float p_addBox_6_, float p_addBox_7_, float p_addBox_8_) {
@@ -445,10 +433,6 @@ public class ModelRenderer {
                 return null;
             }
         }
-    }
-
-    public void setModelUpdater(ModelUpdater p_setModelUpdater_1_) {
-        this.modelUpdater = p_setModelUpdater_1_;
     }
 
     public String toString() {

@@ -660,14 +660,14 @@ public class Reflector {
     }
 
     private static boolean logEntry(String str) {
-        LOGGER.info("[OptiFine] " + str);
+        LOGGER.info("[OptiFine] {}", str);
         return true;
     }
 
     private static boolean registerResolvable(final String str) {
         IResolvable iresolvable = new IResolvable() {
             public void resolve() {
-                Reflector.LOGGER.info("[OptiFine] " + str);
+                Reflector.LOGGER.info("[OptiFine] {}", str);
             }
         };
         ReflectorResolver.register(iresolvable);

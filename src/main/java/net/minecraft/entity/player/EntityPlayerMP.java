@@ -4,6 +4,7 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
 import com.mojang.authlib.GameProfile;
 import io.netty.buffer.Unpooled;
+import lombok.Getter;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockFence;
 import net.minecraft.block.BlockFenceGate;
@@ -114,6 +115,7 @@ public class EntityPlayerMP extends EntityPlayer implements ICrafting {
      */
     private int lastExperience = -99999999;
     private int respawnInvulnerabilityTicks = 60;
+    @Getter
     private EntityPlayer.EnumChatVisibility chatVisibility;
     private boolean chatColours = true;
     private long playerLastActiveTime = System.currentTimeMillis();
@@ -958,10 +960,6 @@ public class EntityPlayerMP extends EntityPlayer implements ICrafting {
         this.chatVisibility = packetIn.getChatVisibility();
         this.chatColours = packetIn.isColorsEnabled();
         this.getDataWatcher().updateObject(10, (byte) packetIn.getModelPartFlags());
-    }
-
-    public EntityPlayer.EnumChatVisibility getChatVisibility() {
-        return this.chatVisibility;
     }
 
     public void loadResourcePack(String url, String hash) {

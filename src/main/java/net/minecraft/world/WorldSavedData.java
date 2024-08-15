@@ -1,5 +1,7 @@
 package net.minecraft.world;
 
+import lombok.Getter;
+import lombok.Setter;
 import net.minecraft.nbt.NBTTagCompound;
 
 public abstract class WorldSavedData {
@@ -10,7 +12,15 @@ public abstract class WorldSavedData {
 
     /**
      * Whether this MapDataBase needs saving to disk.
+     * -- SETTER --
+     *  Sets the dirty state of this MapDataBase, whether it needs saving to disk.
+     * -- GETTER --
+     *  Whether this MapDataBase needs saving to disk.
+
+
      */
+    @Getter
+    @Setter
     private boolean dirty;
 
     public WorldSavedData(String name) {
@@ -34,17 +44,4 @@ public abstract class WorldSavedData {
         this.setDirty(true);
     }
 
-    /**
-     * Whether this MapDataBase needs saving to disk.
-     */
-    public boolean isDirty() {
-        return this.dirty;
-    }
-
-    /**
-     * Sets the dirty state of this MapDataBase, whether it needs saving to disk.
-     */
-    public void setDirty(boolean isDirty) {
-        this.dirty = isDirty;
-    }
 }

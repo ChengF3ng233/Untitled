@@ -9,6 +9,7 @@ import com.google.gson.*;
 import com.mojang.authlib.Agent;
 import com.mojang.authlib.GameProfile;
 import com.mojang.authlib.ProfileLookupCallback;
+import lombok.Getter;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.server.MinecraftServer;
 import org.apache.commons.io.IOUtils;
@@ -233,6 +234,7 @@ public class PlayerProfileCache {
         return arraylist;
     }
 
+    @Getter
     class ProfileEntry {
         private final GameProfile gameProfile;
         private final Date expirationDate;
@@ -242,13 +244,6 @@ public class PlayerProfileCache {
             this.expirationDate = expirationDateIn;
         }
 
-        public GameProfile getGameProfile() {
-            return this.gameProfile;
-        }
-
-        public Date getExpirationDate() {
-            return this.expirationDate;
-        }
     }
 
     class Serializer implements JsonDeserializer<PlayerProfileCache.ProfileEntry>, JsonSerializer<PlayerProfileCache.ProfileEntry> {

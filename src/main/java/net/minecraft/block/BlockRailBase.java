@@ -1,6 +1,7 @@
 package net.minecraft.block;
 
 import com.google.common.collect.Lists;
+import lombok.Getter;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.state.IBlockState;
@@ -157,6 +158,7 @@ public abstract class BlockRailBase extends Block {
         }
 
         private final int meta;
+        @Getter
         private final String name;
 
         EnumRailDirection(int meta, String name) {
@@ -184,9 +186,6 @@ public abstract class BlockRailBase extends Block {
             return this == ASCENDING_NORTH || this == ASCENDING_EAST || this == ASCENDING_SOUTH || this == ASCENDING_WEST;
         }
 
-        public String getName() {
-            return this.name;
-        }
     }
 
     public class Rail {

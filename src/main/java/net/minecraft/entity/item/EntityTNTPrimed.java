@@ -1,5 +1,6 @@
 package net.minecraft.entity.item;
 
+import lombok.Getter;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.nbt.NBTTagCompound;
@@ -11,6 +12,11 @@ public class EntityTNTPrimed extends Entity {
      * How long the fuse is
      */
     public int fuse;
+    /**
+     * -- GETTER --
+     *  returns null or the entityliving it was placed or ignited by
+     */
+    @Getter
     private EntityLivingBase tntPlacedBy;
 
     public EntityTNTPrimed(World worldIn) {
@@ -99,13 +105,6 @@ public class EntityTNTPrimed extends Entity {
      */
     protected void readEntityFromNBT(NBTTagCompound tagCompund) {
         this.fuse = tagCompund.getByte("Fuse");
-    }
-
-    /**
-     * returns null or the entityliving it was placed or ignited by
-     */
-    public EntityLivingBase getTntPlacedBy() {
-        return this.tntPlacedBy;
     }
 
     public float getEyeHeight() {

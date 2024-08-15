@@ -1,18 +1,17 @@
 package net.optifine.shaders.config;
 
+import lombok.Getter;
+
 import java.util.*;
 
 public class ShaderProfile {
+    @Getter
     private String name = null;
     private final Map<String, String> mapOptionValues = new LinkedHashMap();
     private final Set<String> disabledPrograms = new LinkedHashSet();
 
     public ShaderProfile(String name) {
         this.name = name;
-    }
-
-    public String getName() {
-        return this.name;
     }
 
     public void addOptionValue(String option, String value) {

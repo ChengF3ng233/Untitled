@@ -1,5 +1,6 @@
 package net.minecraft.network.play.client;
 
+import lombok.Getter;
 import net.minecraft.entity.Entity;
 import net.minecraft.network.Packet;
 import net.minecraft.network.PacketBuffer;
@@ -11,7 +12,9 @@ import java.io.IOException;
 
 public class C02PacketUseEntity implements Packet<INetHandlerPlayServer> {
     private int entityId;
+    @Getter
     private C02PacketUseEntity.Action action;
+    @Getter
     private Vec3 hitVec;
 
     public C02PacketUseEntity() {
@@ -62,14 +65,6 @@ public class C02PacketUseEntity implements Packet<INetHandlerPlayServer> {
 
     public Entity getEntityFromWorld(World worldIn) {
         return worldIn.getEntityByID(this.entityId);
-    }
-
-    public C02PacketUseEntity.Action getAction() {
-        return this.action;
-    }
-
-    public Vec3 getHitVec() {
-        return this.hitVec;
     }
 
     public enum Action {

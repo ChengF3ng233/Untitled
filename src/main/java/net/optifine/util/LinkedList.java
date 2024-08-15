@@ -1,7 +1,10 @@
 package net.optifine.util;
 
+import lombok.Getter;
+
 import java.util.Iterator;
 
+@Getter
 public class LinkedList<T> {
     private LinkedList.Node<T> first;
     private LinkedList.Node<T> last;
@@ -151,18 +154,6 @@ public class LinkedList<T> {
         return iterator;
     }
 
-    public LinkedList.Node<T> getFirst() {
-        return this.first;
-    }
-
-    public LinkedList.Node<T> getLast() {
-        return this.last;
-    }
-
-    public int getSize() {
-        return this.size;
-    }
-
     public boolean isEmpty() {
         return this.size <= 0;
     }
@@ -184,8 +175,11 @@ public class LinkedList<T> {
     }
 
     public static class Node<T> {
+        @Getter
         private final T item;
+        @Getter
         private LinkedList.Node<T> prev;
+        @Getter
         private LinkedList.Node<T> next;
         private LinkedList<T> parent;
 
@@ -193,20 +187,8 @@ public class LinkedList<T> {
             this.item = item;
         }
 
-        public T getItem() {
-            return this.item;
-        }
-
-        public LinkedList.Node<T> getPrev() {
-            return this.prev;
-        }
-
         private void setPrev(LinkedList.Node<T> prev) {
             this.prev = prev;
-        }
-
-        public LinkedList.Node<T> getNext() {
-            return this.next;
         }
 
         private void setNext(LinkedList.Node<T> next) {

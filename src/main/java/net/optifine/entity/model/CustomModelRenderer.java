@@ -1,8 +1,10 @@
 package net.optifine.entity.model;
 
+import lombok.Getter;
 import net.minecraft.client.model.ModelRenderer;
 import net.optifine.entity.model.anim.ModelUpdater;
 
+@Getter
 public class CustomModelRenderer {
     private final String modelPart;
     private final boolean attach;
@@ -16,19 +18,4 @@ public class CustomModelRenderer {
         this.modelUpdater = modelUpdater;
     }
 
-    public ModelRenderer getModelRenderer() {
-        return this.modelRenderer;
-    }
-
-    public String getModelPart() {
-        return this.modelPart;
-    }
-
-    public boolean isAttach() {
-        return this.attach;
-    }
-
-    public ModelUpdater getModelUpdater() {
-        return this.modelUpdater;
-    }
 }

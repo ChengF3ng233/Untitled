@@ -1,13 +1,13 @@
 package cn.feng.untitled.music.ui;
 
-import cn.feng.untitled.music.api.MusicAPI;
 import cn.feng.untitled.music.api.base.Music;
 import cn.feng.untitled.music.api.player.MusicPlayer;
+import cn.feng.untitled.music.thread.SearchMusicThread;
 import cn.feng.untitled.music.ui.component.Button;
-import cn.feng.untitled.music.ui.component.slider.PlayerSlider;
 import cn.feng.untitled.music.ui.component.impl.CategoryButton;
 import cn.feng.untitled.music.ui.component.impl.IconButton;
 import cn.feng.untitled.music.ui.component.impl.UserButton;
+import cn.feng.untitled.music.ui.component.slider.PlayerSlider;
 import cn.feng.untitled.music.ui.component.slider.VolumeSlider;
 import cn.feng.untitled.music.ui.gui.MusicPlayerGUI;
 import cn.feng.untitled.music.ui.gui.impl.PlayListGUI;
@@ -55,9 +55,13 @@ public class MusicPlayerScreen extends GuiScreen {
     // Current Page
     public final List<CategoryButton> categoryButtons = new ArrayList<>();
     private final UserButton userButton = new UserButton();
+    @Getter
     private final TextField searchField = new TextField(150, 10, NanoFontLoader.misans, ThemeColor.bgColor, ThemeColor.outlineColor);
     @Getter
     private MusicPlayerGUI currentGUI;
+
+    // Thread
+    private SearchMusicThread currentThread;
 
     // Player
     public final MusicPlayer player = new MusicPlayer();
@@ -80,7 +84,6 @@ public class MusicPlayerScreen extends GuiScreen {
 
         categoryButtons.add(new CategoryButton("为我推荐", MusicCategory.RECOMMENDED, new PlayListListGUI()));
         categoryButtons.add(new CategoryButton("我喜欢的音乐", MusicCategory.LIKED, new PlayListGUI(categoryButtons.get(0).getGui())));
-        categoryButtons.add(new CategoryButton("最近播放", MusicCategory.RECENT, new PlayListGUI(categoryButtons.get(0).getGui())));
 
         currentGUI = categoryButtons.get(0).getGui();
         categoryButtons.get(0).setSelected(true);
@@ -185,32 +188,39 @@ public class MusicPlayerScreen extends GuiScreen {
                 playBtn.setSize(16);
                 playBtn.setBg(true);
                 playBtn.setZoom(true);
-                playBtn.updateState(x + width / 2f - 10f, playerY + 3f, mouseX, mouseY);
+                playBtn.updateState(x + width / 2f - 10f, playerY + 4f, mouseX, mouseY);
                 playBtn.draw();
             } else {
                 pauseBtn.setSize(16);
                 pauseBtn.setZoom(true);
                 pauseBtn.setBg(true);
-                pauseBtn.updateState(x + width / 2f - 10f, playerY + 3f, mouseX, mouseY);
+                pauseBtn.updateState(x + width / 2f - 10f, playerY + 4f, mouseX, mouseY);
                 pauseBtn.draw();
             }
 
             preBtn.setSize(15);
-            preBtn.updateState(x + width / 2f - 35f, playerY + 3f, mouseX, mouseY);
+            preBtn.updateState(x + width / 2f - 35f, playerY + 4f, mouseX, mouseY);
             preBtn.draw();
 
             nextBtn.setSize(15);
-            nextBtn.updateState(x + width / 2f + 16f, playerY + 3f, mouseX, mouseY);
+            nextBtn.updateState(x + width / 2f + 16f, playerY + 4f, mouseX, mouseY);
             nextBtn.draw();
 
-            playerSlider.draw(x + width / 2f - 100f, playerY + 25f, mouseX, mouseY);
-            volumeSlider.draw(x + width - 120f, playerY + 25f, mouseX, mouseY);
+            playerSlider.draw(x + width / 2f - 100f, playerY + 27f, mouseX, mouseY);
+            volumeSlider.draw(x + width - 120f, playerY + 27f, mouseX, mouseY);
         }
 
         NanoUtil.scaleEnd();
         NanoUtil.endFrame();
 
         RenderUtil.scaleEnd();
+
+        if (currentThread != null && !currentThread.isAlive()) {
+            setCurrentGUI(currentThread.getGui());
+            searchField.text = "";
+            searchField.focused = false;
+            currentThread = null;
+        }
     }
 
     @Override
@@ -220,9 +230,9 @@ public class MusicPlayerScreen extends GuiScreen {
             Keyboard.enableRepeatEvents(false);
         }
 
-        if (keyCode == Keyboard.KEY_RETURN || keyCode == Keyboard.KEY_NUMPADENTER && !searchField.text.isEmpty()) {
-            currentGUI = new PlayListGUI(MusicAPI.search(searchField.text), currentGUI);
-            searchField.text = "";
+        if (keyCode == Keyboard.KEY_RETURN || keyCode == Keyboard.KEY_NUMPADENTER && !searchField.text.isEmpty() && (currentThread == null || !currentThread.isAlive())) {
+            currentThread = new SearchMusicThread(this);
+            currentThread.start();
         }
 
         searchField.keyTyped(typedChar, keyCode);

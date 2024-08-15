@@ -15,6 +15,8 @@
  */
 package org.lwjgl.openal;
 
+import lombok.Getter;
+
 import java.util.HashMap;
 
 /**
@@ -34,7 +36,12 @@ public final class ALCdevice {
     /** Address of actual device */
     public final long device;
 
-    /** Whether this device is valid */
+    /** Whether this device is valid
+     * -- GETTER --
+     *
+     * @return true if this device is still valid
+     */
+    @Getter
     private boolean valid;
 
     /** List of contexts belonging to the device */
@@ -93,10 +100,4 @@ public final class ALCdevice {
         contexts.clear();
     }
 
-    /**
-     * @return true if this device is still valid
-     */
-    public boolean isValid() {
-        return valid;
-    }
 }

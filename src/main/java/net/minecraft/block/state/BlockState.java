@@ -4,6 +4,7 @@ import com.google.common.base.Function;
 import com.google.common.base.Joiner;
 import com.google.common.base.Objects;
 import com.google.common.collect.*;
+import lombok.Getter;
 import net.minecraft.block.Block;
 import net.minecraft.block.properties.IProperty;
 import net.minecraft.util.Cartesian;
@@ -18,8 +19,10 @@ public class BlockState {
             return p_apply_1_ == null ? "<NULL>" : p_apply_1_.getName();
         }
     };
+    @Getter
     private final Block block;
     private final ImmutableList<IProperty> properties;
+    @Getter
     private final ImmutableList<IBlockState> validStates;
 
     public BlockState(Block blockIn, IProperty... properties) {
@@ -47,10 +50,6 @@ public class BlockState {
         this.validStates = ImmutableList.copyOf(list);
     }
 
-    public ImmutableList<IBlockState> getValidStates() {
-        return this.validStates;
-    }
-
     private List<Iterable<Comparable>> getAllowedValues() {
         List<Iterable<Comparable>> list = Lists.newArrayList();
 
@@ -65,10 +64,6 @@ public class BlockState {
         return this.validStates.get(0);
     }
 
-    public Block getBlock() {
-        return this.block;
-    }
-
     public Collection<IProperty> getProperties() {
         return this.properties;
     }
@@ -78,7 +73,9 @@ public class BlockState {
     }
 
     static class StateImplementation extends BlockStateBase {
+        @Getter
         private final Block block;
+        @Getter
         private final ImmutableMap<IProperty, Comparable> properties;
         private ImmutableTable<IProperty, Comparable, IBlockState> propertyValueTable;
 
@@ -107,14 +104,6 @@ public class BlockState {
             } else {
                 return this.properties.get(property) == value ? this : this.propertyValueTable.get(property, value);
             }
-        }
-
-        public ImmutableMap<IProperty, Comparable> getProperties() {
-            return this.properties;
-        }
-
-        public Block getBlock() {
-            return this.block;
         }
 
         public boolean equals(Object p_equals_1_) {

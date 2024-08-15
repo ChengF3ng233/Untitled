@@ -8,6 +8,7 @@ import com.google.common.util.concurrent.FutureCallback;
 import com.google.common.util.concurrent.Futures;
 import com.google.common.util.concurrent.ListenableFuture;
 import com.google.common.util.concurrent.SettableFuture;
+import lombok.Getter;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiScreenWorking;
 import net.minecraft.client.renderer.texture.DynamicTexture;
@@ -45,10 +46,16 @@ public class ResourcePackRepository {
     };
     public final IResourcePack rprDefaultResourcePack;
     public final IMetadataSerializer rprMetadataSerializer;
+    @Getter
     private final File dirResourcepacks;
     private final File dirServerResourcepacks;
     private final ReentrantLock lock = new ReentrantLock();
     public List<ResourcePackRepository.Entry> repositoryEntries = Lists.newArrayList();
+    /**
+     * -- GETTER --
+     *  Getter for the IResourcePack instance associated with this ResourcePackRepository
+     */
+    @Getter
     private IResourcePack resourcePackInstance;
     private ListenableFuture<Object> downloadingPacks;
     private List<ResourcePackRepository.Entry> repositoryEntriesAll = Lists.newArrayList();
@@ -82,10 +89,10 @@ public class ResourcePackRepository {
     private void fixDirResourcepacks() {
         if (this.dirResourcepacks.exists()) {
             if (!this.dirResourcepacks.isDirectory() && (!this.dirResourcepacks.delete() || !this.dirResourcepacks.mkdirs())) {
-                logger.warn("Unable to recreate resourcepack folder, it exists but is not a directory: " + this.dirResourcepacks);
+                logger.warn("Unable to recreate resourcepack folder, it exists but is not a directory: {}", this.dirResourcepacks);
             }
         } else if (!this.dirResourcepacks.mkdirs()) {
-            logger.warn("Unable to create resourcepack folder: " + this.dirResourcepacks);
+            logger.warn("Unable to create resourcepack folder: {}", this.dirResourcepacks);
         }
     }
 
@@ -137,10 +144,6 @@ public class ResourcePackRepository {
         this.repositoryEntries.addAll(repositories);
     }
 
-    public File getDirResourcepacks() {
-        return this.dirResourcepacks;
-    }
-
     public ListenableFuture<Object> downloadResourcePack(String url, String hash) {
         String s;
 
@@ -166,10 +169,10 @@ public class ResourcePackRepository {
                         return listenablefuture3;
                     }
 
-                    logger.warn("File " + file1 + " had wrong hash (expected " + hash + ", found " + s1 + "). Deleting it.");
+                    logger.warn("File {} had wrong hash (expected {}, found {}). Deleting it.", file1, hash, s1);
                     FileUtils.deleteQuietly(file1);
                 } catch (IOException ioexception) {
-                    logger.warn("File " + file1 + " couldn't be hashed. Deleting it.", ioexception);
+                    logger.warn("File {} couldn't be hashed. Deleting it.", file1, ioexception);
                     FileUtils.deleteQuietly(file1);
                 }
             }
@@ -213,7 +216,7 @@ public class ResourcePackRepository {
 
         for (File file1 : list) {
             if (i++ >= 10) {
-                logger.info("Deleting old server resource pack " + file1.getName());
+                logger.info("Deleting old server resource pack {}", file1.getName());
                 FileUtils.deleteQuietly(file1);
             }
         }
@@ -222,13 +225,6 @@ public class ResourcePackRepository {
     public ListenableFuture<Object> setResourcePackInstance(File resourceFile) {
         this.resourcePackInstance = new FileResourcePack(resourceFile);
         return Minecraft.getMinecraft().scheduleResourcesRefresh();
-    }
-
-    /**
-     * Getter for the IResourcePack instance associated with this ResourcePackRepository
-     */
-    public IResourcePack getResourcePackInstance() {
-        return this.resourcePackInstance;
     }
 
     public void clearResourcePack() {

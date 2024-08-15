@@ -1,5 +1,6 @@
 package net.minecraft.network.play.server;
 
+import lombok.Getter;
 import net.minecraft.network.Packet;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.network.play.INetHandlerPlayClient;
@@ -8,6 +9,7 @@ import net.minecraft.util.EnumParticleTypes;
 import java.io.IOException;
 
 public class S2APacketParticles implements Packet<INetHandlerPlayClient> {
+    @Getter
     private EnumParticleTypes particleType;
     private float xCoord;
     private float yCoord;
@@ -15,8 +17,19 @@ public class S2APacketParticles implements Packet<INetHandlerPlayClient> {
     private float xOffset;
     private float yOffset;
     private float zOffset;
+    /**
+     * -- GETTER --
+     *  Gets the speed of the particle animation (used in client side rendering).
+     */
+    @Getter
     private float particleSpeed;
+    /**
+     * -- GETTER --
+     *  Gets the amount of particles to spawn
+     */
+    @Getter
     private int particleCount;
+    @Getter
     private boolean longDistance;
 
     /**
@@ -89,14 +102,6 @@ public class S2APacketParticles implements Packet<INetHandlerPlayClient> {
         }
     }
 
-    public EnumParticleTypes getParticleType() {
-        return this.particleType;
-    }
-
-    public boolean isLongDistance() {
-        return this.longDistance;
-    }
-
     /**
      * Gets the x coordinate to spawn the particle.
      */
@@ -137,20 +142,6 @@ public class S2APacketParticles implements Packet<INetHandlerPlayClient> {
      */
     public float getZOffset() {
         return this.zOffset;
-    }
-
-    /**
-     * Gets the speed of the particle animation (used in client side rendering).
-     */
-    public float getParticleSpeed() {
-        return this.particleSpeed;
-    }
-
-    /**
-     * Gets the amount of particles to spawn
-     */
-    public int getParticleCount() {
-        return this.particleCount;
     }
 
     /**

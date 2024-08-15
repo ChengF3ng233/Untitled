@@ -3,6 +3,7 @@ package net.minecraft.block;
 import com.google.common.base.Predicate;
 import com.google.common.collect.Collections2;
 import com.google.common.collect.Lists;
+import lombok.Getter;
 import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.block.state.BlockState;
@@ -91,6 +92,7 @@ public abstract class BlockFlower extends BlockBush {
         }
     }
 
+    @Getter
     public enum EnumFlowerType implements IStringSerializable {
         DANDELION(BlockFlower.EnumFlowerColor.YELLOW, 0, "dandelion"),
         POPPY(BlockFlower.EnumFlowerColor.RED, 0, "poppy"),
@@ -146,24 +148,9 @@ public abstract class BlockFlower extends BlockBush {
             return TYPES_FOR_BLOCK[flowerColor.ordinal()];
         }
 
-        public BlockFlower.EnumFlowerColor getBlockType() {
-            return this.blockType;
-        }
-
-        public int getMeta() {
-            return this.meta;
-        }
-
         public String toString() {
             return this.name;
         }
 
-        public String getName() {
-            return this.name;
-        }
-
-        public String getUnlocalizedName() {
-            return this.unlocalizedName;
-        }
     }
 }

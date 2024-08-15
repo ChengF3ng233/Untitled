@@ -58,7 +58,7 @@ public class PreYggdrasilConverter {
                     }
 
                     public void onProfileLookupFailed(GameProfile p_onProfileLookupFailed_1_, Exception p_onProfileLookupFailed_2_) {
-                        PreYggdrasilConverter.LOGGER.warn("Could not lookup user whitelist entry for " + p_onProfileLookupFailed_1_.getName(), p_onProfileLookupFailed_2_);
+                        PreYggdrasilConverter.LOGGER.warn("Could not lookup user whitelist entry for {}", p_onProfileLookupFailed_1_.getName(), p_onProfileLookupFailed_2_);
                     }
                 };
                 lookupNames(minecraftserver, Lists.newArrayList(p_152719_0_), profilelookupcallback);

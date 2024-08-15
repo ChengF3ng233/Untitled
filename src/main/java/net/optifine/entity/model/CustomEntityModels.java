@@ -2,6 +2,7 @@ package net.optifine.entity.model;
 
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
+import lombok.Getter;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.model.ModelRenderer;
@@ -18,6 +19,7 @@ import java.io.IOException;
 import java.util.*;
 
 public class CustomEntityModels {
+    @Getter
     private static boolean active = false;
     private static Map<Class, Render> originalEntityRenderMap = null;
     private static Map<Class, TileEntitySpecialRenderer> originalTileEntityRenderMap = null;
@@ -244,7 +246,4 @@ public class CustomEntityModels {
         }
     }
 
-    public static boolean isActive() {
-        return active;
-    }
 }

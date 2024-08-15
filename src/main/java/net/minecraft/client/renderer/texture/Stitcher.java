@@ -2,6 +2,7 @@ package net.minecraft.client.renderer.texture;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
+import lombok.Getter;
 import net.minecraft.client.renderer.StitcherException;
 import net.minecraft.util.MathHelper;
 
@@ -20,7 +21,9 @@ public class Stitcher {
      * Max size (width or height) of a single tile
      */
     private final int maxTileDimension;
+    @Getter
     private int currentWidth;
+    @Getter
     private int currentHeight;
 
     public Stitcher(int maxTextureWidth, int maxTextureHeight, boolean p_i45095_3_, int p_i45095_4_, int mipmapLevel) {
@@ -33,14 +36,6 @@ public class Stitcher {
 
     private static int getMipmapDimension(int p_147969_0_, int p_147969_1_) {
         return (p_147969_0_ >> p_147969_1_) + ((p_147969_0_ & (1 << p_147969_1_) - 1) == 0 ? 0 : 1) << p_147969_1_;
-    }
-
-    public int getCurrentWidth() {
-        return this.currentWidth;
-    }
-
-    public int getCurrentHeight() {
-        return this.currentHeight;
     }
 
     public void addSprite(TextureAtlasSprite p_110934_1_) {
@@ -183,6 +178,7 @@ public class Stitcher {
         private final int width;
         private final int height;
         private final int mipmapLevelHolder;
+        @Getter
         private boolean rotated;
         private float scaleFactor = 1.0F;
 
@@ -208,10 +204,6 @@ public class Stitcher {
 
         public void rotate() {
             this.rotated = !this.rotated;
-        }
-
-        public boolean isRotated() {
-            return this.rotated;
         }
 
         public void setNewDimension(int p_94196_1_) {
@@ -246,7 +238,9 @@ public class Stitcher {
     }
 
     public static class Slot {
+        @Getter
         private final int originX;
+        @Getter
         private final int originY;
         private final int width;
         private final int height;
@@ -262,14 +256,6 @@ public class Stitcher {
 
         public Stitcher.Holder getStitchHolder() {
             return this.holder;
-        }
-
-        public int getOriginX() {
-            return this.originX;
-        }
-
-        public int getOriginY() {
-            return this.originY;
         }
 
         public boolean addSlot(Stitcher.Holder holderIn) {

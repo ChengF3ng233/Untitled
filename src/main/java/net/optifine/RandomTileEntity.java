@@ -1,11 +1,15 @@
 package net.optifine;
 
+import lombok.Getter;
+import lombok.Setter;
 import net.minecraft.src.Config;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockPos;
 import net.minecraft.world.biome.BiomeGenBase;
 import net.optifine.util.TileEntityUtils;
 
+@Getter
+@Setter
 public class RandomTileEntity implements IRandomEntity {
     private TileEntity tileEntity;
 
@@ -34,11 +38,4 @@ public class RandomTileEntity implements IRandomEntity {
         return -1;
     }
 
-    public TileEntity getTileEntity() {
-        return this.tileEntity;
-    }
-
-    public void setTileEntity(TileEntity tileEntity) {
-        this.tileEntity = tileEntity;
-    }
 }

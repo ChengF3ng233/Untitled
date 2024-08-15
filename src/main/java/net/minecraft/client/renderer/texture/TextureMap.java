@@ -2,6 +2,8 @@ package net.minecraft.client.renderer.texture;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
+import lombok.Getter;
+import lombok.Setter;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.StitcherException;
 import net.minecraft.client.resources.IResource;
@@ -40,11 +42,14 @@ public class TextureMap extends AbstractTexture implements ITickableTextureObjec
     private final List<TextureAtlasSprite> listAnimatedSprites;
     private final Map<String, TextureAtlasSprite> mapRegisteredSprites;
     private final Map<String, TextureAtlasSprite> mapUploadedSprites;
+    @Getter
     private final String basePath;
     private final IIconCreator iconCreator;
     private final TextureAtlasSprite missingImage;
     public int atlasWidth;
     public int atlasHeight;
+    @Getter
+    @Setter
     private int mipmapLevels;
     private boolean skipFirst;
     private TextureAtlasSprite[] iconGrid;
@@ -54,6 +59,7 @@ public class TextureMap extends AbstractTexture implements ITickableTextureObjec
     private double iconGridSizeU;
     private double iconGridSizeV;
     private final CounterInt counterIndexInMap;
+    @Getter
     private int countAnimationsActive;
     private int frameCountAnimations;
 
@@ -229,10 +235,10 @@ public class TextureMap extends AbstractTexture implements ITickableTextureObjec
                         AnimationMetadataSection animationmetadatasection = iresource.getMetadata("animation");
                         textureatlassprite3.loadSprite(abufferedimage, animationmetadatasection);
                     } catch (RuntimeException runtimeexception) {
-                        logger.error("Unable to parse metadata from " + resourcelocation2, runtimeexception);
+                        logger.error("Unable to parse metadata from {}", resourcelocation2, runtimeexception);
                         continue;
                     } catch (IOException ioexception1) {
-                        logger.error("Using missing texture, unable to load " + resourcelocation2 + ", " + ioexception1.getClass().getName());
+                        logger.error("Using missing texture, unable to load {}, {}", resourcelocation2, ioexception1.getClass().getName());
                         continue;
                     }
 
@@ -567,18 +573,6 @@ public class TextureMap extends AbstractTexture implements ITickableTextureObjec
         return this.setTextureEntry(p_setTextureEntry_1_.getIconName(), p_setTextureEntry_1_);
     }
 
-    public String getBasePath() {
-        return this.basePath;
-    }
-
-    public int getMipmapLevels() {
-        return this.mipmapLevels;
-    }
-
-    public void setMipmapLevels(int mipmapLevelsIn) {
-        this.mipmapLevels = mipmapLevelsIn;
-    }
-
     private boolean isAbsoluteLocation(ResourceLocation p_isAbsoluteLocation_1_) {
         String s = p_isAbsoluteLocation_1_.getResourcePath();
         return this.isAbsoluteLocationPath(s);
@@ -797,7 +791,4 @@ public class TextureMap extends AbstractTexture implements ITickableTextureObjec
         return this.listAnimatedSprites.size();
     }
 
-    public int getCountAnimationsActive() {
-        return this.countAnimationsActive;
-    }
 }

@@ -1,6 +1,7 @@
 package net.minecraft.block;
 
 import com.google.common.base.Predicate;
+import lombok.Getter;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.properties.PropertyBool;
@@ -254,6 +255,7 @@ public class BlockRedstoneComparator extends BlockRedstoneDiode implements ITile
         return this.getDefaultState().withProperty(FACING, placer.getHorizontalFacing().getOpposite()).withProperty(POWERED, Boolean.FALSE).withProperty(MODE, BlockRedstoneComparator.Mode.COMPARE);
     }
 
+    @Getter
     public enum Mode implements IStringSerializable {
         COMPARE("compare"),
         SUBTRACT("subtract");
@@ -268,8 +270,5 @@ public class BlockRedstoneComparator extends BlockRedstoneDiode implements ITile
             return this.name;
         }
 
-        public String getName() {
-            return this.name;
-        }
     }
 }

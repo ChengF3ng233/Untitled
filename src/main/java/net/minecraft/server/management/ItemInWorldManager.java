@@ -1,5 +1,6 @@
 package net.minecraft.server.management;
 
+import lombok.Getter;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockChest;
 import net.minecraft.block.material.Material;
@@ -30,6 +31,7 @@ public class ItemInWorldManager {
      * The EntityPlayerMP object that this object is connected to.
      */
     public EntityPlayerMP thisPlayerMP;
+    @Getter
     private WorldSettings.GameType gameType = WorldSettings.GameType.NOT_SET;
 
     /**
@@ -51,10 +53,6 @@ public class ItemInWorldManager {
 
     public ItemInWorldManager(World worldIn) {
         this.theWorld = worldIn;
-    }
-
-    public WorldSettings.GameType getGameType() {
-        return this.gameType;
     }
 
     public void setGameType(WorldSettings.GameType type) {

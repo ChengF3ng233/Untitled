@@ -104,7 +104,7 @@ public class CommandHandler implements ICommandManager {
             ChatComponentTranslation chatcomponenttranslation = new ChatComponentTranslation("commands.generic.exception");
             chatcomponenttranslation.getChatStyle().setColor(EnumChatFormatting.RED);
             sender.addChatMessage(chatcomponenttranslation);
-            logger.warn("Couldn't process command: '" + input + "'");
+            logger.warn("Couldn't process command: '{}'", input);
         }
 
         return false;

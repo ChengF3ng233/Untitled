@@ -1,5 +1,6 @@
 package net.minecraft.network.play.client;
 
+import lombok.Getter;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.Packet;
 import net.minecraft.network.PacketBuffer;
@@ -7,6 +8,7 @@ import net.minecraft.network.play.INetHandlerPlayServer;
 
 import java.io.IOException;
 
+@Getter
 public class C0EPacketClickWindow implements Packet<INetHandlerPlayServer> {
     /**
      * The id of the window which was clicked. 0 for player inventory.
@@ -81,27 +83,4 @@ public class C0EPacketClickWindow implements Packet<INetHandlerPlayServer> {
         buf.writeItemStackToBuffer(this.clickedItem);
     }
 
-    public int getWindowId() {
-        return this.windowId;
-    }
-
-    public int getSlotId() {
-        return this.slotId;
-    }
-
-    public int getUsedButton() {
-        return this.usedButton;
-    }
-
-    public short getActionNumber() {
-        return this.actionNumber;
-    }
-
-    public ItemStack getClickedItem() {
-        return this.clickedItem;
-    }
-
-    public int getMode() {
-        return this.mode;
-    }
 }

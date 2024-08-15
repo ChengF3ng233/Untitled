@@ -1,5 +1,7 @@
 package net.minecraft.world;
 
+import lombok.Getter;
+
 public class WorldType {
     /**
      * List of world types.
@@ -41,7 +43,11 @@ public class WorldType {
 
     /**
      * The int version of the ChunkProvider that generated this world.
+     * -- GETTER --
+     *  Returns generatorVersion.
+
      */
+    @Getter
     private final int generatorVersion;
 
     /**
@@ -93,13 +99,6 @@ public class WorldType {
      */
     public String getTranslatedInfo() {
         return this.getTranslateName() + ".info";
-    }
-
-    /**
-     * Returns generatorVersion.
-     */
-    public int getGeneratorVersion() {
-        return this.generatorVersion;
     }
 
     public WorldType getWorldTypeForGeneratorVersion(int version) {

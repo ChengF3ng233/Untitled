@@ -1,6 +1,7 @@
 package net.minecraft.network.play.server;
 
 import com.google.common.collect.Lists;
+import lombok.Getter;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.entity.ai.attributes.IAttributeInstance;
 import net.minecraft.network.Packet;
@@ -14,6 +15,7 @@ import java.util.UUID;
 
 public class S20PacketEntityProperties implements Packet<INetHandlerPlayClient> {
     private final List<S20PacketEntityProperties.Snapshot> field_149444_b = Lists.newArrayList();
+    @Getter
     private int entityId;
 
     public S20PacketEntityProperties() {
@@ -74,10 +76,6 @@ public class S20PacketEntityProperties implements Packet<INetHandlerPlayClient> 
      */
     public void processPacket(INetHandlerPlayClient handler) {
         handler.handleEntityProperties(this);
-    }
-
-    public int getEntityId() {
-        return this.entityId;
     }
 
     public List<S20PacketEntityProperties.Snapshot> func_149441_d() {

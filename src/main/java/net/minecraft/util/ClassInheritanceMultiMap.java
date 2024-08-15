@@ -4,6 +4,7 @@ import com.google.common.collect.Iterators;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
+import lombok.Getter;
 import net.optifine.util.IteratorCache;
 
 import java.util.*;
@@ -15,6 +16,7 @@ public class ClassInheritanceMultiMap<T> extends AbstractSet<T> {
     private final Set<Class<?>> knownKeys = Sets.newIdentityHashSet();
     private final Class<T> baseClass;
     private final List<T> values = Lists.newArrayList();
+    @Getter
     public boolean empty;
 
     public ClassInheritanceMultiMap(Class<T> baseClassIn) {
@@ -122,7 +124,4 @@ public class ClassInheritanceMultiMap<T> extends AbstractSet<T> {
         return this.values.size();
     }
 
-    public boolean isEmpty() {
-        return this.empty;
-    }
 }

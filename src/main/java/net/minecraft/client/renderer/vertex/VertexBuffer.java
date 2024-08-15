@@ -1,5 +1,7 @@
 package net.minecraft.client.renderer.vertex;
 
+import lombok.Getter;
+import lombok.Setter;
 import net.minecraft.client.renderer.OpenGlHelper;
 import net.optifine.render.VboRange;
 import net.optifine.render.VboRegion;
@@ -11,8 +13,12 @@ public class VertexBuffer {
     private final VertexFormat vertexFormat;
     private int glBufferId;
     private int count;
+    @Getter
     private VboRegion vboRegion;
+    @Getter
     private VboRange vboRange;
+    @Getter
+    @Setter
     private int drawMode;
 
     public VertexBuffer(VertexFormat vertexFormatIn) {
@@ -58,10 +64,6 @@ public class VertexBuffer {
         }
     }
 
-    public VboRegion getVboRegion() {
-        return this.vboRegion;
-    }
-
     public void setVboRegion(VboRegion p_setVboRegion_1_) {
         if (p_setVboRegion_1_ != null) {
             this.deleteGlBuffers();
@@ -70,15 +72,4 @@ public class VertexBuffer {
         }
     }
 
-    public VboRange getVboRange() {
-        return this.vboRange;
-    }
-
-    public int getDrawMode() {
-        return this.drawMode;
-    }
-
-    public void setDrawMode(int p_setDrawMode_1_) {
-        this.drawMode = p_setDrawMode_1_;
-    }
 }

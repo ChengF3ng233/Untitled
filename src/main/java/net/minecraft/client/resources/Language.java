@@ -1,9 +1,13 @@
 package net.minecraft.client.resources;
 
+import lombok.Getter;
+
 public class Language implements Comparable<Language> {
+    @Getter
     private final String languageCode;
     private final String region;
     private final String name;
+    @Getter
     private final boolean bidirectional;
 
     public Language(String languageCodeIn, String regionIn, String nameIn, boolean bidirectionalIn) {
@@ -11,14 +15,6 @@ public class Language implements Comparable<Language> {
         this.region = regionIn;
         this.name = nameIn;
         this.bidirectional = bidirectionalIn;
-    }
-
-    public String getLanguageCode() {
-        return this.languageCode;
-    }
-
-    public boolean isBidirectional() {
-        return this.bidirectional;
     }
 
     public String toString() {

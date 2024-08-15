@@ -2,6 +2,7 @@ package net.minecraft.world.gen;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
+import lombok.Getter;
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
 import net.minecraft.util.MathHelper;
@@ -12,7 +13,9 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 public class FlatGeneratorInfo {
+    @Getter
     private final List<FlatLayerInfo> flatLayers = Lists.newArrayList();
+    @Getter
     private final Map<String, Map<String, String>> worldFeatures = Maps.newHashMap();
     private int biomeToUse;
 
@@ -191,14 +194,6 @@ public class FlatGeneratorInfo {
      */
     public void setBiome(int biome) {
         this.biomeToUse = biome;
-    }
-
-    public Map<String, Map<String, String>> getWorldFeatures() {
-        return this.worldFeatures;
-    }
-
-    public List<FlatLayerInfo> getFlatLayers() {
-        return this.flatLayers;
     }
 
     public void func_82645_d() {

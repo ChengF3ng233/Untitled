@@ -1,7 +1,9 @@
 package net.optifine.config;
 
+import lombok.Getter;
 import net.minecraft.src.Config;
 
+@Getter
 public class VillagerProfession {
     private final int profession;
     private int[] careers;
@@ -37,14 +39,6 @@ public class VillagerProfession {
             this.careers = Config.addIntToArray(this.careers, car);
             return true;
         }
-    }
-
-    public int getProfession() {
-        return this.profession;
-    }
-
-    public int[] getCareers() {
-        return this.careers;
     }
 
     public String toString() {

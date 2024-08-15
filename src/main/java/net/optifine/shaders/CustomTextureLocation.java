@@ -1,5 +1,6 @@
 package net.optifine.shaders;
 
+import lombok.Getter;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.texture.AbstractTexture;
 import net.minecraft.client.renderer.texture.ITextureObject;
@@ -11,6 +12,7 @@ public class CustomTextureLocation implements ICustomTexture {
     public static final int VARIANT_BASE = 0;
     public static final int VARIANT_NORMAL = 1;
     public static final int VARIANT_SPECULAR = 2;
+    @Getter
     private int textureUnit = -1;
     private final ResourceLocation location;
     private int variant = 0;
@@ -55,10 +57,6 @@ public class CustomTextureLocation implements ICustomTexture {
         }
 
         return itextureobject.getGlTextureId();
-    }
-
-    public int getTextureUnit() {
-        return this.textureUnit;
     }
 
     public void deleteTexture() {

@@ -1,11 +1,13 @@
 package net.minecraft.network.play.client;
 
+import lombok.Getter;
 import net.minecraft.network.Packet;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.network.play.INetHandlerPlayServer;
 
 import java.io.IOException;
 
+@Getter
 public class C00PacketKeepAlive implements Packet<INetHandlerPlayServer> {
     private int key;
 
@@ -37,7 +39,4 @@ public class C00PacketKeepAlive implements Packet<INetHandlerPlayServer> {
         buf.writeVarIntToBuffer(this.key);
     }
 
-    public int getKey() {
-        return this.key;
-    }
 }

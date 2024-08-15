@@ -1,8 +1,10 @@
 package net.minecraft.client.renderer;
 
+import lombok.Setter;
 import net.minecraft.client.renderer.vertex.VertexBuffer;
 import net.minecraft.src.Config;
 
+@Setter
 public class VertexBufferUploader extends WorldVertexBufferUploader {
     private VertexBuffer vertexBuffer = null;
 
@@ -16,7 +18,4 @@ public class VertexBufferUploader extends WorldVertexBufferUploader {
         p_181679_1_.reset();
     }
 
-    public void setVertexBuffer(VertexBuffer vertexBufferIn) {
-        this.vertexBuffer = vertexBufferIn;
-    }
 }

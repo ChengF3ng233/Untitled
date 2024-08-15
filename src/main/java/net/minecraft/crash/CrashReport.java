@@ -1,6 +1,7 @@
 package net.minecraft.crash;
 
 import com.google.common.collect.Lists;
+import lombok.Getter;
 import net.minecraft.util.ReportedException;
 import net.minecraft.world.gen.layer.IntCache;
 import net.optifine.CrashReporter;
@@ -23,7 +24,11 @@ public class CrashReport {
 
     /**
      * Description of the crash report.
+     * -- GETTER --
+     *  Returns the description of the Crash Report.
+
      */
+    @Getter
     private final String description;
 
     /**
@@ -145,13 +150,6 @@ public class CrashReport {
                 return IntCache.getCacheSizes();
             }
         });
-    }
-
-    /**
-     * Returns the description of the Crash Report.
-     */
-    public String getDescription() {
-        return this.description;
     }
 
     /**
@@ -281,7 +279,7 @@ public class CrashReport {
                 this.crashReportFile = toFile;
                 return true;
             } catch (Throwable throwable) {
-                logger.error("Could not save crash report to " + toFile, throwable);
+                logger.error("Could not save crash report to {}", toFile, throwable);
                 return false;
             }
         }

@@ -1,6 +1,7 @@
 package net.minecraft.client.shader;
 
 import com.google.common.collect.Maps;
+import lombok.Getter;
 import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.client.resources.IResourceManager;
 import net.minecraft.client.util.JsonException;
@@ -17,6 +18,7 @@ import java.util.Map;
 
 public class ShaderLoader {
     private final ShaderLoader.ShaderType shaderType;
+    @Getter
     private final String shaderFilename;
     private final int shader;
     private int shaderAttachCount = 0;
@@ -81,14 +83,11 @@ public class ShaderLoader {
         }
     }
 
-    public String getShaderFilename() {
-        return this.shaderFilename;
-    }
-
     public enum ShaderType {
         VERTEX("vertex", ".vsh", OpenGlHelper.GL_VERTEX_SHADER),
         FRAGMENT("fragment", ".fsh", OpenGlHelper.GL_FRAGMENT_SHADER);
 
+        @Getter
         private final String shaderName;
         private final String shaderExtension;
         private final int shaderMode;
@@ -98,10 +97,6 @@ public class ShaderLoader {
             this.shaderName = p_i45090_3_;
             this.shaderExtension = p_i45090_4_;
             this.shaderMode = p_i45090_5_;
-        }
-
-        public String getShaderName() {
-            return this.shaderName;
         }
 
         private String getShaderExtension() {

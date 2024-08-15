@@ -1,34 +1,19 @@
 package net.optifine.render;
 
+import lombok.Getter;
+import lombok.Setter;
 import net.optifine.util.LinkedList;
 
+@Getter
 public class VboRange {
+    @Setter
     private int position = -1;
+    @Setter
     private int size = 0;
     private final LinkedList.Node<VboRange> node = new LinkedList.Node(this);
 
-    public int getPosition() {
-        return this.position;
-    }
-
-    public void setPosition(int position) {
-        this.position = position;
-    }
-
-    public int getSize() {
-        return this.size;
-    }
-
-    public void setSize(int size) {
-        this.size = size;
-    }
-
     public int getPositionNext() {
         return this.position + this.size;
-    }
-
-    public LinkedList.Node<VboRange> getNode() {
-        return this.node;
     }
 
     public VboRange getPrev() {

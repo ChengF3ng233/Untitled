@@ -1,6 +1,7 @@
 package net.minecraft.network.login.client;
 
 import com.mojang.authlib.GameProfile;
+import lombok.Getter;
 import net.minecraft.network.Packet;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.network.login.INetHandlerLoginServer;
@@ -8,6 +9,7 @@ import net.minecraft.network.login.INetHandlerLoginServer;
 import java.io.IOException;
 import java.util.UUID;
 
+@Getter
 public class C00PacketLoginStart implements Packet<INetHandlerLoginServer> {
     private GameProfile profile;
 
@@ -39,7 +41,4 @@ public class C00PacketLoginStart implements Packet<INetHandlerLoginServer> {
         handler.processLoginStart(this);
     }
 
-    public GameProfile getProfile() {
-        return this.profile;
-    }
 }

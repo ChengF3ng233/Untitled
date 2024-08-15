@@ -1,7 +1,9 @@
 package net.minecraft.client.resources.data;
 
+import lombok.Getter;
 import net.minecraft.util.IChatComponent;
 
+@Getter
 public class PackMetadataSection implements IMetadataSection {
     private final IChatComponent packDescription;
     private final int packFormat;
@@ -11,11 +13,4 @@ public class PackMetadataSection implements IMetadataSection {
         this.packFormat = p_i1034_2_;
     }
 
-    public IChatComponent getPackDescription() {
-        return this.packDescription;
-    }
-
-    public int getPackFormat() {
-        return this.packFormat;
-    }
 }

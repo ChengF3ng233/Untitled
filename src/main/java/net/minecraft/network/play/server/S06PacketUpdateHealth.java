@@ -1,11 +1,13 @@
 package net.minecraft.network.play.server;
 
+import lombok.Getter;
 import net.minecraft.network.Packet;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.network.play.INetHandlerPlayClient;
 
 import java.io.IOException;
 
+@Getter
 public class S06PacketUpdateHealth implements Packet<INetHandlerPlayClient> {
     private float health;
     private int foodLevel;
@@ -45,15 +47,4 @@ public class S06PacketUpdateHealth implements Packet<INetHandlerPlayClient> {
         handler.handleUpdateHealth(this);
     }
 
-    public float getHealth() {
-        return this.health;
-    }
-
-    public int getFoodLevel() {
-        return this.foodLevel;
-    }
-
-    public float getSaturationLevel() {
-        return this.saturationLevel;
-    }
 }

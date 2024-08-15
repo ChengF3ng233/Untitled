@@ -76,7 +76,7 @@ public class SharedMonsterAttributes {
             if (iattributeinstance != null) {
                 applyModifiersToAttributeInstance(iattributeinstance, nbttagcompound);
             } else {
-                logger.warn("Ignoring unknown attribute '" + nbttagcompound.getString("Name") + "'");
+                logger.warn("Ignoring unknown attribute '{}'", nbttagcompound.getString("Name"));
             }
         }
     }
@@ -112,7 +112,7 @@ public class SharedMonsterAttributes {
         try {
             return new AttributeModifier(uuid, compound.getString("Name"), compound.getDouble("Amount"), compound.getInteger("Operation"));
         } catch (Exception exception) {
-            logger.warn("Unable to create attribute: " + exception.getMessage());
+            logger.warn("Unable to create attribute: {}", exception.getMessage());
             return null;
         }
     }

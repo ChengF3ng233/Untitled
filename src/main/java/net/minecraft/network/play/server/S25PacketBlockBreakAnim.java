@@ -1,5 +1,6 @@
 package net.minecraft.network.play.server;
 
+import lombok.Getter;
 import net.minecraft.network.Packet;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.network.play.INetHandlerPlayClient;
@@ -7,6 +8,7 @@ import net.minecraft.util.BlockPos;
 
 import java.io.IOException;
 
+@Getter
 public class S25PacketBlockBreakAnim implements Packet<INetHandlerPlayClient> {
     private int breakerId;
     private BlockPos position;
@@ -46,15 +48,4 @@ public class S25PacketBlockBreakAnim implements Packet<INetHandlerPlayClient> {
         handler.handleBlockBreakAnim(this);
     }
 
-    public int getBreakerId() {
-        return this.breakerId;
-    }
-
-    public BlockPos getPosition() {
-        return this.position;
-    }
-
-    public int getProgress() {
-        return this.progress;
-    }
 }

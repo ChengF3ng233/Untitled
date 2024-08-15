@@ -2,11 +2,15 @@ package cn.feng.untitled.ui.font.nano;
 
 import net.minecraft.util.ResourceLocation;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * @author ChengFeng
  * @since 2024/8/3
  **/
 public class NanoFontLoader {
+    public static List<NanoFontRenderer> renderers = new ArrayList<>();
     public static NanoFontRenderer misans;
     public static NanoFontRenderer emoji;
     public static NanoFontRenderer script;
@@ -25,5 +29,23 @@ public class NanoFontLoader {
         greyCliff = new NanoFontRenderer("Greycliff", new ResourceLocation("untitled/font/greycliff.ttf"));
         greyCliffBold = new NanoFontRenderer("GreycliffBold", new ResourceLocation("untitled/font/greycliff-bold.ttf"));
         monster = new NanoFontRenderer("Monster", new ResourceLocation("untitled/font/monster.ttf"));
+
+        renderers.add(misans);
+        renderers.add(emoji);
+        renderers.add(script);
+        renderers.add(rubik);
+        renderers.add(rubikBold);
+        renderers.add(greyCliff);
+        renderers.add(greyCliffBold);
+        renderers.add(monster);
+    }
+
+    public static String[] getRenderers() {
+        String[] values = new String[renderers.size()];
+        for (int i = 0; i < renderers.size(); i++) {
+            NanoFontRenderer fontRenderer = renderers.get(i);
+            values[i] = fontRenderer.getName();
+        }
+        return values;
     }
 }

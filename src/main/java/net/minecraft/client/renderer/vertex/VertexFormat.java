@@ -1,6 +1,7 @@
 package net.minecraft.client.renderer.vertex;
 
 import com.google.common.collect.Lists;
+import lombok.Getter;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -8,12 +9,14 @@ import java.util.List;
 
 public class VertexFormat {
     private static final Logger LOGGER = LogManager.getLogger();
+    @Getter
     private final List<VertexFormatElement> elements;
     private final List<Integer> offsets;
 
     /**
      * The next available offset in this vertex format
      */
+    @Getter
     private int nextOffset;
     private int colorElementOffset;
     private final List<Integer> uvOffsetsById;
@@ -128,14 +131,6 @@ public class VertexFormat {
 
     public int getIntegerSize() {
         return this.getNextOffset() / 4;
-    }
-
-    public int getNextOffset() {
-        return this.nextOffset;
-    }
-
-    public List<VertexFormatElement> getElements() {
-        return this.elements;
     }
 
     public int getElementCount() {

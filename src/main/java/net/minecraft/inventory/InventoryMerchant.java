@@ -1,5 +1,6 @@
 package net.minecraft.inventory;
 
+import lombok.Getter;
 import net.minecraft.entity.IMerchant;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -13,6 +14,7 @@ public class InventoryMerchant implements IInventory {
     private final IMerchant theMerchant;
     private final EntityPlayer thePlayer;
     private final ItemStack[] theInventory = new ItemStack[3];
+    @Getter
     private MerchantRecipe currentRecipe;
     private int currentRecipeIndex;
 
@@ -199,10 +201,6 @@ public class InventoryMerchant implements IInventory {
         }
 
         this.theMerchant.verifySellingItem(this.getStackInSlot(2));
-    }
-
-    public MerchantRecipe getCurrentRecipe() {
-        return this.currentRecipe;
     }
 
     public void setCurrentRecipeIndex(int currentRecipeIndexIn) {

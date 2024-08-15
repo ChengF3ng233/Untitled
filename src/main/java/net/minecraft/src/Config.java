@@ -1,5 +1,7 @@
 package net.minecraft.src;
 
+import lombok.Getter;
+import lombok.Setter;
 import net.minecraft.client.LoadingScreenRenderer;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.ScaledResolution;
@@ -65,22 +67,33 @@ public class Config {
     public static GlVersion glVersion = null;
     public static GlVersion glslVersion = null;
     public static int minecraftVersionInt = -1;
+    @Getter
     public static boolean fancyFogAvailable = false;
+    @Getter
     public static boolean occlusionAvailable = false;
     public static boolean zoomMode = false;
     public static boolean zoomSmoothCamera = false;
     public static boolean waterOpacityChanged = false;
     public static float renderPartialTicks;
     private static String build = null;
+    @Getter
+    @Setter
     private static String newRelease = null;
+    @Getter
+    @Setter
     private static boolean notify64BitJava = false;
+    @Getter
     private static GameSettings gameSettings = null;
+    @Getter
     private static final Minecraft minecraft = Minecraft.getMinecraft();
     private static boolean initialized = false;
     private static Thread minecraftThread = null;
+    @Getter
     private static DisplayMode desktopDisplayMode = null;
     private static DisplayMode[] displayModes = null;
+    @Getter
     private static int antialiasingLevel = 0;
+    @Getter
     private static int availableProcessors = 0;
     private static int texturePackClouds = 0;
     private static boolean fullscreenModeChecked = false;
@@ -192,14 +205,6 @@ public class Config {
         }
 
         return build;
-    }
-
-    public static boolean isFancyFogAvailable() {
-        return fancyFogAvailable;
-    }
-
-    public static boolean isOcclusionAvailable() {
-        return occlusionAvailable;
     }
 
     public static int getMinecraftVersionInt() {
@@ -436,20 +441,20 @@ public class Config {
 
     public static void detail(String p_detail_0_) {
         if (logDetail) {
-            LOGGER.info("[OptiFine] " + p_detail_0_);
+            LOGGER.info("[OptiFine] {}", p_detail_0_);
         }
     }
 
     public static void dbg(String p_dbg_0_) {
-        LOGGER.info("[OptiFine] " + p_dbg_0_);
+        LOGGER.info("[OptiFine] {}", p_dbg_0_);
     }
 
     public static void warn(String p_warn_0_) {
-        LOGGER.warn("[OptiFine] " + p_warn_0_);
+        LOGGER.warn("[OptiFine] {}", p_warn_0_);
     }
 
     public static void error(String p_error_0_) {
-        LOGGER.error("[OptiFine] " + p_error_0_);
+        LOGGER.error("[OptiFine] {}", p_error_0_);
     }
 
     public static void log(String p_log_0_) {
@@ -720,10 +725,6 @@ public class Config {
         }
     }
 
-    public static Minecraft getMinecraft() {
-        return minecraft;
-    }
-
     public static TextureManager getTextureManager() {
         return minecraft.getTextureManager();
     }
@@ -922,10 +923,6 @@ public class Config {
         return getAnisotropicFilterLevel() > 1;
     }
 
-    public static int getAntialiasingLevel() {
-        return antialiasingLevel;
-    }
-
     public static boolean isAntialiasing() {
         return getAntialiasingLevel() > 0;
     }
@@ -1034,10 +1031,6 @@ public class Config {
 
         String[] astring = (String[]) list.toArray(new String[list.size()]);
         return astring;
-    }
-
-    public static DisplayMode getDesktopDisplayMode() {
-        return desktopDisplayMode;
     }
 
     public static DisplayMode[] getDisplayModes() {
@@ -1289,18 +1282,6 @@ public class Config {
         }
     }
 
-    public static GameSettings getGameSettings() {
-        return gameSettings;
-    }
-
-    public static String getNewRelease() {
-        return newRelease;
-    }
-
-    public static void setNewRelease(String p_setNewRelease_0_) {
-        newRelease = p_setNewRelease_0_;
-    }
-
     public static int compareRelease(String p_compareRelease_0_, String p_compareRelease_1_) {
         String[] astring = splitRelease(p_compareRelease_0_);
         String[] astring1 = splitRelease(p_compareRelease_1_);
@@ -1367,10 +1348,6 @@ public class Config {
         i = intHash(i + p_getRandom_0_.getZ());
         i = intHash(i + p_getRandom_0_.getY());
         return i;
-    }
-
-    public static int getAvailableProcessors() {
-        return availableProcessors;
     }
 
     public static void updateAvailableProcessors() {
@@ -1744,14 +1721,6 @@ public class Config {
         }
 
         return 32;
-    }
-
-    public static boolean isNotify64BitJava() {
-        return notify64BitJava;
-    }
-
-    public static void setNotify64BitJava(boolean p_setNotify64BitJava_0_) {
-        notify64BitJava = p_setNotify64BitJava_0_;
     }
 
     public static boolean isConnectedModels() {

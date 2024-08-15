@@ -1,10 +1,7 @@
 package cn.feng.untitled.music.api;
 
 import cn.feng.untitled.config.ConfigManager;
-import cn.feng.untitled.music.api.base.LyricChar;
-import cn.feng.untitled.music.api.base.LyricLine;
-import cn.feng.untitled.music.api.base.Music;
-import cn.feng.untitled.music.api.base.PlayList;
+import cn.feng.untitled.music.api.base.*;
 import cn.feng.untitled.music.api.user.QRCode;
 import cn.feng.untitled.music.api.user.QRCodeState;
 import cn.feng.untitled.music.api.user.ScanResult;
@@ -12,10 +9,7 @@ import cn.feng.untitled.music.api.user.User;
 import cn.feng.untitled.util.data.DataUtil;
 import cn.feng.untitled.util.data.HttpUtil;
 import cn.feng.untitled.util.misc.Logger;
-import com.google.gson.JsonArray;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonNull;
-import com.google.gson.JsonObject;
+import com.google.gson.*;
 import net.minecraft.client.renderer.texture.DynamicTexture;
 import okhttp3.*;
 
@@ -37,7 +31,6 @@ public class MusicAPI {
     public static User user = new User();
 
     public static String fetch(String api, String cookie) {
-        Logger.info("Fetching " + api + " using cookie: " + cookie);
         OkHttpClient client = new OkHttpClient.Builder().build();
         RequestBody body = new FormBody.Builder()
                 .add("cookie", cookie)
@@ -69,6 +62,7 @@ public class MusicAPI {
     }
 
     public static QRCode genQRCode() throws IOException {
+        Logger.info("Generating QR code...");
         String key = fetch("/login/qr/key?timestamp=" + System.currentTimeMillis());
         JsonObject keyObj = DataUtil.gson.fromJson(key, JsonObject.class);
         String uniqueKey = keyObj.get("data").getAsJsonObject().get("unikey").getAsString();
@@ -88,6 +82,7 @@ public class MusicAPI {
     }
 
     public static ScanResult getScanResult(String key) {
+        Logger.info("Checking scan result...");
         String response = fetch("/login/qr/check?key=" + key + "&timestamp=" + System.currentTimeMillis());
         JsonObject object = DataUtil.gson.fromJson(response, JsonObject.class);
         int code = object.get("code").getAsInt();
@@ -103,6 +98,7 @@ public class MusicAPI {
     }
 
     public static void updateUserInfo() {
+        Logger.info("Updating user info...");
         String fetch = fetch("/login/status?timestamp=" + System.currentTimeMillis());
         JsonObject responseData = DataUtil.gson.fromJson(fetch, JsonObject.class).get("data").getAsJsonObject();
         JsonObject profile = responseData.get("profile").getAsJsonObject();
@@ -114,6 +110,7 @@ public class MusicAPI {
     }
 
     public static List<PlayList> getUserPlayLists() {
+        Logger.info("Getting user playlists...");
         String fetch = fetch("/user/playlist?uid=" + user.getUid());
         JsonArray playlistArray = DataUtil.gson.fromJson(fetch, JsonObject.class).get("playlist").getAsJsonArray();
         List<PlayList> result = new ArrayList<>();
@@ -142,6 +139,7 @@ public class MusicAPI {
     }
 
     public static PlayList getDailySongs() {
+        Logger.info("Getting daily songs..");
         String fetch = MusicAPI.fetch("/recommend/songs");
         JsonArray songs = DataUtil.gson.fromJson(fetch, JsonObject.class).get("data").getAsJsonObject().get("dailySongs").getAsJsonArray();
         PlayList playList = new PlayList("每日推荐", "根据你的喜好，每日生成的推荐歌曲");
@@ -180,6 +178,7 @@ public class MusicAPI {
     }
 
     public static void fetchMusicList(PlayList playList, int offset) {
+        Logger.info("Fetching music list for id [" + playList.getId() + "]...");
         String fetch = fetch("/playlist/track/all?id=" + playList.getId() + "&limit=10&offset=" + offset);
         JsonArray songs = DataUtil.gson.fromJson(fetch, JsonObject.class).get("songs").getAsJsonArray();
         for (JsonElement song : songs) {
@@ -215,37 +214,8 @@ public class MusicAPI {
         }
     }
 
-    public static List<PlayList> getPersonalizedPlayLists() {
-        String fetch = fetch("/personalized");
-        JsonArray playlistArray = DataUtil.gson.fromJson(fetch, JsonObject.class).get("result").getAsJsonArray();
-
-        List<PlayList> result = new ArrayList<>();
-        for (JsonElement element : playlistArray) {
-            JsonObject obj = element.getAsJsonObject();
-            String description = (obj.get("description") instanceof JsonNull || obj.get("description") == null) ? "没有描述，你自己进去看看" : obj.get("description").getAsString();
-            File file = new File(ConfigManager.cacheDir, "playlist_" + obj.get("id").getAsLong() + ".jpg");
-
-            BufferedImage coverData = HttpUtil.downloadImage(obj.get("picUrl").getAsString(), 300, 300);
-            try {
-                assert coverData != null;
-                file.createNewFile();
-                ImageIO.write(coverData, "jpg", file);
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
-
-            result.add(new PlayList(
-                    obj.get("name").getAsString(),
-                    description,
-                    obj.get("id").getAsLong(),
-                    file
-            ));
-        }
-
-        return result;
-    }
-
     public static List<PlayList> getRecommendedPlayLists() {
+        Logger.info("Getting recommended playlists...");
         String fetch = fetch("/recommend/resource");
         JsonArray playlistArray = DataUtil.gson.fromJson(fetch, JsonObject.class).get("recommend").getAsJsonArray();
 
@@ -276,11 +246,12 @@ public class MusicAPI {
         return result;
     }
 
-    public static List<LyricLine> getLyrics(long id) {
+    public static LyricPair getLyrics(long id) {
+        Logger.info("Getting lyrics for id [" + id + "]");
         String fetch = fetch("/lyric/new?id=" + id);
         JsonObject response = DataUtil.gson.fromJson(fetch, JsonObject.class);
         boolean isNew = response.has("yrc");
-        String lyricCollection = response.getAsJsonObject().get(isNew ? "yrc" : "lrc").getAsJsonObject().get("lyric").getAsString();
+        String lyricCollection = response.get(isNew ? "yrc" : "lrc").getAsJsonObject().get("lyric").getAsString();
         List<String> lines = new ArrayList<>(Arrays.stream(lyricCollection.split("\n")).toList());
         lines.removeIf(String::isEmpty);
 
@@ -328,55 +299,75 @@ public class MusicAPI {
 
                     LyricChar lyricChar = new LyricChar(timestampInMilliseconds, -1, lyric);
                     lyrics.add(new LyricLine(timestampInMilliseconds, -1, Arrays.stream(new LyricChar[]{lyricChar}).toList(), false));
+                } else {
+                    pattern = Pattern.compile("\\[(\\d{2}):(\\d{2})\\.(\\d{3})]\\s*(.*)");
+                    matcher = pattern.matcher(line);
+
+                    if (matcher.find()) {
+                        // 提取时间戳部分
+                        int minutes = Integer.parseInt(matcher.group(1)); // 分钟
+                        int seconds = Integer.parseInt(matcher.group(2)); // 秒
+                        int ms = Integer.parseInt(matcher.group(3)); // 豪秒
+
+                        // 将时间戳转换为毫秒
+                        int timestampInMilliseconds = (minutes * 60 * 1000) + (seconds * 1000) + (ms);
+
+                        // 提取歌词内容
+                        String lyric = matcher.group(4);
+
+                        LyricChar lyricChar = new LyricChar(timestampInMilliseconds, -1, lyric);
+                        lyrics.add(new LyricLine(timestampInMilliseconds, -1, Arrays.stream(new LyricChar[]{lyricChar}).toList(), false));
+                    }
                 }
             }
         }
-        return lyrics;
-    }
 
-    public static List<LyricLine> getTranslatedLyrics(long id) {
-        String fetch = fetch("/lyric/new?id=" + id);
-        JsonObject response = DataUtil.gson.fromJson(fetch, JsonObject.class);
-        boolean isNew = response.has("ytlrc");
-        System.out.println(fetch);
-        JsonElement je = response.getAsJsonObject().get(isNew ? "ytlrc" : "tlyric");
-        if (je instanceof JsonNull || je == null) return Collections.emptyList();
-        String lyricCollection = je.getAsJsonObject().get("lyric").getAsString();
-        List<String> lines = new ArrayList<>(Arrays.stream(lyricCollection.split("\n")).toList());
-        lines.removeIf(String::isEmpty);
+        boolean newTranslate = response.has("ytlrc");
+        JsonElement je = response.getAsJsonObject().get(newTranslate ? "ytlrc" : "tlyric");
+        List<LyricLine> translatedLyrics = new ArrayList<>();
+        if (!(je instanceof JsonNull) && je != null)  {
+            String transCollection = je.getAsJsonObject().get("lyric").getAsString();
+            List<String> translates = new ArrayList<>(Arrays.stream(transCollection.split("\n")).toList());
+            translates.removeIf(String::isEmpty);
 
-        List<LyricLine> lyrics = new ArrayList<>();
+            for (String line : translates) {
+                Pattern pattern = Pattern.compile(newTranslate? "\\[(\\d{2}):(\\d{2})\\.(\\d{3})]\\s*(.*)" : "\\[(\\d{2}):(\\d{2})\\.(\\d{2})]\\s*(.*)");
+                Matcher matcher = pattern.matcher(line);
 
-        for (String line : lines) {
-            Pattern pattern = Pattern.compile(isNew? "\\[(\\d{2}):(\\d{2})\\.(\\d{3})]\\s*(.*)" : "\\[(\\d{2}):(\\d{2})\\.(\\d{2})]\\s*(.*)");
-            Matcher matcher = pattern.matcher(line);
+                if (matcher.find()) {
+                    // 提取时间戳部分
+                    int minutes = Integer.parseInt(matcher.group(1)); // 分钟
+                    int seconds = Integer.parseInt(matcher.group(2)); // 秒
+                    int centiseconds = Integer.parseInt(matcher.group(3)); // 厘秒
 
-            if (matcher.find()) {
-                // 提取时间戳部分
-                int minutes = Integer.parseInt(matcher.group(1)); // 分钟
-                int seconds = Integer.parseInt(matcher.group(2)); // 秒
-                int centiseconds = Integer.parseInt(matcher.group(3)); // 厘秒
+                    // 将时间戳转换为毫秒
+                    int startTime = (minutes * 60 * 1000) + (seconds * 1000) + (centiseconds * (newTranslate? 1 : 10));
 
-                // 将时间戳转换为毫秒
-                int startTime = (minutes * 60 * 1000) + (seconds * 1000) + (centiseconds * (isNew? 1 : 10));
+                    // 提取歌词内容
+                    String lyric = matcher.group(4);
 
-                // 提取歌词内容
-                String lyric = matcher.group(4);
-
-                LyricChar lyricChar = new LyricChar(startTime, -1, lyric);
-                lyrics.add(new LyricLine(startTime, -1, Arrays.stream(new LyricChar[]{lyricChar}).toList(), true));
+                    LyricChar lyricChar = new LyricChar(startTime, -1, lyric);
+                    translatedLyrics.add(new LyricLine(startTime, -1, Arrays.stream(new LyricChar[]{lyricChar}).toList(), true));
+                }
             }
         }
-
-        return lyrics;
+        if (lyrics.isEmpty()) {
+            System.out.println(fetch);
+        }
+        return new LyricPair(lyrics, translatedLyrics);
     }
 
-    public static String getMusicURL(long id) {
-        String fetch = fetch("/song/url?id=" + id);
-        System.out.println(fetch);
-        for (JsonElement data : DataUtil.gson.fromJson(fetch, JsonObject.class).get("data").getAsJsonArray()) {
-            // 获取第一个，因为就一个
-            return data.getAsJsonObject().get("url").getAsString();
+    public static String getMusicURL(long id, boolean retry) {
+        String fetch = fetch("/song/url/v1?id=" + id + "&level=" + (retry? "standard" : "exhigh"));
+        try {
+            for (JsonElement data : DataUtil.gson.fromJson(fetch, JsonObject.class).get("data").getAsJsonArray()) {
+                // 获取第一个，因为就一个
+                return data.getAsJsonObject().get("url").getAsString();
+            }
+        } catch (JsonSyntaxException e) {
+            if (retry) throw new NullPointerException("No music source [" + id + "].");
+            Logger.error("Failed to get exhigh music [" + id + "], retry...");
+            return getMusicURL(id, true);
         }
         return null;
     }
@@ -407,10 +398,12 @@ public class MusicAPI {
         for (Music music : playList.getMusicList()) {
             if (map.containsKey(music.getId())) {
                 music.setCoverImage(map.get(music.getId()));
-                playList.setCoverImage(map.get(music.getId()));
+                if (playList.getCoverImage() == null) {
+                    playList.setCoverImage(map.get(music.getId()));
+                }
             }
         }
-
+        playList.setId(-1);
         return playList;
     }
 

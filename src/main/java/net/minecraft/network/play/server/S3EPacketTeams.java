@@ -1,6 +1,7 @@
 package net.minecraft.network.play.server;
 
 import com.google.common.collect.Lists;
+import lombok.Getter;
 import net.minecraft.network.Packet;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.network.play.INetHandlerPlayClient;
@@ -10,6 +11,7 @@ import net.minecraft.scoreboard.Team;
 import java.io.IOException;
 import java.util.Collection;
 
+@Getter
 public class S3EPacketTeams implements Packet<INetHandlerPlayClient> {
     private String name = "";
     private String displayName = "";
@@ -121,39 +123,4 @@ public class S3EPacketTeams implements Packet<INetHandlerPlayClient> {
         handler.handleTeams(this);
     }
 
-    public String getName() {
-        return this.name;
-    }
-
-    public String getDisplayName() {
-        return this.displayName;
-    }
-
-    public String getPrefix() {
-        return this.prefix;
-    }
-
-    public String getSuffix() {
-        return this.suffix;
-    }
-
-    public Collection<String> getPlayers() {
-        return this.players;
-    }
-
-    public int getAction() {
-        return this.action;
-    }
-
-    public int getFriendlyFlags() {
-        return this.friendlyFlags;
-    }
-
-    public int getColor() {
-        return this.color;
-    }
-
-    public String getNameTagVisibility() {
-        return this.nameTagVisibility;
-    }
 }

@@ -2,6 +2,7 @@ package net.minecraft.util;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
+import lombok.Getter;
 
 import java.util.Collection;
 import java.util.List;
@@ -54,6 +55,11 @@ public enum EnumChatFormatting {
      * The formatting code that produces this format.
      */
     private final char formattingCode;
+    /**
+     * -- GETTER --
+     *  False if this is just changing the color or resetting; true otherwise.
+     */
+    @Getter
     private final boolean fancyStyling;
     /**
      * The control string (section sign + formatting code) that can be inserted into client-side text to display
@@ -62,7 +68,11 @@ public enum EnumChatFormatting {
     private final String controlString;
     /**
      * The numerical index that represents this color
+     * -- GETTER --
+     *  Returns the numerical color index that represents this formatting
+
      */
+    @Getter
     private final int colorIndex;
 
     EnumChatFormatting(String formattingName, char formattingCodeIn, int colorIndex) {
@@ -123,20 +133,6 @@ public enum EnumChatFormatting {
         }
 
         return list;
-    }
-
-    /**
-     * Returns the numerical color index that represents this formatting
-     */
-    public int getColorIndex() {
-        return this.colorIndex;
-    }
-
-    /**
-     * False if this is just changing the color or resetting; true otherwise.
-     */
-    public boolean isFancyStyling() {
-        return this.fancyStyling;
     }
 
     /**

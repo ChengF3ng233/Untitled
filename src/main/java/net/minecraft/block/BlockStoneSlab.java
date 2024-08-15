@@ -1,5 +1,6 @@
 package net.minecraft.block;
 
+import lombok.Getter;
 import net.minecraft.block.material.MapColor;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.IProperty;
@@ -147,7 +148,9 @@ public abstract class BlockStoneSlab extends BlockSlab {
 
         private final int meta;
         private final MapColor field_181075_k;
+        @Getter
         private final String name;
+        @Getter
         private final String unlocalizedName;
 
         EnumType(int p_i46381_3_, MapColor p_i46381_4_, String p_i46381_5_) {
@@ -181,12 +184,5 @@ public abstract class BlockStoneSlab extends BlockSlab {
             return this.name;
         }
 
-        public String getName() {
-            return this.name;
-        }
-
-        public String getUnlocalizedName() {
-            return this.unlocalizedName;
-        }
     }
 }

@@ -1,28 +1,35 @@
 package net.minecraft.client.renderer.chunk;
 
 import com.google.common.collect.Lists;
+import lombok.Getter;
+import lombok.Setter;
 import net.minecraft.client.renderer.RegionRenderCacheBuilder;
 
 import java.util.List;
 import java.util.concurrent.locks.ReentrantLock;
 
 public class ChunkCompileTaskGenerator {
+    @Getter
     private final RenderChunk renderChunk;
+    @Getter
     private final ReentrantLock lock = new ReentrantLock();
     private final List<Runnable> listFinishRunnables = Lists.newArrayList();
+    @Getter
     private final ChunkCompileTaskGenerator.Type type;
+    @Getter
+    @Setter
     private RegionRenderCacheBuilder regionRenderCacheBuilder;
+    @Getter
+    @Setter
     private CompiledChunk compiledChunk;
+    @Getter
     private ChunkCompileTaskGenerator.Status status = ChunkCompileTaskGenerator.Status.PENDING;
+    @Getter
     private boolean finished;
 
     public ChunkCompileTaskGenerator(RenderChunk renderChunkIn, ChunkCompileTaskGenerator.Type typeIn) {
         this.renderChunk = renderChunkIn;
         this.type = typeIn;
-    }
-
-    public ChunkCompileTaskGenerator.Status getStatus() {
-        return this.status;
     }
 
     public void setStatus(ChunkCompileTaskGenerator.Status statusIn) {
@@ -33,26 +40,6 @@ public class ChunkCompileTaskGenerator {
         } finally {
             this.lock.unlock();
         }
-    }
-
-    public RenderChunk getRenderChunk() {
-        return this.renderChunk;
-    }
-
-    public CompiledChunk getCompiledChunk() {
-        return this.compiledChunk;
-    }
-
-    public void setCompiledChunk(CompiledChunk compiledChunkIn) {
-        this.compiledChunk = compiledChunkIn;
-    }
-
-    public RegionRenderCacheBuilder getRegionRenderCacheBuilder() {
-        return this.regionRenderCacheBuilder;
-    }
-
-    public void setRegionRenderCacheBuilder(RegionRenderCacheBuilder regionRenderCacheBuilderIn) {
-        this.regionRenderCacheBuilder = regionRenderCacheBuilderIn;
     }
 
     public void finish() {
@@ -86,18 +73,6 @@ public class ChunkCompileTaskGenerator {
         } finally {
             this.lock.unlock();
         }
-    }
-
-    public ReentrantLock getLock() {
-        return this.lock;
-    }
-
-    public ChunkCompileTaskGenerator.Type getType() {
-        return this.type;
-    }
-
-    public boolean isFinished() {
-        return this.finished;
     }
 
     public enum Status {

@@ -130,7 +130,7 @@ public class SoundManager {
 
                             public void errorMessage(String p_errorMessage_1_, String p_errorMessage_2_, int p_errorMessage_3_) {
                                 if (!p_errorMessage_2_.isEmpty()) {
-                                    SoundManager.logger.error("Error in class '" + p_errorMessage_1_ + "'");
+                                    SoundManager.logger.error("Error in class '{}'", p_errorMessage_1_);
                                     SoundManager.logger.error(p_errorMessage_2_);
                                 }
                             }

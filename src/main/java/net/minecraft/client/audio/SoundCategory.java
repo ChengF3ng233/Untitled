@@ -1,9 +1,11 @@
 package net.minecraft.client.audio;
 
 import com.google.common.collect.Maps;
+import lombok.Getter;
 
 import java.util.Map;
 
+@Getter
 public enum SoundCategory {
     MASTER("master", 0),
     MUSIC("music", 1),
@@ -41,11 +43,4 @@ public enum SoundCategory {
         return NAME_CATEGORY_MAP.get(name);
     }
 
-    public String getCategoryName() {
-        return this.categoryName;
-    }
-
-    public int getCategoryId() {
-        return this.categoryId;
-    }
 }

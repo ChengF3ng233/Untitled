@@ -5,6 +5,7 @@ import cn.feng.untitled.module.impl.client.EntityCullingMod;
 import com.google.common.collect.Maps;
 import dev.tr7zw.entityculling.EntityCulling;
 import dev.tr7zw.entityculling.access.Cullable;
+import lombok.Getter;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.renderer.GlStateManager;
@@ -41,6 +42,7 @@ public class TileEntityRendererDispatcher {
      */
     public static double staticPlayerZ;
     public Map<Class, TileEntitySpecialRenderer> mapSpecialRenderers = Maps.newHashMap();
+    @Getter
     public FontRenderer fontRenderer;
     public TextureManager renderEngine;
     public World worldObj;
@@ -175,10 +177,6 @@ public class TileEntityRendererDispatcher {
 
     public void setWorld(World worldIn) {
         this.worldObj = worldIn;
-    }
-
-    public FontRenderer getFontRenderer() {
-        return this.fontRenderer;
     }
 
     public void preDrawBatch() {

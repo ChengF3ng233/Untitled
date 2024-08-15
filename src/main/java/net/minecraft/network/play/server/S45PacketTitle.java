@@ -1,5 +1,6 @@
 package net.minecraft.network.play.server;
 
+import lombok.Getter;
 import net.minecraft.network.Packet;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.network.play.INetHandlerPlayClient;
@@ -7,6 +8,7 @@ import net.minecraft.util.IChatComponent;
 
 import java.io.IOException;
 
+@Getter
 public class S45PacketTitle implements Packet<INetHandlerPlayClient> {
     private S45PacketTitle.Type type;
     private IChatComponent message;
@@ -72,26 +74,6 @@ public class S45PacketTitle implements Packet<INetHandlerPlayClient> {
      */
     public void processPacket(INetHandlerPlayClient handler) {
         handler.handleTitle(this);
-    }
-
-    public S45PacketTitle.Type getType() {
-        return this.type;
-    }
-
-    public IChatComponent getMessage() {
-        return this.message;
-    }
-
-    public int getFadeInTime() {
-        return this.fadeInTime;
-    }
-
-    public int getDisplayTime() {
-        return this.displayTime;
-    }
-
-    public int getFadeOutTime() {
-        return this.fadeOutTime;
     }
 
     public enum Type {

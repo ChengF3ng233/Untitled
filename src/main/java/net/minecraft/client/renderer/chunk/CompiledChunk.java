@@ -1,6 +1,8 @@
 package net.minecraft.client.renderer.chunk;
 
 import com.google.common.collect.Lists;
+import lombok.Getter;
+import lombok.Setter;
 import net.minecraft.client.renderer.WorldRenderer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
@@ -29,15 +31,15 @@ public class CompiledChunk {
     };
     private final boolean[] layersUsed = new boolean[RenderChunk.ENUM_WORLD_BLOCK_LAYERS.length];
     private final boolean[] layersStarted = new boolean[RenderChunk.ENUM_WORLD_BLOCK_LAYERS.length];
+    @Getter
     private final List<TileEntity> tileEntities = Lists.newArrayList();
+    @Getter
     private boolean empty = true;
     private SetVisibility setVisibility = new SetVisibility();
+    @Getter
+    @Setter
     private WorldRenderer.State state;
     private final BitSet[] animatedSprites = new BitSet[RenderChunk.ENUM_WORLD_BLOCK_LAYERS.length];
-
-    public boolean isEmpty() {
-        return this.empty;
-    }
 
     protected void setLayerUsed(EnumWorldBlockLayer layer) {
         this.empty = false;
@@ -56,10 +58,6 @@ public class CompiledChunk {
         return this.layersStarted[layer.ordinal()];
     }
 
-    public List<TileEntity> getTileEntities() {
-        return this.tileEntities;
-    }
-
     public void addTileEntity(TileEntity tileEntityIn) {
         this.tileEntities.add(tileEntityIn);
     }
@@ -70,14 +68,6 @@ public class CompiledChunk {
 
     public void setVisibility(SetVisibility visibility) {
         this.setVisibility = visibility;
-    }
-
-    public WorldRenderer.State getState() {
-        return this.state;
-    }
-
-    public void setState(WorldRenderer.State stateIn) {
-        this.state = stateIn;
     }
 
     public BitSet getAnimatedSprites(EnumWorldBlockLayer p_getAnimatedSprites_1_) {

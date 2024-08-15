@@ -1,5 +1,6 @@
 package net.minecraft.tileentity;
 
+import lombok.Setter;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockChest;
 import net.minecraft.block.BlockHopper;
@@ -21,7 +22,9 @@ import java.util.List;
 
 public class TileEntityHopper extends TileEntityLockable implements IHopper, ITickable {
     private ItemStack[] inventory = new ItemStack[5];
+    @Setter
     private String customName;
+    @Setter
     private int transferCooldown = -1;
 
     /**
@@ -384,10 +387,6 @@ public class TileEntityHopper extends TileEntityLockable implements IHopper, ITi
         return this.customName != null && this.customName.length() > 0;
     }
 
-    public void setCustomName(String customNameIn) {
-        this.customName = customNameIn;
-    }
-
     /**
      * Returns the maximum stack size for a inventory slot. Seems to always be 64, possibly will be extended.
      */
@@ -561,10 +560,6 @@ public class TileEntityHopper extends TileEntityLockable implements IHopper, ITi
      */
     public double getZPos() {
         return (double) this.pos.getZ() + 0.5D;
-    }
-
-    public void setTransferCooldown(int ticks) {
-        this.transferCooldown = ticks;
     }
 
     public boolean isOnTransferCooldown() {

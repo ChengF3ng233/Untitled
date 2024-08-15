@@ -1,5 +1,6 @@
 package net.minecraft.client.renderer;
 
+import lombok.Getter;
 import net.minecraft.util.BlockPos;
 
 public class DestroyBlockProgress {
@@ -8,6 +9,7 @@ public class DestroyBlockProgress {
      * Renderer, max 1 per player on a server
      */
     private final int miningPlayerEntId;
+    @Getter
     private final BlockPos position;
 
     /**
@@ -23,10 +25,6 @@ public class DestroyBlockProgress {
     public DestroyBlockProgress(int miningPlayerEntIdIn, BlockPos positionIn) {
         this.miningPlayerEntId = miningPlayerEntIdIn;
         this.position = positionIn;
-    }
-
-    public BlockPos getPosition() {
-        return this.position;
     }
 
     public int getPartialBlockDamage() {

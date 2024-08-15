@@ -1,6 +1,8 @@
 package net.minecraft.scoreboard;
 
 import com.google.common.collect.Sets;
+import lombok.Getter;
+import lombok.Setter;
 import net.minecraft.util.EnumChatFormatting;
 
 import java.util.Collection;
@@ -8,15 +10,29 @@ import java.util.Set;
 
 public class ScorePlayerTeam extends Team {
     private final Scoreboard theScoreboard;
+    /**
+     * -- GETTER --
+     *  Retrieve the name by which this team is registered in the scoreboard
+     */
+    @Getter
     private final String registeredName;
     private final Set<String> membershipSet = Sets.newHashSet();
     private String teamNameSPT;
     private String namePrefixSPT = "";
+    /**
+     * -- GETTER --
+     *  Returns the color suffix for the player's team name
+     */
+    @Getter
     private String colorSuffix = "";
     private boolean allowFriendlyFire = true;
     private boolean canSeeFriendlyInvisibles = true;
+    @Getter
     private Team.EnumVisible nameTagVisibility = Team.EnumVisible.ALWAYS;
+    @Getter
     private Team.EnumVisible deathMessageVisibility = Team.EnumVisible.ALWAYS;
+    @Getter
+    @Setter
     private EnumChatFormatting chatFormat = EnumChatFormatting.RESET;
 
     public ScorePlayerTeam(Scoreboard theScoreboardIn, String name) {
@@ -30,13 +46,6 @@ public class ScorePlayerTeam extends Team {
      */
     public static String formatPlayerName(Team p_96667_0_, String p_96667_1_) {
         return p_96667_0_ == null ? p_96667_1_ : p_96667_0_.formatString(p_96667_1_);
-    }
-
-    /**
-     * Retrieve the name by which this team is registered in the scoreboard
-     */
-    public String getRegisteredName() {
-        return this.registeredName;
     }
 
     public String getTeamName() {
@@ -72,13 +81,6 @@ public class ScorePlayerTeam extends Team {
         }
     }
 
-    /**
-     * Returns the color suffix for the player's team name
-     */
-    public String getColorSuffix() {
-        return this.colorSuffix;
-    }
-
     public void setNameSuffix(String suffix) {
         this.colorSuffix = suffix;
         this.theScoreboard.sendTeamUpdate(this);
@@ -106,17 +108,9 @@ public class ScorePlayerTeam extends Team {
         this.theScoreboard.sendTeamUpdate(this);
     }
 
-    public Team.EnumVisible getNameTagVisibility() {
-        return this.nameTagVisibility;
-    }
-
     public void setNameTagVisibility(Team.EnumVisible p_178772_1_) {
         this.nameTagVisibility = p_178772_1_;
         this.theScoreboard.sendTeamUpdate(this);
-    }
-
-    public Team.EnumVisible getDeathMessageVisibility() {
-        return this.deathMessageVisibility;
     }
 
     public void setDeathMessageVisibility(Team.EnumVisible p_178773_1_) {
@@ -143,11 +137,4 @@ public class ScorePlayerTeam extends Team {
         this.setSeeFriendlyInvisiblesEnabled((p_98298_1_ & 2) > 0);
     }
 
-    public EnumChatFormatting getChatFormat() {
-        return this.chatFormat;
-    }
-
-    public void setChatFormat(EnumChatFormatting p_178774_1_) {
-        this.chatFormat = p_178774_1_;
-    }
 }

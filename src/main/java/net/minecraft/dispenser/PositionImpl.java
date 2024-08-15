@@ -1,5 +1,8 @@
 package net.minecraft.dispenser;
 
+import lombok.Getter;
+
+@Getter
 public class PositionImpl implements IPosition {
     protected final double x;
     protected final double y;
@@ -11,15 +14,4 @@ public class PositionImpl implements IPosition {
         this.z = zCoord;
     }
 
-    public double getX() {
-        return this.x;
-    }
-
-    public double getY() {
-        return this.y;
-    }
-
-    public double getZ() {
-        return this.z;
-    }
 }

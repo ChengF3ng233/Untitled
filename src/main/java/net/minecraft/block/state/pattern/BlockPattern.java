@@ -4,6 +4,7 @@ import com.google.common.base.Objects;
 import com.google.common.base.Predicate;
 import com.google.common.cache.CacheBuilder;
 import com.google.common.cache.LoadingCache;
+import lombok.Getter;
 import net.minecraft.block.state.BlockWorldState;
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.EnumFacing;
@@ -13,7 +14,9 @@ import net.minecraft.world.World;
 public class BlockPattern {
     private final Predicate<BlockWorldState>[][][] blockMatches;
     private final int fingerLength;
+    @Getter
     private final int thumbLength;
+    @Getter
     private final int palmLength;
 
     public BlockPattern(Predicate<BlockWorldState>[][][] predicatesIn) {
@@ -51,14 +54,6 @@ public class BlockPattern {
         } else {
             throw new IllegalArgumentException("Invalid forwards & up combination");
         }
-    }
-
-    public int getThumbLength() {
-        return this.thumbLength;
-    }
-
-    public int getPalmLength() {
-        return this.palmLength;
     }
 
     /**
@@ -118,8 +113,11 @@ public class BlockPattern {
     }
 
     public static class PatternHelper {
+        @Getter
         private final BlockPos pos;
+        @Getter
         private final EnumFacing finger;
+        @Getter
         private final EnumFacing thumb;
         private final LoadingCache<BlockPos, BlockWorldState> lcache;
         private final int field_181120_e;
@@ -134,18 +132,6 @@ public class BlockPattern {
             this.field_181120_e = p_i46378_5_;
             this.field_181121_f = p_i46378_6_;
             this.field_181122_g = p_i46378_7_;
-        }
-
-        public BlockPos getPos() {
-            return this.pos;
-        }
-
-        public EnumFacing getFinger() {
-            return this.finger;
-        }
-
-        public EnumFacing getThumb() {
-            return this.thumb;
         }
 
         public int func_181118_d() {

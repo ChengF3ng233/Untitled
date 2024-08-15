@@ -1,5 +1,6 @@
 package net.minecraft.block;
 
+import lombok.Getter;
 import net.minecraft.block.material.MapColor;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.IProperty;
@@ -105,6 +106,7 @@ public class BlockHugeMushroom extends Block {
         }
 
         private final int meta;
+        @Getter
         private final String name;
 
         EnumType(int meta, String name) {
@@ -129,8 +131,5 @@ public class BlockHugeMushroom extends Block {
             return this.name;
         }
 
-        public String getName() {
-            return this.name;
-        }
     }
 }

@@ -1,5 +1,8 @@
 package net.minecraft.world.chunk;
 
+import lombok.Getter;
+
+@Getter
 public class NibbleArray {
     /**
      * Byte array of data stored in this holder. Possibly a light map or some chunk data. Data is accessed in 4-bit
@@ -60,7 +63,4 @@ public class NibbleArray {
         return index >> 1;
     }
 
-    public byte[] getData() {
-        return this.data;
-    }
 }

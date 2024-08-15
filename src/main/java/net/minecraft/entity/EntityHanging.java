@@ -1,5 +1,6 @@
 package net.minecraft.entity;
 
+import lombok.Getter;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockRedstoneDiode;
 import net.minecraft.entity.player.EntityPlayer;
@@ -16,6 +17,7 @@ public abstract class EntityHanging extends Entity {
      * The direction the entity is facing
      */
     public EnumFacing facingDirection;
+    @Getter
     protected BlockPos hangingPosition;
     private int tickCounter1;
 
@@ -248,7 +250,4 @@ public abstract class EntityHanging extends Entity {
         }
     }
 
-    public BlockPos getHangingPosition() {
-        return this.hangingPosition;
-    }
 }

@@ -1,5 +1,8 @@
 package net.optifine.shaders.config;
 
+import lombok.Getter;
+
+@Getter
 public enum EnumShaderOption {
     ANTIALIASING("of.options.shaders.ANTIALIASING", "antialiasingLevel", "0"),
     NORMAL_MAP("of.options.shaders.NORMAL_MAP", "normalMapEnabled", "true"),
@@ -30,15 +33,4 @@ public enum EnumShaderOption {
         this.valueDefault = valueDefault;
     }
 
-    public String getResourceKey() {
-        return this.resourceKey;
-    }
-
-    public String getPropertyKey() {
-        return this.propertyKey;
-    }
-
-    public String getValueDefault() {
-        return this.valueDefault;
-    }
 }

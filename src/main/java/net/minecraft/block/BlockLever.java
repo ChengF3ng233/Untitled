@@ -1,5 +1,6 @@
 package net.minecraft.block;
 
+import lombok.Getter;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.properties.PropertyBool;
@@ -234,7 +235,9 @@ public class BlockLever extends Block {
         }
 
         private final int meta;
+        @Getter
         private final String name;
+        @Getter
         private final EnumFacing facing;
 
         EnumOrientation(int meta, String name, EnumFacing facing) {
@@ -290,16 +293,9 @@ public class BlockLever extends Block {
             return this.meta;
         }
 
-        public EnumFacing getFacing() {
-            return this.facing;
-        }
-
         public String toString() {
             return this.name;
         }
 
-        public String getName() {
-            return this.name;
-        }
     }
 }

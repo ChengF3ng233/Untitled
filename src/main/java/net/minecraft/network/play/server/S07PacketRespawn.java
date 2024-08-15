@@ -1,5 +1,6 @@
 package net.minecraft.network.play.server;
 
+import lombok.Getter;
 import net.minecraft.network.Packet;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.network.play.INetHandlerPlayClient;
@@ -9,6 +10,7 @@ import net.minecraft.world.WorldType;
 
 import java.io.IOException;
 
+@Getter
 public class S07PacketRespawn implements Packet<INetHandlerPlayClient> {
     private int dimensionID;
     private EnumDifficulty difficulty;
@@ -56,19 +58,4 @@ public class S07PacketRespawn implements Packet<INetHandlerPlayClient> {
         buf.writeString(this.worldType.getWorldTypeName());
     }
 
-    public int getDimensionID() {
-        return this.dimensionID;
-    }
-
-    public EnumDifficulty getDifficulty() {
-        return this.difficulty;
-    }
-
-    public WorldSettings.GameType getGameType() {
-        return this.gameType;
-    }
-
-    public WorldType getWorldType() {
-        return this.worldType;
-    }
 }

@@ -1,5 +1,6 @@
 package net.optifine.reflect;
 
+import lombok.Getter;
 import net.optifine.Log;
 
 import java.lang.reflect.Field;
@@ -8,6 +9,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
+@Getter
 public class FieldLocatorTypes implements IFieldLocator {
     private Field field = null;
 
@@ -39,7 +41,4 @@ public class FieldLocatorTypes implements IFieldLocator {
         }
     }
 
-    public Field getField() {
-        return this.field;
-    }
 }

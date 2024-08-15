@@ -1,10 +1,14 @@
 package net.optifine.util;
 
+import lombok.Getter;
+
 public class MemoryMonitor {
+    @Getter
     private static long startTimeMs = System.currentTimeMillis();
     private static long startMemory = getMemoryUsed();
     private static long lastTimeMs = startTimeMs;
     private static long lastMemory = startMemory;
+    @Getter
     private static boolean gcEvent = false;
     private static int memBytesSec = 0;
     private static final long MB = 1048576L;
@@ -37,16 +41,8 @@ public class MemoryMonitor {
         return runtime.totalMemory() - runtime.freeMemory();
     }
 
-    public static long getStartTimeMs() {
-        return startTimeMs;
-    }
-
     public static long getStartMemoryMb() {
         return startMemory / MB;
-    }
-
-    public static boolean isGcEvent() {
-        return gcEvent;
     }
 
     public static long getAllocationRateMb() {

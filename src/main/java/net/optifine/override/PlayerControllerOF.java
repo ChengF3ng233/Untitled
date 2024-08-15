@@ -1,5 +1,6 @@
 package net.optifine.override;
 
+import lombok.Getter;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.client.multiplayer.PlayerControllerMP;
@@ -14,6 +15,7 @@ import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.util.Vec3;
 import net.minecraft.world.World;
 
+@Getter
 public class PlayerControllerOF extends PlayerControllerMP {
     private boolean acting = false;
     private BlockPos lastClickBlockPos = null;
@@ -80,15 +82,4 @@ public class PlayerControllerOF extends PlayerControllerMP {
         return super.isPlayerRightClickingOnEntity(player, target, ray);
     }
 
-    public boolean isActing() {
-        return this.acting;
-    }
-
-    public BlockPos getLastClickBlockPos() {
-        return this.lastClickBlockPos;
-    }
-
-    public Entity getLastClickEntity() {
-        return this.lastClickEntity;
-    }
 }

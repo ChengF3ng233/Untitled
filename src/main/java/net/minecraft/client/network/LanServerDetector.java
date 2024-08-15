@@ -114,7 +114,7 @@ public class LanServerDetector {
                 }
 
                 String s = new String(datagrampacket.getData(), datagrampacket.getOffset(), datagrampacket.getLength());
-                LanServerDetector.logger.debug(datagrampacket.getAddress() + ": " + s);
+                LanServerDetector.logger.debug("{}: {}", datagrampacket.getAddress(), s);
                 this.localServerList.func_77551_a(s, datagrampacket.getAddress());
             }
 

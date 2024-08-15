@@ -1,5 +1,6 @@
 package net.optifine;
 
+import lombok.Getter;
 import net.minecraft.client.gui.GuiEnchantment;
 import net.minecraft.client.gui.GuiHopper;
 import net.minecraft.client.gui.GuiScreen;
@@ -46,6 +47,7 @@ public class CustomGuiProperties {
     private static final ResourceLocation VILLAGER_GUI_TEXTURE = new ResourceLocation("textures/gui/container/villager.png");
     private String fileName = null;
     private String basePath = null;
+    @Getter
     private CustomGuiProperties.EnumContainer container = null;
     private Map<ResourceLocation, ResourceLocation> textureLocations = null;
     private NbtTagValue nbtName = null;
@@ -424,10 +426,6 @@ public class CustomGuiProperties {
             case 2 -> EnumVariant.MULE;
             default -> null;
         };
-    }
-
-    public CustomGuiProperties.EnumContainer getContainer() {
-        return this.container;
     }
 
     public ResourceLocation getTextureLocation(ResourceLocation loc) {

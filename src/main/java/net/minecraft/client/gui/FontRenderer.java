@@ -6,6 +6,7 @@ import cn.feng.untitled.ui.font.awt.FontLoader;
 import com.ibm.icu.text.ArabicShaping;
 import com.ibm.icu.text.ArabicShapingException;
 import com.ibm.icu.text.Bidi;
+import lombok.Setter;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.Tessellator;
@@ -71,11 +72,20 @@ public class FontRenderer implements IResourceManagerReloadListener {
     private float posY;
     /**
      * If true, strings should be rendered with Unicode fonts instead of the default.png font
+     * -- SETTER --
+     *  Set unicodeFlag controlling whether strings should be rendered with Unicode fonts instead of the default.png
+     *  font.
+
      */
+    @Setter
     private boolean unicodeFlag;
     /**
      * If true, the Unicode Bidirectional Algorithm should be run before rendering any string.
+     * -- SETTER --
+     *  Set bidiFlag to control if the Unicode Bidirectional Algorithm should be run before rendering any string.
+
      */
+    @Setter
     private boolean bidiFlag;
     /**
      * Used to specify new red value for the current color.
@@ -823,14 +833,6 @@ public class FontRenderer implements IResourceManagerReloadListener {
         return this.unicodeFlag;
     }
 
-    /**
-     * Set unicodeFlag controlling whether strings should be rendered with Unicode fonts instead of the default.png
-     * font.
-     */
-    public void setUnicodeFlag(boolean unicodeFlagIn) {
-        this.unicodeFlag = unicodeFlagIn;
-    }
-
     public List<String> listFormattedStringToWidth(String str, int wrapWidth) {
         return Arrays.asList(this.wrapFormattedStringToWidth(str, wrapWidth).split("\n"));
     }
@@ -919,13 +921,6 @@ public class FontRenderer implements IResourceManagerReloadListener {
      */
     public boolean getBidiFlag() {
         return this.bidiFlag;
-    }
-
-    /**
-     * Set bidiFlag to control if the Unicode Bidirectional Algorithm should be run before rendering any string.
-     */
-    public void setBidiFlag(boolean bidiFlagIn) {
-        this.bidiFlag = bidiFlagIn;
     }
 
     public int getColorCode(char character) {

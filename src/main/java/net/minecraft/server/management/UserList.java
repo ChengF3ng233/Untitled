@@ -5,6 +5,8 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.io.Files;
 import com.google.gson.*;
+import lombok.Getter;
+import lombok.Setter;
 import org.apache.commons.io.IOUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -37,6 +39,8 @@ public class UserList<K, V extends UserListEntry<K>> {
     protected final Gson gson;
     private final File saveFile;
     private final Map<String, V> values = Maps.newHashMap();
+    @Getter
+    @Setter
     private boolean lanServer = true;
 
     public UserList(File saveFile) {
@@ -44,14 +48,6 @@ public class UserList<K, V extends UserListEntry<K>> {
         GsonBuilder gsonbuilder = (new GsonBuilder()).setPrettyPrinting();
         gsonbuilder.registerTypeHierarchyAdapter(UserListEntry.class, new UserList.Serializer());
         this.gson = gsonbuilder.create();
-    }
-
-    public boolean isLanServer() {
-        return this.lanServer;
-    }
-
-    public void setLanServer(boolean state) {
-        this.lanServer = state;
     }
 
     /**

@@ -1,10 +1,12 @@
 package net.optifine.shaders.uniform;
 
+import lombok.Getter;
 import net.minecraft.src.Config;
 import net.minecraft.util.BlockPos;
 import net.minecraft.world.biome.BiomeGenBase;
 import net.optifine.shaders.Shaders;
 
+@Getter
 public enum ShaderParameterFloat {
     BIOME("biome"),
     TEMPERATURE("temperature"),
@@ -110,22 +112,6 @@ public enum ShaderParameterFloat {
 
             return false;
         }
-    }
-
-    public String getName() {
-        return this.name;
-    }
-
-    public ShaderUniformBase getUniform() {
-        return this.uniform;
-    }
-
-    public String[] getIndexNames1() {
-        return this.indexNames1;
-    }
-
-    public String[] getIndexNames2() {
-        return this.indexNames2;
     }
 
     public float eval(int index1, int index2) {

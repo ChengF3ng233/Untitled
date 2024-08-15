@@ -1,6 +1,8 @@
 package net.minecraft.tileentity;
 
 import com.google.common.collect.Lists;
+import lombok.Getter;
+import lombok.Setter;
 import net.minecraft.entity.*;
 import net.minecraft.entity.item.EntityMinecart;
 import net.minecraft.nbt.NBTBase;
@@ -18,16 +20,19 @@ public abstract class MobSpawnerBaseLogic {
      */
     private int spawnDelay = 20;
     private String mobID = "Pig";
+    @Setter
     private MobSpawnerBaseLogic.WeightedRandomMinecart randomEntity;
 
     /**
      * The rotation of the mob inside the mob spawner
      */
+    @Getter
     private double mobRotation;
 
     /**
      * the previous rotation of the mob inside the mob spawner
      */
+    @Getter
     private double prevMobRotation;
     private int minSpawnDelay = 200;
     private int maxSpawnDelay = 800;
@@ -314,23 +319,11 @@ public abstract class MobSpawnerBaseLogic {
         return this.randomEntity;
     }
 
-    public void setRandomEntity(MobSpawnerBaseLogic.WeightedRandomMinecart p_98277_1_) {
-        this.randomEntity = p_98277_1_;
-    }
-
     public abstract void func_98267_a(int id);
 
     public abstract World getSpawnerWorld();
 
     public abstract BlockPos getSpawnerPosition();
-
-    public double getMobRotation() {
-        return this.mobRotation;
-    }
-
-    public double getPrevMobRotation() {
-        return this.prevMobRotation;
-    }
 
     public class WeightedRandomMinecart extends WeightedRandom.Item {
         private final NBTTagCompound nbtData;

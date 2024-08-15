@@ -25,7 +25,9 @@ import de.florianmichael.vialoadingbase.netty.handler.VLBViaEncodeHandler;
 import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
+import lombok.Getter;
 
+@Getter
 public abstract class VLBPipeline extends ChannelInboundHandlerAdapter {
     public final static String VIA_DECODER_HANDLER_NAME = "via-decoder";
     public final static String VIA_ENCODER_HANDLER_NAME = "via-encoder";
@@ -81,7 +83,4 @@ public abstract class VLBPipeline extends ChannelInboundHandlerAdapter {
 
     public abstract String getCompressionHandlerName();
 
-    public UserConnection getUser() {
-        return user;
-    }
 }

@@ -1,5 +1,6 @@
 package net.minecraft.item.crafting;
 
+import lombok.Getter;
 import net.minecraft.inventory.InventoryCrafting;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -24,6 +25,7 @@ public class ShapedRecipes implements IRecipe {
     /**
      * Is the ItemStack that you get when craft the recipe.
      */
+    @Getter
     private final ItemStack recipeOutput;
     private boolean copyIngredientNBT;
 
@@ -32,10 +34,6 @@ public class ShapedRecipes implements IRecipe {
         this.recipeHeight = height;
         this.recipeItems = p_i1917_3_;
         this.recipeOutput = output;
-    }
-
-    public ItemStack getRecipeOutput() {
-        return this.recipeOutput;
     }
 
     public ItemStack[] getRemainingItems(InventoryCrafting inv) {

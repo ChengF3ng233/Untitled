@@ -1,5 +1,6 @@
 package net.minecraft.inventory;
 
+import lombok.Getter;
 import net.minecraft.entity.IMerchant;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
@@ -15,6 +16,7 @@ public class ContainerMerchant extends Container {
      * Instance of Merchant.
      */
     private final IMerchant theMerchant;
+    @Getter
     private final InventoryMerchant merchantInventory;
 
     public ContainerMerchant(InventoryPlayer playerInventory, IMerchant merchant, World worldIn) {
@@ -34,10 +36,6 @@ public class ContainerMerchant extends Container {
         for (int k = 0; k < 9; ++k) {
             this.addSlotToContainer(new Slot(playerInventory, k, 8 + k * 18, 142));
         }
-    }
-
-    public InventoryMerchant getMerchantInventory() {
-        return this.merchantInventory;
     }
 
     public void onCraftGuiOpened(ICrafting listener) {

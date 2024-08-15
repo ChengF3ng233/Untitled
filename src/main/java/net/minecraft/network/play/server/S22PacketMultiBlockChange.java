@@ -1,5 +1,6 @@
 package net.minecraft.network.play.server;
 
+import lombok.Getter;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.network.Packet;
@@ -13,6 +14,7 @@ import java.io.IOException;
 
 public class S22PacketMultiBlockChange implements Packet<INetHandlerPlayClient> {
     private ChunkCoordIntPair chunkPosCoord;
+    @Getter
     private S22PacketMultiBlockChange.BlockUpdateData[] changedBlocks;
 
     public S22PacketMultiBlockChange() {
@@ -60,12 +62,9 @@ public class S22PacketMultiBlockChange implements Packet<INetHandlerPlayClient> 
         handler.handleMultiBlockChange(this);
     }
 
-    public S22PacketMultiBlockChange.BlockUpdateData[] getChangedBlocks() {
-        return this.changedBlocks;
-    }
-
     public class BlockUpdateData {
         private final short chunkPosCrammed;
+        @Getter
         private final IBlockState blockState;
 
         public BlockUpdateData(short p_i45984_2_, IBlockState state) {
@@ -86,8 +85,5 @@ public class S22PacketMultiBlockChange implements Packet<INetHandlerPlayClient> 
             return this.chunkPosCrammed;
         }
 
-        public IBlockState getBlockState() {
-            return this.blockState;
-        }
     }
 }

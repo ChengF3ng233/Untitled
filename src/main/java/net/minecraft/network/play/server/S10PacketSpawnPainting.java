@@ -1,5 +1,6 @@
 package net.minecraft.network.play.server;
 
+import lombok.Getter;
 import net.minecraft.entity.item.EntityPainting;
 import net.minecraft.network.Packet;
 import net.minecraft.network.PacketBuffer;
@@ -9,6 +10,7 @@ import net.minecraft.util.EnumFacing;
 
 import java.io.IOException;
 
+@Getter
 public class S10PacketSpawnPainting implements Packet<INetHandlerPlayClient> {
     private int entityID;
     private BlockPos position;
@@ -52,19 +54,4 @@ public class S10PacketSpawnPainting implements Packet<INetHandlerPlayClient> {
         handler.handleSpawnPainting(this);
     }
 
-    public int getEntityID() {
-        return this.entityID;
-    }
-
-    public BlockPos getPosition() {
-        return this.position;
-    }
-
-    public EnumFacing getFacing() {
-        return this.facing;
-    }
-
-    public String getTitle() {
-        return this.title;
-    }
 }

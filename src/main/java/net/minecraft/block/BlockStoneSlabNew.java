@@ -1,5 +1,6 @@
 package net.minecraft.block;
 
+import lombok.Getter;
 import net.minecraft.block.material.MapColor;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.IProperty;
@@ -145,6 +146,7 @@ public abstract class BlockStoneSlabNew extends BlockSlab {
         }
 
         private final int meta;
+        @Getter
         private final String name;
         private final MapColor field_181069_e;
 
@@ -171,10 +173,6 @@ public abstract class BlockStoneSlabNew extends BlockSlab {
         }
 
         public String toString() {
-            return this.name;
-        }
-
-        public String getName() {
             return this.name;
         }
 

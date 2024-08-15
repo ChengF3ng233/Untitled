@@ -1,5 +1,7 @@
 package net.minecraft.util;
 
+import lombok.Getter;
+import lombok.Setter;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemFood;
 import net.minecraft.item.ItemStack;
@@ -9,12 +11,18 @@ import net.minecraft.world.EnumDifficulty;
 public class FoodStats {
     /**
      * The player's food level.
+     * -- GETTER --
+     *  Get the player's food level.
+
      */
+    @Getter
+    @Setter
     private int foodLevel = 20;
 
     /**
      * The player's food saturation.
      */
+    @Setter
     private float foodSaturationLevel = 5.0F;
 
     /**
@@ -26,6 +34,7 @@ public class FoodStats {
      * The player's food timer value.
      */
     private int foodTimer;
+    @Getter
     private int prevFoodLevel = 20;
 
     /**
@@ -103,21 +112,6 @@ public class FoodStats {
     }
 
     /**
-     * Get the player's food level.
-     */
-    public int getFoodLevel() {
-        return this.foodLevel;
-    }
-
-    public void setFoodLevel(int foodLevelIn) {
-        this.foodLevel = foodLevelIn;
-    }
-
-    public int getPrevFoodLevel() {
-        return this.prevFoodLevel;
-    }
-
-    /**
      * Get whether the player must eat food.
      */
     public boolean needFood() {
@@ -138,7 +132,4 @@ public class FoodStats {
         return this.foodSaturationLevel;
     }
 
-    public void setFoodSaturationLevel(float foodSaturationLevelIn) {
-        this.foodSaturationLevel = foodSaturationLevelIn;
-    }
 }

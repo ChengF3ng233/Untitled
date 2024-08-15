@@ -1,5 +1,7 @@
 package net.minecraft.world.storage;
 
+import lombok.Getter;
+import lombok.Setter;
 import net.minecraft.crash.CrashReportCategory;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.server.MinecraftServer;
@@ -18,22 +20,49 @@ public class WorldInfo {
      * Holds the seed of the currently world.
      */
     private long randomSeed;
+    @Getter
+    @Setter
     private WorldType terrainType = WorldType.DEFAULT;
+    @Getter
     private String generatorOptions = "";
 
     /**
      * The spawn zone position X coordinate.
+     * -- SETTER --
+     *  Set the x spawn position to the passed in value
+     * -- GETTER --
+     *  Returns the x spawn position
+
+
      */
+    @Getter
+    @Setter
     private int spawnX;
 
     /**
      * The spawn zone position Y coordinate.
+     * -- SETTER --
+     *  Sets the y spawn position
+     * -- GETTER --
+     *  Return the Y axis spawning point of the player.
+
+
      */
+    @Getter
+    @Setter
     private int spawnY;
 
     /**
      * The spawn zone position Z coordinate.
+     * -- SETTER --
+     *  Set the z spawn position to the passed in value
+     * -- GETTER --
+     *  Returns the z spawn position
+
+
      */
+    @Getter
+    @Setter
     private int spawnZ;
 
     /**
@@ -43,17 +72,30 @@ public class WorldInfo {
 
     /**
      * The current world time in ticks, ranging from 0 to 23999.
+     * -- SETTER --
+     *  Set current world time
+     * -- GETTER --
+     *  Get current world time
+
+
      */
+    @Getter
+    @Setter
     private long worldTime;
 
     /**
      * The last time the player was in this world.
+     * -- GETTER --
+     *  Return the last time the player was in this world.
+
      */
+    @Getter
     private long lastTimePlayed;
 
     /**
      * The size of entire save of current world on the disk, isn't exactly.
      */
+    @Getter
     private long sizeOnDisk;
     private NBTTagCompound playerTag;
     private int dimension;
@@ -65,28 +107,70 @@ public class WorldInfo {
 
     /**
      * Introduced in beta 1.3, is the save version for future control.
+     * -- SETTER --
+     *  Sets the save version of the world
+     * -- GETTER --
+     *  Returns the save version of this world
+
+
      */
+    @Getter
+    @Setter
     private int saveVersion;
+    @Getter
+    @Setter
     private int cleanWeatherTime;
 
     /**
      * True if it's raining, false otherwise.
+     * -- SETTER --
+     *  Sets whether it is raining or not.
+     * -- GETTER --
+     *  Returns true if it is raining, false otherwise.
+
+
      */
+    @Getter
+    @Setter
     private boolean raining;
 
     /**
      * Number of ticks until next rain.
+     * -- SETTER --
+     *  Sets the number of ticks until rain.
+     * -- GETTER --
+     *  Return the number of ticks until rain.
+
+
      */
+    @Getter
+    @Setter
     private int rainTime;
 
     /**
      * Is thunderbolts failing now?
+     * -- SETTER --
+     *  Sets whether it is thundering or not.
+     * -- GETTER --
+     *  Returns true if it is thundering, false otherwise.
+
+
      */
+    @Getter
+    @Setter
     private boolean thundering;
 
     /**
      * Number of ticks untils next thunderbolt.
+     * -- SETTER --
+     *  Defines the number of ticks until next thunderbolt.
+     * -- GETTER --
+     *  Returns the number of ticks until next thunderbolt.
+
+
      */
+    @Getter
+    @Setter
     private int thunderTime;
 
     /**
@@ -96,25 +180,93 @@ public class WorldInfo {
 
     /**
      * Whether the map features (e.g. strongholds) generation is enabled or disabled.
+     * -- GETTER --
+     *  Get whether the map features (e.g. strongholds) generation is enabled or disabled.
+
      */
+    @Getter
+    @Setter
     private boolean mapFeaturesEnabled;
 
     /**
      * Hardcore mode flag
      */
+    @Setter
     private boolean hardcore;
+    @Setter
     private boolean allowCommands;
+    /**
+     * -- GETTER --
+     *  Returns true if the World is initialized.
+     */
+    @Getter
     private boolean initialized;
+    @Getter
+    @Setter
     private EnumDifficulty difficulty;
+    @Getter
+    @Setter
     private boolean difficultyLocked;
+    /**
+     * -- GETTER --
+     *  Returns the border center X position
+     */
+    @Getter
     private double borderCenterX = 0.0D;
+    /**
+     * -- GETTER --
+     *  Returns the border center Z position
+     */
+    @Getter
     private double borderCenterZ = 0.0D;
+    /**
+     * -- SETTER --
+     *  Sets the border size
+     */
+    @Getter
+    @Setter
     private double borderSize = 6.0E7D;
     private long borderSizeLerpTime = 0L;
     private double borderSizeLerpTarget = 0.0D;
+    /**
+     * -- SETTER --
+     *  Sets the border safe zone
+     * -- GETTER --
+     *  Returns the border safe zone
+
+     */
+    @Getter
+    @Setter
     private double borderSafeZone = 5.0D;
+    /**
+     * -- SETTER --
+     *  Sets the border damage per block
+     * -- GETTER --
+     *  Returns the border damage per block
+
+     */
+    @Getter
+    @Setter
     private double borderDamagePerBlock = 0.2D;
+    /**
+     * -- SETTER --
+     *  Sets the border warning distance
+     * -- GETTER --
+     *  Returns the border warning distance
+
+     */
+    @Getter
+    @Setter
     private int borderWarningDistance = 5;
+    /**
+     * -- SETTER --
+     *  Sets the border warning time
+     * -- GETTER --
+     *  Returns the border warning time
+
+     */
+    @Getter
+    @Setter
     private int borderWarningTime = 15;
     private GameRules theGameRules = new GameRules();
 
@@ -367,72 +519,12 @@ public class WorldInfo {
         return this.randomSeed;
     }
 
-    /**
-     * Returns the x spawn position
-     */
-    public int getSpawnX() {
-        return this.spawnX;
-    }
-
-    /**
-     * Set the x spawn position to the passed in value
-     */
-    public void setSpawnX(int x) {
-        this.spawnX = x;
-    }
-
-    /**
-     * Return the Y axis spawning point of the player.
-     */
-    public int getSpawnY() {
-        return this.spawnY;
-    }
-
-    /**
-     * Sets the y spawn position
-     */
-    public void setSpawnY(int y) {
-        this.spawnY = y;
-    }
-
-    /**
-     * Returns the z spawn position
-     */
-    public int getSpawnZ() {
-        return this.spawnZ;
-    }
-
-    /**
-     * Set the z spawn position to the passed in value
-     */
-    public void setSpawnZ(int z) {
-        this.spawnZ = z;
-    }
-
     public long getWorldTotalTime() {
         return this.totalTime;
     }
 
     public void setWorldTotalTime(long time) {
         this.totalTime = time;
-    }
-
-    /**
-     * Get current world time
-     */
-    public long getWorldTime() {
-        return this.worldTime;
-    }
-
-    /**
-     * Set current world time
-     */
-    public void setWorldTime(long time) {
-        this.worldTime = time;
-    }
-
-    public long getSizeOnDisk() {
-        return this.sizeOnDisk;
     }
 
     /**
@@ -460,91 +552,6 @@ public class WorldInfo {
     }
 
     /**
-     * Returns the save version of this world
-     */
-    public int getSaveVersion() {
-        return this.saveVersion;
-    }
-
-    /**
-     * Sets the save version of the world
-     */
-    public void setSaveVersion(int version) {
-        this.saveVersion = version;
-    }
-
-    /**
-     * Return the last time the player was in this world.
-     */
-    public long getLastTimePlayed() {
-        return this.lastTimePlayed;
-    }
-
-    public int getCleanWeatherTime() {
-        return this.cleanWeatherTime;
-    }
-
-    public void setCleanWeatherTime(int cleanWeatherTimeIn) {
-        this.cleanWeatherTime = cleanWeatherTimeIn;
-    }
-
-    /**
-     * Returns true if it is thundering, false otherwise.
-     */
-    public boolean isThundering() {
-        return this.thundering;
-    }
-
-    /**
-     * Sets whether it is thundering or not.
-     */
-    public void setThundering(boolean thunderingIn) {
-        this.thundering = thunderingIn;
-    }
-
-    /**
-     * Returns the number of ticks until next thunderbolt.
-     */
-    public int getThunderTime() {
-        return this.thunderTime;
-    }
-
-    /**
-     * Defines the number of ticks until next thunderbolt.
-     */
-    public void setThunderTime(int time) {
-        this.thunderTime = time;
-    }
-
-    /**
-     * Returns true if it is raining, false otherwise.
-     */
-    public boolean isRaining() {
-        return this.raining;
-    }
-
-    /**
-     * Sets whether it is raining or not.
-     */
-    public void setRaining(boolean isRaining) {
-        this.raining = isRaining;
-    }
-
-    /**
-     * Return the number of ticks until rain.
-     */
-    public int getRainTime() {
-        return this.rainTime;
-    }
-
-    /**
-     * Sets the number of ticks until rain.
-     */
-    public void setRainTime(int time) {
-        this.rainTime = time;
-    }
-
-    /**
      * Gets the GameType.
      */
     public WorldSettings.GameType getGameType() {
@@ -559,37 +566,10 @@ public class WorldInfo {
     }
 
     /**
-     * Get whether the map features (e.g. strongholds) generation is enabled or disabled.
-     */
-    public boolean isMapFeaturesEnabled() {
-        return this.mapFeaturesEnabled;
-    }
-
-    public void setMapFeaturesEnabled(boolean enabled) {
-        this.mapFeaturesEnabled = enabled;
-    }
-
-    /**
      * Returns true if hardcore mode is enabled, otherwise false
      */
     public boolean isHardcoreModeEnabled() {
         return this.hardcore;
-    }
-
-    public void setHardcore(boolean hardcoreIn) {
-        this.hardcore = hardcoreIn;
-    }
-
-    public WorldType getTerrainType() {
-        return this.terrainType;
-    }
-
-    public void setTerrainType(WorldType type) {
-        this.terrainType = type;
-    }
-
-    public String getGeneratorOptions() {
-        return this.generatorOptions;
     }
 
     /**
@@ -597,17 +577,6 @@ public class WorldInfo {
      */
     public boolean areCommandsAllowed() {
         return this.allowCommands;
-    }
-
-    public void setAllowCommands(boolean allow) {
-        this.allowCommands = allow;
-    }
-
-    /**
-     * Returns true if the World is initialized.
-     */
-    public boolean isInitialized() {
-        return this.initialized;
     }
 
     /**
@@ -622,31 +591,6 @@ public class WorldInfo {
      */
     public GameRules getGameRulesInstance() {
         return this.theGameRules;
-    }
-
-    /**
-     * Returns the border center X position
-     */
-    public double getBorderCenterX() {
-        return this.borderCenterX;
-    }
-
-    /**
-     * Returns the border center Z position
-     */
-    public double getBorderCenterZ() {
-        return this.borderCenterZ;
-    }
-
-    public double getBorderSize() {
-        return this.borderSize;
-    }
-
-    /**
-     * Sets the border size
-     */
-    public void setBorderSize(double size) {
-        this.borderSize = size;
     }
 
     /**
@@ -689,78 +633,6 @@ public class WorldInfo {
      */
     public void getBorderCenterX(double posX) {
         this.borderCenterX = posX;
-    }
-
-    /**
-     * Returns the border safe zone
-     */
-    public double getBorderSafeZone() {
-        return this.borderSafeZone;
-    }
-
-    /**
-     * Sets the border safe zone
-     */
-    public void setBorderSafeZone(double amount) {
-        this.borderSafeZone = amount;
-    }
-
-    /**
-     * Returns the border damage per block
-     */
-    public double getBorderDamagePerBlock() {
-        return this.borderDamagePerBlock;
-    }
-
-    /**
-     * Sets the border damage per block
-     */
-    public void setBorderDamagePerBlock(double damage) {
-        this.borderDamagePerBlock = damage;
-    }
-
-    /**
-     * Returns the border warning distance
-     */
-    public int getBorderWarningDistance() {
-        return this.borderWarningDistance;
-    }
-
-    /**
-     * Sets the border warning distance
-     */
-    public void setBorderWarningDistance(int amountOfBlocks) {
-        this.borderWarningDistance = amountOfBlocks;
-    }
-
-    /**
-     * Returns the border warning time
-     */
-    public int getBorderWarningTime() {
-        return this.borderWarningTime;
-    }
-
-    /**
-     * Sets the border warning time
-     */
-    public void setBorderWarningTime(int ticks) {
-        this.borderWarningTime = ticks;
-    }
-
-    public EnumDifficulty getDifficulty() {
-        return this.difficulty;
-    }
-
-    public void setDifficulty(EnumDifficulty newDifficulty) {
-        this.difficulty = newDifficulty;
-    }
-
-    public boolean isDifficultyLocked() {
-        return this.difficultyLocked;
-    }
-
-    public void setDifficultyLocked(boolean locked) {
-        this.difficultyLocked = locked;
     }
 
     /**

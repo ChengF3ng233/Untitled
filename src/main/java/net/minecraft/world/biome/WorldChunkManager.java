@@ -1,6 +1,7 @@
 package net.minecraft.world.biome;
 
 import com.google.common.collect.Lists;
+import lombok.Getter;
 import net.minecraft.crash.CrashReport;
 import net.minecraft.crash.CrashReportCategory;
 import net.minecraft.util.BlockPos;
@@ -25,6 +26,7 @@ public class WorldChunkManager {
      * The biome list.
      */
     private final BiomeCache biomeCache;
+    @Getter
     private final List<BiomeGenBase> biomesToSpawnIn;
     private String generatorOptions;
 
@@ -51,10 +53,6 @@ public class WorldChunkManager {
 
     public WorldChunkManager(World worldIn) {
         this(worldIn.getSeed(), worldIn.getWorldInfo().getTerrainType(), worldIn.getWorldInfo().getGeneratorOptions());
-    }
-
-    public List<BiomeGenBase> getBiomesToSpawnIn() {
-        return this.biomesToSpawnIn;
     }
 
     /**

@@ -32,6 +32,7 @@ import de.florianmichael.vialoadingbase.ViaLoadingBase;
 import de.florianmichael.vialoadingbase.platform.viaversion.VLBViaAPIWrapper;
 import de.florianmichael.vialoadingbase.platform.viaversion.VLBViaConfig;
 import de.florianmichael.vialoadingbase.util.VLBTask;
+import lombok.Getter;
 
 import java.io.File;
 import java.util.*;
@@ -44,6 +45,7 @@ public class ViaVersionPlatformImpl implements ViaPlatform<UserConnection> {
     private final ViaAPI<UserConnection> api = new VLBViaAPIWrapper();
 
     private final Logger logger;
+    @Getter
     private final VLBViaConfig config;
 
     public ViaVersionPlatformImpl(final Logger logger) {
@@ -153,10 +155,6 @@ public class ViaVersionPlatformImpl implements ViaPlatform<UserConnection> {
     @Override
     public boolean isPluginEnabled() {
         return true;
-    }
-
-    public VLBViaConfig getConfig() {
-        return config;
     }
 
     @Override

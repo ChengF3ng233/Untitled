@@ -1,7 +1,10 @@
 package net.optifine.reflect;
 
+import lombok.Getter;
+
 import java.lang.reflect.Field;
 
+@Getter
 public class FieldLocatorFixed implements IFieldLocator {
     private final Field field;
 
@@ -9,7 +12,4 @@ public class FieldLocatorFixed implements IFieldLocator {
         this.field = field;
     }
 
-    public Field getField() {
-        return this.field;
-    }
 }

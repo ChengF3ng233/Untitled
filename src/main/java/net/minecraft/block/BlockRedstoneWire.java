@@ -2,6 +2,7 @@ package net.minecraft.block;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
+import lombok.Getter;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.properties.PropertyEnum;
@@ -387,6 +388,7 @@ public class BlockRedstoneWire extends Block {
         return new BlockState(this, NORTH, EAST, SOUTH, WEST, POWER);
     }
 
+    @Getter
     enum EnumAttachPosition implements IStringSerializable {
         UP("up"),
         SIDE("side"),
@@ -402,8 +404,5 @@ public class BlockRedstoneWire extends Block {
             return this.getName();
         }
 
-        public String getName() {
-            return this.name;
-        }
     }
 }

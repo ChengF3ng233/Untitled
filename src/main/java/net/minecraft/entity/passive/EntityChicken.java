@@ -1,5 +1,7 @@
 package net.minecraft.entity.passive;
 
+import lombok.Getter;
+import lombok.Setter;
 import net.minecraft.block.Block;
 import net.minecraft.entity.EntityAgeable;
 import net.minecraft.entity.EntityLivingBase;
@@ -25,6 +27,15 @@ public class EntityChicken extends EntityAnimal {
      * The time until the next egg is spawned.
      */
     public int timeUntilNextEgg;
+    /**
+     * -- SETTER --
+     *  Sets whether this chicken is a jockey or not.
+     * -- GETTER --
+     *  Determines if this chicken is a jokey with a zombie riding it.
+
+     */
+    @Getter
+    @Setter
     public boolean chickenJockey;
 
     public EntityChicken(World worldIn) {
@@ -194,17 +205,4 @@ public class EntityChicken extends EntityAnimal {
         }
     }
 
-    /**
-     * Determines if this chicken is a jokey with a zombie riding it.
-     */
-    public boolean isChickenJockey() {
-        return this.chickenJockey;
-    }
-
-    /**
-     * Sets whether this chicken is a jockey or not.
-     */
-    public void setChickenJockey(boolean jockey) {
-        this.chickenJockey = jockey;
-    }
 }

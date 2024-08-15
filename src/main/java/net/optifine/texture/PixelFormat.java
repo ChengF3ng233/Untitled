@@ -1,5 +1,8 @@
 package net.optifine.texture;
 
+import lombok.Getter;
+
+@Getter
 public enum PixelFormat {
     RED(6403),
     RG(33319),
@@ -20,7 +23,4 @@ public enum PixelFormat {
         this.id = id;
     }
 
-    public int getId() {
-        return this.id;
-    }
 }

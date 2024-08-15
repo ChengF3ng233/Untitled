@@ -1,5 +1,6 @@
 package net.minecraft.block;
 
+import lombok.Getter;
 import net.minecraft.block.material.MapColor;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.IProperty;
@@ -137,6 +138,7 @@ public class BlockJukebox extends BlockContainer {
         return new BlockState(this, HAS_RECORD);
     }
 
+    @Getter
     public static class TileEntityJukebox extends TileEntity {
         private ItemStack record;
 
@@ -156,10 +158,6 @@ public class BlockJukebox extends BlockContainer {
             if (this.getRecord() != null) {
                 compound.setTag("RecordItem", this.getRecord().writeToNBT(new NBTTagCompound()));
             }
-        }
-
-        public ItemStack getRecord() {
-            return this.record;
         }
 
         public void setRecord(ItemStack recordStack) {

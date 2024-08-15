@@ -1,32 +1,28 @@
 package net.minecraft.event;
 
 import com.google.common.collect.Maps;
+import lombok.Getter;
 import net.minecraft.util.IChatComponent;
 
 import java.util.Map;
 
+@Getter
 public class HoverEvent {
+    /**
+     * -- GETTER --
+     *  Gets the action to perform when this event is raised.
+     */
     private final HoverEvent.Action action;
+    /**
+     * -- GETTER --
+     *  Gets the value to perform the action on when this event is raised.  For example, if the action is "show item",
+     *  this would be the item to show.
+     */
     private final IChatComponent value;
 
     public HoverEvent(HoverEvent.Action actionIn, IChatComponent valueIn) {
         this.action = actionIn;
         this.value = valueIn;
-    }
-
-    /**
-     * Gets the action to perform when this event is raised.
-     */
-    public HoverEvent.Action getAction() {
-        return this.action;
-    }
-
-    /**
-     * Gets the value to perform the action on when this event is raised.  For example, if the action is "show item",
-     * this would be the item to show.
-     */
-    public IChatComponent getValue() {
-        return this.value;
     }
 
     public boolean equals(Object p_equals_1_) {
@@ -72,6 +68,7 @@ public class HoverEvent {
         }
 
         private final boolean allowedInChat;
+        @Getter
         private final String canonicalName;
 
         Action(String canonicalNameIn, boolean allowedInChatIn) {
@@ -87,8 +84,5 @@ public class HoverEvent {
             return this.allowedInChat;
         }
 
-        public String getCanonicalName() {
-            return this.canonicalName;
-        }
     }
 }

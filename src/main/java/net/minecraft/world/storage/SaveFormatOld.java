@@ -35,15 +35,15 @@ public class SaveFormatOld implements ISaveFormat {
      */
     protected static boolean deleteFiles(File[] files) {
         for (File file1 : files) {
-            logger.debug("Deleting " + file1);
+            logger.debug("Deleting {}", file1);
 
             if (file1.isDirectory() && !deleteFiles(file1.listFiles())) {
-                logger.warn("Couldn't delete directory " + file1);
+                logger.warn("Couldn't delete directory {}", file1);
                 return false;
             }
 
             if (!file1.delete()) {
-                logger.warn("Couldn't delete file " + file1);
+                logger.warn("Couldn't delete file {}", file1);
                 return false;
             }
         }
@@ -93,7 +93,7 @@ public class SaveFormatOld implements ISaveFormat {
                     NBTTagCompound nbttagcompound3 = nbttagcompound2.getCompoundTag("Data");
                     return new WorldInfo(nbttagcompound3);
                 } catch (Exception exception1) {
-                    logger.error("Exception reading " + file2, exception1);
+                    logger.error("Exception reading {}", file2, exception1);
                 }
             }
 
@@ -105,7 +105,7 @@ public class SaveFormatOld implements ISaveFormat {
                     NBTTagCompound nbttagcompound1 = nbttagcompound.getCompoundTag("Data");
                     return new WorldInfo(nbttagcompound1);
                 } catch (Exception exception) {
-                    logger.error("Exception reading " + file2, exception);
+                    logger.error("Exception reading {}", file2, exception);
                 }
             }
 
@@ -164,10 +164,10 @@ public class SaveFormatOld implements ISaveFormat {
         if (!file1.exists()) {
             return true;
         } else {
-            logger.info("Deleting level " + saveName);
+            logger.info("Deleting level {}", saveName);
 
             for (int i = 1; i <= 5; ++i) {
-                logger.info("Attempt " + i + "...");
+                logger.info("Attempt {}...", i);
 
                 if (deleteFiles(file1.listFiles())) {
                     break;

@@ -1,5 +1,6 @@
 package net.minecraft.entity.passive;
 
+import lombok.Getter;
 import net.minecraft.block.Block;
 import net.minecraft.entity.EntityAgeable;
 import net.minecraft.entity.player.EntityPlayer;
@@ -16,6 +17,7 @@ import net.minecraft.world.World;
 public abstract class EntityAnimal extends EntityAgeable implements IAnimals {
     protected Block spawnableBlock = Blocks.grass;
     private int inLove;
+    @Getter
     private EntityPlayer playerInLove;
 
     public EntityAnimal(World worldIn) {
@@ -159,10 +161,6 @@ public abstract class EntityAnimal extends EntityAgeable implements IAnimals {
                 player.inventory.setInventorySlotContents(player.inventory.currentItem, null);
             }
         }
-    }
-
-    public EntityPlayer getPlayerInLove() {
-        return this.playerInLove;
     }
 
     /**

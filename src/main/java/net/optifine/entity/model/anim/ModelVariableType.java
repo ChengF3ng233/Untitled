@@ -1,8 +1,10 @@
 package net.optifine.entity.model.anim;
 
+import lombok.Getter;
 import net.minecraft.client.model.ModelRenderer;
 import net.minecraft.src.Config;
 
+@Getter
 public enum ModelVariableType {
     POS_X("tx"),
     POS_Y("ty"),
@@ -32,10 +34,6 @@ public enum ModelVariableType {
         }
 
         return null;
-    }
-
-    public String getName() {
-        return this.name;
     }
 
     public float getFloat(ModelRenderer mr) {

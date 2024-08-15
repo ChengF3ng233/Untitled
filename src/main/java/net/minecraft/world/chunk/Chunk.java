@@ -3,6 +3,8 @@ package net.minecraft.world.chunk;
 import com.google.common.base.Predicate;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Queues;
+import lombok.Getter;
+import lombok.Setter;
 import net.minecraft.block.Block;
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.material.Material;
@@ -62,8 +64,10 @@ public class Chunk {
      * Reference to the World object.
      */
     private final World worldObj;
+    @Getter
     private final int[] heightMap;
     private final Map<BlockPos, TileEntity> chunkTileEntityMap;
+    @Getter
     private final ClassInheritanceMultiMap<Entity>[] entityLists;
     /**
      * Whether or not this Chunk is currently loaded into the World
@@ -85,11 +89,13 @@ public class Chunk {
     /**
      * Whether this Chunk has any Entities and thus requires saving on every tick
      */
+    @Setter
     private boolean hasEntities;
 
     /**
      * The time according to World.worldTime when this chunk was last saved
      */
+    @Setter
     private long lastSaveTime;
 
     /**
@@ -100,6 +106,8 @@ public class Chunk {
     /**
      * the cumulative number of ticks players have been in this chunk
      */
+    @Getter
+    @Setter
     private long inhabitedTime;
 
     /**
@@ -707,7 +715,7 @@ public class Chunk {
         int j = MathHelper.floor_double(entityIn.posZ / 16.0D);
 
         if (i != this.xPosition || j != this.zPosition) {
-            logger.warn("Wrong location! (" + i + ", " + j + ") should be (" + this.xPosition + ", " + this.zPosition + "), " + entityIn, entityIn);
+            logger.warn("Wrong location! ({}, {}) should be ({}, {}), {}", i, j, this.xPosition, this.zPosition, entityIn, entityIn);
             entityIn.setDead();
         }
 
@@ -1058,7 +1066,7 @@ public class Chunk {
 
     public void setStorageArrays(ExtendedBlockStorage[] newStorageArrays) {
         if (this.storageArrays.length != newStorageArrays.length) {
-            logger.warn("Could not set level chunk sections, array length is " + newStorageArrays.length + " instead of " + this.storageArrays.length);
+            logger.warn("Could not set level chunk sections, array length is {} instead of {}", newStorageArrays.length, this.storageArrays.length);
         } else {
             System.arraycopy(newStorageArrays, 0, this.storageArrays, 0, this.storageArrays.length);
         }
@@ -1154,7 +1162,7 @@ public class Chunk {
      */
     public void setBiomeArray(byte[] biomeArray) {
         if (this.blockBiomeArray.length != biomeArray.length) {
-            logger.warn("Could not set level chunk biomes, array length is " + biomeArray.length + " instead of " + this.blockBiomeArray.length);
+            logger.warn("Could not set level chunk biomes, array length is {} instead of {}", biomeArray.length, this.blockBiomeArray.length);
         } else {
             System.arraycopy(biomeArray, 0, this.blockBiomeArray, 0, this.blockBiomeArray.length);
         }
@@ -1310,13 +1318,9 @@ public class Chunk {
         return this.worldObj;
     }
 
-    public int[] getHeightMap() {
-        return this.heightMap;
-    }
-
     public void setHeightMap(int[] newHeightMap) {
         if (this.heightMap.length != newHeightMap.length) {
-            logger.warn("Could not set level chunk heightmap, array length is " + newHeightMap.length + " instead of " + this.heightMap.length);
+            logger.warn("Could not set level chunk heightmap, array length is {} instead of {}", newHeightMap.length, this.heightMap.length);
         } else {
             System.arraycopy(newHeightMap, 0, this.heightMap, 0, this.heightMap.length);
         }
@@ -1324,10 +1328,6 @@ public class Chunk {
 
     public Map<BlockPos, TileEntity> getTileEntityMap() {
         return this.chunkTileEntityMap;
-    }
-
-    public ClassInheritanceMultiMap<Entity>[] getEntityLists() {
-        return this.entityLists;
     }
 
     public boolean isTerrainPopulated() {
@@ -1350,24 +1350,8 @@ public class Chunk {
         this.isModified = modified;
     }
 
-    public void setHasEntities(boolean hasEntitiesIn) {
-        this.hasEntities = hasEntitiesIn;
-    }
-
-    public void setLastSaveTime(long saveTime) {
-        this.lastSaveTime = saveTime;
-    }
-
     public int getLowestHeight() {
         return this.heightMapMinimum;
-    }
-
-    public long getInhabitedTime() {
-        return this.inhabitedTime;
-    }
-
-    public void setInhabitedTime(long newInhabitedTime) {
-        this.inhabitedTime = newInhabitedTime;
     }
 
     public enum EnumCreateEntityType {

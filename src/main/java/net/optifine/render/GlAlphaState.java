@@ -1,6 +1,11 @@
 package net.optifine.render;
 
+import lombok.Getter;
+import lombok.Setter;
+
+@Getter
 public class GlAlphaState {
+    @Setter
     private boolean enabled;
     private int func;
     private float ref;
@@ -42,22 +47,6 @@ public class GlAlphaState {
 
     public void setDisabled() {
         this.enabled = false;
-    }
-
-    public boolean isEnabled() {
-        return this.enabled;
-    }
-
-    public void setEnabled(boolean enabled) {
-        this.enabled = enabled;
-    }
-
-    public int getFunc() {
-        return this.func;
-    }
-
-    public float getRef() {
-        return this.ref;
     }
 
     public String toString() {

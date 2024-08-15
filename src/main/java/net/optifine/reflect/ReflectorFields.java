@@ -1,8 +1,13 @@
 package net.optifine.reflect;
 
+import lombok.Getter;
+
 public class ReflectorFields {
+    @Getter
     private final ReflectorClass reflectorClass;
+    @Getter
     private final Class fieldType;
+    @Getter
     private int fieldCount;
     private ReflectorField[] reflectorFields;
 
@@ -19,18 +24,6 @@ public class ReflectorFields {
                 }
             }
         }
-    }
-
-    public ReflectorClass getReflectorClass() {
-        return this.reflectorClass;
-    }
-
-    public Class getFieldType() {
-        return this.fieldType;
-    }
-
-    public int getFieldCount() {
-        return this.fieldCount;
     }
 
     public ReflectorField getReflectorField(int index) {

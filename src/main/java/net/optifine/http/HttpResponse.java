@@ -1,12 +1,17 @@
 package net.optifine.http;
 
+import lombok.Getter;
+
 import java.util.LinkedHashMap;
 import java.util.Map;
 
 public class HttpResponse {
+    @Getter
     private int status = 0;
+    @Getter
     private String statusLine = null;
     private Map<String, String> headers = new LinkedHashMap();
+    @Getter
     private byte[] body = null;
 
     public HttpResponse(int status, String statusLine, Map headers, byte[] body) {
@@ -14,14 +19,6 @@ public class HttpResponse {
         this.statusLine = statusLine;
         this.headers = headers;
         this.body = body;
-    }
-
-    public int getStatus() {
-        return this.status;
-    }
-
-    public String getStatusLine() {
-        return this.statusLine;
     }
 
     public Map getHeaders() {
@@ -32,7 +29,4 @@ public class HttpResponse {
         return this.headers.get(key);
     }
 
-    public byte[] getBody() {
-        return this.body;
-    }
 }

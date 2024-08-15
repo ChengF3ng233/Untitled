@@ -1,5 +1,6 @@
 package net.minecraft.block;
 
+import lombok.Getter;
 import net.minecraft.block.material.MapColor;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.IProperty;
@@ -89,7 +90,9 @@ public class BlockPrismarine extends Block {
         }
 
         private final int meta;
+        @Getter
         private final String name;
+        @Getter
         private final String unlocalizedName;
 
         EnumType(int meta, String name, String unlocalizedName) {
@@ -114,12 +117,5 @@ public class BlockPrismarine extends Block {
             return this.name;
         }
 
-        public String getName() {
-            return this.name;
-        }
-
-        public String getUnlocalizedName() {
-            return this.unlocalizedName;
-        }
     }
 }

@@ -1,21 +1,32 @@
 package net.minecraft.util;
 
+import lombok.Getter;
 import net.minecraft.nbt.NBTTagFloat;
 import net.minecraft.nbt.NBTTagList;
 
+@Getter
 public class Rotations {
     /**
      * Rotation on the X axis
+     * -- GETTER --
+     *  Gets the X axis rotation
+
      */
     protected final float x;
 
     /**
      * Rotation on the Y axis
+     * -- GETTER --
+     *  Gets the Y axis rotation
+
      */
     protected final float y;
 
     /**
      * Rotation on the Z axis
+     * -- GETTER --
+     *  Gets the Z axis rotation
+
      */
     protected final float z;
 
@@ -47,24 +58,4 @@ public class Rotations {
         }
     }
 
-    /**
-     * Gets the X axis rotation
-     */
-    public float getX() {
-        return this.x;
-    }
-
-    /**
-     * Gets the Y axis rotation
-     */
-    public float getY() {
-        return this.y;
-    }
-
-    /**
-     * Gets the Z axis rotation
-     */
-    public float getZ() {
-        return this.z;
-    }
 }

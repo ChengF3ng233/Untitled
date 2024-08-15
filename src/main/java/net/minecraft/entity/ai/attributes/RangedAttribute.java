@@ -1,10 +1,12 @@
 package net.minecraft.entity.ai.attributes;
 
+import lombok.Getter;
 import net.minecraft.util.MathHelper;
 
 public class RangedAttribute extends BaseAttribute {
     private final double minimumValue;
     private final double maximumValue;
+    @Getter
     private String description;
 
     public RangedAttribute(IAttribute p_i45891_1_, String unlocalizedNameIn, double defaultValue, double minimumValueIn, double maximumValueIn) {
@@ -19,10 +21,6 @@ public class RangedAttribute extends BaseAttribute {
         } else if (defaultValue > maximumValueIn) {
             throw new IllegalArgumentException("Default value cannot be bigger than maximum value!");
         }
-    }
-
-    public String getDescription() {
-        return this.description;
     }
 
     public RangedAttribute setDescription(String descriptionIn) {

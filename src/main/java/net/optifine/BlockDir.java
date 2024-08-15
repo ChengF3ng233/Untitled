@@ -1,8 +1,10 @@
 package net.optifine;
 
+import lombok.Getter;
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.EnumFacing;
 
+@Getter
 public enum BlockDir {
     DOWN(EnumFacing.DOWN),
     UP(EnumFacing.UP),
@@ -33,14 +35,6 @@ public enum BlockDir {
     BlockDir(EnumFacing facing1, EnumFacing facing2) {
         this.facing1 = facing1;
         this.facing2 = facing2;
-    }
-
-    public EnumFacing getFacing1() {
-        return this.facing1;
-    }
-
-    public EnumFacing getFacing2() {
-        return this.facing2;
     }
 
     BlockPos offset(BlockPos pos) {

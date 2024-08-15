@@ -4,6 +4,7 @@ import com.google.common.base.Predicates;
 
 import java.util.List;
 
+import lombok.Getter;
 import net.minecraft.block.BlockDispenser;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.dispenser.BehaviorDefaultDispenseItem;
@@ -212,9 +213,11 @@ public class ItemArmor extends Item {
         GOLD("gold", 7, new int[]{2, 5, 3, 1}, 25),
         DIAMOND("diamond", 33, new int[]{3, 8, 6, 3}, 10);
 
+        @Getter
         private final String name;
         private final int maxDamageFactor;
         private final int[] damageReductionAmountArray;
+        @Getter
         private final int enchantability;
 
         ArmorMaterial(String name, int maxDamage, int[] reductionAmounts, int enchantability) {
@@ -232,16 +235,9 @@ public class ItemArmor extends Item {
             return this.damageReductionAmountArray[armorType];
         }
 
-        public int getEnchantability() {
-            return this.enchantability;
-        }
-
         public Item getRepairItem() {
             return this == LEATHER ? Items.leather : (this == CHAIN ? Items.iron_ingot : (this == GOLD ? Items.gold_ingot : (this == IRON ? Items.iron_ingot : (this == DIAMOND ? Items.diamond : null))));
         }
 
-        public String getName() {
-            return this.name;
-        }
     }
 }

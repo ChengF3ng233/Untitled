@@ -1,5 +1,6 @@
 package net.minecraft.village;
 
+import lombok.Getter;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -7,27 +8,41 @@ import net.minecraft.nbt.NBTTagCompound;
 public class MerchantRecipe {
     /**
      * Item the Villager buys.
+     * -- GETTER --
+     *  Gets the itemToBuy.
+
      */
+    @Getter
     private ItemStack itemToBuy;
 
     /**
      * Second Item the Villager buys.
+     * -- GETTER --
+     *  Gets secondItemToBuy.
+
      */
+    @Getter
     private ItemStack secondItemToBuy;
 
     /**
      * Item the Villager sells.
+     * -- GETTER --
+     *  Gets itemToSell.
+
      */
+    @Getter
     private ItemStack itemToSell;
 
     /**
      * Saves how much has been tool used when put into to slot to be enchanted.
      */
+    @Getter
     private int toolUses;
 
     /**
      * Maximum times this trade can be used.
      */
+    @Getter
     private int maxTradeUses;
     private boolean rewardsExp;
 
@@ -57,39 +72,10 @@ public class MerchantRecipe {
     }
 
     /**
-     * Gets the itemToBuy.
-     */
-    public ItemStack getItemToBuy() {
-        return this.itemToBuy;
-    }
-
-    /**
-     * Gets secondItemToBuy.
-     */
-    public ItemStack getSecondItemToBuy() {
-        return this.secondItemToBuy;
-    }
-
-    /**
      * Gets if Villager has secondItemToBuy.
      */
     public boolean hasSecondItemToBuy() {
         return this.secondItemToBuy != null;
-    }
-
-    /**
-     * Gets itemToSell.
-     */
-    public ItemStack getItemToSell() {
-        return this.itemToSell;
-    }
-
-    public int getToolUses() {
-        return this.toolUses;
-    }
-
-    public int getMaxTradeUses() {
-        return this.maxTradeUses;
     }
 
     public void incrementToolUses() {

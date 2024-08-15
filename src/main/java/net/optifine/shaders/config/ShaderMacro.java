@@ -1,5 +1,8 @@
 package net.optifine.shaders.config;
 
+import lombok.Getter;
+
+@Getter
 public class ShaderMacro {
     private final String name;
     private final String value;
@@ -7,14 +10,6 @@ public class ShaderMacro {
     public ShaderMacro(String name, String value) {
         this.name = name;
         this.value = value;
-    }
-
-    public String getName() {
-        return this.name;
-    }
-
-    public String getValue() {
-        return this.value;
     }
 
     public String getSourceLine() {

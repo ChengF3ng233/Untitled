@@ -1,5 +1,7 @@
 package net.minecraft.client.shader;
 
+import lombok.Getter;
+import lombok.Setter;
 import net.minecraft.client.renderer.OpenGlHelper;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -15,8 +17,10 @@ public class ShaderUniform {
     private final int uniformType;
     private final IntBuffer uniformIntBuffer;
     private final FloatBuffer uniformFloatBuffer;
+    @Getter
     private final String shaderName;
     private final ShaderManager shaderManager;
+    @Setter
     private int uniformLocation;
     private boolean dirty;
 
@@ -64,14 +68,6 @@ public class ShaderUniform {
         if (this.shaderManager != null) {
             this.shaderManager.markDirty();
         }
-    }
-
-    public void setUniformLocation(int p_148084_1_) {
-        this.uniformLocation = p_148084_1_;
-    }
-
-    public String getShaderName() {
-        return this.shaderName;
     }
 
     public void set(float p_148090_1_) {
@@ -151,7 +147,7 @@ public class ShaderUniform {
 
     public void set(float[] p_148097_1_) {
         if (p_148097_1_.length < this.uniformCount) {
-            logger.warn("Uniform.set called with a too-small value array (expected " + this.uniformCount + ", got " + p_148097_1_.length + "). Ignoring.");
+            logger.warn("Uniform.set called with a too-small value array (expected {}, got {}). Ignoring.", this.uniformCount, p_148097_1_.length);
         } else {
             this.uniformFloatBuffer.position(0);
             this.uniformFloatBuffer.put(p_148097_1_);
@@ -197,7 +193,7 @@ public class ShaderUniform {
             this.uploadFloat();
         } else {
             if (this.uniformType > 10) {
-                logger.warn("Uniform.upload called, but type value (" + this.uniformType + ") is not " + "a valid type. Ignoring.");
+                logger.warn("Uniform.upload called, but type value ({}) is not a valid type. Ignoring.", this.uniformType);
                 return;
             }
 
@@ -224,7 +220,7 @@ public class ShaderUniform {
                 break;
 
             default:
-                logger.warn("Uniform.upload called, but count value (" + this.uniformCount + ") is " + " not in the range of 1 to 4. Ignoring.");
+                logger.warn("Uniform.upload called, but count value ({}) is  not in the range of 1 to 4. Ignoring.", this.uniformCount);
         }
     }
 
@@ -247,7 +243,7 @@ public class ShaderUniform {
                 break;
 
             default:
-                logger.warn("Uniform.upload called, but count value (" + this.uniformCount + ") is " + "not in the range of 1 to 4. Ignoring.");
+                logger.warn("Uniform.upload called, but count value ({}) is not in the range of 1 to 4. Ignoring.", this.uniformCount);
         }
     }
 

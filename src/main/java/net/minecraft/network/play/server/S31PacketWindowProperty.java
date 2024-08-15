@@ -1,11 +1,13 @@
 package net.minecraft.network.play.server;
 
+import lombok.Getter;
 import net.minecraft.network.Packet;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.network.play.INetHandlerPlayClient;
 
 import java.io.IOException;
 
+@Getter
 public class S31PacketWindowProperty implements Packet<INetHandlerPlayClient> {
     private int windowId;
     private int varIndex;
@@ -45,15 +47,4 @@ public class S31PacketWindowProperty implements Packet<INetHandlerPlayClient> {
         buf.writeShort(this.varValue);
     }
 
-    public int getWindowId() {
-        return this.windowId;
-    }
-
-    public int getVarIndex() {
-        return this.varIndex;
-    }
-
-    public int getVarValue() {
-        return this.varValue;
-    }
 }

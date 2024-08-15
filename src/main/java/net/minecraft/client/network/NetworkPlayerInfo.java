@@ -4,6 +4,8 @@ import com.google.common.base.Objects;
 import com.mojang.authlib.GameProfile;
 import com.mojang.authlib.minecraft.MinecraftProfileTexture;
 import com.mojang.authlib.minecraft.MinecraftProfileTexture.Type;
+import lombok.Getter;
+import lombok.Setter;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.resources.DefaultPlayerSkin;
 import net.minecraft.client.resources.SkinManager;
@@ -16,13 +18,19 @@ import net.minecraft.world.WorldSettings;
 public class NetworkPlayerInfo {
     /**
      * The GameProfile for the player represented by this NetworkPlayerInfo instance
+     * -- GETTER --
+     *  Returns the GameProfile for the player represented by this NetworkPlayerInfo instance
+
      */
+    @Getter
     private final GameProfile gameProfile;
+    @Getter
     private WorldSettings.GameType gameType;
 
     /**
      * Player response time to server in milliseconds
      */
+    @Getter
     private int responseTime;
     private boolean playerTexturesLoaded = false;
     private ResourceLocation locationSkin;
@@ -32,6 +40,8 @@ public class NetworkPlayerInfo {
     /**
      * When this is non-null, it is displayed instead of the player's real name
      */
+    @Getter
+    @Setter
     private IChatComponent displayName;
     private int field_178873_i = 0;
     private int field_178870_j = 0;
@@ -50,23 +60,8 @@ public class NetworkPlayerInfo {
         this.displayName = p_i46295_1_.getDisplayName();
     }
 
-    /**
-     * Returns the GameProfile for the player represented by this NetworkPlayerInfo instance
-     */
-    public GameProfile getGameProfile() {
-        return this.gameProfile;
-    }
-
-    public WorldSettings.GameType getGameType() {
-        return this.gameType;
-    }
-
     protected void setGameType(WorldSettings.GameType p_178839_1_) {
         this.gameType = p_178839_1_;
-    }
-
-    public int getResponseTime() {
-        return this.responseTime;
     }
 
     protected void setResponseTime(int p_178838_1_) {
@@ -125,14 +120,6 @@ public class NetworkPlayerInfo {
                 }, true);
             }
         }
-    }
-
-    public IChatComponent getDisplayName() {
-        return this.displayName;
-    }
-
-    public void setDisplayName(IChatComponent displayNameIn) {
-        this.displayName = displayNameIn;
     }
 
     public int func_178835_l() {

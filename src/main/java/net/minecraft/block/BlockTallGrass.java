@@ -1,5 +1,6 @@
 package net.minecraft.block;
 
+import lombok.Getter;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.properties.PropertyEnum;
@@ -148,6 +149,7 @@ public class BlockTallGrass extends BlockBush implements IGrowable {
         return Block.EnumOffsetType.XYZ;
     }
 
+    @Getter
     public enum EnumType implements IStringSerializable {
         DEAD_BUSH(0, "dead_bush"),
         GRASS(1, "tall_grass"),
@@ -177,16 +179,9 @@ public class BlockTallGrass extends BlockBush implements IGrowable {
             return META_LOOKUP[meta];
         }
 
-        public int getMeta() {
-            return this.meta;
-        }
-
         public String toString() {
             return this.name;
         }
 
-        public String getName() {
-            return this.name;
-        }
     }
 }

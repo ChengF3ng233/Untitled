@@ -7,6 +7,7 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
 import com.google.gson.JsonParser;
+import lombok.Getter;
 import net.minecraft.util.JsonUtils;
 import org.apache.commons.io.IOUtils;
 import org.apache.logging.log4j.LogManager;
@@ -19,6 +20,7 @@ import java.io.Reader;
 import java.util.Map;
 import java.util.Map.Entry;
 
+@Getter
 public class ResourceIndex {
     private static final Logger logger = LogManager.getLogger();
     private final Map<String, File> resourceMap = Maps.newHashMap();
@@ -46,16 +48,13 @@ public class ResourceIndex {
                     }
                 }
             } catch (JsonParseException var20) {
-                logger.error("Unable to parse resource index file: " + file2);
+                logger.error("Unable to parse resource index file: {}", file2);
             } catch (FileNotFoundException var21) {
-                logger.error("Can't find the resource index file: " + file2);
+                logger.error("Can't find the resource index file: {}", file2);
             } finally {
                 IOUtils.closeQuietly(bufferedreader);
             }
         }
     }
 
-    public Map<String, File> getResourceMap() {
-        return this.resourceMap;
-    }
 }

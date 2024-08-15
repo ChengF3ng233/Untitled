@@ -93,7 +93,7 @@ public class HttpUtil {
             return stringbuffer.toString();
         } catch (Exception exception) {
             if (!skipLoggingErrors) {
-                logger.error("Could not post to " + url, exception);
+                logger.error("Could not post to {}", url, exception);
             }
 
             return "";
@@ -147,7 +147,7 @@ public class HttpUtil {
                                 return;
                             }
 
-                            HttpUtil.logger.warn("Deleting " + saveFile + " as it does not match what we currently have (" + i + " vs our " + j + ").");
+                            HttpUtil.logger.warn("Deleting {} as it does not match what we currently have ({} vs our {}).", saveFile, i, j);
                             FileUtils.deleteQuietly(saveFile);
                         } else if (saveFile.getParentFile() != null) {
                             saveFile.getParentFile().mkdirs();

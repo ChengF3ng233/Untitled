@@ -1,5 +1,6 @@
 package net.minecraft.util;
 
+import lombok.Getter;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
@@ -23,6 +24,11 @@ public class DamageSource {
     public static DamageSource wither = (new DamageSource("wither")).setDamageBypassesArmor();
     public static DamageSource anvil = new DamageSource("anvil");
     public static DamageSource fallingBlock = new DamageSource("fallingBlock");
+    /**
+     * -- GETTER --
+     *  Return the name of damage type.
+     */
+    @Getter
     public String damageType;
     /**
      * This kind of damage can be blocked or not.
@@ -33,23 +39,45 @@ public class DamageSource {
      * Whether or not the damage ignores modification by potion effects or enchantments.
      */
     private boolean damageIsAbsolute;
+    /**
+     * -- GETTER --
+     *  How much satiate(food) is consumed by this DamageSource
+     */
+    @Getter
     private float hungerDamage = 0.3F;
     /**
      * This kind of damage is based on fire or not.
+     * -- GETTER --
+     *  Returns true if the damage is fire based.
+
      */
+    @Getter
     private boolean fireDamage;
     /**
      * This kind of damage is based on a projectile or not.
+     * -- GETTER --
+     *  Returns true if the damage is projectile based.
+
      */
+    @Getter
     private boolean projectile;
     /**
      * Whether this damage source will have its damage amount scaled based on the current difficulty.
+     * -- GETTER --
+     *  Return whether this damage source will have its damage amount scaled based on the current difficulty.
+
      */
+    @Getter
     private boolean difficultyScaled;
     /**
      * Whether the damage is magic based.
+     * -- GETTER --
+     *  Returns true if the damage is magic based.
+
      */
+    @Getter
     private boolean magicDamage;
+    @Getter
     private boolean explosion;
 
     protected DamageSource(String damageTypeIn) {
@@ -107,22 +135,11 @@ public class DamageSource {
     }
 
     /**
-     * Returns true if the damage is projectile based.
-     */
-    public boolean isProjectile() {
-        return this.projectile;
-    }
-
-    /**
      * Define the damage type as projectile based.
      */
     public DamageSource setProjectile() {
         this.projectile = true;
         return this;
-    }
-
-    public boolean isExplosion() {
-        return this.explosion;
     }
 
     public DamageSource setExplosion() {
@@ -132,13 +149,6 @@ public class DamageSource {
 
     public boolean isUnblockable() {
         return this.isUnblockable;
-    }
-
-    /**
-     * How much satiate(food) is consumed by this DamageSource
-     */
-    public float getHungerDamage() {
-        return this.hungerDamage;
     }
 
     public boolean canHarmInCreative() {
@@ -202,39 +212,11 @@ public class DamageSource {
     }
 
     /**
-     * Returns true if the damage is fire based.
-     */
-    public boolean isFireDamage() {
-        return this.fireDamage;
-    }
-
-    /**
-     * Return the name of damage type.
-     */
-    public String getDamageType() {
-        return this.damageType;
-    }
-
-    /**
      * Set whether this damage source will have its damage amount scaled based on the current difficulty.
      */
     public DamageSource setDifficultyScaled() {
         this.difficultyScaled = true;
         return this;
-    }
-
-    /**
-     * Return whether this damage source will have its damage amount scaled based on the current difficulty.
-     */
-    public boolean isDifficultyScaled() {
-        return this.difficultyScaled;
-    }
-
-    /**
-     * Returns true if the damage is magic based.
-     */
-    public boolean isMagicDamage() {
-        return this.magicDamage;
     }
 
     /**

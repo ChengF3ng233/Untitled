@@ -6,8 +6,7 @@ import net.minecraft.util.ResourceLocation;
 
 public enum MusicCategory {
     RECOMMENDED("home.png"),
-    LIKED("favorite.png"),
-    RECENT("recent.png");
+    LIKED("favorite.png");
 
     public final ResourceLocation icon;
     MusicCategory(String iconFile) {

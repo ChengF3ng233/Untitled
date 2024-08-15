@@ -1,5 +1,7 @@
 package net.minecraft.entity;
 
+import lombok.Getter;
+import lombok.Setter;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.ai.*;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
@@ -49,21 +51,33 @@ public abstract class EntityLiving extends EntityLivingBase {
      * The experience points the Entity gives.
      */
     protected int experienceValue;
+    @Getter
     protected EntityMoveHelper moveHelper;
     /**
      * Entity jumping helper
      */
+    @Getter
     protected EntityJumpHelper jumpHelper;
+    @Getter
     protected PathNavigate navigator;
     /**
      * Chances for each equipment piece from dropping when this entity dies.
      */
     protected float[] equipmentDropChances = new float[5];
+    @Getter
     private final EntityLookHelper lookHelper;
     private final EntityBodyHelper bodyHelper;
     /**
      * The active target the Task system uses for tracking
+     * -- SETTER --
+     *  Sets the active target the Task system uses for tracking
+     * -- GETTER --
+     *  Gets the active target the Task system uses for tracking
+
+
      */
+    @Getter
+    @Setter
     private EntityLivingBase attackTarget;
     private final EntitySenses senses;
     /**
@@ -73,6 +87,7 @@ public abstract class EntityLiving extends EntityLivingBase {
     /**
      * Whether this entity can pick up items from the ground.
      */
+    @Setter
     private boolean canPickUpLoot;
 
     /**
@@ -80,6 +95,7 @@ public abstract class EntityLiving extends EntityLivingBase {
      */
     private boolean persistenceRequired;
     private boolean isLeashed;
+    @Getter
     private Entity leashedToEntity;
     private NBTTagCompound leashNBTTag;
     private UUID teamUuid = null;
@@ -199,41 +215,11 @@ public abstract class EntityLiving extends EntityLivingBase {
         return new PathNavigateGround(this, worldIn);
     }
 
-    public EntityLookHelper getLookHelper() {
-        return this.lookHelper;
-    }
-
-    public EntityMoveHelper getMoveHelper() {
-        return this.moveHelper;
-    }
-
-    public EntityJumpHelper getJumpHelper() {
-        return this.jumpHelper;
-    }
-
-    public PathNavigate getNavigator() {
-        return this.navigator;
-    }
-
     /**
      * returns the EntitySenses Object for the EntityLiving
      */
     public EntitySenses getEntitySenses() {
         return this.senses;
-    }
-
-    /**
-     * Gets the active target the Task system uses for tracking
-     */
-    public EntityLivingBase getAttackTarget() {
-        return this.attackTarget;
-    }
-
-    /**
-     * Sets the active target the Task system uses for tracking
-     */
-    public void setAttackTarget(EntityLivingBase entitylivingbaseIn) {
-        this.attackTarget = entitylivingbaseIn;
     }
 
     /**
@@ -888,10 +874,6 @@ public abstract class EntityLiving extends EntityLivingBase {
         return this.canPickUpLoot;
     }
 
-    public void setCanPickUpLoot(boolean canPickup) {
-        this.canPickUpLoot = canPickup;
-    }
-
     public boolean isNoDespawnRequired() {
         return this.persistenceRequired;
     }
@@ -978,10 +960,6 @@ public abstract class EntityLiving extends EntityLivingBase {
 
     public boolean getLeashed() {
         return this.isLeashed;
-    }
-
-    public Entity getLeashedToEntity() {
-        return this.leashedToEntity;
     }
 
     /**
