@@ -119,6 +119,7 @@ public class MusicPlayerScreen extends GuiScreen {
         RoundedUtil.drawRound(x + 2f, y + 2f, leftWidth - 2f, height - 4f, 2.6f, ThemeColor.categoryColor);
 
         NanoUtil.beginFrame();
+        NanoUtil.scaleStart(0, 0, sr.getScaleFactor() * 0.5f);
         NanoUtil.scaleStart(x + width / 2, y + height / 2, windowAnim.getOutput().floatValue());
 
         RenderUtil.drawImage(new ResourceLocation("untitled/icon/netease.png"), x + 12f, y + 10f, 16, 16);

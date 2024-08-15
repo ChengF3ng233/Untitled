@@ -60,6 +60,7 @@ public class ArraylistWidget extends Widget {
         RenderUtil.scissorStart(renderX, moduleY, (maxWidth + 6f), (sr.getScaledHeight() - moduleY));
 
       //  NanoUtil.beginFrame();
+        NanoUtil.scaleStart(0, 0, sr.getScaleFactor() * 0.5f);
         NanoUtil.scissorStart(renderX, moduleY, maxWidth + 6f, sr.getScaledHeight() - moduleY);
 
         for (Module module : moduleList) {
