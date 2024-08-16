@@ -25,7 +25,7 @@ public class BlurUtil {
 
     public static void blurEnd() {
         stencilFramebuffer.unbindFramebuffer();
-        KawaseBlur.renderBlur(stencilFramebuffer.framebufferTexture, blurRadius.value.intValue(), blurOffset.value.intValue());
+        KawaseBlur.renderBlur(stencilFramebuffer.framebufferTexture, blurRadius.getValue().intValue(), blurOffset.getValue().intValue());
     }
 
     public static void blurEnd(int radius, int offset) {
@@ -35,7 +35,7 @@ public class BlurUtil {
 
     public static void bloomEnd() {
         stencilFramebuffer.unbindFramebuffer();
-        KawaseBloom.renderBlur(stencilFramebuffer.framebufferTexture, bloomRadius.value.intValue(), bloomOffset.value.intValue());
+        KawaseBloom.renderBlur(stencilFramebuffer.framebufferTexture, bloomRadius.getValue().intValue(), bloomOffset.getValue().intValue());
     }
 
     public static void bloomEnd(int radius, int offset) {

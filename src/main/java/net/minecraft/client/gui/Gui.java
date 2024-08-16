@@ -167,7 +167,7 @@ public class Gui {
      * Renders the specified text to the screen, center-aligned. Args : renderer, string, x, y, color
      */
     public void drawCenteredString(FontRenderer fontRendererIn, String text, int x, int y, int color) {
-        if (HUD.fancyFont.value && Client.instance.moduleManager.getModule(HUD.class).enabled) {
+        if (HUD.fancyFont.getValue() && Client.instance.moduleManager.getModule(HUD.class).enabled) {
             FontLoader.miSans(17).drawCenteredString(text, x, y + FontLoader.miSans(17).getFontHeight() / 2f, color, CenterType.Horizontal);
             return;
         }

@@ -41,12 +41,12 @@ public class ArraylistWidget extends Widget {
         float renderY = sr.getScaledHeight() * y;
 
         NanoFontRenderer font = NanoFontLoader.misans;
-        font.setSize(fontSize.value.floatValue());
+        font.setSize(fontSize.getValue().floatValue());
 
         List<Module> moduleList = new java.util.ArrayList<>(Client.instance.moduleManager.moduleList.stream().toList());
         moduleList.sort(new ModuleComparator(CompareMode.Length, font));
 
-        float yGap = font.getHeight() + 6f;
+        float yGap = font.getHeight(fontSize.getValue().floatValue()) + 6f;
         float moduleY = renderY;
         int index = 0;
 
@@ -61,12 +61,12 @@ public class ArraylistWidget extends Widget {
         for (Module module : moduleList) {
             double moduleX = renderX + maxWidth - 6f - (font.getStringWidth(module.name)) * module.horizontalAnim.getOutput();
 
-            Gui.drawNewRect(moduleX, moduleY, font.getStringWidth(module.name) + 6f, yGap, backgroundColor.getColor(index).getRGB());
+            Gui.drawNewRect(moduleX, moduleY, font.getStringWidth(module.name) + 6f, yGap, backgroundColor.getValue(index).getRGB());
 
-            if (PostProcessing.bloom.value) {
-                font.drawGlowString(module.name, (float) (moduleX + 3f),  moduleY, textColor.getColor(index), true);
+            if (PostProcessing.bloom.getValue()) {
+                font.drawGlowString(module.name, (float) (moduleX + 3f),  moduleY, textColor.getValue(index), true);
             } else {
-                font.drawString(module.name, (float) (moduleX + 3f),  moduleY, textColor.getColor(index), true);
+                font.drawString(module.name, (float) (moduleX + 3f),  moduleY, textColor.getValue(index), true);
             }
 
 
@@ -80,7 +80,7 @@ public class ArraylistWidget extends Widget {
                 module.horizontalAnim.changeDirection();
             }
 
-            if (module.enabled) index += indexOffset.value.intValue();
+            if (module.enabled) index += indexOffset.getValue().intValue();
         }
 
         NanoUtil.scissorEnd();

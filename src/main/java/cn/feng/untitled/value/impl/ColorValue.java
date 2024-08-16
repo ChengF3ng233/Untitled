@@ -11,58 +11,68 @@ import java.util.Locale;
  * @since 2024/7/28
  **/
 public class ColorValue extends Value<Color> {
-    public NumberValue hue = new NumberValue("Hue", 0f, 1f, 0f, 0.01f);
-    public NumberValue saturation = new NumberValue("Saturation", 0f, 1f, 0f, 0.01f);
-    public NumberValue brightness = new NumberValue("Brightness", 0f, 1f, 0f, 0.01f);
-    public NumberValue opacity = new NumberValue("Opacity", 1f, 1f, 0.01f, 0.01f);
-    public NumberValue speed = new NumberValue("Speed", 15f, 30f, 5f, 1f);
+    public NumberValue hue;
+    public NumberValue saturation;
+    public NumberValue brightness;
+    public NumberValue opacity;
+    public NumberValue speed;
 
-    public BoolValue rainbow = new BoolValue("Rainbow", false);
-    public BoolValue fade = new BoolValue("Fade", false);
+    public BoolValue rainbow;
+    public BoolValue fade;
 
     public ColorValue(String name, Color defaultValue) {
-        super(name, defaultValue);
-        setColor(defaultValue);
+        super(name, defaultValue, false);
+        hue = new NumberValue("Hue", 0f, 1f, 0f, 0.01f);
+        saturation = new NumberValue("Saturation", 0f, 1f, 0f, 0.01f);
+        brightness = new NumberValue("Brightness", 0f, 1f, 0f, 0.01f);
+        opacity = new NumberValue("Opacity", 1f, 1f, 0.01f, 0.01f);
+        speed = new NumberValue("Speed", 15f, 30f, 5f, 1f);
+
+        rainbow = new BoolValue("Rainbow", false);
+        fade = new BoolValue("Fade", false);
+        setValue(defaultValue);
     }
 
-    public void setColor(Color color) {
+    @Override
+    public void setValue(Color color) {
         float[] hsb = Color.RGBtoHSB(color.getRed(), color.getGreen(), color.getBlue(), null);
-        hue.value = (double) hsb[0];
-        saturation.value = (double) hsb[1];
-        brightness.value = (double) hsb[2];
-        opacity.value = color.getAlpha() / 255d;
+        hue.setValue((double) hsb[0]);
+        saturation.setValue((double) hsb[1]);
+        brightness.setValue((double) hsb[2]);
+        opacity.setValue(color.getAlpha() / 255d);
     }
 
-    public void setColor(float hue, float saturation, float brightness, float opacity) {
-        this.hue.value = (double) hue;
-        this.saturation.value = (double) saturation;
-        this.brightness.value = (double) brightness;
-        this.opacity.value = (double) opacity;
+    public void setValue(float hue, float saturation, float brightness, float opacity) {
+        this.hue.setValue((double) hue);
+        this.saturation.setValue((double) saturation);
+        this.brightness.setValue((double) brightness);
+        this.opacity.setValue((double) opacity);
     }
 
     public String getHexCode() {
-        Color color = getColor();
+        Color color = getValue();
         return String.format("%02x%02x%02x", color.getRed(), color.getGreen(), color.getBlue()).toUpperCase(Locale.ROOT);
     }
 
-    public Color getColor() {
-        Color color = ColorUtil.applyOpacity(Color.getHSBColor(hue.value.floatValue(), saturation.value.floatValue(), brightness.value.floatValue()), opacity.value.floatValue());
-        if (rainbow.value) {
-            color =  ColorUtil.rainbow(speed.value.intValue(), 0, saturation.value.floatValue(), brightness.value.floatValue(), opacity.value.floatValue());
+    @Override
+    public Color getValue() {
+        Color color = ColorUtil.applyOpacity(Color.getHSBColor(hue.getValue().floatValue(), saturation.getValue().floatValue(), brightness.getValue().floatValue()), opacity.getValue().floatValue());
+        if (rainbow.getValue()) {
+            color =  ColorUtil.rainbow(speed.getValue().intValue(), 0, saturation.getValue().floatValue(), brightness.getValue().floatValue(), opacity.getValue().floatValue());
         }
-        if (fade.value) {
-            color = ColorUtil.fade(speed.value.intValue(), 0, color, opacity.value.floatValue());
+        if (fade.getValue()) {
+            color = ColorUtil.fade(speed.getValue().intValue(), 0, color, opacity.getValue().floatValue());
         }
         return color;
     }
 
-    public Color getColor(int index) {
-        Color color = getColor();
-        if (rainbow.value) {
-            color = ColorUtil.rainbow(speed.value.intValue(), index, saturation.value.floatValue(), brightness.value.floatValue(), opacity.value.floatValue());
+    public Color getValue(int index) {
+        Color color = getValue();
+        if (rainbow.getValue()) {
+            color = ColorUtil.rainbow(speed.getValue().intValue(), index, saturation.getValue().floatValue(), brightness.getValue().floatValue(), opacity.getValue().floatValue());
         }
-        if (fade.value) {
-            color = ColorUtil.fade(speed.value.intValue(), index, color, opacity.value.floatValue());
+        if (fade.getValue()) {
+            color = ColorUtil.fade(speed.getValue().intValue(), index, color, opacity.getValue().floatValue());
         }
         return color;
     }

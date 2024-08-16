@@ -66,9 +66,9 @@ public class NameTag extends Module {
             float middle = x + ((right - x) / 2);
 
             // Some constants
-            float scale = Math.min(1f, normalDistance.value.floatValue() /  mc.thePlayer.getDistanceToEntity(elb));
-            font.setSize(fontSize.value.floatValue() * scale);
-            float fontHeight = font.getHeight();
+            float scale = Math.min(1f, normalDistance.getValue().floatValue() /  mc.thePlayer.getDistanceToEntity(elb));
+            font.setSize(fontSize.getValue().floatValue() * scale);
+            float fontHeight = font.getHeight(fontSize.getValue().floatValue());
 
             float healthValue = elb.getHealth();
             Color healthColor = healthValue > elb.getMaxHealth() * .75 ? new Color(66, 246, 123) : healthValue > elb.getMaxHealth() * .5 ? new Color(228, 255, 105) : healthValue >elb.getMaxHealth() *  .35 ? new Color(236, 100, 64) : new Color(255, 65, 68);
@@ -90,11 +90,11 @@ public class NameTag extends Module {
             glPushMatrix();
 
             RoundedUtil.drawRound(renderX - xGap * scale, textY - yGap * scale, healthWidth + 2 * xGap * scale,
-                    fontHeight + 4f * scale, 4 * scale, backgroundColor.getColor());
+                    fontHeight + 4f * scale, 4 * scale, backgroundColor.getValue());
 
             RenderUtil.resetColor();
 
-            if (PostProcessing.bloom.value) {
+            if (PostProcessing.bloom.getValue()) {
                 font.drawGlowString(healthText, renderX, textY, healthColor);
             } else {
                 font.drawString(healthText, renderX, textY, healthColor);
@@ -103,11 +103,11 @@ public class NameTag extends Module {
             renderX += healthWidth + 3 * xGap;
 
             RoundedUtil.drawRound(renderX - xGap * scale, textY - yGap * scale, nameWidth + 2 * xGap * scale,
-                    fontHeight + 4f * scale, 4 * scale, backgroundColor.getColor());
+                    fontHeight + 4f * scale, 4 * scale, backgroundColor.getValue());
 
             RenderUtil.resetColor();
 
-            if (PostProcessing.bloom.value) {
+            if (PostProcessing.bloom.getValue()) {
                 font.drawGlowString(nameText, renderX, textY, Color.WHITE);
             } else {
                 font.drawString(nameText, renderX, textY, Color.WHITE);
@@ -116,11 +116,11 @@ public class NameTag extends Module {
             renderX += nameWidth + 3 * xGap;
 
             RoundedUtil.drawRound(renderX - xGap * scale, textY - yGap * scale, distanceWidth + 2 * xGap * scale,
-                    fontHeight + 4f * scale, 4 * scale, backgroundColor.getColor());
+                    fontHeight + 4f * scale, 4 * scale, backgroundColor.getValue());
 
             RenderUtil.resetColor();
 
-            if (PostProcessing.bloom.value) {
+            if (PostProcessing.bloom.getValue()) {
                 font.drawGlowString(distanceText, renderX, textY, Color.WHITE);
             } else {
                 font.drawString(distanceText, renderX, textY, Color.WHITE);
@@ -145,17 +145,17 @@ public class NameTag extends Module {
         if (entity.isDead || entity.isInvisible()) {
             return false;
         }
-        if (Target.players.value && entity instanceof EntityPlayer) {
+        if (Target.players.getValue() && entity instanceof EntityPlayer) {
             if (entity == mc.thePlayer) {
                 return mc.gameSettings.thirdPersonView != 0;
             }
             return !entity.getDisplayName().getUnformattedText().contains("[NPC");
         }
-        if (Target.animals.value && entity instanceof EntityAnimal) {
+        if (Target.animals.getValue() && entity instanceof EntityAnimal) {
             return true;
         }
 
-        return Target.mobs.value && entity instanceof EntityMob;
+        return Target.mobs.getValue() && entity instanceof EntityMob;
     }
 
 }

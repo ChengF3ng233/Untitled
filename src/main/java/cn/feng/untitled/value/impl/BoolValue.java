@@ -10,8 +10,4 @@ public class BoolValue extends Value<Boolean> {
     public BoolValue(String name, boolean defaultValue) {
         super(name, defaultValue);
     }
-
-    public Runnable toggleAction = () -> {
-
-    };
 }

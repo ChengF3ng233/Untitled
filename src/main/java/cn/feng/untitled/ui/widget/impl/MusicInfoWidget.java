@@ -46,7 +46,7 @@ public class MusicInfoWidget extends Widget {
                 throw new RuntimeException(e);
             }
         }
-        height = heightValue.value.floatValue();
+        height = heightValue.getValue().floatValue();
         RenderUtil.drawImage(coverTexture, x * sr.getScaledWidth(), y * sr.getScaledHeight(), height, height);
     }
 
@@ -59,21 +59,21 @@ public class MusicInfoWidget extends Widget {
         MusicPlayer player = Client.instance.musicManager.screen.player;
         if (player.getMusic() == null) return;
         width = height + Math.max(
-                NanoFontLoader.misans.getStringWidth(player.getMusic().getName(), fontSize.value.floatValue()),
-                NanoFontLoader.misans.getStringWidth(player.getMusic().getArtist(), fontSize.value.floatValue() * 0.8f)
+                NanoFontLoader.misans.getStringWidth(player.getMusic().getName(), fontSize.getValue().floatValue()),
+                NanoFontLoader.misans.getStringWidth(player.getMusic().getArtist(), fontSize.getValue().floatValue() * 0.8f)
         ) + 4f;
-        NanoFontLoader.misans.drawString(player.getMusic().getName(), x * sr.getScaledWidth() + 2f + height, y * sr.getScaledHeight() + 2f, fontSize.value.floatValue(), Color.WHITE, fontShadow.value);
-        NanoFontLoader.misans.drawString(player.getMusic().getArtist(), x * sr.getScaledWidth() + 2f + height, y * sr.getScaledHeight() + fontSize.value.floatValue() / 2f + 6f, fontSize.value.floatValue() * 0.8f, ThemeColor.greyColor, fontShadow.value);
+        NanoFontLoader.misans.drawString(player.getMusic().getName(), x * sr.getScaledWidth() + 2f + height, y * sr.getScaledHeight() + 2f, fontSize.getValue().floatValue(), Color.WHITE, fontShadow.getValue());
+        NanoFontLoader.misans.drawString(player.getMusic().getArtist(), x * sr.getScaledWidth() + 2f + height, y * sr.getScaledHeight() + fontSize.getValue().floatValue() / 2f + 6f, fontSize.getValue().floatValue() * 0.8f, ThemeColor.greyColor, fontShadow.getValue());
     }
 
     @Override
     public void onShader(ShaderEvent event) {
         MusicPlayer player = Client.instance.musicManager.screen.player;
         if (player.getMusic() == null) return;
-        if (imgBloom.value && event.bloom) {
+        if (imgBloom.getValue() && event.bloom) {
             Gui.drawNewRect(x * sr.getScaledWidth(), y * sr.getScaledHeight(), height, height, Color.BLACK.getRGB());
         }
-        if (bgBlur.value && !event.bloom) {
+        if (bgBlur.getValue() && !event.bloom) {
             Gui.drawNewRect(x * sr.getScaledWidth(), y * sr.getScaledHeight(), width, height, Color.BLACK.getRGB());
         }
     }

@@ -42,7 +42,14 @@ public class ChangeMusicThread extends Thread {
             music.setLyrics(pair.lyrics());
             // 纠正低级格式的duration
             music.correctLyricDuration();
+            if (music.isHasTranslate()) {
+                music.setTranslatedLyrics(pair.translatedLyrics());
+                if (!music.getTranslatedLyrics().isEmpty()) {
+                    music.generateTranslateMap();
+                } else music.setHasTranslate(false);
+            }
         }
+
         List<LyricLine> translatedLyrics = music.getTranslatedLyrics();
         if (translatedLyrics.isEmpty() && music.isHasTranslate()) {
             // 请求翻译
@@ -51,6 +58,7 @@ public class ChangeMusicThread extends Thread {
                 music.generateTranslateMap();
             } else music.setHasTranslate(false);
         }
+
         Client.instance.musicManager.screen.player.setMusic(music);
         if (playList != null) {
             Client.instance.musicManager.screen.player.setMusicList(playList.getMusicList());

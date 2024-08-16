@@ -1,5 +1,6 @@
 package cn.feng.untitled.module.impl.render;
 
+import cn.feng.untitled.Client;
 import cn.feng.untitled.module.Module;
 import cn.feng.untitled.module.ModuleCategory;
 import cn.feng.untitled.value.impl.BoolValue;
@@ -25,12 +26,12 @@ public class Camera extends Module {
             toggle();
         locked = true;
 
-        motion.toggleAction = () -> {
-            if (motion.value) {
+        motion.setChangeAction((oldValue, newValue) -> {
+            if (newValue && Client.instance.loaded) {
                 mc.entityRenderer.prevRenderX = mc.getRenderViewEntity().posX;
                 mc.entityRenderer.prevRenderY = mc.getRenderViewEntity().posY + mc.getRenderViewEntity().getEyeHeight();
                 mc.entityRenderer.prevRenderZ = mc.getRenderViewEntity().posZ;
             }
-        };
+        });
     }
 }

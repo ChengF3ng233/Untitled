@@ -46,14 +46,14 @@ public class MusicVisualizerWidget extends Widget {
     @Override
     public void onRender2D() {
         GL11.glPushMatrix();
-        width = fillValue.value? sr.getScaledWidth() : widthValue.value.floatValue();
-        height = heightValue.value.floatValue();
+        width = fillValue.getValue() ? sr.getScaledWidth() : widthValue.getValue().floatValue();
+        height = heightValue.getValue().floatValue();
         float renderX = sr.getScaledWidth() * x;
         float renderY = sr.getScaledHeight() * y;
-        float step = width / bands.value.intValue();
+        float step = width / bands.getValue().intValue();
         MediaPlayer mediaPlayer = Client.instance.musicManager.screen.player.getMediaPlayer();
         if (mediaPlayer != null && Client.instance.musicManager.screen.player.getMagnitudes() != null) {
-            mediaPlayer.setAudioSpectrumNumBands(bands.value.intValue());
+            mediaPlayer.setAudioSpectrumNumBands(bands.getValue().intValue());
             float[] magnitudes = Client.instance.musicManager.screen.player.getMagnitudes();
             float[] vertex = new float[magnitudes.length * 2 + 2];
 
@@ -71,22 +71,22 @@ public class MusicVisualizerWidget extends Widget {
             int vertexIndex = 2;
             int colorIndex = 0;
             for (float magnitude : magnitudeInterp) {
-                float realY = renderY + heightValue.value.floatValue() - (1 - (-magnitude / 60f)) * 1.2f * heightValue.value.floatValue();
+                float realY = renderY + heightValue.getValue().floatValue() - (1 - (-magnitude / 60f)) * 1.2f * heightValue.getValue().floatValue();
                 vertex[vertexIndex] = renderX;
                 vertex[vertexIndex + 1] = realY;
 
-                if (modeValue.value.equals("Rect"))
+                if (modeValue.getValue().equals("Rect"))
                 {
-                    RoundedUtil.drawGradientVertical(renderX - step, realY + (renderY + heightValue.value.floatValue()) * (sr.getScaleFactor() * 0.5f - 1), step, Math.max(renderY + height - realY, 1), rectRadius.value.floatValue(), rectFirst.getColor(colorIndex), rectSecond.getColor(colorIndex));
-                    colorIndex += indexOffset.value.intValue();
+                    RoundedUtil.drawGradientVertical(renderX - step, realY + (renderY + heightValue.getValue().floatValue()) * (sr.getScaleFactor() * 0.5f - 1), step, Math.max(renderY + height - realY, 1), rectRadius.getValue().floatValue(), rectFirst.getValue(colorIndex), rectSecond.getValue(colorIndex));
+                    colorIndex += indexOffset.getValue().intValue();
                 }
 
                 vertexIndex += 2;
-                renderX += modeValue.value.equals("Rect")? step + rectSpace.value.floatValue() : step;
+                renderX += modeValue.getValue().equals("Rect")? step + rectSpace.getValue().floatValue() : step;
             }
 
-            if (modeValue.value.equals("Polyline")) {
-                NanoUtil.drawPolyline(vertex, lineColor.getColor().getRGB(), 0.8f);
+            if (modeValue.getValue().equals("Polyline")) {
+                NanoUtil.drawPolyline(vertex, lineColor.getValue().getRGB(), 0.8f);
             }
         }
         GL11.glPopMatrix();

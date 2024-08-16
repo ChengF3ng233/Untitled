@@ -31,22 +31,22 @@ public class PostProcessing extends Module {
     public static final NumberValue bloomOffset = new NumberValue("BloomOffset", 3f,  5f, 1f, 1f);
 
     public static void blurScreen() {
-        if (blur.value) {
+        if (blur.getValue()) {
             stencilFramebuffer = RenderUtil.createFrameBuffer(stencilFramebuffer);
             stencilFramebuffer.framebufferClear();
             stencilFramebuffer.bindFramebuffer(false);
             Client.instance.eventBus.post(new ShaderEvent(false));
             stencilFramebuffer.unbindFramebuffer();
-            KawaseBlur.renderBlur(stencilFramebuffer.framebufferTexture, blurRadius.value.intValue(), blurOffset.value.intValue());
+            KawaseBlur.renderBlur(stencilFramebuffer.framebufferTexture, blurRadius.getValue().intValue(), blurOffset.getValue().intValue());
         }
 
-        if (bloom.value) {
+        if (bloom.getValue()) {
             stencilFramebuffer = RenderUtil.createFrameBuffer(stencilFramebuffer);
             stencilFramebuffer.framebufferClear();
             stencilFramebuffer.bindFramebuffer(false);
             Client.instance.eventBus.post(new ShaderEvent(true));
             stencilFramebuffer.unbindFramebuffer();
-            KawaseBloom.renderBlur(stencilFramebuffer.framebufferTexture, bloomRadius.value.intValue(), bloomOffset.value.intValue());
+            KawaseBloom.renderBlur(stencilFramebuffer.framebufferTexture, bloomRadius.getValue().intValue(), bloomOffset.getValue().intValue());
         }
     }
 }

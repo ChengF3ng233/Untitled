@@ -49,7 +49,7 @@ public class NumberComponent extends Component<Double> {
     @Override
     public void init() {
         NumberValue value = (NumberValue) this.value;
-        int startStep = (int) ((value.value - value.minimum) / value.step);
+        int startStep = (int) ((value.getValue() - value.minimum) / value.step);
         if (startStep > steps) startStep = steps;
         if (startStep < 0) startStep = 0;
         animation = new CustomAnimation(DecelerateAnimation.class, 100, 0, startStep * widthPerStep);
@@ -71,7 +71,7 @@ public class NumberComponent extends Component<Double> {
 
             setEndPoint(nowStep * widthPerStep);
 
-            value.value = value.minimum + value.step * nowStep;
+            value.setValue(value.minimum + value.step * nowStep);
         }
 
         if (selected && colorAnim.getDirection() == Direction.FORWARDS) {
@@ -85,7 +85,7 @@ public class NumberComponent extends Component<Double> {
         } else if (alphaAnim.getDirection() == Direction.FORWARDS) alphaAnim.changeDirection();
 
         if (alphaAnim.getOutput() != 0) {
-            FontLoader.rubik(13).drawCenteredString(String.valueOf(MathUtil.round(value.value, 2)), this.posX + 0.5f + valueX.floatValue(), this.posY - 7f, ColorUtil.applyOpacity(Color.WHITE.getRGB(), alphaAnim.getOutput().floatValue()), CenterType.Horizontal, true);
+            FontLoader.rubik(13).drawCenteredString(String.valueOf(MathUtil.round(value.getValue(), 2)), this.posX + 0.5f + valueX.floatValue(), this.posY - 7f, ColorUtil.applyOpacity(Color.WHITE.getRGB(), alphaAnim.getOutput().floatValue()), CenterType.Horizontal, true);
         }
         RoundedUtil.drawRound(this.posX, this.posY, width, barHeight, 1f, ThemeColor.barBgColor);
         RoundedUtil.drawRound(this.posX, this.posY, valueX.floatValue(), barHeight, 1f, ThemeColor.barColor);
@@ -105,12 +105,12 @@ public class NumberComponent extends Component<Double> {
         NumberValue value = (NumberValue) this.value;
         if (keyCode == Keyboard.KEY_LEFT) {
             setEndPoint(animation.getEndPoint() - widthPerStep);
-            double newValue = value.value - value.step;
-            value.value = Math.max(newValue, value.minimum);
+            double newValue = value.getValue() - value.step;
+            value.setValue(Math.max(newValue, value.minimum));
         } else if (keyCode == Keyboard.KEY_RIGHT) {
             setEndPoint(animation.getEndPoint() + widthPerStep);
-            double newValue = value.value + value.step;
-            value.value = Math.min(newValue, value.maximum);
+            double newValue = value.getValue() + value.step;
+            value.setValue(Math.min(newValue, value.maximum));
         }
         if (animation.getEndPoint() < 0) animation.setEndPoint(0);
         if (animation.getEndPoint() > steps * widthPerStep) animation.setEndPoint(steps * widthPerStep);

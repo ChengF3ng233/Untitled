@@ -44,7 +44,7 @@ public class ValuePanel extends Panel {
         if (component instanceof ButtonComponent bc) {
             textColor = bc.textColAnim.getOutput().getRGB();
         }
-        FontLoader.greyCliff(16).drawString(value.name, x, y + 1, textColor);
+        FontLoader.greyCliff(16).drawString(value.getName(), x, y + 1, textColor);
         component.draw(x, y, mouseX, mouseY);
         height = component.height;
     }

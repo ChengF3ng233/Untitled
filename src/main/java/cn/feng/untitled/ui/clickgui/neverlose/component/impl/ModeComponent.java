@@ -63,7 +63,7 @@ public class ModeComponent extends Component<String> {
 
         left.draw(this.posX - 9f, this.posY, mouseX, mouseY);
         right.draw(this.posX + width + 3f, this.posY, mouseX, mouseY);
-        font.drawString(value.value, this.posX + 3f, this.posY + 3.5f, colorAnim.getOutput().getRGB());
+        font.drawString(value.getValue(), this.posX + 3f, this.posY + 3.5f, colorAnim.getOutput().getRGB());
     }
 
     @Override

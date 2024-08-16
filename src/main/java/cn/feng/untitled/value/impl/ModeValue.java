@@ -16,20 +16,20 @@ public class ModeValue extends Value<String> {
     }
 
     public void next() {
-        int index = StringUtil.arrayIndex(values, value) + 1;
+        int index = StringUtil.arrayIndex(values, getValue()) + 1;
         if (index == values.length) {
-            value = values[0];
+            setValue(values[0]);
             return;
         }
-        value = values[index];
+        setValue(values[index]);
     }
 
     public void previous() {
-        int index = StringUtil.arrayIndex(values, value) - 1;
+        int index = StringUtil.arrayIndex(values, getValue()) - 1;
         if (index == -1) {
-            value = values[values.length - 1];
+            setValue(values[values.length - 1]);
             return;
         }
-        value = values[index];
+        setValue(values[index]);
     }
 }

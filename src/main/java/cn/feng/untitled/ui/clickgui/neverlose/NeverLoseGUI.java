@@ -108,7 +108,7 @@ public class NeverLoseGUI extends GuiScreen {
         if (x + width > sr.getScaledWidth() - 10) x = sr.getScaledWidth() - 10 - width;
         if (y + height > sr.getScaledHeight() - 10) y = sr.getScaledHeight() - 10 - height;
 
-        if (PostProcessing.blur.value) {
+        if (PostProcessing.blur.getValue()) {
             BlurUtil.processStart();
             Gui.drawNewRect(0, 0, sr.getScaledWidth(), sr.getScaledHeight(), Color.BLACK.getRGB());
             BlurUtil.blurEnd();
@@ -143,7 +143,7 @@ public class NeverLoseGUI extends GuiScreen {
         // Title
         FontRenderer font = FontLoader.rubik_bold(28);
         float centerX = x + leftWidth / 2f;
-        if (PostProcessing.bloom.value) {
+        if (PostProcessing.bloom.getValue()) {
             BlurUtil.processStart();
             font.drawCenteredString("UNTITLED", centerX + 0.5f, y + 13.5f, ThemeColor.focusedColor.getRGB(), CenterType.Horizontal);
             font.drawCenteredString("UNTITLED", centerX, y + 13f, Color.WHITE.getRGB(), CenterType.Horizontal);
@@ -156,7 +156,7 @@ public class NeverLoseGUI extends GuiScreen {
         float categoryX = centerX - font.getStringWidth("UNTITLED") / 2f - 3f;
         float categoryY = y + font.getFontHeight() + 50f;
 
-        if (PostProcessing.bloom.value) {
+        if (PostProcessing.bloom.getValue()) {
             BlurUtil.processStart();
             RoundedUtil.drawRound(categoryX - 2f, categoryY + panelAnim.getOutput().floatValue() - 5f, leftWidth - 14f, currentPanel.height + 10f, 4f, ThemeColor.barColor);
             BlurUtil.bloomEnd();
@@ -226,7 +226,7 @@ public class NeverLoseGUI extends GuiScreen {
 
             if (hovering && Mouse.isButtonDown(0)) currentPanel.scrollAnim.target = 0f;
 
-            if (PostProcessing.bloom.value) {
+            if (PostProcessing.bloom.getValue()) {
                 BlurUtil.processStart();
                 RoundedUtil.drawRound(roundX, roundY, size, size, 10f, ColorUtil.applyOpacity(topColorAnim.getOutput(), opacity));
                 RenderUtil.drawImage(new ResourceLocation("untitled/icon/top.png"), roundX + 2.6f, roundY + 3.1f, 14f, 14f, ColorUtil.applyOpacity(Color.WHITE, opacity));

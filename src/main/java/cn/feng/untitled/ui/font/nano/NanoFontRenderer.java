@@ -40,8 +40,12 @@ public class NanoFontRenderer extends MinecraftInstance {
         }
     }
 
-    public float getHeight() {
-        return size / 2f;
+    public float getHeight(float size) {
+        nvgFontFaceId(vg, font);
+        nvgFontSize(vg, size);
+        float[] bounds = new float[4];
+        nvgTextBounds(vg, 0, 0, "AaBbCcDdEeFfGgJjYy", bounds);
+        return (bounds[3] - bounds[1]) / 2f;
     }
 
     // Plain

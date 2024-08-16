@@ -630,9 +630,9 @@ public class EntityRenderer implements IResourceManagerReloadListener {
         double renderY = renderEntity.prevPosY + (renderEntity.posY - renderEntity.prevPosY) * partialTicks + eyeHeight;
         double renderZ = renderEntity.prevPosZ + (renderEntity.posZ - renderEntity.prevPosZ) * partialTicks;
 
-        prevRenderX = prevRenderX + (renderX - prevRenderX) * Camera.interpolation.value;
-        prevRenderY = prevRenderY + (renderY - prevRenderY) * Camera.interpolation.value;
-        prevRenderZ = prevRenderZ + (renderZ - prevRenderZ) * Camera.interpolation.value;
+        prevRenderX = prevRenderX + (renderX - prevRenderX) * Camera.interpolation.getValue();
+        prevRenderY = prevRenderY + (renderY - prevRenderY) * Camera.interpolation.getValue();
+        prevRenderZ = prevRenderZ + (renderZ - prevRenderZ) * Camera.interpolation.getValue();
 
         if (renderEntity instanceof EntityLivingBase && ((EntityLivingBase) renderEntity).isPlayerSleeping()) {
             eyeHeight += 1.0F;
@@ -656,14 +656,14 @@ public class EntityRenderer implements IResourceManagerReloadListener {
 
             float yaw = renderEntity.rotationYaw;
             float pitch = renderEntity.rotationPitch;
-            double thirdPersonDistance = this.thirdPersonDistanceTemp + (this.thirdPersonDistance - this.thirdPersonDistanceTemp) * partialTicks + (Camera.transform.value && mc.gameSettings.thirdPersonView == 1 ? Camera.z.value : 0);
+            double thirdPersonDistance = this.thirdPersonDistanceTemp + (this.thirdPersonDistance - this.thirdPersonDistanceTemp) * partialTicks + (Camera.transform.getValue() && mc.gameSettings.thirdPersonView == 1 ? Camera.z.getValue() : 0);
 
             if (this.mc.gameSettings.thirdPersonView > 0) {
                 double offsetX = (-MathHelper.sin(yaw / 180.0F * (float) Math.PI) * MathHelper.cos(pitch / 180.0F * (float) Math.PI)) * thirdPersonDistance;
                 double offsetY = (MathHelper.cos(yaw / 180.0F * (float) Math.PI) * MathHelper.cos(pitch / 180.0F * (float) Math.PI)) * thirdPersonDistance;
                 double offsetZ = (-MathHelper.sin(pitch / 180.0F * (float) Math.PI)) * thirdPersonDistance;
 
-                if (!Camera.clip.value) {
+                if (!Camera.clip.getValue()) {
                     for (int i = 0; i < 8; ++i) {
                         float cornerOffsetX = ((i & 1) * 2 - 1) * 0.1F;
                         float cornerOffsetY = ((i >> 1 & 1) * 2 - 1) * 0.1F;
@@ -692,9 +692,9 @@ public class EntityRenderer implements IResourceManagerReloadListener {
                     }
                 }
 
-                boolean transform = Camera.transform.value;
+                boolean transform = Camera.transform.getValue();
                 if (this.mc.gameSettings.thirdPersonView == 1) {
-                    cameraPosAnim.setTarget(transform ? -Camera.x.value : 0f, transform ? -Camera.y.value : 0f, -thirdPersonDistance);
+                    cameraPosAnim.setTarget(transform ? -Camera.x.getValue() : 0f, transform ? -Camera.y.getValue() : 0f, -thirdPersonDistance);
                 } else {
                     cameraPosAnim.setTarget(0f, 0f, thirdPersonDistance);
                 }
@@ -706,7 +706,7 @@ public class EntityRenderer implements IResourceManagerReloadListener {
                 GlStateManager.rotate(renderEntity.rotationPitch - pitch, 1.0F, 0.0F, 0.0F);
                 GlStateManager.rotate(renderEntity.rotationYaw - yaw, 0.0F, 1.0F, 0.0F);
 
-                if (Camera.animation.value) {
+                if (Camera.animation.getValue()) {
                     GlStateManager.translate(
                             animatedPosition[0],
                             animatedPosition[1],
@@ -722,7 +722,7 @@ public class EntityRenderer implements IResourceManagerReloadListener {
                 // 旋转世界，使得坐标系与玩家朝向对齐
                 GlStateManager.rotate(renderEntity.rotationYaw, 0.0F, 1.0F, 0.0F);
 
-                if (Camera.motion.value) {
+                if (Camera.motion.getValue()) {
                     // 在旋转后的坐标系中进行平移
                     GlStateManager.translate(prevRenderX - renderX, renderY - prevRenderY, prevRenderZ - renderZ);
                 }
@@ -731,7 +731,7 @@ public class EntityRenderer implements IResourceManagerReloadListener {
                 GlStateManager.rotate(-renderEntity.rotationYaw, 0.0F, 1.0F, 0.0F);
             } else {
                 cameraPosAnim.setTarget(0f, 0f, -0.1f);
-                if (Camera.animation.value) {
+                if (Camera.animation.getValue()) {
                     GlStateManager.translate(animatedPosition[0], animatedPosition[1], animatedPosition[2]);
                 } else {
                     GlStateManager.translate(0f, 0f, -0.1f);
@@ -799,7 +799,7 @@ public class EntityRenderer implements IResourceManagerReloadListener {
 
         this.hurtCameraEffect(partialTicks);
 
-        if (this.mc.gameSettings.viewBobbing && !Camera.motion.value) {
+        if (this.mc.gameSettings.viewBobbing && !Camera.motion.getValue()) {
             this.setupViewBobbing(partialTicks);
         }
 

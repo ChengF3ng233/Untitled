@@ -20,8 +20,8 @@ public class CullTask implements Runnable {
 
     private final OcclusionCullingInstance culling;
     private final Minecraft client = Minecraft.getMinecraft();
-    private final int sleepDelay = EntityCullingMod.sleepDelay.value.intValue();
-    private final int hitboxLimit = EntityCullingMod.hitboxLimit.value.intValue();
+    private final int sleepDelay = EntityCullingMod.sleepDelay.getValue().intValue();
+    private final int hitboxLimit = EntityCullingMod.hitboxLimit.getValue().intValue();
     private final Set<String> unCullable;
     public boolean requestCull = false;
     public long lastTime = 0;
@@ -97,7 +97,7 @@ public class CullTask implements Runnable {
                                     cullable.setCulled(false);
                                     continue;
                                 }
-                                int tracingDistance = EntityCullingMod.tracingDist.value.intValue();
+                                int tracingDistance = EntityCullingMod.tracingDist.getValue().intValue();
                                 if (entity.getPositionVector().squareDistanceTo(cameraMC) > tracingDistance * tracingDistance) {
                                     cullable.setCulled(false); // If your entity view distance is larger than tracingDistance just render it
                                     continue;
@@ -129,7 +129,7 @@ public class CullTask implements Runnable {
     }
 
     private boolean isSkippableArmorstand(Entity entity) {
-        if (!EntityCullingMod.armorStands.value) return false;
+        if (!EntityCullingMod.armorStands.getValue()) return false;
         return entity instanceof EntityArmorStand && ((EntityArmorStand) entity).hasMarker();
     }
 }

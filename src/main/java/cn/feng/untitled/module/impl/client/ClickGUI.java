@@ -20,7 +20,7 @@ public class ClickGUI extends Module {
 
     @Override
     public void onEnable() {
-        switch (mode.value) {
+        switch (mode.getValue()) {
             case "Dropdown":
                 mc.displayGuiScreen(Client.instance.uiManager.neverLoseGUI);
                 break;

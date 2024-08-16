@@ -374,7 +374,8 @@ public class MusicAPI {
     }
 
     public static PlayList search(String keywords) {
-        String fetch = fetch("/search?keywords=" + keywords);
+        Logger.info("Searching keywords [" + keywords + "]");
+        String fetch = fetch("/search?keywords=" + keywords + "&limit=10");
         PlayList playList = new PlayList("搜索结果：" + keywords, "你刚搜的歌");
         JsonArray songs = DataUtil.gson.fromJson(fetch, JsonObject.class).get("result").getAsJsonObject().get("songs").getAsJsonArray();
         StringBuilder ids = new StringBuilder();

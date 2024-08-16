@@ -2,17 +2,11 @@ package cn.feng.untitled.config.impl;
 
 import cn.feng.untitled.Client;
 import cn.feng.untitled.config.Config;
-import cn.feng.untitled.config.ConfigManager;
 import cn.feng.untitled.module.Module;
-import cn.feng.untitled.util.misc.Logger;
 import cn.feng.untitled.value.Value;
 import cn.feng.untitled.value.impl.*;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
-
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.PrintWriter;
 
 /**
  * @author ChengFeng
@@ -38,23 +32,23 @@ public class ModuleConfig extends Config {
             JsonObject valueObject = moduleObject.get("value").getAsJsonObject();
 
             for (Value<?> value : module.valueList) {
-                if (!valueObject.has(value.name)) continue;
-                JsonElement valueElement = valueObject.get(value.name);
+                if (!valueObject.has(value.getName())) continue;
+                JsonElement valueElement = valueObject.get(value.getName());
 
                 if (value instanceof BoolValue bv) {
-                    bv.value = valueElement.getAsBoolean();
+                    bv.setValue(valueElement.getAsBoolean());
                 } else if (value instanceof NumberValue nv) {
-                    nv.value = valueElement.getAsDouble();
+                    nv.setValue(valueElement.getAsDouble());
                 } else if (value instanceof ModeValue mv) {
-                    mv.value = valueElement.getAsString();
+                    mv.setValue(valueElement.getAsString());
                 } else if (value instanceof StringValue sv) {
-                    sv.value = valueElement.getAsString();
+                    sv.setValue(valueElement.getAsString());
                 } else if (value instanceof ColorValue cv) {
                     JsonObject colorObject = valueElement.getAsJsonObject();
-                    cv.rainbow.value = colorObject.get("rainbow").getAsBoolean();
-                    cv.fade.value = colorObject.get("fade").getAsBoolean();
-                    cv.setColor(colorObject.get("hue").getAsFloat(), colorObject.get("saturation").getAsFloat(), colorObject.get("brightness").getAsFloat(), colorObject.get("opacity").getAsFloat());
-                    cv.speed.value = colorObject.get("speed").getAsDouble();
+                    cv.rainbow.setValue(colorObject.get("rainbow").getAsBoolean());
+                    cv.fade.setValue(colorObject.get("fade").getAsBoolean());
+                    cv.setValue(colorObject.get("hue").getAsFloat(), colorObject.get("saturation").getAsFloat(), colorObject.get("brightness").getAsFloat(), colorObject.get("opacity").getAsFloat());
+                    cv.speed.setValue(colorObject.get("speed").getAsDouble());
                 }
             }
         }
@@ -73,23 +67,23 @@ public class ModuleConfig extends Config {
 
             for (Value<?> value : module.valueList) {
                 if (value instanceof BoolValue bv) {
-                    valueObject.addProperty(bv.name, bv.value);
+                    valueObject.addProperty(bv.getName(), bv.getValue());
                 } else if (value instanceof NumberValue nv) {
-                    valueObject.addProperty(nv.name,nv.value);
+                    valueObject.addProperty(nv.getName(), nv.getValue());
                 } else if (value instanceof ModeValue mv) {
-                    valueObject.addProperty(mv.name, mv.value);
+                    valueObject.addProperty(mv.getName(), mv.getValue());
                 } else if (value instanceof StringValue sv) {
-                    valueObject.addProperty(sv.name, sv.value);
+                    valueObject.addProperty(sv.getName(), sv.getValue());
                 } else if (value instanceof ColorValue cv) {
                     JsonObject colorObject = new JsonObject();
-                    colorObject.addProperty("rainbow", cv.rainbow.value);
-                    colorObject.addProperty("fade", cv.fade.value);
-                    colorObject.addProperty("hue", cv.hue.value);
-                    colorObject.addProperty("saturation", cv.saturation.value);
-                    colorObject.addProperty("brightness", cv.brightness.value);
-                    colorObject.addProperty("opacity", cv.opacity.value);
-                    colorObject.addProperty("speed", cv.speed.value);
-                    valueObject.add(cv.name, colorObject);
+                    colorObject.addProperty("rainbow", cv.rainbow.getValue());
+                    colorObject.addProperty("fade", cv.fade.getValue());
+                    colorObject.addProperty("hue", cv.hue.getValue());
+                    colorObject.addProperty("saturation", cv.saturation.getValue());
+                    colorObject.addProperty("brightness", cv.brightness.getValue());
+                    colorObject.addProperty("opacity", cv.opacity.getValue());
+                    colorObject.addProperty("speed", cv.speed.getValue());
+                    valueObject.add(cv.getName(), colorObject);
                 }
             }
             moduleObject.add("value", valueObject);

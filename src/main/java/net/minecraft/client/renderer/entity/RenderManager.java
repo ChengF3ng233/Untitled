@@ -41,7 +41,6 @@ import net.minecraft.util.*;
 import net.minecraft.world.World;
 import net.optifine.entity.model.CustomEntityModels;
 import net.optifine.player.PlayerItemsLayer;
-import net.optifine.reflect.Reflector;
 import net.optifine.shaders.Shaders;
 
 import java.util.Collections;
@@ -273,7 +272,7 @@ public class RenderManager {
         if (Client.instance.moduleManager.getModule(EntityCullingMod.class).enabled) {
             if (!((Cullable) entity).isForcedVisible() && ((Cullable) entity).isCulled()) {
                 EntityRendererInter<Entity> entityRenderer = getEntityRenderObject(entity);
-                if (EntityCullingMod.through.value && entityRenderer.shadowShouldShowName(entity)) {
+                if (EntityCullingMod.through.getValue() && entityRenderer.shadowShouldShowName(entity)) {
                     entityRenderer.shadowRenderNameTag(entity, x, y, z);
                 }
                 EntityCulling.instance.skippedEntities++;

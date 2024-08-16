@@ -20,7 +20,7 @@ public class StringComponent extends Component<String> {
         height = 13f;
 
         textField = new TextField(width, height, NanoFontLoader.misans, ThemeColor.barColor, ThemeColor.outlineColor);
-        textField.text = value.value;
+        textField.text = value.getValue();
     }
 
     @Override
@@ -34,7 +34,7 @@ public class StringComponent extends Component<String> {
     @Override
     public void onKeyTyped(char c, int keyCode) {
         textField.keyTyped(c, keyCode);
-        value.value = textField.text;
+        value.setValue(textField.text);
     }
 
     @Override

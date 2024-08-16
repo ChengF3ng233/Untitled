@@ -7,7 +7,6 @@ import cn.feng.untitled.music.api.base.Music;
 import cn.feng.untitled.music.thread.ChangeMusicThread;
 import cn.feng.untitled.ui.widget.impl.MusicInfoWidget;
 import cn.feng.untitled.ui.widget.impl.MusicLyricWidget;
-import com.github.kokorin.jaffree.StreamType;
 import com.github.kokorin.jaffree.ffmpeg.FFmpeg;
 import com.github.kokorin.jaffree.ffmpeg.UrlInput;
 import com.github.kokorin.jaffree.ffmpeg.UrlOutput;
@@ -105,6 +104,22 @@ public class MusicPlayer {
         ((MusicLyricWidget) Client.instance.uiManager.getWidget(MusicLyricWidget.class)).reset();
         ((MusicInfoWidget) Client.instance.uiManager.getWidget(MusicInfoWidget.class)).reset();
         mediaPlayer.play();
+    }
+
+    public int getPlayedLyricCount() {
+        int count = 0;
+        for (LyricLine lyric : music.getLyrics()) {
+            if (getCurrentTime() > lyric.getStart() + lyric.getDuration()) count++;
+        }
+        return count;
+    }
+
+    public int getPlayedTranslateCount() {
+        int count = 0;
+        for (LyricLine lyric : music.getLyrics()) {
+            if (getCurrentTime() > lyric.getStart() + lyric.getDuration() && music.getTranslateMap().containsKey(lyric)) count++;
+        }
+        return count;
     }
 
     public void play() {

@@ -1,9 +1,5 @@
 package dev.tr7zw.entityculling;
 
-import java.io.File;
-import java.io.IOException;
-import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
 import java.util.Arrays;
 import java.util.HashSet;
 
@@ -36,7 +32,7 @@ public class EntityCulling {
 
 	public void onInitialize() {
 		instance = this;
-        culling = new OcclusionCullingInstance(EntityCullingMod.tracingDist.value.intValue(), new Provider());
+        culling = new OcclusionCullingInstance(EntityCullingMod.tracingDist.getValue().intValue(), new Provider());
         cullTask = new CullTask(culling, new HashSet<>(Arrays.asList("tile.beacon")));
 
 		cullThread = new Thread(cullTask, "CullThread");

@@ -72,14 +72,14 @@ public class ColorComponent extends Component<Color> {
         if (heightAnim.getAnimation().finished(Direction.FORWARDS))
             expanded = false;
 
-        RoundedUtil.drawRoundOutline(posX, posY, colorWidth, colorHeight, 2f, 0.2f, cv.getColor(), ThemeColor.outlineColor);
-        FontLoader.rubik(16).drawCenteredString("#" + cv.getHexCode(), posX + colorWidth / 2f, posY + colorHeight / 2f, ColorUtil.getOppositeColor(cv.getColor()).getRGB(), CenterType.Both, true);
+        RoundedUtil.drawRoundOutline(posX, posY, colorWidth, colorHeight, 2f, 0.2f, cv.getValue(), ThemeColor.outlineColor);
+        FontLoader.rubik(16).drawCenteredString("#" + cv.getHexCode(), posX + colorWidth / 2f, posY + colorHeight / 2f, ColorUtil.getOppositeColor(cv.getValue()).getRGB(), CenterType.Both, true);
 
         if (expanded) {
             RoundedUtil.drawRound(minX + 2f, minY + minHeight + 2f, 0.5f, heightAnim.getOutput().floatValue() - minHeight - 6f, 1f, ThemeColor.grayColor);
 
             StencilUtil.initStencilToWrite();
-            RoundedUtil.drawRoundOutline(minX, minY, panelWidth - 2 * xGap + 2f, heightAnim.getOutput().floatValue(), 2f, 0.2f, cv.getColor(), ThemeColor.outlineColor);
+            RoundedUtil.drawRoundOutline(minX, minY, panelWidth - 2 * xGap + 2f, heightAnim.getOutput().floatValue(), 2f, 0.2f, cv.getValue(), ThemeColor.outlineColor);
             StencilUtil.readStencilBuffer(1);
 
             FontRenderer font = FontLoader.greyCliff(16);
@@ -87,13 +87,13 @@ public class ColorComponent extends Component<Color> {
             float valueY = minY + minHeight + 5f;
 
             for (ButtonComponent button : buttons) {
-                font.drawString(button.value.name, textX, valueY, button.textColAnim.getOutput().getRGB());
+                font.drawString(button.value.getName(), textX, valueY, button.textColAnim.getOutput().getRGB());
                 button.draw(minX, valueY, mouseX, mouseY);
                 valueY += button.height + 5f;
             }
 
             for (NumberComponent number : numbers) {
-                font.drawString(number.value.name, textX, valueY, Color.WHITE.getRGB());
+                font.drawString(number.value.getName(), textX, valueY, Color.WHITE.getRGB());
                 number.draw(minX, valueY, mouseX, mouseY);
                 valueY += number.height + 5f;
             }

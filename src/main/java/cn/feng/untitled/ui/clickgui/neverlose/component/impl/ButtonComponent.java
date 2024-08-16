@@ -65,8 +65,7 @@ public class ButtonComponent extends Component<Boolean> {
         if (moduleMode) {
             module.toggle();
         } else {
-            value.value = !value.value;
-            ((BoolValue) value).toggleAction.run();
+            value.setValue(!value.getValue());
         }
         textColAnim.changeDirection();
         bgColAnim.changeDirection();
@@ -75,7 +74,7 @@ public class ButtonComponent extends Component<Boolean> {
     }
 
     private boolean isEnabled() {
-        return moduleMode ? module.enabled : value.value;
+        return moduleMode ? module.enabled : value.getValue();
     }
 
     @Override

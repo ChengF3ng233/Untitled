@@ -611,7 +611,7 @@ public class FontRenderer implements IResourceManagerReloadListener {
      * Render single line string by setting GL color, current (posX,posY), and calling renderStringAtPos()
      */
     private int renderString(String text, float x, float y, int color, boolean dropShadow) {
-        if (HUD.fancyFont.value && Client.instance.moduleManager.getModule(HUD.class).enabled) {
+        if (HUD.fancyFont.getValue() && Client.instance.moduleManager.getModule(HUD.class).enabled) {
             this.FONT_HEIGHT = (int) FontLoader.miSans(17).getFontHeight() * 2;
             return FontLoader.miSans(17).renderString(text, x, y + 1f, color, dropShadow);
         }
@@ -646,7 +646,7 @@ public class FontRenderer implements IResourceManagerReloadListener {
      * Returns the width of this string. Equivalent of FontMetrics.stringWidth(String s).
      */
     public int getStringWidth(String text) {
-        if (HUD.fancyFont.value && Client.instance.moduleManager.getModule(HUD.class).enabled) return FontLoader.miSans(17).getStringWidth(text);
+        if (HUD.fancyFont.getValue() && Client.instance.moduleManager.getModule(HUD.class).enabled) return FontLoader.miSans(17).getStringWidth(text);
         if (text == null) {
             return 0;
         } else {
