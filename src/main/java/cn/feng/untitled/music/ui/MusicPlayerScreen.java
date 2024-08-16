@@ -187,12 +187,10 @@ public class MusicPlayerScreen extends GuiScreen {
             if (player.isPaused()) {
                 playBtn.setSize(16);
                 playBtn.setBg(true);
-                playBtn.setZoom(true);
                 playBtn.updateState(x + width / 2f - 10f, playerY + 4f, mouseX, mouseY);
                 playBtn.draw();
             } else {
                 pauseBtn.setSize(16);
-                pauseBtn.setZoom(true);
                 pauseBtn.setBg(true);
                 pauseBtn.updateState(x + width / 2f - 10f, playerY + 4f, mouseX, mouseY);
                 pauseBtn.draw();

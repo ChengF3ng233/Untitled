@@ -8,6 +8,7 @@ import cn.feng.untitled.util.render.RenderUtil;
 import cn.feng.untitled.util.render.RoundedUtil;
 import lombok.Setter;
 import net.minecraft.util.ResourceLocation;
+import org.lwjgl.input.Mouse;
 
 /**
  * @author ChengFeng
@@ -19,7 +20,7 @@ public class IconButton extends Button {
     @Setter
     private int size;
     @Setter
-    private boolean zoom, bg;
+    private boolean bg;
 
     public IconButton(String file, Runnable action) {
         this.file = ResourceUtil.getResource(file, ResourceType.ICON);
@@ -30,16 +31,12 @@ public class IconButton extends Button {
     public void draw() {
         height = size;
         width = size;
-        if (zoom) {
-            RenderUtil.scaleStart(posX + size / 2f, posY + size / 2f, hovering? 1.05f : 1f);
-        }
+        RenderUtil.scaleStart(posX + size / 2f, posY + size / 2f, hovering? (Mouse.isButtonDown(0)? 1.03f : 1.07f) : 1f);
         if (bg) {
             RoundedUtil.drawRound(posX - 2f, posY - 2f, size + 4f, size + 4f, 9.5f, ThemeColor.redColor);
         }
         RenderUtil.drawImage(file, posX, posY, size, size);
-        if (zoom) {
-            RenderUtil.scaleEnd();
-        }
+        RenderUtil.scaleEnd();
     }
 
     @Override

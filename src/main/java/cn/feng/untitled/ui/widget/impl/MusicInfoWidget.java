@@ -71,7 +71,7 @@ public class MusicInfoWidget extends Widget {
         MusicPlayer player = Client.instance.musicManager.screen.player;
         if (player.getMusic() == null) return;
         if (imgBloom.value && event.bloom) {
-            Gui.drawNewRect(x * sr.getScaledHeight() * 2f, y * sr.getScaledHeight(), height, height, Color.BLACK.getRGB());
+            Gui.drawNewRect(x * sr.getScaledWidth(), y * sr.getScaledHeight(), height, height, Color.BLACK.getRGB());
         }
         if (bgBlur.value && !event.bloom) {
             Gui.drawNewRect(x * sr.getScaledWidth(), y * sr.getScaledHeight(), width, height, Color.BLACK.getRGB());
