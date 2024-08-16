@@ -27,7 +27,7 @@ import java.util.regex.Pattern;
  * @since 2024/8/11
  **/
 public class MusicAPI {
-    public static final String host = "https://neteasecloudmusicapi.vercel.app";
+    public static final String host = "http://localhost:3000";
     public static User user = new User();
 
     public static String fetch(String api, String cookie) {
@@ -61,10 +61,26 @@ public class MusicAPI {
         return result;
     }
 
+    private static JsonObject fetchObject(String api) {
+        String fetch = fetch(api);
+        return DataUtil.gson.fromJson(fetch, JsonObject.class);
+    }
+
+    private static void downloadImage(String url, File file) {
+        BufferedImage img = HttpUtil.downloadImage(url + "?param=" + 300 + "y" + 300);
+        try {
+            if (!file.exists()) {
+                file.createNewFile();
+            }
+            ImageIO.write(img, "jpg", file);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
     public static QRCode genQRCode() throws IOException {
         Logger.info("Generating QR code...");
-        String key = fetch("/login/qr/key?timestamp=" + System.currentTimeMillis());
-        JsonObject keyObj = DataUtil.gson.fromJson(key, JsonObject.class);
+        JsonObject keyObj = fetchObject("/login/qr/key?timestamp=" + System.currentTimeMillis());
         String uniqueKey = keyObj.get("data").getAsJsonObject().get("unikey").getAsString();
 
         String code = fetch("/login/qr/create?key=" + uniqueKey + "&qrimg=true&timestamp=" + System.currentTimeMillis());
@@ -83,8 +99,7 @@ public class MusicAPI {
 
     public static ScanResult getScanResult(String key) {
         Logger.info("Checking scan result...");
-        String response = fetch("/login/qr/check?key=" + key + "&timestamp=" + System.currentTimeMillis());
-        JsonObject object = DataUtil.gson.fromJson(response, JsonObject.class);
+        JsonObject object = fetchObject("/login/qr/check?key=" + key + "&timestamp=" + System.currentTimeMillis());
         int code = object.get("code").getAsInt();
 
         QRCodeState state = switch (code) {
@@ -99,34 +114,25 @@ public class MusicAPI {
 
     public static void updateUserInfo() {
         Logger.info("Updating user info...");
-        String fetch = fetch("/login/status?timestamp=" + System.currentTimeMillis());
-        JsonObject responseData = DataUtil.gson.fromJson(fetch, JsonObject.class).get("data").getAsJsonObject();
+        JsonObject responseData = fetchObject("/login/status?timestamp=" + System.currentTimeMillis()).get("data").getAsJsonObject();
         JsonObject profile = responseData.get("profile").getAsJsonObject();
         user.setUid(profile.get("userId").getAsString());
         user.setNickname(profile.get("nickname").getAsString());
         String avatarUrl = profile.get("avatarUrl").getAsString();
         user.setAvatarUrl(avatarUrl);
-        user.setAvatarTexture(new DynamicTexture(HttpUtil.downloadImage(avatarUrl, 200, 200)));
+        user.setAvatarTexture(new DynamicTexture(HttpUtil.downloadImage(avatarUrl)));
     }
 
     public static List<PlayList> getUserPlayLists() {
         Logger.info("Getting user playlists...");
-        String fetch = fetch("/user/playlist?uid=" + user.getUid());
-        JsonArray playlistArray = DataUtil.gson.fromJson(fetch, JsonObject.class).get("playlist").getAsJsonArray();
+        JsonArray playlistArray = fetchObject("/user/playlist?uid=" + user.getUid()).get("playlist").getAsJsonArray();
         List<PlayList> result = new ArrayList<>();
         for (JsonElement element : playlistArray) {
             JsonObject obj = element.getAsJsonObject();
             String description = obj.get("description") instanceof JsonNull ? "没有描述，你自己进去看看" : obj.get("description").getAsString();
             File file = new File(ConfigManager.cacheDir, "playlist_" + obj.get("id").getAsLong() + ".jpg");
 
-            BufferedImage coverData = HttpUtil.downloadImage(obj.get("coverImgUrl").getAsString(), 300, 300);
-            try {
-                assert coverData != null;
-                file.createNewFile();
-                ImageIO.write(coverData, "jpg", file);
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
+            downloadImage(obj.get("coverImgUrl").getAsString(), file);
 
             result.add(new PlayList(
                     obj.get("name").getAsString(),
@@ -140,8 +146,7 @@ public class MusicAPI {
 
     public static PlayList getDailySongs() {
         Logger.info("Getting daily songs..");
-        String fetch = MusicAPI.fetch("/recommend/songs");
-        JsonArray songs = DataUtil.gson.fromJson(fetch, JsonObject.class).get("data").getAsJsonObject().get("dailySongs").getAsJsonArray();
+        JsonArray songs = fetchObject("/recommend/songs").get("data").getAsJsonObject().get("dailySongs").getAsJsonArray();
         PlayList playList = new PlayList("每日推荐", "根据你的喜好，每日生成的推荐歌曲");
         for (JsonElement song : songs) {
             JsonObject obj = song.getAsJsonObject();
@@ -152,14 +157,7 @@ public class MusicAPI {
             }
             File file = new File(ConfigManager.cacheDir, "music_" + obj.get("id").getAsLong() + ".jpg");
             if (!file.exists()) {
-                BufferedImage coverData = HttpUtil.downloadImage(obj.get("al").getAsJsonObject().get("picUrl").getAsString(), 300, 300);
-                try {
-                    assert coverData != null;
-                    file.createNewFile();
-                    ImageIO.write(coverData, "jpg", file);
-                } catch (IOException e) {
-                    throw new RuntimeException(e);
-                }
+                downloadImage(obj.get("al").getAsJsonObject().get("picUrl").getAsString(), file);
             }
             playList.getMusicList().add(new Music(
                     obj.get("name").getAsString(),
@@ -180,8 +178,7 @@ public class MusicAPI {
 
     public static void fetchMusicList(PlayList playList, int offset) {
         Logger.info("Fetching music list for id [" + playList.getId() + "]...");
-        String fetch = fetch("/playlist/track/all?id=" + playList.getId() + "&limit=10&offset=" + offset);
-        JsonArray songs = DataUtil.gson.fromJson(fetch, JsonObject.class).get("songs").getAsJsonArray();
+        JsonArray songs = fetchObject("/playlist/track/all?id=" + playList.getId() + "&limit=10&offset=" + offset).get("songs").getAsJsonArray();
         for (JsonElement song : songs) {
             JsonObject obj = song.getAsJsonObject();
             StringBuilder artistStr = new StringBuilder();
@@ -191,14 +188,7 @@ public class MusicAPI {
             }
             File file = new File(ConfigManager.cacheDir, "music_" + obj.get("id").getAsLong() + ".jpg");
             if (!file.exists()) {
-                BufferedImage coverData = HttpUtil.downloadImage(obj.get("al").getAsJsonObject().get("picUrl").getAsString(), 300, 300);
-                try {
-                    assert coverData != null;
-                    file.createNewFile();
-                    ImageIO.write(coverData, "jpg", file);
-                } catch (IOException e) {
-                    throw new RuntimeException(e);
-                }
+                downloadImage(obj.get("al").getAsJsonObject().get("picUrl").getAsString(), file);
             }
             playList.getMusicList().add(new Music(
                     obj.get("name").getAsString(),
@@ -217,8 +207,7 @@ public class MusicAPI {
 
     public static List<PlayList> getRecommendedPlayLists() {
         Logger.info("Getting recommended playlists...");
-        String fetch = fetch("/recommend/resource");
-        JsonArray playlistArray = DataUtil.gson.fromJson(fetch, JsonObject.class).get("recommend").getAsJsonArray();
+        JsonArray playlistArray = fetchObject("/recommend/resource").get("recommend").getAsJsonArray();
 
         List<PlayList> result = new ArrayList<>();
         for (JsonElement element : playlistArray) {
@@ -226,14 +215,7 @@ public class MusicAPI {
             String description = (obj.get("description") instanceof JsonNull || obj.get("description") == null) ? "没有描述，你自己进去看看" : obj.get("description").getAsString();
             File file = new File(ConfigManager.cacheDir, "playlist_" + obj.get("id").getAsLong() + ".jpg");
 
-            BufferedImage coverData = HttpUtil.downloadImage(obj.get("picUrl").getAsString(), 300, 300);
-            try {
-                assert coverData != null;
-                file.createNewFile();
-                ImageIO.write(coverData, "jpg", file);
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
+            downloadImage(obj.get("picUrl").getAsString(), file);
 
             result.add(new PlayList(
                     obj.get("name").getAsString(),
@@ -249,8 +231,7 @@ public class MusicAPI {
 
     public static LyricPair getLyrics(long id) {
         Logger.info("Getting lyrics for id [" + id + "]");
-        String fetch = fetch("/lyric/new?id=" + id);
-        JsonObject response = DataUtil.gson.fromJson(fetch, JsonObject.class);
+        JsonObject response = fetchObject("/lyric/new?id=" + id);
         boolean isNew = response.has("yrc");
         String lyricCollection = response.get(isNew ? "yrc" : "lrc").getAsJsonObject().get("lyric").getAsString();
         List<String> lines = new ArrayList<>(Arrays.stream(lyricCollection.split("\n")).toList());
@@ -352,16 +333,12 @@ public class MusicAPI {
                 }
             }
         }
-        if (lyrics.isEmpty()) {
-            System.out.println(fetch);
-        }
         return new LyricPair(lyrics, translatedLyrics);
     }
 
     public static String getMusicURL(long id, boolean retry) {
-        String fetch = fetch("/song/url/v1?id=" + id + "&level=" + (retry? "standard" : "exhigh"));
         try {
-            for (JsonElement data : DataUtil.gson.fromJson(fetch, JsonObject.class).get("data").getAsJsonArray()) {
+            for (JsonElement data : fetchObject("/song/url/v1?id=" + id + "&level=" + (retry? "standard" : "exhigh")).get("data").getAsJsonArray()) {
                 // 获取第一个，因为就一个
                 return data.getAsJsonObject().get("url").getAsString();
             }
@@ -375,9 +352,8 @@ public class MusicAPI {
 
     public static PlayList search(String keywords) {
         Logger.info("Searching keywords [" + keywords + "]");
-        String fetch = fetch("/search?keywords=" + keywords + "&limit=10");
         PlayList playList = new PlayList("搜索结果：" + keywords, "你刚搜的歌");
-        JsonArray songs = DataUtil.gson.fromJson(fetch, JsonObject.class).get("result").getAsJsonObject().get("songs").getAsJsonArray();
+        JsonArray songs = fetchObject("/search?keywords=" + keywords + "&limit=10").get("result").getAsJsonObject().get("songs").getAsJsonArray();
         StringBuilder ids = new StringBuilder();
         for (JsonElement song : songs) {
             JsonObject obj = song.getAsJsonObject();
@@ -410,14 +386,13 @@ public class MusicAPI {
     }
 
     public static Map<Long, File> getSongCovers(String ids) {
-        String fetch = fetch("/song/detail?ids=" + ids);
-        JsonArray songs = DataUtil.gson.fromJson(fetch, JsonObject.class).get("songs").getAsJsonArray();
+        JsonArray songs = fetchObject("/song/detail?ids=" + ids).get("songs").getAsJsonArray();
         Map<Long, File> result = new HashMap<>();
         for (JsonElement song : songs) {
             JsonObject obj = song.getAsJsonObject();
             File file = new File(ConfigManager.cacheDir, "music_" + obj.get("id").getAsLong() + ".jpg");
             if (!file.exists()) {
-                BufferedImage coverData = HttpUtil.downloadImage(obj.get("al").getAsJsonObject().get("picUrl").getAsString(), 300, 300);
+                BufferedImage coverData = HttpUtil.downloadImage(obj.get("al").getAsJsonObject().get("picUrl").getAsString());
                 try {
                     assert coverData != null;
                     file.createNewFile();

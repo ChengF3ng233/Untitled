@@ -40,6 +40,8 @@ dependencies {
     implementation group: 'org.apache.logging.log4j', name: 'log4j-api', version: '3.0.0-beta2'
     implementation group: 'org.apache.logging.log4j', name: 'log4j-core', version: '3.0.0-beta2'
     implementation group: 'org.apache.logging.log4j', name: 'log4j-slf4j-impl', version: '3.0.0-beta2'
+    implementation group: 'org.bouncycastle', name: 'bcprov-jdk18on', version: '1.78.1'
+
 
     compileOnly group: 'org.projectlombok', name: 'lombok', version: '1.18.34'
     annotationProcessor 'org.projectlombok:lombok:1.18.34'

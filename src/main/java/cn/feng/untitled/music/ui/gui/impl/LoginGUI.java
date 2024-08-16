@@ -68,7 +68,7 @@ public class LoginGUI extends MusicPlayerGUI {
             // 设置缓存头像和昵称
             if (user.getTempNickname() == null) user.setTempNickname(response.get("nickname").getAsString());
             if (user.getTempAvatarTexture() == null)
-                user.setTempAvatarTexture(new DynamicTexture(HttpUtil.downloadImage(response.get("avatarUrl").getAsString(), 200, 200)));
+                user.setTempAvatarTexture(new DynamicTexture(HttpUtil.downloadImage(response.get("avatarUrl").getAsString())));
 
             RenderUtil.drawImage(user.getTempAvatarTexture(), posX + 13f, posY + 10f, 16, 16);
             NanoFontLoader.misans.drawString(user.getTempNickname(), posX + width / 2f + 13f, posY + 18f, 16f, NanoVG.NVG_ALIGN_CENTER, Color.WHITE);

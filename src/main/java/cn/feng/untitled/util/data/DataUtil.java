@@ -2,6 +2,7 @@ package cn.feng.untitled.util.data;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.google.gson.JsonObject;
 
 import javax.crypto.Cipher;
 import javax.crypto.spec.IvParameterSpec;

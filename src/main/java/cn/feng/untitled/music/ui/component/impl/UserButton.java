@@ -35,7 +35,7 @@ public class UserButton extends Button {
 
         if (user.isLoggedIn()) {
             if (user.getAvatarTexture() == null) {
-                user.setAvatarTexture(new DynamicTexture(HttpUtil.downloadImage(user.getAvatarUrl(), 200, 200)));
+                user.setAvatarTexture(new DynamicTexture(HttpUtil.downloadImage(user.getAvatarUrl())));
             }
             GlStateManager.bindTexture(user.getAvatarTexture().getGlTextureId());
             RoundedUtil.drawRoundTextured(posX, posY + 4f, 12, 12, 5f, 1f);
