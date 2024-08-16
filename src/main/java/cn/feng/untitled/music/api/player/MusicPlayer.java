@@ -5,6 +5,7 @@ import cn.feng.untitled.config.ConfigManager;
 import cn.feng.untitled.music.api.base.LyricLine;
 import cn.feng.untitled.music.api.base.Music;
 import cn.feng.untitled.music.thread.ChangeMusicThread;
+import cn.feng.untitled.ui.widget.impl.MusicInfoWidget;
 import cn.feng.untitled.ui.widget.impl.MusicLyricWidget;
 import com.github.kokorin.jaffree.StreamType;
 import com.github.kokorin.jaffree.ffmpeg.FFmpeg;
@@ -102,6 +103,7 @@ public class MusicPlayer {
         mediaPlayer.setVolume(volume);
         music.getLyrics().forEach(LyricLine::reset);
         ((MusicLyricWidget) Client.instance.uiManager.getWidget(MusicLyricWidget.class)).reset();
+        ((MusicInfoWidget) Client.instance.uiManager.getWidget(MusicInfoWidget.class)).reset();
         mediaPlayer.play();
     }
 
