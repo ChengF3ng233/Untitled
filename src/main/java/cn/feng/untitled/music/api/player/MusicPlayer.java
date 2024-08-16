@@ -95,7 +95,7 @@ public class MusicPlayer {
         if (mediaPlayer != null) mediaPlayer.stop();
         mediaPlayer = new MediaPlayer(media);
         mediaPlayer.setOnEndOfMedia(this::next);
-        mediaPlayer.setAudioSpectrumInterval(0.05);
+        mediaPlayer.setAudioSpectrumInterval(0.025);
         mediaPlayer.setAudioSpectrumListener((timestamp, duration, magnitudes, phases) -> {
             this.magnitudes = magnitudes;
         });

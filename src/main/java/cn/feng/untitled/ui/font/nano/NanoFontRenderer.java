@@ -70,6 +70,19 @@ public class NanoFontRenderer extends MinecraftInstance {
         renderPlainString(text, x, y, size, align, color);
     }
 
+    public void drawString(String text, float x, float y, float size, Color color, boolean shadow) {
+        int rgb = color.getRGB();
+
+        if (shadow) {
+            rgb = (rgb & 16579836) >> 2 | rgb & -16777216;
+        }
+
+        if (shadow) {
+            renderPlainString(text, x + 0.5f, y + 0.5f, size, NVG_ALIGN_LEFT | NVG_ALIGN_TOP, new Color(rgb));
+        }
+        renderPlainString(text, x, y, size, NVG_ALIGN_LEFT | NVG_ALIGN_TOP, color);
+    }
+
     public void drawString(String text, float x, float y, float size, Color color) {
         renderPlainString(text, x, y, size, NVG_ALIGN_LEFT | NVG_ALIGN_TOP, color);
     }

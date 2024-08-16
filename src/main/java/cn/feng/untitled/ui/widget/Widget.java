@@ -26,7 +26,7 @@ public abstract class Widget extends MinecraftInstance {
     public float x, y;
     public float width, height;
     public final boolean defaultOn;
-    private boolean dragging;
+    public boolean dragging;
     private int dragX, dragY;
     protected ScaledResolution sr = new ScaledResolution(mc);
     private final ColorAnimation colorAnim;
@@ -64,12 +64,13 @@ public abstract class Widget extends MinecraftInstance {
         if (renderY > sr.getScaledHeight() - height) y = (sr.getScaledHeight() - height) / sr.getScaledHeight();
     }
 
-    public void onDrag(int mouseX, int mouseY) {
+    public final void onChatGUI(int mouseX, int mouseY, boolean drag) {
         float renderX = x * sr.getScaledWidth();
         float renderY = y * sr.getScaledHeight();
 
         boolean hovering = RenderUtil.hovering(mouseX, mouseY, renderX, renderY, width, height);
-        if (hovering && colorAnim.getDirection() == Direction.FORWARDS) {
+
+        if (hovering && colorAnim.getDirection() == Direction.FORWARDS && drag) {
             colorAnim.changeDirection();
         } else if (!hovering && colorAnim.getDirection() == Direction.BACKWARDS) {
             colorAnim.changeDirection();
@@ -78,7 +79,7 @@ public abstract class Widget extends MinecraftInstance {
         FontLoader.rubik(16).drawString(name, renderX, renderY - FontLoader.rubik(16).getFontHeight() - 3f, colorAnim.getOutput().getRGB(), true);
         RoundedUtil.drawRoundOutline(renderX, renderY, width, height, 3f, 0.2f, ColorUtil.TRANSPARENT_COLOR, colorAnim.getOutput());
 
-        if (hovering && Mouse.isButtonDown(0) && !dragging) {
+        if (hovering && Mouse.isButtonDown(0) && !dragging && drag) {
              dragging = true;
              dragX = mouseX;
              dragY = mouseY;

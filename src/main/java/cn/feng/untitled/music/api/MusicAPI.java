@@ -174,6 +174,7 @@ public class MusicAPI {
                 playList.setCoverImage(file);
             }
         }
+        playList.setId(-1);
         return playList;
     }
 

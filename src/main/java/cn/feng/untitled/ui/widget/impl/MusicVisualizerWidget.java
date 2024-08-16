@@ -31,11 +31,12 @@ public class MusicVisualizerWidget extends Widget {
     private final NumberValue heightValue = new NumberValue("Height", 50, 100, 30, 1);
     private final NumberValue widthValue = new NumberValue("Width", 100, 500, 50, 1);
     private final BoolValue fillValue = new BoolValue("Fill", true);
+    private final NumberValue rectSpace = new NumberValue("RectSpace", 2f, 5f, 1f, 0.01f);
+    private final NumberValue rectRadius = new NumberValue("RectRadius", 3f, 5f, 0f, 0.1f);
 
     private final ColorValue rectFirst = new ColorValue("RectFirstColor", ThemeColor.redColor);
     private final ColorValue rectSecond = new ColorValue("RectSecondColor", ThemeColor.bgColor);
     private final ColorValue lineColor = new ColorValue("LineColor", Color.WHITE);
-    private final NumberValue rectSpace = new NumberValue("RectSpace", 3f, 5f, 1f, 1f);
     private final NumberValue indexOffset = new NumberValue("IndexOffset", 6f, 20f, 0f, 1f);
 
     private final ModeValue modeValue = new ModeValue("Mode", "Polyline", new String[]{"Polyline", "Rect"});
@@ -76,7 +77,7 @@ public class MusicVisualizerWidget extends Widget {
 
                 if (modeValue.value.equals("Rect"))
                 {
-                    RoundedUtil.drawGradientVertical(renderX - step, realY + (renderY + heightValue.value.floatValue()) * (sr.getScaleFactor() * 0.5f - 1), step, Math.max(renderY + height - realY, 1), 2f, rectFirst.getColor(colorIndex), rectSecond.getColor(colorIndex));
+                    RoundedUtil.drawGradientVertical(renderX - step, realY + (renderY + heightValue.value.floatValue()) * (sr.getScaleFactor() * 0.5f - 1), step, Math.max(renderY + height - realY, 1), rectRadius.value.floatValue(), rectFirst.getColor(colorIndex), rectSecond.getColor(colorIndex));
                     colorIndex += indexOffset.value.intValue();
                 }
 

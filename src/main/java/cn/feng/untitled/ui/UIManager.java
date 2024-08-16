@@ -11,6 +11,7 @@ import cn.feng.untitled.ui.clickgui.neverlose.NeverLoseGUI;
 import cn.feng.untitled.ui.screen.main.SkidMainScreen;
 import cn.feng.untitled.ui.widget.Widget;
 import cn.feng.untitled.ui.widget.impl.ArraylistWidget;
+import cn.feng.untitled.ui.widget.impl.MusicInfoWidget;
 import cn.feng.untitled.ui.widget.impl.MusicLyricWidget;
 import cn.feng.untitled.ui.widget.impl.MusicVisualizerWidget;
 import cn.feng.untitled.util.MinecraftInstance;
@@ -38,6 +39,7 @@ public class UIManager extends MinecraftInstance {
         register(new ArraylistWidget());
         register(new MusicVisualizerWidget());
         register(new MusicLyricWidget());
+        register(new MusicInfoWidget());
     }
 
     public Widget getWidget(Class<? extends Widget> w) {
@@ -92,9 +94,18 @@ public class UIManager extends MinecraftInstance {
 
     @SubscribeEvent
     private void onChatGUI(ChatGUIEvent event) {
+        Widget draggingWidget = null;
         for (Widget widget : widgetList) {
             if (Client.instance.moduleManager.getModule(widget).enabled) {
-                widget.onDrag(event.mouseX, event.mouseY);
+                if (widget.dragging) {
+                    draggingWidget = widget;
+                    break;
+                }
+            }
+        }
+        for (Widget widget : widgetList) {
+            if (Client.instance.moduleManager.getModule(widget).enabled) {
+                widget.onChatGUI(event.mouseX, event.mouseY, (draggingWidget == null || draggingWidget == widget));
             }
         }
     }

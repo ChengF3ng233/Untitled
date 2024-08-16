@@ -8,6 +8,7 @@ import cn.feng.untitled.ui.font.nano.NanoFontLoader;
 import cn.feng.untitled.ui.font.nano.NanoUtil;
 import cn.feng.untitled.ui.widget.Widget;
 import cn.feng.untitled.util.animation.advanced.composed.CustomAnimation;
+import cn.feng.untitled.util.animation.advanced.impl.DecelerateAnimation;
 import cn.feng.untitled.util.animation.advanced.impl.SmoothStepAnimation;
 import cn.feng.untitled.util.render.RenderUtil;
 import cn.feng.untitled.value.impl.BoolValue;
@@ -30,11 +31,13 @@ public class MusicLyricWidget extends Widget {
         y = 0.7f;
     }
 
+    private final BoolValue fontShadow = new BoolValue("FontShadow", false);
+    private final NumberValue fontSize = new NumberValue("FontSize", 17, 30, 15, 0.1);
     private final BoolValue blurValue = new BoolValue("Blur", true);
     private final BoolValue bloomValue = new BoolValue("Bloom", true);
     private final NumberValue heightValue = new NumberValue("Height", 100, 150, 30, 0.1);
     private final NumberValue spaceValue = new NumberValue("Space", 20, 30, 15, 0.1);
-    private final CustomAnimation scrollAnim = new CustomAnimation(SmoothStepAnimation.class, 150, 0f, 0f);
+    private final CustomAnimation scrollAnim = new CustomAnimation(DecelerateAnimation.class, 300, 0f, 0f);
 
     @Override
     public void onNano() {
@@ -53,15 +56,15 @@ public class MusicLyricWidget extends Widget {
         NanoUtil.scissorStart(lyricX - 5f, y * sr.getScaledHeight(), width + 10f, height);
 
         for (LyricLine lyricLine : lyrics) {
-            float addY = player.getMusic().isHasTranslate() && translateMap.containsKey(lyricLine) ? spaceValue.value.floatValue() + 10f : spaceValue.value.floatValue();
-            float lyricWidth = NanoFontLoader.misans.getStringWidth(lyricLine.getLine(), 17f);
+            float addY = player.getMusic().isHasTranslate() && translateMap.containsKey(lyricLine) ? spaceValue.value.floatValue() + fontSize.value.floatValue() / 2f : spaceValue.value.floatValue();
+            float lyricWidth = NanoFontLoader.misans.getStringWidth(lyricLine.getLine(), fontSize.value.floatValue());
             if (lyricWidth > width) width = lyricWidth;
-            lyricLine.render(lyricX, lyricY, width, spaceValue.value.floatValue(), player.getCurrentTime(), scrollAnim, translateMap.getOrDefault(lyricLine, null));
+            lyricLine.render(lyricX, lyricY, width, spaceValue.value.floatValue(), player.getCurrentTime(), scrollAnim, translateMap.getOrDefault(lyricLine, null), fontShadow.value, fontSize.value.floatValue());
             if (translateMap.containsKey(lyricLine)) {
                 LyricLine translateLine = translateMap.get(lyricLine);
-                float translateWidth = NanoFontLoader.misans.getStringWidth(translateLine.getLine(), 15f);
+                float translateWidth = NanoFontLoader.misans.getStringWidth(translateLine.getLine(), fontSize.value.floatValue() * 0.7f);
                 if (translateWidth > width) width = translateWidth;
-                translateLine.render(lyricX + width / 2f - translateWidth / 2f, lyricY + 12f, translateWidth, spaceValue.value.floatValue(), player.getCurrentTime(), scrollAnim, null);
+                translateLine.render(lyricX + width / 2f - translateWidth / 2f, lyricY + 12f, translateWidth, spaceValue.value.floatValue(), player.getCurrentTime(), scrollAnim, null, fontShadow.value, fontSize.value.floatValue());
             }
             lyricY += addY;
         }
@@ -85,22 +88,22 @@ public class MusicLyricWidget extends Widget {
         RenderUtil.scissorStart(lyricX - 5f, y * sr.getScaledHeight(), width + 10f, height);
 
         for (LyricLine lyricLine : lyrics) {
-            float addY = player.getMusic().isHasTranslate() && translateMap.containsKey(lyricLine) ? spaceValue.value.floatValue() + 10f : spaceValue.value.floatValue();
-            float lyricWidth = NanoFontLoader.misans.getStringWidth(lyricLine.getLine(), 17f);
+            float addY = player.getMusic().isHasTranslate() && translateMap.containsKey(lyricLine) ? spaceValue.value.floatValue() + fontSize.value.floatValue() / 2f : spaceValue.value.floatValue();
+            float lyricWidth = NanoFontLoader.misans.getStringWidth(lyricLine.getLine(), fontSize.value.floatValue());
             if (bloomValue.value && event.bloom) {
-                Gui.drawNewRect(lyricX + width / 2f - lyricWidth / 2f - 2f, lyricY - 1f, lyricWidth + 4f, 11f, Color.BLACK.getRGB());
+                Gui.drawNewRect(lyricX + width / 2f - lyricWidth / 2f - fontSize.value.floatValue() / 7f, lyricY - 2f, lyricWidth + fontSize.value.floatValue() / 4f, fontSize.value.floatValue() / 2f + 4f, Color.BLACK.getRGB());
             }
             if (blurValue.value && !event.bloom) {
-                Gui.drawNewRect(lyricX + width / 2f - lyricWidth / 2f - 2f, lyricY - 1f, lyricWidth + 4f, 11f, Color.BLACK.getRGB());
+                Gui.drawNewRect(lyricX + width / 2f - lyricWidth / 2f - fontSize.value.floatValue() / 7f, lyricY - 2f, lyricWidth + fontSize.value.floatValue() / 4f, fontSize.value.floatValue() / 2f + 4f, Color.BLACK.getRGB());
             }
             if (translateMap.containsKey(lyricLine)) {
                 LyricLine translateLine = translateMap.get(lyricLine);
-                float translateWidth = NanoFontLoader.misans.getStringWidth(translateLine.getLine(), 15f);
+                float translateWidth = NanoFontLoader.misans.getStringWidth(translateLine.getLine(), fontSize.value.floatValue() * 0.7f);
                 if (bloomValue.value && event.bloom) {
-                    Gui.drawNewRect(lyricX + width / 2f - translateWidth / 2f - 2f, lyricY + 9f, translateWidth + 4f, 12f, Color.BLACK.getRGB());
+                    Gui.drawNewRect(lyricX + width / 2f - translateWidth / 2f - fontSize.value.floatValue() * 0.7f / 7f, lyricY + 9f, translateWidth + fontSize.value.floatValue() * 0.7f / 4f, fontSize.value.floatValue() * 0.7f / 2f + 4f, Color.BLACK.getRGB());
                 }
                 if (blurValue.value && !event.bloom) {
-                    Gui.drawNewRect(lyricX + width / 2f - translateWidth / 2f - 2f, lyricY + 9f, translateWidth + 4f, 12f, Color.BLACK.getRGB());
+                    Gui.drawNewRect(lyricX + width / 2f - translateWidth / 2f - fontSize.value.floatValue() * 0.7f / 7f, lyricY + 9f, translateWidth + fontSize.value.floatValue() * 0.7f / 4f, fontSize.value.floatValue() * 0.7f / 2f + 4f, Color.BLACK.getRGB());
                 }
             }
             lyricY += addY;
