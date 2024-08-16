@@ -1,5 +1,7 @@
 package net.minecraft.client.renderer.entity;
 
+import cn.feng.untitled.module.impl.render.Animations;
+import cn.feng.untitled.util.misc.ChatUtil;
 import net.minecraft.client.entity.AbstractClientPlayer;
 import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.client.model.ModelPlayer;
@@ -12,6 +14,7 @@ import net.minecraft.scoreboard.Score;
 import net.minecraft.scoreboard.ScoreObjective;
 import net.minecraft.scoreboard.Scoreboard;
 import net.minecraft.util.ResourceLocation;
+import org.lwjgl.input.Mouse;
 
 public class RenderPlayer extends RendererLivingEntity<AbstractClientPlayer> {
     /**
@@ -78,6 +81,10 @@ public class RenderPlayer extends RendererLivingEntity<AbstractClientPlayer> {
                 modelplayer.heldItemRight = 0;
             } else {
                 modelplayer.heldItemRight = 1;
+
+                if (Mouse.isButtonDown(1) && Animations.everythingBlock.getValue() && clientPlayer.getItemInUseCount() == 0) {
+                    modelplayer.heldItemRight = 3;
+                }
 
                 if (clientPlayer.getItemInUseCount() > 0) {
                     EnumAction enumaction = itemstack.getItemUseAction();

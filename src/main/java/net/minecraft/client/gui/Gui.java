@@ -1,7 +1,7 @@
 package net.minecraft.client.gui;
 
 import cn.feng.untitled.Client;
-import cn.feng.untitled.module.impl.client.HUD;
+import cn.feng.untitled.module.impl.render.HUD;
 import cn.feng.untitled.ui.font.awt.CenterType;
 import cn.feng.untitled.ui.font.awt.FontLoader;
 import cn.feng.untitled.util.render.GLUtil;

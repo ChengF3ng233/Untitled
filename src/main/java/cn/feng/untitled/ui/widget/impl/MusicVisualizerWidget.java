@@ -55,13 +55,13 @@ public class MusicVisualizerWidget extends Widget {
         if (mediaPlayer != null && Client.instance.musicManager.screen.player.getMagnitudes() != null) {
             mediaPlayer.setAudioSpectrumNumBands(bands.getValue().intValue());
             float[] magnitudes = Client.instance.musicManager.screen.player.getMagnitudes();
-            float[] vertex = new float[magnitudes.length * 2 + 2];
+            float[] vertex = new float[magnitudeInterp == null? magnitudes.length * 2 : magnitudeInterp.length * 2 + 2];
 
             if (magnitudeInterp == null) {
                 magnitudeInterp = magnitudes;
             }
 
-            for (int i = 0; i < magnitudeInterp.length; i++) {
+            for (int i = 0; i < magnitudeInterp.length && i < magnitudes.length; i++) {
                 magnitudeInterp[i] = (float) MathUtil.lerp(magnitudeInterp[i], magnitudes[i], RenderUtil.frameTime * 0.5);
             }
 

@@ -1,5 +1,7 @@
 package net.minecraft.client.renderer;
 
+import cn.feng.untitled.module.impl.render.Animations;
+import cn.feng.untitled.util.misc.ChatUtil;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
@@ -28,8 +30,8 @@ import net.minecraft.util.MathHelper;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.storage.MapData;
 import net.optifine.DynamicLights;
-import net.optifine.reflect.Reflector;
 import net.optifine.shaders.Shaders;
+import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.GL11;
 
 public class ItemRenderer {
@@ -334,6 +336,13 @@ public class ItemRenderer {
         GlStateManager.rotate(60.0F, 0.0F, 1.0F, 0.0F);
     }
 
+    private void doCustomBlockTransformations() {
+        GlStateManager.translate(-0.5F, 0.2F, 0.0F);
+        GlStateManager.rotate(30.0F, 0.0F, 1.0F, 0.0F);
+        GlStateManager.rotate(-70.0F, 1.0F, 0.0F, 0.0F);
+        GlStateManager.rotate(60.0F, 0.0F, 1.0F, 0.0F);
+    }
+
     /**
      * Renders the active item in the player's hand when in first person mode. Args: partialTickTime
      */
@@ -363,13 +372,24 @@ public class ItemRenderer {
 
                         case EAT:
                         case DRINK:
+                            if (Animations.translate.getValue()) {
+                                GlStateManager.translate(Animations.translateX.getValue(), Animations.translateY.getValue(), Animations.translateZ.getValue());
+                            }
                             this.performDrinking(abstractclientplayer, partialTicks);
                             this.transformFirstPersonItem(f, 0.0F);
                             break;
 
                         case BLOCK:
-                            this.transformFirstPersonItem(f, 0.0F);
-                            this.doBlockTransformations();
+                            if (Animations.translate.getValue()) {
+                                GlStateManager.translate(Animations.translateX.getValue(), Animations.translateY.getValue(), Animations.translateZ.getValue());
+                            }
+                            if (Animations.itemAnim.getValue()) {
+                                this.transformFirstPersonItem(-0.1F, f1);
+                                doCustomBlockTransformations();
+                            } else {
+                                this.transformFirstPersonItem(f, 0.0F);
+                                this.doBlockTransformations();
+                            }
                             break;
 
                         case BOW:
@@ -377,8 +397,16 @@ public class ItemRenderer {
                             this.doBowTransformations(partialTicks, abstractclientplayer);
                     }
                 } else {
-                    this.doItemUsedTransformations(f1);
-                    this.transformFirstPersonItem(f, f1);
+                    if (Animations.translate.getValue()) {
+                        GlStateManager.translate(Animations.translateX.getValue(), Animations.translateY.getValue(), Animations.translateZ.getValue());
+                    }
+                    if (Animations.everythingBlock.getValue() && Mouse.isButtonDown(1)) {
+                        this.transformFirstPersonItem(-0.1f, f1);
+                        doCustomBlockTransformations();
+                    } else {
+                        this.doItemUsedTransformations(f1);
+                        this.transformFirstPersonItem(f, f1);
+                    }
                 }
 
                 this.renderItem(abstractclientplayer, this.itemToRender, ItemCameraTransforms.TransformType.FIRST_PERSON);

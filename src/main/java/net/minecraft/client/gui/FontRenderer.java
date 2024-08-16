@@ -1,7 +1,7 @@
 package net.minecraft.client.gui;
 
 import cn.feng.untitled.Client;
-import cn.feng.untitled.module.impl.client.HUD;
+import cn.feng.untitled.module.impl.render.HUD;
 import cn.feng.untitled.ui.font.awt.FontLoader;
 import com.ibm.icu.text.ArabicShaping;
 import com.ibm.icu.text.ArabicShapingException;

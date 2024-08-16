@@ -22,8 +22,6 @@ public class Camera extends Module {
 
     public Camera() {
         super("Camera", ModuleCategory.Render);
-        if (!enabled)
-            toggle();
         locked = true;
 
         motion.setChangeAction((oldValue, newValue) -> {

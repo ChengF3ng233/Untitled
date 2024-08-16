@@ -1,8 +1,10 @@
 package net.minecraft.client.renderer.entity;
 
+import cn.feng.untitled.module.impl.render.Animations;
 import lombok.Getter;
 import net.minecraft.block.*;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.renderer.*;
 import net.minecraft.client.renderer.block.model.BakedQuad;
@@ -29,10 +31,10 @@ import net.minecraft.src.Config;
 import net.minecraft.util.*;
 import net.optifine.CustomColors;
 import net.optifine.CustomItems;
-import net.optifine.reflect.Reflector;
 import net.optifine.reflect.ReflectorForge;
 import net.optifine.shaders.Shaders;
 import net.optifine.shaders.ShadersRender;
+import org.lwjgl.input.Mouse;
 
 import java.util.List;
 import java.util.concurrent.Callable;
@@ -312,6 +314,7 @@ public class RenderItem implements IResourceManagerReloadListener {
     public void renderItemModelForEntity(ItemStack stack, EntityLivingBase entityToRenderFor, ItemCameraTransforms.TransformType cameraTransformType) {
         if (stack != null && entityToRenderFor != null) {
             IBakedModel ibakedmodel = this.itemModelMesher.getItemModel(stack);
+            lastRenderEntity = entityToRenderFor;
 
             if (entityToRenderFor instanceof EntityPlayer entityplayer) {
                 Item item = stack.getItem();
@@ -342,6 +345,8 @@ public class RenderItem implements IResourceManagerReloadListener {
         }
     }
 
+    private EntityLivingBase lastRenderEntity;
+
     protected void renderItemModelTransform(ItemStack stack, IBakedModel model, ItemCameraTransforms.TransformType cameraTransformType) {
         this.textureManager.bindTexture(TextureMap.locationBlocksTexture);
         this.textureManager.getTexture(TextureMap.locationBlocksTexture).setBlurMipmap(false, false);
@@ -358,6 +363,22 @@ public class RenderItem implements IResourceManagerReloadListener {
         if (this.isThereOneNegativeScale(itemcameratransforms.getTransform(cameraTransformType))) {
             GlStateManager.cullFace(1028);
         }
+
+        // 1.7 third person block animations
+        if (cameraTransformType == ItemCameraTransforms.TransformType.THIRD_PERSON && lastRenderEntity instanceof EntityPlayer p && Animations.itemAnim.getValue()) {
+            ItemStack heldStack = p.getHeldItem();
+            if (heldStack != null) {
+                EntityPlayerSP player = Minecraft.getMinecraft().thePlayer;
+                if (lastRenderEntity == player) {
+                    if ((heldStack.getItem() instanceof ItemSword && (p.getItemInUseCount() > 0 || player.isBlocking())) || (Mouse.isButtonDown(1) && Animations.everythingBlock.getValue() && !(heldStack.getItem() instanceof ItemBlock))) {
+                        doThirdPersonBlockTransformations();
+                    }
+                } else if (p.getItemInUseCount() > 0 && heldStack.getItemUseAction() == EnumAction.BLOCK) {
+                    doThirdPersonBlockTransformations();
+                }
+            }
+        }
+
         this.renderItem(stack, model);
         GlStateManager.cullFace(1029);
         GlStateManager.popMatrix();
@@ -365,6 +386,12 @@ public class RenderItem implements IResourceManagerReloadListener {
         GlStateManager.disableBlend();
         this.textureManager.bindTexture(TextureMap.locationBlocksTexture);
         this.textureManager.getTexture(TextureMap.locationBlocksTexture).restoreLastBlurMipmap();
+    }
+
+    private void doThirdPersonBlockTransformations() {
+        GlStateManager.translate(-0.15F, -0.2F, 0);
+        GlStateManager.rotate(70, 1, 0, 0);
+        GlStateManager.translate(0.119F, 0.2F, -0.024F);
     }
 
     /**

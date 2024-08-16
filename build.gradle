@@ -1,10 +1,38 @@
 plugins {
     id("java")
     id 'org.openjfx.javafxplugin' version '0.1.0'
+    id 'com.github.johnrengelman.shadow' version '8.1.1'
 }
 
 group = "cn.feng"
 version = "1.0-SNAPSHOT"
+
+shadowJar {
+    archiveClassifier.set('all')
+
+    dependencies {
+        include(dependency('com.squareup.okhttp3:okhttp:5.0.0-alpha.14'))
+        include(dependency('org.jetbrains:annotations:24.1.0'))
+        include(dependency('org.yaml:snakeyaml:2.2'))
+        include(dependency('com.google.code.gson:gson:2.11.0'))
+        include(dependency('io.netty:netty-all:5.0.0.Alpha2'))
+        include(dependency('com.github.kokorin.jaffree:jaffree:2023.09.10'))
+        include(dependency('org.slf4j:slf4j-api:2.1.0-alpha1'))
+        include(dependency('org.apache.logging.log4j:log4j-api:3.0.0-beta2'))
+        include(dependency('org.apache.logging.log4j:log4j-core:3.0.0-beta2'))
+        include(dependency('org.apache.logging.log4j:log4j-plugins:3.0.0-beta2'))
+        include(dependency('org.apache.logging.log4j:log4j-slf4j-impl:3.0.0-beta2'))
+        include(dependency('org.bouncycastle:bcprov-jdk18on:1.78.1'))
+    }
+
+    from('lib') {
+        include '**/*'  // 包含文件夹中的所有内容
+    }
+}
+
+tasks.build {
+    dependsOn shadowJar
+}
 
 repositories {
     mavenCentral()
@@ -39,6 +67,7 @@ dependencies {
     implementation group: 'org.slf4j', name: 'slf4j-api', version: '2.1.0-alpha1'
     implementation group: 'org.apache.logging.log4j', name: 'log4j-api', version: '3.0.0-beta2'
     implementation group: 'org.apache.logging.log4j', name: 'log4j-core', version: '3.0.0-beta2'
+    implementation group: 'org.apache.logging.log4j', name: 'log4j-plugins', version: '3.0.0-beta2'
     implementation group: 'org.apache.logging.log4j', name: 'log4j-slf4j-impl', version: '3.0.0-beta2'
     implementation group: 'org.bouncycastle', name: 'bcprov-jdk18on', version: '1.78.1'
 

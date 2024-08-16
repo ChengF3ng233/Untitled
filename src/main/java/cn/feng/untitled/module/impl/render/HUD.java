@@ -1,4 +1,4 @@
-package cn.feng.untitled.module.impl.client;
+package cn.feng.untitled.module.impl.render;
 
 import cn.feng.untitled.module.Module;
 import cn.feng.untitled.module.ModuleCategory;
@@ -11,8 +11,9 @@ import cn.feng.untitled.value.impl.BoolValue;
  **/
 public class HUD extends Module {
     public HUD() {
-        super("HUD", ModuleCategory.Client, true);
+        super("HUD", ModuleCategory.Render, true);
     }
 
     public static final BoolValue fancyFont = new BoolValue("FancyFont", true);
+    public static final BoolValue crossHair = new BoolValue("CrossHair", true);
 }
