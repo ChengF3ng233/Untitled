@@ -1,7 +1,6 @@
 package net.minecraft.client.renderer;
 
 import cn.feng.untitled.module.impl.render.Animations;
-import cn.feng.untitled.util.misc.ChatUtil;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
@@ -323,7 +322,17 @@ public class ItemRenderer {
         }
 
         GlStateManager.translate(f1 * 0.0F, f1 * 0.0F, f1 * 0.1F);
+        if (Animations.oldBow.getValue()) {
+            GlStateManager.rotate(-335.0F, 0.0F, 0.0F, 1.0F);
+            GlStateManager.rotate(-50.0F, 0.0F, 1.0F, 0.0F);
+            GlStateManager.translate(0.0F, 0.5F, 0.0F);
+        }
         GlStateManager.scale(1.0F, 1.0F, 1.0F + f1 * 0.2F);
+        if (Animations.oldBow.getValue()) {
+            GlStateManager.translate(0.0F, -0.5F, 0.0F);
+            GlStateManager.rotate(50.0F, 0.0F, 1.0F, 0.0F);
+            GlStateManager.rotate(335.0F, 0.0F, 0.0F, 1.0F);
+        }
     }
 
     /**
@@ -358,6 +367,13 @@ public class ItemRenderer {
             this.rotateWithPlayerRotations((EntityPlayerSP) abstractclientplayer, partialTicks);
             GlStateManager.enableRescaleNormal();
             GlStateManager.pushMatrix();
+
+            if (Animations.leftHand.getValue()) {
+                GL11.glScaled(-1.0, 1.0, 1.0);
+                GlStateManager.disableCull();
+            } else {
+                GlStateManager.enableCull();
+            }
 
             if (this.itemToRender != null) {
                 if (this.itemToRender.getItem() instanceof ItemMap) {

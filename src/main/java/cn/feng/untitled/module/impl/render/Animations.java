@@ -20,6 +20,9 @@ public class Animations extends Module {
     public static final NumberValue translateY = new NumberValue("TranslateY", 0f, 2f, -2f, 0.005f);
     public static final NumberValue translateZ = new NumberValue("TranslateZ", 0f, 2f, -2f, 0.005f);
 
+    public static final BoolValue leftHand = new BoolValue("LeftHand", false);
     public static final BoolValue itemAnim = new BoolValue("ItemAnimation", true);
     public static final BoolValue everythingBlock = new BoolValue("EverythingBlock", true);
+    public static final BoolValue oldSneak = new BoolValue("OldSneak", true);
+    public static final BoolValue oldBow = new BoolValue("OldBow", true);
 }

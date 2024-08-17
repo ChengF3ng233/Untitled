@@ -2,6 +2,7 @@ package net.minecraft.client.renderer;
 
 import cn.feng.untitled.Client;
 import cn.feng.untitled.event.impl.Render3DEvent;
+import cn.feng.untitled.module.impl.render.Animations;
 import cn.feng.untitled.module.impl.render.Camera;
 import cn.feng.untitled.util.animation.simple.PosAnimation;
 import com.google.common.base.Predicate;
@@ -624,7 +625,7 @@ public class EntityRenderer implements IResourceManagerReloadListener {
      */
     private void orientCamera(float partialTicks) {
         Entity renderEntity = this.mc.getRenderViewEntity();
-        float eyeHeight = renderEntity.getEyeHeight();
+        float eyeHeight = (Animations.oldSneak.getValue() && renderEntity == mc.thePlayer)? (renderEntity.isSneaking()? 1.54f : 1.62f) : renderEntity.getEyeHeight();
 
         double renderX = renderEntity.prevPosX + (renderEntity.posX - renderEntity.prevPosX) * partialTicks;
         double renderY = renderEntity.prevPosY + (renderEntity.posY - renderEntity.prevPosY) * partialTicks + eyeHeight;
@@ -1282,7 +1283,7 @@ public class EntityRenderer implements IResourceManagerReloadListener {
             GlStateManager.matrixMode(5888);
             GlStateManager.loadIdentity();
             this.orientCamera(partialTicks);
-            GlStateManager.translate(0.0F, entity.getEyeHeight(), 0.0F);
+            GlStateManager.translate(0.0F, (Animations.oldSneak.getValue() && entity == mc.thePlayer)? (entity.isSneaking()? 1.54f : 1.62f) : entity.getEyeHeight(), 0.0F);
             RenderGlobal.drawOutlinedBoundingBox(new AxisAlignedBB(0.0D, 0.0D, 0.0D, 0.005D, 1.0E-4D, 1.0E-4D), 255, 0, 0, 255);
             RenderGlobal.drawOutlinedBoundingBox(new AxisAlignedBB(0.0D, 0.0D, 0.0D, 1.0E-4D, 1.0E-4D, 0.005D), 0, 0, 255, 255);
             RenderGlobal.drawOutlinedBoundingBox(new AxisAlignedBB(0.0D, 0.0D, 0.0D, 1.0E-4D, 0.0033D, 1.0E-4D), 0, 255, 0, 255);

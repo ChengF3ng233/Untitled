@@ -1,5 +1,6 @@
 package net.minecraft.client.model;
 
+import cn.feng.untitled.module.impl.render.Animations;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.MathHelper;
@@ -101,25 +102,19 @@ public class ModelBiped extends ModelBase {
             GlStateManager.pushMatrix();
             GlStateManager.scale(1.0F / f, 1.0F / f, 1.0F / f);
             GlStateManager.translate(0.0F, 24.0F * scale, 0.0F);
-            this.bipedBody.render(scale);
-            this.bipedRightArm.render(scale);
-            this.bipedLeftArm.render(scale);
-            this.bipedRightLeg.render(scale);
-            this.bipedLeftLeg.render(scale);
-            this.bipedHeadwear.render(scale);
         } else {
             if (entityIn.isSneaking()) {
                 GlStateManager.translate(0.0F, 0.2F, 0.0F);
             }
 
             this.bipedHead.render(scale);
-            this.bipedBody.render(scale);
-            this.bipedRightArm.render(scale);
-            this.bipedLeftArm.render(scale);
-            this.bipedRightLeg.render(scale);
-            this.bipedLeftLeg.render(scale);
-            this.bipedHeadwear.render(scale);
         }
+        this.bipedBody.render(scale);
+        this.bipedRightArm.render(scale);
+        this.bipedLeftArm.render(scale);
+        this.bipedRightLeg.render(scale);
+        this.bipedLeftLeg.render(scale);
+        this.bipedHeadwear.render(scale);
 
         GlStateManager.popMatrix();
     }
@@ -134,7 +129,6 @@ public class ModelBiped extends ModelBase {
         this.bipedHead.rotateAngleX = headPitch / (180F / (float) Math.PI);
         this.bipedRightArm.rotateAngleX = MathHelper.cos(limbSwing * 0.6662F + (float) Math.PI) * 2.0F * limbSwingAmount * 0.5F;
         this.bipedLeftArm.rotateAngleX = MathHelper.cos(limbSwing * 0.6662F) * 2.0F * limbSwingAmount * 0.5F;
-        this.bipedRightArm.rotateAngleZ = 0.0F;
         this.bipedLeftArm.rotateAngleZ = 0.0F;
         this.bipedRightLeg.rotateAngleX = MathHelper.cos(limbSwing * 0.6662F) * 1.4F * limbSwingAmount;
         this.bipedLeftLeg.rotateAngleX = MathHelper.cos(limbSwing * 0.6662F + (float) Math.PI) * 1.4F * limbSwingAmount;
@@ -156,7 +150,6 @@ public class ModelBiped extends ModelBase {
 
         this.bipedRightArm.rotateAngleY = 0.0F;
         this.bipedRightArm.rotateAngleZ = 0.0F;
-
         switch (this.heldItemRight) {
             case 0:
             case 2:
@@ -171,7 +164,6 @@ public class ModelBiped extends ModelBase {
                 this.bipedRightArm.rotateAngleX = this.bipedRightArm.rotateAngleX * 0.5F - ((float) Math.PI / 10F) * (float) this.heldItemRight;
                 this.bipedRightArm.rotateAngleY = -0.5235988F;
         }
-
         this.bipedLeftArm.rotateAngleY = 0.0F;
 
         if (this.swingProgress > -9990.0F) {
