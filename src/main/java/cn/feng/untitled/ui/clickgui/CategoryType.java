@@ -1,4 +1,4 @@
-package cn.feng.untitled.ui.clickgui.neverlose;
+package cn.feng.untitled.ui.clickgui;
 
 import cn.feng.untitled.module.ModuleCategory;
 

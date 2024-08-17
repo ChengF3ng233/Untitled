@@ -31,7 +31,7 @@ public class GetPlayListsThread extends Thread {
         for (PlayList playList : userPlayLists) {
             if (playList.getName().equalsIgnoreCase(MusicAPI.user.getNickname() + "喜欢的音乐")) {
                 PlayListGUI likedGUI = (PlayListGUI) Client.instance.musicManager.screen.categoryButtons.get(1).getGui();
-                new FetchMusicsThread(playList, likedGUI.buttons).start();
+                new FetchMusicsThread(playList, likedGUI.buttons, false).start();
                 likedGUI.setPlayList(playList);
                 likedList = playList;
                 break;

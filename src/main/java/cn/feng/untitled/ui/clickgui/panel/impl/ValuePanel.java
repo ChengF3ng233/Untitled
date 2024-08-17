@@ -1,8 +1,8 @@
-package cn.feng.untitled.ui.clickgui.neverlose.panel.impl;
+package cn.feng.untitled.ui.clickgui.panel.impl;
 
-import cn.feng.untitled.ui.clickgui.neverlose.component.Component;
-import cn.feng.untitled.ui.clickgui.neverlose.component.impl.*;
-import cn.feng.untitled.ui.clickgui.neverlose.panel.Panel;
+import cn.feng.untitled.ui.clickgui.component.Component;
+import cn.feng.untitled.ui.clickgui.component.impl.*;
+import cn.feng.untitled.ui.clickgui.panel.Panel;
 import cn.feng.untitled.ui.font.awt.FontLoader;
 import cn.feng.untitled.value.Value;
 import cn.feng.untitled.value.impl.*;

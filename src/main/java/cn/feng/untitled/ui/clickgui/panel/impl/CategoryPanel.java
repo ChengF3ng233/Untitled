@@ -1,9 +1,9 @@
-package cn.feng.untitled.ui.clickgui.neverlose.panel.impl;
+package cn.feng.untitled.ui.clickgui.panel.impl;
 
 import cn.feng.untitled.Client;
 import cn.feng.untitled.module.Module;
 import cn.feng.untitled.module.ModuleCategory;
-import cn.feng.untitled.ui.clickgui.neverlose.panel.Panel;
+import cn.feng.untitled.ui.clickgui.panel.Panel;
 import cn.feng.untitled.ui.font.awt.FontLoader;
 import cn.feng.untitled.util.animation.simple.SimpleAnimation;
 import org.lwjgl.input.Mouse;

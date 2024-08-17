@@ -1,4 +1,4 @@
-package cn.feng.untitled.ui.clickgui.neverlose.panel;
+package cn.feng.untitled.ui.clickgui.panel;
 
 /**
  * @author ChengFeng

@@ -6,8 +6,7 @@ import cn.feng.untitled.event.impl.ChatGUIEvent;
 import cn.feng.untitled.event.impl.NanoEvent;
 import cn.feng.untitled.event.impl.Render2DEvent;
 import cn.feng.untitled.event.impl.ShaderEvent;
-import cn.feng.untitled.ui.clickgui.dropdown.DropdownGUI;
-import cn.feng.untitled.ui.clickgui.neverlose.NeverLoseGUI;
+import cn.feng.untitled.ui.clickgui.ClickGUI;
 import cn.feng.untitled.ui.screen.main.SkidMainScreen;
 import cn.feng.untitled.ui.widget.Widget;
 import cn.feng.untitled.ui.widget.impl.ArraylistWidget;
@@ -25,8 +24,7 @@ import java.util.List;
  * @since 2024/7/30
  **/
 public class UIManager extends MinecraftInstance {
-    public GuiScreen neverLoseGUI;
-    public GuiScreen dropdownGUI;
+    public GuiScreen clickGUI;
     public GuiScreen mainScreen;
 
     public List<Widget> widgetList;
@@ -56,11 +54,10 @@ public class UIManager extends MinecraftInstance {
     }
 
     public void initGUI() {
-        neverLoseGUI = new NeverLoseGUI();
-        dropdownGUI = new DropdownGUI();
+        clickGUI = new ClickGUI();
         mainScreen = new SkidMainScreen();
 
-        Client.instance.eventBus.register(neverLoseGUI);
+        Client.instance.eventBus.register(clickGUI);
     }
 
     @SubscribeEvent

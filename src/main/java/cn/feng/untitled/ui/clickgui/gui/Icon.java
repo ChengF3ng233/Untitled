@@ -1,4 +1,4 @@
-package cn.feng.untitled.ui.clickgui.neverlose.gui;
+package cn.feng.untitled.ui.clickgui.gui;
 
 import cn.feng.untitled.util.animation.advanced.Direction;
 import cn.feng.untitled.util.animation.advanced.composed.ColorAnimation;

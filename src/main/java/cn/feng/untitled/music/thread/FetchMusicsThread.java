@@ -17,19 +17,23 @@ import java.util.List;
 public class FetchMusicsThread extends Thread {
     private final PlayList playList;
     private final List<MusicButton> target;
+    private final boolean updateList;
 
-    public FetchMusicsThread(PlayList playList, List<MusicButton> target) {
+    public FetchMusicsThread(PlayList playList, List<MusicButton> target, boolean updateList) {
         this.playList = playList;
         this.target = target;
+        this.updateList = updateList;
         setName("Music-FetchMusics");
     }
 
     @Override
     public void run() {
-        MusicAPI.fetchMusicList(playList);
-        for (Music music : playList.getMusicList()) {
+        List<Music> musicList = MusicAPI.fetchMusicList(playList);
+        for (Music music : musicList) {
             target.add(new MusicButton(music, playList));
         }
-        Client.instance.musicManager.screen.player.setMusicList(playList.getMusicList());
+        if (updateList) {
+            Client.instance.musicManager.screen.player.setMusicList(playList.getMusicList());
+        }
     }
 }

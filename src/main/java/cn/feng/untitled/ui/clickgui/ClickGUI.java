@@ -1,11 +1,11 @@
-package cn.feng.untitled.ui.clickgui.neverlose;
+package cn.feng.untitled.ui.clickgui;
 
 import cn.feng.untitled.module.ModuleCategory;
 import cn.feng.untitled.module.impl.client.PostProcessing;
-import cn.feng.untitled.ui.clickgui.neverlose.gui.TextField;
-import cn.feng.untitled.ui.clickgui.neverlose.panel.Panel;
-import cn.feng.untitled.ui.clickgui.neverlose.panel.impl.CategoryPanel;
-import cn.feng.untitled.ui.clickgui.neverlose.panel.impl.ModulePanel;
+import cn.feng.untitled.ui.clickgui.gui.TextField;
+import cn.feng.untitled.ui.clickgui.panel.Panel;
+import cn.feng.untitled.ui.clickgui.panel.impl.CategoryPanel;
+import cn.feng.untitled.ui.clickgui.panel.impl.ModulePanel;
 import cn.feng.untitled.ui.font.awt.CenterType;
 import cn.feng.untitled.ui.font.awt.FontLoader;
 import cn.feng.untitled.ui.font.awt.FontRenderer;
@@ -39,7 +39,7 @@ import java.util.Locale;
  * @author ChengFeng
  * @since 2024/7/28
  **/
-public class NeverLoseGUI extends GuiScreen {
+public class ClickGUI extends GuiScreen {
     public static float width, height, leftWidth, topWidth, radius;
     private float x, y;
     private boolean dragging;
@@ -55,7 +55,7 @@ public class NeverLoseGUI extends GuiScreen {
     private CategoryPanel currentPanel;
     private final TextField searchField;
 
-    public NeverLoseGUI() {
+    public ClickGUI() {
         width = 420f;
         height = 310f;
         leftWidth = 90f;

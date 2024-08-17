@@ -14,7 +14,7 @@ import cn.feng.untitled.music.ui.component.slider.VolumeSlider;
 import cn.feng.untitled.music.ui.gui.MusicPlayerGUI;
 import cn.feng.untitled.music.ui.gui.impl.PlayListGUI;
 import cn.feng.untitled.music.ui.gui.impl.PlayListListGUI;
-import cn.feng.untitled.ui.clickgui.neverlose.gui.TextField;
+import cn.feng.untitled.ui.clickgui.gui.TextField;
 import cn.feng.untitled.ui.font.nano.NanoFontLoader;
 import cn.feng.untitled.ui.font.nano.NanoUtil;
 import cn.feng.untitled.util.animation.advanced.Animation;

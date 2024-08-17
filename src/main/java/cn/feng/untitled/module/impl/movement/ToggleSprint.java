@@ -1,11 +1,10 @@
 package cn.feng.untitled.module.impl.movement;
 
-import cn.feng.untitled.event.type.EventType;
 import cn.feng.untitled.event.api.SubscribeEvent;
 import cn.feng.untitled.event.impl.MotionEvent;
+import cn.feng.untitled.event.type.EventType;
 import cn.feng.untitled.module.Module;
 import cn.feng.untitled.module.ModuleCategory;
-import org.lwjgl.input.Keyboard;
 
 /**
  * @author ChengFeng
@@ -13,7 +12,7 @@ import org.lwjgl.input.Keyboard;
  **/
 public class ToggleSprint extends Module {
     public ToggleSprint() {
-        super("ToggleSprint", ModuleCategory.Movement, Keyboard.getKeyIndex("V"));
+        super("ToggleSprint", ModuleCategory.Movement, true);
     }
 
     @SubscribeEvent

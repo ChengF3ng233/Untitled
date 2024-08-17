@@ -77,7 +77,7 @@ public class PlayListButton extends Button {
         if (hovering && button == 0) {
             Client.instance.musicManager.screen.setCurrentGUI(gui);
             if (playList.getMusicList().isEmpty()) {
-                new FetchMusicsThread(playList, gui.buttons).start();
+                new FetchMusicsThread(playList, gui.buttons, true).start();
             }
         }
     }

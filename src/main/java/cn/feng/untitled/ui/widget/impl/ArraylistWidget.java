@@ -37,6 +37,15 @@ public class ArraylistWidget extends Widget {
 
     @Override
     public void onNano() {
+        render(true);
+    }
+
+    @Override
+    public void onRender2D() {
+        render(false);
+    }
+
+    private void render(boolean isNano) {
         float renderX = sr.getScaledWidth() * x;
         float renderY = sr.getScaledHeight() * y;
 
@@ -52,23 +61,25 @@ public class ArraylistWidget extends Widget {
 
         float maxWidth = (font.getStringWidth(moduleList.get(0).name));
 
-        RenderUtil.scissorStart(renderX, moduleY, (maxWidth + 6f), (sr.getScaledHeight() - moduleY));
-
-      //  NanoUtil.beginFrame();
-        NanoUtil.scaleStart(0, 0, sr.getScaleFactor() * 0.5f);
-        NanoUtil.scissorStart(renderX, moduleY, maxWidth + 6f, sr.getScaledHeight() - moduleY);
+        if (!isNano) {
+            RenderUtil.scissorStart(renderX, moduleY, (maxWidth + 6f), (sr.getScaledHeight() - moduleY));
+        } else {
+            NanoUtil.scaleStart(0, 0, sr.getScaleFactor() * 0.5f);
+            NanoUtil.scissorStart(renderX, moduleY, maxWidth + 6f, sr.getScaledHeight() - moduleY);
+        }
 
         for (Module module : moduleList) {
             double moduleX = renderX + maxWidth - 6f - (font.getStringWidth(module.name)) * module.horizontalAnim.getOutput();
 
-            Gui.drawNewRect(moduleX, moduleY, font.getStringWidth(module.name) + 6f, yGap, backgroundColor.getValue(index).getRGB());
-
-            if (PostProcessing.bloom.getValue()) {
-                font.drawGlowString(module.name, (float) (moduleX + 3f),  moduleY, textColor.getValue(index), true);
+            if (!isNano) {
+                Gui.drawNewRect(moduleX, moduleY, font.getStringWidth(module.name) + 6f, yGap, backgroundColor.getValue(index).getRGB());
             } else {
-                font.drawString(module.name, (float) (moduleX + 3f),  moduleY, textColor.getValue(index), true);
+                if (PostProcessing.bloom.getValue()) {
+                    font.drawGlowString(module.name, (float) (moduleX + 3f),  moduleY, textColor.getValue(index), true);
+                } else {
+                    font.drawString(module.name, (float) (moduleX + 3f),  moduleY, textColor.getValue(index), true);
+                }
             }
-
 
             moduleY += module.verticalAnim.getOutput().floatValue() * yGap;
 
@@ -83,9 +94,9 @@ public class ArraylistWidget extends Widget {
             if (module.enabled) index += indexOffset.getValue().intValue();
         }
 
-        NanoUtil.scissorEnd();
- //       NanoUtil.endFrame();
-        RenderUtil.scissorEnd();
+        if (isNano) {
+            NanoUtil.scissorEnd();
+        } else RenderUtil.scissorEnd();
 
         this.width = maxWidth;
         this.height = moduleY - renderY;

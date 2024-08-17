@@ -26,23 +26,20 @@ public abstract class MusicPlayerGUI extends MinecraftInstance {
     protected CustomAnimation scrollAnim = new CustomAnimation(SmoothStepAnimation.class, 100);
 
     public void handleScroll() {
-        // Scroll
         int wheel = Mouse.getDWheel();
-        if (wheel != 0) {
-            scrollAnim.setStartPoint(scrollAnim.getOutput());
-            if (wheel > 0) {
-                scrollAnim.setEndPoint(scrollAnim.getEndPoint() + 20f);
-            } else {
-                scrollAnim.setEndPoint(scrollAnim.getEndPoint() - 20f);
-            }
-            if (scrollAnim.getEndPoint() > 0) scrollAnim.setEndPoint(0f);
-            float maxScroll = height - (MusicPlayerScreen.height - MusicPlayerScreen.topWidth - MusicPlayerScreen.bottomWidth - 3f);
-            if (-scrollAnim.getEndPoint() > maxScroll) {
-                scrollAnim.setEndPoint(-maxScroll);
-                isBottom = true;
-            } else isBottom = false;
-            scrollAnim.getAnimation().reset();
+        scrollAnim.setStartPoint(scrollAnim.getOutput());
+        if (wheel > 0) {
+            scrollAnim.setEndPoint(scrollAnim.getEndPoint() + 20f);
+        } else if (wheel < 0) {
+            scrollAnim.setEndPoint(scrollAnim.getEndPoint() - 20f);
         }
+        if (scrollAnim.getEndPoint() > 0) scrollAnim.setEndPoint(0f);
+        float maxScroll = height - (MusicPlayerScreen.height - MusicPlayerScreen.topWidth - MusicPlayerScreen.bottomWidth - 3f);
+        if (-scrollAnim.getEndPoint() > maxScroll) {
+            scrollAnim.setEndPoint(-maxScroll);
+            isBottom = true;
+        } else isBottom = false;
+        scrollAnim.getAnimation().reset();
     }
 
     public boolean onNano(float x, float y, int mouseX, int mouseY, float cx, float cy, float scale) {

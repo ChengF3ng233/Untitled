@@ -1,11 +1,11 @@
-package cn.feng.untitled.ui.clickgui.neverlose.panel.impl;
+package cn.feng.untitled.ui.clickgui.panel.impl;
 
 import cn.feng.untitled.Client;
 import cn.feng.untitled.module.Module;
-import cn.feng.untitled.ui.clickgui.neverlose.NeverLoseGUI;
-import cn.feng.untitled.ui.clickgui.neverlose.ThemeColor;
-import cn.feng.untitled.ui.clickgui.neverlose.component.impl.ButtonComponent;
-import cn.feng.untitled.ui.clickgui.neverlose.panel.Panel;
+import cn.feng.untitled.ui.clickgui.ClickGUI;
+import cn.feng.untitled.ui.clickgui.ThemeColor;
+import cn.feng.untitled.ui.clickgui.component.impl.ButtonComponent;
+import cn.feng.untitled.ui.clickgui.panel.Panel;
 import cn.feng.untitled.ui.font.awt.FontLoader;
 import cn.feng.untitled.ui.font.awt.FontRenderer;
 import cn.feng.untitled.util.animation.advanced.Direction;
@@ -47,7 +47,7 @@ public class ModulePanel extends Panel {
 
     @Override
     public void init() {
-        width = (NeverLoseGUI.width - NeverLoseGUI.leftWidth - 30f) / 2f;
+        width = (ClickGUI.width - ClickGUI.leftWidth - 30f) / 2f;
         valuePanelList.forEach(ValuePanel::init);
         enableBtn.init();
     }

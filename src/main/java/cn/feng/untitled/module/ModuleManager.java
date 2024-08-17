@@ -73,7 +73,7 @@ public class ModuleManager {
 
     public void registerModules() {
         register(new ToggleSprint());
-        register(new ClickGUI());
+        register(new ClickGUIMod());
         register(new HUD());
         register(new PostProcessing());
         register(new Target());

@@ -7,7 +7,6 @@ import cn.feng.untitled.music.ui.ThemeColor;
 import cn.feng.untitled.music.ui.component.Button;
 import cn.feng.untitled.ui.font.nano.NanoFontLoader;
 import cn.feng.untitled.ui.font.nano.NanoFontRenderer;
-import cn.feng.untitled.util.misc.Logger;
 import cn.feng.untitled.util.misc.TimerUtil;
 import cn.feng.untitled.util.render.ColorUtil;
 import cn.feng.untitled.util.render.RenderUtil;
@@ -44,7 +43,7 @@ public class MusicButton extends Button {
         float textY = posY + 7f;
 
         if (isNano) {
-            NanoFontLoader.greyCliffBold.drawString(playList.getMusicList().indexOf(music) + "", textX, textY + 4f, 13f, ThemeColor.greyColor);
+            NanoFontLoader.greyCliffBold.drawString((playList.getMusicList().indexOf(music) + 1) + "", textX, textY + 4f, 13f, ThemeColor.greyColor);
         }
 
         if (!isNano) {
@@ -52,12 +51,9 @@ public class MusicButton extends Button {
             if (music.getCoverTexture() == null) {
                 try {
                     music.setCoverTexture(new DynamicTexture(ImageIO.read(music.getCoverFile())));
-                } catch (NullPointerException e) {
-                    // 如果music的coverImage是null，可能还没下载完，那就不画了
-                    Logger.error("Image file " + music.getCoverFile().getName() + " is NULL?!");
+                } catch (NullPointerException  | IOException e) {
+                    // 可能还没下载完，先不画了
                     shouldDraw = false;
-                } catch (IOException e) {
-                    throw new RuntimeException(e);
                 }
             }
             if (shouldDraw) {

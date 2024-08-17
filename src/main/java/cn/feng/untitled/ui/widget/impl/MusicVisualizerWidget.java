@@ -55,6 +55,8 @@ public class MusicVisualizerWidget extends Widget {
         if (mediaPlayer != null && Client.instance.musicManager.screen.player.getMagnitudes() != null) {
             mediaPlayer.setAudioSpectrumNumBands(bands.getValue().intValue());
             float[] magnitudes = Client.instance.musicManager.screen.player.getMagnitudes();
+
+            // 我也不知道为什么会报ArrayOutOfBounds，但是他就少一个
             float[] vertex = new float[magnitudeInterp == null? magnitudes.length * 2 : magnitudeInterp.length * 2 + 2];
 
             if (magnitudeInterp == null) {
@@ -71,6 +73,7 @@ public class MusicVisualizerWidget extends Widget {
 
             int vertexIndex = 2;
             int colorIndex = 0;
+
             for (float magnitude : magnitudeInterp) {
                 float realY = renderY + heightValue.getValue().floatValue() - (1 - (-magnitude / 60f)) * 1.2f * heightValue.getValue().floatValue();
                 vertex[vertexIndex] = renderX;

@@ -2,6 +2,7 @@ package cn.feng.untitled.music.ui.gui.impl;
 
 import cn.feng.untitled.music.api.base.Music;
 import cn.feng.untitled.music.api.base.PlayList;
+import cn.feng.untitled.music.thread.FetchMusicsThread;
 import cn.feng.untitled.music.ui.MusicPlayerScreen;
 import cn.feng.untitled.music.ui.ThemeColor;
 import cn.feng.untitled.music.ui.component.impl.MusicButton;
@@ -30,6 +31,7 @@ public class PlayListGUI extends MusicPlayerGUI {
 
     public final List<MusicButton> buttons = new ArrayList<>();
     private PlayList playList;
+    private FetchMusicsThread fetchThread;
 
     // 针对已有歌单的情况
     public PlayListGUI(PlayList playList, MusicPlayerGUI parent) {
@@ -113,7 +115,10 @@ public class PlayListGUI extends MusicPlayerGUI {
             RenderUtil.scissorStart(leftX, topY, rightX - leftX, Math.max(bottomY - topY - 93f, 0f));
         } else NanoUtil.scissorStart(leftX, topY, rightX - leftX, Math.max(bottomY - topY - 93f, 0f));
 
-        for (MusicButton button : buttons) {
+        // 防止java.util.ConcurrentModificationException
+        final List<MusicButton> buttonList = new ArrayList<>(buttons);
+
+        for (MusicButton button : buttonList) {
             if (realButtonY < bottomY) {
                 button.width = width;
                 button.updateState(x, realButtonY, mouseX, mouseY);
@@ -127,8 +132,18 @@ public class PlayListGUI extends MusicPlayerGUI {
             realButtonY += button.height;
         }
 
-        if (isBottom && isNano) {
-            NanoFontLoader.misans.drawString("已经到底了", x + width / 2f, realButtonY + 10f, 13f, NanoVG.NVG_ALIGN_CENTER, ThemeColor.greyColor);
+
+        if (isBottom && fetchThread == null && !playList.isCompletelyDownloaded() && playList.getId() != -1) {
+            fetchThread = new FetchMusicsThread(playList, buttons, false);
+            fetchThread.start();
+        }
+
+        if (fetchThread != null && !fetchThread.isAlive()) {
+            fetchThread = null;
+        }
+
+        if (isNano) {
+            NanoFontLoader.misans.drawString((playList.isCompletelyDownloaded() || playList.getId() == -1)? "已经到底了" : "正在加载更多", x + width / 2f, realButtonY + 10f, 13f, NanoVG.NVG_ALIGN_CENTER, ThemeColor.greyColor);
         }
 
         if (isNano) {
@@ -149,22 +164,19 @@ public class PlayListGUI extends MusicPlayerGUI {
 
     @Override
     public void handleScroll() {
-        // Scroll
         int wheel = Mouse.getDWheel();
-        if (wheel != 0) {
-            scrollAnim.setStartPoint(scrollAnim.getOutput());
-            if (wheel > 0) {
-                scrollAnim.setEndPoint(scrollAnim.getEndPoint() + 20f);
-            } else {
-                scrollAnim.setEndPoint(scrollAnim.getEndPoint() - 20f);
-            }
-            if (scrollAnim.getEndPoint() > 0) scrollAnim.setEndPoint(0f);
-            float maxScroll = height + 20f - (MusicPlayerScreen.height - MusicPlayerScreen.topWidth - MusicPlayerScreen.bottomWidth - 90f);
-            if (-scrollAnim.getEndPoint() > maxScroll) {
-                scrollAnim.setEndPoint(-maxScroll);
-                isBottom = true;
-            } else isBottom = false;
-            scrollAnim.getAnimation().reset();
+        scrollAnim.setStartPoint(scrollAnim.getOutput());
+        if (wheel > 0) {
+            scrollAnim.setEndPoint(scrollAnim.getEndPoint() + 20f);
+        } else if (wheel < 0) {
+            scrollAnim.setEndPoint(scrollAnim.getEndPoint() - 20f);
         }
+        if (scrollAnim.getEndPoint() > 0) scrollAnim.setEndPoint(0f);
+        float maxScroll = height + 20f - (MusicPlayerScreen.height - MusicPlayerScreen.topWidth - MusicPlayerScreen.bottomWidth - 90f);
+        if (-scrollAnim.getEndPoint() > maxScroll) {
+            scrollAnim.setEndPoint(-maxScroll);
+            isBottom = true;
+        } else isBottom = false;
+        scrollAnim.getAnimation().reset();
     }
 }

@@ -68,7 +68,7 @@ public class MusicAPI {
 
     private static void downloadImage(String url, File file, boolean rewrite) {
         try {
-            HttpUtil.downloadFile(url + "?param=300y300", file, rewrite);
+            HttpUtil.downloadImage(url + "?param=300y300", file, rewrite);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -170,11 +170,18 @@ public class MusicAPI {
         return playList;
     }
 
-    public static void fetchMusicList(PlayList playList) {
-        Logger.info("Fetching music list for id [" + playList.getId() + "]...");
-        JsonArray songs = fetchObject("/playlist/track/all?id=" + playList.getId()).get("songs").getAsJsonArray();
-        for (JsonElement song : songs) {
+    public static List<Music> fetchMusicList(PlayList playList) {
+        Logger.info("Fetching music list for id [" + playList.getId() + "], offset: " + playList.getMusicList().size());
+        JsonArray songs = fetchObject("/playlist/track/all?id=" + playList.getId() + "&limit=10&offset=" + playList.getMusicList().size()).get("songs").getAsJsonArray();
 
+        if (songs.isEmpty()) {
+            playList.setCompletelyDownloaded(true);
+            Logger.info("Playlist [" + playList.getId() + "] is completely downloaded");
+            return Collections.emptyList();
+        }
+
+        List<Music> musics = new ArrayList<>();
+        for (JsonElement song : songs) {
             JsonObject obj = song.getAsJsonObject();
             StringBuilder artistStr = new StringBuilder();
             for (JsonElement ar : obj.get("ar").getAsJsonArray()) {
@@ -186,20 +193,23 @@ public class MusicAPI {
 
             downloadImage(obj.get("al").getAsJsonObject().get("picUrl").getAsString(), file, false);
 
-            playList.getMusicList().add(new Music(
+            Music music = new Music(
                     obj.get("name").getAsString(),
                     artistStr.toString(),
                     obj.get("al").getAsJsonObject().get("name").getAsString(),
                     obj.get("id").getAsLong(),
                     obj.get("dt").getAsInt(),
                     file,
-                    obj.get("fee").getAsInt() == 0
-            ));
+                    obj.get("fee").getAsInt() == 0);
+
+            playList.getMusicList().add(music);
+            musics.add(music);
 
             if (playList.getCoverImage() == null) {
                 playList.setCoverImage(file);
             }
         }
+        return musics;
     }
 
     public static List<PlayList> getRecommendedPlayLists() {
