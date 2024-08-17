@@ -10,20 +10,7 @@ version = "1.0-SNAPSHOT"
 shadowJar {
     archiveClassifier.set('all')
 
-    dependencies {
-        include(dependency('com.squareup.okhttp3:okhttp:5.0.0-alpha.14'))
-        include(dependency('org.jetbrains:annotations:24.1.0'))
-        include(dependency('org.yaml:snakeyaml:2.2'))
-        include(dependency('com.google.code.gson:gson:2.11.0'))
-        include(dependency('io.netty:netty-all:5.0.0.Alpha2'))
-        include(dependency('com.github.kokorin.jaffree:jaffree:2023.09.10'))
-        include(dependency('org.slf4j:slf4j-api:2.1.0-alpha1'))
-        include(dependency('org.apache.logging.log4j:log4j-api:3.0.0-beta2'))
-        include(dependency('org.apache.logging.log4j:log4j-core:3.0.0-beta2'))
-        include(dependency('org.apache.logging.log4j:log4j-plugins:3.0.0-beta2'))
-        include(dependency('org.apache.logging.log4j:log4j-slf4j-impl:3.0.0-beta2'))
-        include(dependency('org.bouncycastle:bcprov-jdk18on:1.78.1'))
-    }
+    configurations = [project.configurations.runtimeClasspath] // 包含所有 runtimeClasspath 依赖，包括 JavaFX
 
     from('lib') {
         include '**/*'  // 包含文件夹中的所有内容
@@ -64,11 +51,6 @@ dependencies {
     implementation group: 'com.google.code.gson', name: 'gson', version: '2.11.0'
     implementation group: 'io.netty', name: 'netty-all', version: '5.0.0.Alpha2'
     implementation group: 'com.github.kokorin.jaffree', name: 'jaffree', version: '2023.09.10'
-    implementation group: 'org.slf4j', name: 'slf4j-api', version: '2.1.0-alpha1'
-    implementation group: 'org.apache.logging.log4j', name: 'log4j-api', version: '3.0.0-beta2'
-    implementation group: 'org.apache.logging.log4j', name: 'log4j-core', version: '3.0.0-beta2'
-    implementation group: 'org.apache.logging.log4j', name: 'log4j-plugins', version: '3.0.0-beta2'
-    implementation group: 'org.apache.logging.log4j', name: 'log4j-slf4j-impl', version: '3.0.0-beta2'
     implementation group: 'org.bouncycastle', name: 'bcprov-jdk18on', version: '1.78.1'
 
 
@@ -88,6 +70,8 @@ dependencies {
     implementation group: 'com.ibm.icu', name: 'icu4j-core-mojang', version: '51.2'
     implementation group: 'net.sf.jopt-simple', name: 'jopt-simple', version: '4.6'
     implementation group: 'com.paulscode', name: 'libraryjavasound', version: '20101123'
+    implementation group: 'org.apache.logging.log4j', name: 'log4j-api', version: '2.0-beta9'
+    implementation group: 'org.apache.logging.log4j', name: 'log4j-core', version: '2.0-beta9'
     implementation group: 'org.scala-lang', name: 'scala-actors-migration_2.11', version: '1.1.0'
     implementation group: 'org.scala-lang', name: 'scala-compiler', version: '2.11.1'
     implementation group: 'org.scala-lang.plugins', name: 'scala-continuations-library_2.11', version: '1.0.2'
