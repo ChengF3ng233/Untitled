@@ -5,10 +5,8 @@ import cn.feng.untitled.util.misc.Logger;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
-import java.io.BufferedInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
+import java.io.*;
+import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 
@@ -20,6 +18,30 @@ public class HttpUtil {
     public static BufferedImage downloadImage(String imageUrl) {
         return downloadImage(imageUrl, 0);
     }
+
+    public static void downloadFile(String fileURL, File file, boolean rewrite) throws IOException {
+        if (file.exists() && !rewrite) return;
+        URL url = new URL(fileURL);
+        HttpURLConnection httpConn = (HttpURLConnection) url.openConnection();
+        int responseCode = httpConn.getResponseCode();
+
+        // 检查响应码
+        if (responseCode == HttpURLConnection.HTTP_OK) {
+            try (InputStream inputStream = httpConn.getInputStream();
+                 FileOutputStream outputStream = new FileOutputStream(file)) {
+                byte[] buffer = new byte[4096];
+                int bytesRead;
+                while ((bytesRead = inputStream.read(buffer)) != -1) {
+                    outputStream.write(buffer, 0, bytesRead);
+                }
+            }
+        } else {
+            System.out.println("没有文件可下载：" + fileURL);
+        }
+
+        httpConn.disconnect();
+    }
+
 
     private static BufferedImage downloadImage(String imageUrl, int count) {
         try {

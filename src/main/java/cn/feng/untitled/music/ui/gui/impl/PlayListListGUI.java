@@ -32,9 +32,20 @@ public class PlayListListGUI extends MusicPlayerGUI {
     }
 
     @Override
-    public boolean draw(float x, float y, int mouseX, int mouseY, float cx, float cy, float scale) {
+    public boolean onNano(float x, float y, int mouseX, int mouseY, float cx, float cy, float scale) {
+        return render(x, y, mouseX, mouseY, cx, cy, scale, true);
+    }
+
+    @Override
+    public boolean onRender2D(float x, float y, int mouseX, int mouseY, float cx, float cy, float scale) {
+        return render(x, y, mouseX, mouseY, cx, cy, scale, false);
+    }
+
+    private boolean render(float x, float y, int mouseX, int mouseY, float cx, float cy, float scale, boolean isNano) {
         if (buttons.isEmpty()) {
-            NanoFontLoader.misans.drawGlowString(MusicAPI.user.isLoggedIn()? "获取中" : "请先登录", x + width / 2f, y + 50f, 30f, NanoVG.NVG_ALIGN_CENTER, Color.WHITE);
+            if (isNano) {
+                NanoFontLoader.misans.drawGlowString(MusicAPI.user.isLoggedIn()? "获取中" : "请先登录", x + width / 2f, y + 50f, 30f, NanoVG.NVG_ALIGN_CENTER, Color.WHITE);
+            }
             return false;
         }
 
@@ -48,19 +59,23 @@ public class PlayListListGUI extends MusicPlayerGUI {
 
         float buttonY = posY;
 
-        RenderUtil.scissorStart(leftX, topY, rightX - leftX, Math.max(bottomY - topY - 3f, 0f));
-        NanoUtil.scissorStart(leftX, topY, rightX - leftX, Math.max(bottomY - topY - 3f, 0f));
+        if (!isNano) {
+            RenderUtil.scissorStart(leftX, topY, rightX - leftX, Math.max(bottomY - topY - 3f, 0f));
+        } else NanoUtil.scissorStart(leftX, topY, rightX - leftX, Math.max(bottomY - topY - 3f, 0f));
         for (PlayListButton button : buttons) {
             // 懒加载
             if (buttonY < bottomY) {
                 button.width = this.width;
                 button.updateState(posX, buttonY, mouseX, mouseY);
-                button.draw();
+                if (isNano) {
+                    button.onNano();
+                } else button.onRender2D();
             }
             buttonY += button.height + 10f;
         }
-        NanoUtil.scissorEnd();
-        RenderUtil.scissorEnd();
+        if (isNano) {
+            NanoUtil.scissorEnd();
+        } else RenderUtil.scissorEnd();
 
         height = buttonY - posY;
         return true;
@@ -75,16 +90,5 @@ public class PlayListListGUI extends MusicPlayerGUI {
 
     public void addPlayList(PlayList playList) {
         buttons.add(new PlayListButton(playList, this));
-        System.out.println("Add " + playList.getName());
-    }
-
-    @Override
-    public void freeMemory() {
-        for (PlayListButton button : buttons) {
-            if (button.coverTexture != null) {
-                GL11.glDeleteTextures(button.coverTexture.getGlTextureId());
-                button.coverTexture = null;
-            }
-        }
     }
 }

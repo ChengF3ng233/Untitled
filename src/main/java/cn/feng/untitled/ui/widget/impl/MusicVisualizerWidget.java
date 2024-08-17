@@ -68,6 +68,7 @@ public class MusicVisualizerWidget extends Widget {
             vertex[0] = renderX;
             vertex[1] = renderY + height;
             renderX += step;
+
             int vertexIndex = 2;
             int colorIndex = 0;
             for (float magnitude : magnitudeInterp) {

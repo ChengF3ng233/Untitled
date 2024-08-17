@@ -73,9 +73,8 @@ public class MusicPlayer {
         }
 
         if (songURL.endsWith("flac")) {
-            File song = new File(ConfigManager.cacheDir, music.getId() + ".flac");
-            File converted = new File(ConfigManager.cacheDir, music.getId() + ".wav");
-            if (!song.exists()) {
+            File converted = new File(ConfigManager.musicDir, music.getId() + ".wav");
+            if (!converted.exists()) {
                 FFmpeg ffmpeg = FFmpeg.atPath(new File("../ffmpeg/bin").toPath());
 
                 // 构建转换命令

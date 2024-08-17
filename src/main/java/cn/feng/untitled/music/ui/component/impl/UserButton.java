@@ -27,25 +27,45 @@ public class UserButton extends Button {
     }
 
     @Override
-    public void draw() {
+    public void onNano() {
+        render(true);
+    }
+
+    @Override
+    public void onRender2D() {
+        render(false);
+    }
+
+    private void render(boolean isNano) {
         User user = MusicAPI.user;
         String text = user.isLoggedIn() ? user.getNickname() : "未登录";
-        width = 20f + NanoFontLoader.misans.getStringWidth(text, 14);
-        RoundedUtil.drawRound(posX + 20, posY + height / 2f, width - 20, height, 2f, ThemeColor.playerColor);
 
-        if (user.isLoggedIn()) {
-            if (user.getAvatarTexture() == null) {
-                user.setAvatarTexture(new DynamicTexture(HttpUtil.downloadImage(user.getAvatarUrl())));
+        if (isNano) {
+            NanoFontLoader.misans.drawString(text, posX + 20, posY + 0.5f + height / 2f, 14f, hovering ? Color.WHITE : ThemeColor.greyColor);
+        } else {
+            width = 20f + NanoFontLoader.misans.getStringWidth(text, 14);
+            RoundedUtil.drawRound(posX + 20, posY + height / 2f, width - 20, height, 2f, ThemeColor.playerColor);
+
+            if (user.isLoggedIn()) {
+                if (user.getAvatarTexture() == null) {
+                    user.setAvatarTexture(new DynamicTexture(HttpUtil.downloadImage(user.getAvatarUrl())));
+                }
+                GlStateManager.bindTexture(user.getAvatarTexture().getGlTextureId());
+                RoundedUtil.drawRoundTextured(posX, posY + 4f, 12, 12, 5f, 1f);
             }
-            GlStateManager.bindTexture(user.getAvatarTexture().getGlTextureId());
-            RoundedUtil.drawRoundTextured(posX, posY + 4f, 12, 12, 5f, 1f);
         }
-        NanoFontLoader.misans.drawString(text, posX + 20, posY + 0.5f + height / 2f, 14f, hovering ? Color.WHITE : ThemeColor.greyColor);
 
         if (loginGUI != null) {
-            if (loginGUI.draw(0, 0, 0, 0, 0, 0, 0) /*参数不重要*/) {
-                loginGUI = null;
-                Client.instance.configManager.saveConfig(MusicConfig.class);
+            if (isNano) {
+                if (loginGUI.onNano(0, 0, 0, 0, 0, 0, 0) /*参数不重要*/) {
+                    loginGUI = null;
+                    Client.instance.configManager.saveConfig(MusicConfig.class);
+                }
+            } else {
+                if (loginGUI.onRender2D(0, 0, 0, 0, 0, 0, 0) /*参数不重要*/) {
+                    loginGUI = null;
+                    Client.instance.configManager.saveConfig(MusicConfig.class);
+                }
             }
         }
     }

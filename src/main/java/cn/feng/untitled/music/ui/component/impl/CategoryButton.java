@@ -30,16 +30,28 @@ public class CategoryButton extends Button {
         this.text = text;
         this.category = category;
         this.gui = gui;
+        width = 80;
+        height = 16;
     }
 
     @Override
-    public void draw() {
-        width = 80;
-        height = 16;
+    public void onNano() {
+        render(true);
+    }
+
+    @Override
+    public void onRender2D() {
+        render(false);
+    }
+
+    private void render(boolean isNano) {
         float textY = posY + height / 2f;
-        RoundedUtil.drawRound(posX, posY, width, height, 3f, true, selected ? ThemeColor.redColor : (hovering ? new Color(50, 50, 50, 150) : ColorUtil.TRANSPARENT_COLOR));
-        RenderUtil.drawImage(category.icon, posX + 3f, textY - 6f, 12, 12);
-        NanoFontLoader.misans.drawString(text, posX + 20f, textY, 17f, NanoVG.NVG_ALIGN_LEFT | NanoVG.NVG_ALIGN_MIDDLE, Color.WHITE);
+        if (isNano) {
+            NanoFontLoader.misans.drawString(text, posX + 20f, textY, 17f, NanoVG.NVG_ALIGN_LEFT | NanoVG.NVG_ALIGN_MIDDLE, Color.WHITE);
+        } else {
+            RoundedUtil.drawRound(posX, posY, width, height, 3f, true, selected ? ThemeColor.redColor : (hovering ? new Color(50, 50, 50, 150) : ColorUtil.TRANSPARENT_COLOR));
+            RenderUtil.drawImage(category.icon, posX + 3f, textY - 6f, 12, 12);
+        }
     }
 
     @Override

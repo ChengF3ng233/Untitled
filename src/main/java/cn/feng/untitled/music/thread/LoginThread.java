@@ -49,6 +49,6 @@ public class LoginThread extends Thread {
                 ChatUtil.sendMessage("Login state: " + result.getState());
                 timer.reset();
             }
-        } while (result.getState() == QRCodeState.WAITING_SCAN || result.getState() == QRCodeState.WAITING_CONFIRM);
+        } while (result == null || result.getState() == QRCodeState.WAITING_SCAN || result.getState() == QRCodeState.WAITING_CONFIRM);
     }
 }

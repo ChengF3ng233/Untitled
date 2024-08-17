@@ -12,7 +12,13 @@ public abstract class Button {
     protected String text;
     public boolean hovering;
 
-    public abstract void draw();
+    public void onNano() {
+
+    }
+
+    public void onRender2D() {
+
+    }
 
     public void updateState(float x, float y, int mouseX, int mouseY) {
         posX = x;

@@ -7,6 +7,7 @@ import cn.feng.untitled.music.ui.ThemeColor;
 import cn.feng.untitled.music.ui.component.Button;
 import cn.feng.untitled.ui.font.nano.NanoFontLoader;
 import cn.feng.untitled.ui.font.nano.NanoFontRenderer;
+import cn.feng.untitled.util.misc.Logger;
 import cn.feng.untitled.util.misc.TimerUtil;
 import cn.feng.untitled.util.render.ColorUtil;
 import cn.feng.untitled.util.render.RenderUtil;
@@ -24,65 +25,87 @@ import java.io.IOException;
  **/
 public class MusicButton extends Button {
     private final Music music;
-    private final int index;
     private final PlayList playList;
+    private ChangeMusicThread thread;
 
-    public DynamicTexture texture;
 
-    public MusicButton(Music music, int index, PlayList playList) {
+    public MusicButton(Music music, PlayList playList) {
         this.music = music;
-        this.index = index;
         this.playList = playList;
+        height = 30f;
     }
 
-    @Override
-    public void draw() {
-        height = 30f;
-        if (hovering) {
+    private void render(boolean isNano) {
+        if (hovering && !isNano) {
             RoundedUtil.drawRound(posX, posY, width - 1f, height, 0f, ColorUtil.applyOpacity(ThemeColor.greyColor, 0.1f));
         }
 
         float textX = posX + 7f;
         float textY = posY + 7f;
-        NanoFontLoader.greyCliffBold.drawString(index + "", textX, textY + 4f, 13f, ThemeColor.greyColor);
-        if (texture == null) {
-            try {
-                texture = new DynamicTexture(ImageIO.read(music.getCoverImage()));
-            } catch (IOException e) {
-                throw new RuntimeException(e);
+
+        if (isNano) {
+            NanoFontLoader.greyCliffBold.drawString(playList.getMusicList().indexOf(music) + "", textX, textY + 4f, 13f, ThemeColor.greyColor);
+        }
+
+        if (!isNano) {
+            boolean shouldDraw = true;
+            if (music.getCoverTexture() == null) {
+                try {
+                    music.setCoverTexture(new DynamicTexture(ImageIO.read(music.getCoverFile())));
+                } catch (NullPointerException e) {
+                    // 如果music的coverImage是null，可能还没下载完，那就不画了
+                    Logger.error("Image file " + music.getCoverFile().getName() + " is NULL?!");
+                    shouldDraw = false;
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+            if (shouldDraw) {
+                RenderUtil.drawImage(music.getCoverTexture(), textX + 10f, textY, 16f, 16f);
             }
         }
-        RenderUtil.drawImage(texture, textX + 10f, textY, 16f, 16f);
 
-        NanoFontRenderer font = NanoFontLoader.misans;
-
-        String s1 = font.trimStringToWidth(music.getName(), 120f, 15f, false, true);
-        font.drawString(s1, textX + 30f, textY, 15f, music.isFree()? Color.WHITE : ThemeColor.redColor);
-        String s2 = font.trimStringToWidth(music.getArtist(), 100f, 15f, false, true);
-        font.drawString(s2, textX + 30f, textY + 9f, 12f, ThemeColor.greyColor);
-
-        Gui.drawNewRect(textX + 150f, textY, 0.5f, 20f, ColorUtil.applyOpacity(ThemeColor.greyColor, 0.2f).getRGB());
-
-        String s = font.trimStringToWidth(music.getAlbum(), 80f, 15f, false, true);
-        font.drawString(s, textX + 160f, textY + 5f, 15f, ThemeColor.greyColor);
-
-        long totalSeconds = music.getDuration() / 1000;
-
-        // 计算分钟和剩余秒数
-        long minutes = totalSeconds / 60;
-        long seconds = totalSeconds % 60;
-        String timeFormatted = String.format("%d:%02d", minutes, seconds);
-        Gui.drawNewRect(textX + 270f, textY, 0.5f, 20f, ColorUtil.applyOpacity(ThemeColor.greyColor, 0.2f).getRGB());
-        font.drawString(timeFormatted, textX + 280f, textY + 5f, 15f, ThemeColor.greyColor);
+        if (isNano) {
+            // 歌曲信息
+            NanoFontRenderer font = NanoFontLoader.misans;
+            String name = font.trimStringToWidth(music.getName(), 120f, 15f, false, true);
+            font.drawString(name, textX + 30f, textY, 15f, music.isFree() ? Color.WHITE : ThemeColor.redColor);
+            String artist = font.trimStringToWidth(music.getArtist(), 100f, 15f, false, true);
+            font.drawString(artist, textX + 30f, textY + 9f, 12f, ThemeColor.greyColor);
+            String album = font.trimStringToWidth(music.getAlbum(), 80f, 15f, false, true);
+            font.drawString(album, textX + 160f, textY + 5f, 15f, ThemeColor.greyColor);
+            long totalSeconds = music.getDuration() / 1000;
+            long minutes = totalSeconds / 60;
+            long seconds = totalSeconds % 60;
+            String duration = String.format("%d:%02d", minutes, seconds);
+            font.drawString(duration, textX + 280f, textY + 5f, 15f, ThemeColor.greyColor);
+        } else {
+            // 两个分割线
+            Gui.drawNewRect(textX + 150f, textY, 0.5f, 20f, ColorUtil.applyOpacity(ThemeColor.greyColor, 0.2f).getRGB());
+            Gui.drawNewRect(textX + 270f, textY, 0.5f, 20f, ColorUtil.applyOpacity(ThemeColor.greyColor, 0.2f).getRGB());
+        }
     }
 
-    private TimerUtil clickTimer = new TimerUtil();
+    @Override
+    public void onNano() {
+        render(true);
+    }
+
+    @Override
+    public void onRender2D() {
+        render(false);
+    }
+
+    private final TimerUtil clickTimer = new TimerUtil();
 
     @Override
     public void mouseClicked(int mouseX, int mouseY, int button) {
+        // 双击
         if (hovering && button == 0) {
-            if (!clickTimer.hasTimeElapsed(1500)) {
-                new ChangeMusicThread(music, playList).start();
+            // 防止连击触发多次请求
+            if (!clickTimer.hasTimeElapsed(1500) && (thread == null || !thread.isAlive())) {
+                thread = new ChangeMusicThread(music, playList);
+                thread.start();
             }
             clickTimer.reset();
         }

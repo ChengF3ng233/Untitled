@@ -44,11 +44,8 @@ public class LoginGUI extends MusicPlayerGUI {
         thread.start();
     }
 
-    /**
-     * @return 是否扫描成功
-     */
-    @Override
-    public boolean draw(float x, float y, int mouseX, int mouseY, float cx, float cy, float scale) {
+    // 这个方法只负责绘制，不负责请求，请求在另一个线程。
+    private boolean render(boolean isNano) {
         // 一些api
         ScanResult result = thread.getResult();
         QRCodeState state = result == null ? QRCodeState.WAITING_SCAN : result.getState();
@@ -60,8 +57,11 @@ public class LoginGUI extends MusicPlayerGUI {
         String text = waitingConfirm ? "请在手机上确认登录" : "请扫描二维码登录";
         float textY = waitingConfirm ? posY + 35f : posY + 15f;
 
-        RoundedUtil.drawRoundOutline(posX, posY, width, height, 3f, 0.2f, ThemeColor.bgColor, ThemeColor.outlineColor);
-        NanoFontLoader.misans.drawString(text, posX + width / 2f, textY, 16f, NanoVG.NVG_ALIGN_CENTER, Color.WHITE);
+        if (isNano) {
+            NanoFontLoader.misans.drawString(text, posX + width / 2f, textY, 16f, NanoVG.NVG_ALIGN_CENTER, Color.WHITE);
+        } else {
+            RoundedUtil.drawRoundOutline(posX, posY, width, height, 3f, 0.2f, ThemeColor.bgColor, ThemeColor.outlineColor);
+        }
 
         // 如果已经扫描，就把头像和昵称画上去
         if (waitingConfirm) {
@@ -70,8 +70,11 @@ public class LoginGUI extends MusicPlayerGUI {
             if (user.getTempAvatarTexture() == null)
                 user.setTempAvatarTexture(new DynamicTexture(HttpUtil.downloadImage(response.get("avatarUrl").getAsString())));
 
-            RenderUtil.drawImage(user.getTempAvatarTexture(), posX + 13f, posY + 10f, 16, 16);
-            NanoFontLoader.misans.drawString(user.getTempNickname(), posX + width / 2f + 13f, posY + 18f, 16f, NanoVG.NVG_ALIGN_CENTER, Color.WHITE);
+            if (isNano) {
+                NanoFontLoader.misans.drawString(user.getTempNickname(), posX + width / 2f + 13f, posY + 18f, 16f, NanoVG.NVG_ALIGN_CENTER, Color.WHITE);
+            } else {
+                RenderUtil.drawImage(user.getTempAvatarTexture(), posX + 13f, posY + 10f, 16, 16);
+            }
         }
 
         // 如果二维码过期，就另起一个进程
@@ -85,7 +88,9 @@ public class LoginGUI extends MusicPlayerGUI {
         }
         if (qrCodeTexture == null) qrCodeTexture = new DynamicTexture(qrCode.image());
 
-        RenderUtil.drawImage(qrCodeTexture, posX, posY + topWidth, width, height - topWidth);
+        if (!isNano) {
+            RenderUtil.drawImage(qrCodeTexture, posX, posY + topWidth, width, height - topWidth);
+        }
 
         // 如果获取成功，保存用户cookie
         if (state == QRCodeState.SUCCEED) {
@@ -97,5 +102,18 @@ public class LoginGUI extends MusicPlayerGUI {
         }
 
         return state == QRCodeState.SUCCEED;
+    }
+
+    /**
+     * @return 是否扫描成功
+     */
+    @Override
+    public boolean onNano(float x, float y, int mouseX, int mouseY, float cx, float cy, float scale) {
+        return render(true);
+    }
+
+    @Override
+    public boolean onRender2D(float x, float y, int mouseX, int mouseY, float cx, float cy, float scale) {
+        return render(false);
     }
 }

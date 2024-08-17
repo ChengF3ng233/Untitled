@@ -2,7 +2,6 @@ package cn.feng.untitled.music.ui.gui.impl;
 
 import cn.feng.untitled.music.api.base.Music;
 import cn.feng.untitled.music.api.base.PlayList;
-import cn.feng.untitled.music.thread.FetchPlayListThread;
 import cn.feng.untitled.music.ui.MusicPlayerScreen;
 import cn.feng.untitled.music.ui.ThemeColor;
 import cn.feng.untitled.music.ui.component.impl.MusicButton;
@@ -10,7 +9,6 @@ import cn.feng.untitled.music.ui.gui.MusicPlayerGUI;
 import cn.feng.untitled.ui.font.nano.NanoFontLoader;
 import cn.feng.untitled.ui.font.nano.NanoUtil;
 import cn.feng.untitled.util.render.RenderUtil;
-import lombok.Setter;
 import net.minecraft.client.renderer.texture.DynamicTexture;
 import org.lwjgl.input.Mouse;
 import org.lwjgl.nanovg.NanoVG;
@@ -29,62 +27,92 @@ import java.util.List;
  * @since 2024/8/13
  **/
 public class PlayListGUI extends MusicPlayerGUI {
+
     public final List<MusicButton> buttons = new ArrayList<>();
-    @Setter
     private PlayList playList;
-    private FetchPlayListThread currentLoadThread;
-    private DynamicTexture texture;
 
-    private boolean noMore = false;
-
+    // 针对已有歌单的情况
     public PlayListGUI(PlayList playList, MusicPlayerGUI parent) {
         super(parent);
         this.playList = playList;
-        int index = 1;
-        for (Music music : playList.getMusicList()) {
-            buttons.add(new MusicButton(music, index, playList));
-            index++;
-        }
+
+        setPlayList(playList);
     }
 
+    // 我喜欢的音乐 后面再获取列表
     public PlayListGUI(MusicPlayerGUI parent) {
         super(parent);
     }
 
+    public void setPlayList(PlayList playList) {
+        buttons.clear();
+        for (Music music : playList.getMusicList()) {
+            buttons.add(new MusicButton(music, playList));
+        }
+    }
+
     @Override
-    public boolean draw(float x, float y, int mouseX, int mouseY, float cx, float cy, float scale) {
-        if (texture == null) {
-            try {
-                texture = new DynamicTexture(ImageIO.read(playList.getCoverImage()));
-            } catch (IOException e) {
-                throw new RuntimeException(e);
+    public boolean onNano(float x, float y, int mouseX, int mouseY, float cx, float cy, float scale) {
+        return render(x, y, mouseX, mouseY, cx, cy, scale, true);
+    }
+
+    @Override
+    public boolean onRender2D(float x, float y, int mouseX, int mouseY, float cx, float cy, float scale) {
+        return render(x, y, mouseX, mouseY, cx, cy, scale, false);
+    }
+
+    private boolean render(float x, float y, int mouseX, int mouseY, float cx, float cy, float scale, boolean isNano) {
+        // 如果playList是null，那就是还没有设置歌单
+        if (playList == null) {
+            if (isNano) {
+                NanoFontLoader.misans.drawGlowString("加载中", x + width / 2f, y + 50f, 30f, NanoVG.NVG_ALIGN_CENTER | NanoVG.NVG_ALIGN_TOP, Color.WHITE);
             }
+            return false;
         }
 
-        RenderUtil.drawImage(texture, x + 10f, y + 10f, 50f, 50f);
-        NanoFontLoader.misans.drawGlowString(playList.getName(), x + 65f, y + 10f, 25f, Color.WHITE);
-        NanoFontLoader.misans.drawString(playList.getDescription(), x + 65f, y + 30f, 13f, ThemeColor.greyColor);
+        // 歌单信息
+        if (!isNano) {
+            // 上传歌单封面纹理
+            if (playList.getCoverTexture() == null) {
+                try {
+                    playList.setCoverTexture(new DynamicTexture(ImageIO.read(playList.getCoverImage())));
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+            RenderUtil.drawImage(playList.getCoverTexture(), x + 10f, y + 10f, 50f, 50f);
+        } else {
+            NanoFontLoader.misans.drawGlowString(playList.getName(), x + 65f, y + 10f, 25f, Color.WHITE);
+            NanoFontLoader.misans.drawString(playList.getDescription(), x + 65f, y + 30f, 13f, ThemeColor.greyColor);
 
-        NanoFontLoader.greyCliffBold.drawString("#", x + 7f, y + 75f, 15f, ThemeColor.greyColor);
-        NanoFontLoader.misans.drawString("歌曲", x + 15f, y + 75f, 15f, ThemeColor.greyColor);
-        NanoFontLoader.misans.drawString("专辑", x + 166f, y + 75f, 15f, ThemeColor.greyColor);
-        NanoFontLoader.misans.drawString("时长", x + 286f, y + 75f, 15f, ThemeColor.greyColor);
+            // 歌曲信息
+            NanoFontLoader.greyCliffBold.drawString("#", x + 7f, y + 75f, 15f, ThemeColor.greyColor);
+            NanoFontLoader.misans.drawString("歌曲", x + 15f, y + 75f, 15f, ThemeColor.greyColor);
+            NanoFontLoader.misans.drawString("专辑", x + 166f, y + 75f, 15f, ThemeColor.greyColor);
+            NanoFontLoader.misans.drawString("时长", x + 286f, y + 75f, 15f, ThemeColor.greyColor);
+        }
 
+        if (buttons.isEmpty()) {
+            // 如果buttons是空的，表示正在获取歌单全部歌曲
+            if (isNano) {
+                NanoFontLoader.misans.drawGlowString("加载中", x + width / 2f, y + 110f, 30f, NanoVG.NVG_ALIGN_CENTER | NanoVG.NVG_ALIGN_TOP, Color.WHITE);
+            }
+            return false;
+        }
+
+        // 歌曲列表的坐标（为了适应glScissor，进行scale计算）
         float buttonY = y + 90f;
         float leftX = cx + (x - cx) * scale;
         float rightX = cx + ((x + width) - cx) * scale;
         float topY = cy + (buttonY - cy) * scale;
         float bottomY = cy + ((buttonY + height) - cy) * scale;
 
-        if (buttons.isEmpty()) {
-            NanoFontLoader.misans.drawGlowString("加载中", x + width / 2f, buttonY + 20f, 30f, NanoVG.NVG_ALIGN_CENTER, Color.WHITE);
-            return false;
-        }
-
         float realButtonY = buttonY + scrollAnim.getOutput().floatValue();
 
-        RenderUtil.scissorStart(leftX, topY, rightX - leftX, Math.max(bottomY - topY - 93f, 0f));
-        NanoUtil.scissorStart(leftX, topY, rightX - leftX, Math.max(bottomY - topY - 93f, 0f));
+        if (!isNano) {
+            RenderUtil.scissorStart(leftX, topY, rightX - leftX, Math.max(bottomY - topY - 93f, 0f));
+        } else NanoUtil.scissorStart(leftX, topY, rightX - leftX, Math.max(bottomY - topY - 93f, 0f));
+
         for (MusicButton button : buttons) {
             if (realButtonY < bottomY) {
                 button.width = width;
@@ -92,37 +120,20 @@ public class PlayListGUI extends MusicPlayerGUI {
                 if (!RenderUtil.hovering(mouseX, mouseY, leftX, topY, rightX - leftX, bottomY - topY - 93f)) {
                     button.hovering = false;
                 }
-                button.draw();
+                if (isNano) {
+                    button.onNano();
+                } else button.onRender2D();
             }
             realButtonY += button.height;
         }
 
-        if (currentLoadThread != null) {
-            if (currentLoadThread.isAlive()) {
-                height += 20f;
-                NanoFontLoader.misans.drawString("正在加载更多", x + width / 2f, realButtonY + 10f, 13f, NanoVG.NVG_ALIGN_CENTER, ThemeColor.greyColor);
-            } else {
-                buttons.addAll(currentLoadThread.getButtonsTemp());
-                noMore = currentLoadThread.isNoMore();
-                currentLoadThread = null;
-            }
+        if (isBottom && isNano) {
+            NanoFontLoader.misans.drawString("已经到底了", x + width / 2f, realButtonY + 10f, 13f, NanoVG.NVG_ALIGN_CENTER, ThemeColor.greyColor);
         }
 
-        if (isBottom && currentLoadThread == null) {
-            if (noMore) {
-                height += 20f;
-                NanoFontLoader.misans.drawString("已经到底了", x + width / 2f, realButtonY + 10f, 13f, NanoVG.NVG_ALIGN_CENTER, ThemeColor.greyColor);
-            } else {
-                if (playList.getId() == -1) {
-                    noMore = true;
-                } else {
-                    currentLoadThread = new FetchPlayListThread(playList);
-                    currentLoadThread.start();
-                }
-            }
-        }
-        NanoUtil.scissorEnd();
-        RenderUtil.scissorEnd();
+        if (isNano) {
+            NanoUtil.scissorEnd();
+        } else RenderUtil.scissorEnd();
 
         height = realButtonY - (buttonY + scrollAnim.getOutput().floatValue());
 
@@ -148,22 +159,12 @@ public class PlayListGUI extends MusicPlayerGUI {
                 scrollAnim.setEndPoint(scrollAnim.getEndPoint() - 20f);
             }
             if (scrollAnim.getEndPoint() > 0) scrollAnim.setEndPoint(0f);
-            float maxScroll = height + (noMore || (currentLoadThread != null && currentLoadThread.isAlive())? 20f : 0f) - (MusicPlayerScreen.height - MusicPlayerScreen.topWidth - MusicPlayerScreen.bottomWidth - 90f);
+            float maxScroll = height + 20f - (MusicPlayerScreen.height - MusicPlayerScreen.topWidth - MusicPlayerScreen.bottomWidth - 90f);
             if (-scrollAnim.getEndPoint() > maxScroll) {
                 scrollAnim.setEndPoint(-maxScroll);
                 isBottom = true;
             } else isBottom = false;
             scrollAnim.getAnimation().reset();
-        }
-    }
-
-    @Override
-    public void freeMemory() {
-        for (MusicButton button : buttons) {
-            if (button.texture != null) {
-                GL11.glDeleteTextures(button.texture.getGlTextureId());
-                button.texture = null;
-            }
         }
     }
 }

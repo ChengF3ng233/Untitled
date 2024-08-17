@@ -27,23 +27,24 @@ public class GetPlayListsThread extends Thread {
         List<PlayList> recommendedPlayLists = MusicAPI.getRecommendedPlayLists();
         PlayList dailySongs = MusicAPI.getDailySongs();
 
-        PlayList toRemove = null;
+        PlayList likedList = null;
         for (PlayList playList : userPlayLists) {
             if (playList.getName().equalsIgnoreCase(MusicAPI.user.getNickname() + "喜欢的音乐")) {
-                PlayListGUI gui1 = (PlayListGUI) Client.instance.musicManager.screen.categoryButtons.get(1).getGui();
-                gui1.setPlayList(playList);
-                new FetchPlayListThread(playList, gui1.buttons).start();
-                toRemove = playList;
+                PlayListGUI likedGUI = (PlayListGUI) Client.instance.musicManager.screen.categoryButtons.get(1).getGui();
+                new FetchMusicsThread(playList, likedGUI.buttons).start();
+                likedGUI.setPlayList(playList);
+                likedList = playList;
+                break;
             }
         }
-        if (toRemove != null) userPlayLists.remove(toRemove);
+        if (likedList != null) userPlayLists.remove(likedList);
 
+        // 除去id重复的歌单
+        List<PlayList> allLists = new ArrayList<>(userPlayLists);
+        allLists.add(dailySongs);
+        allLists.addAll(recommendedPlayLists);
 
-        List<PlayList> playLists = new ArrayList<>(userPlayLists);
-        playLists.add(dailySongs);
-        playLists.addAll(recommendedPlayLists);
-
-        HashSet<PlayList> playLists1 = new HashSet<>(playLists);
-        new ArrayList<>(playLists1).forEach(gui::addPlayList);
+        HashSet<PlayList> set = new HashSet<>(allLists);
+        new ArrayList<>(set).forEach(gui::addPlayList);
     }
 }

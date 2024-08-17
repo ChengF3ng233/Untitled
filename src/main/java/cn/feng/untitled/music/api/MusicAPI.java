@@ -66,13 +66,9 @@ public class MusicAPI {
         return DataUtil.gson.fromJson(fetch, JsonObject.class);
     }
 
-    private static void downloadImage(String url, File file) {
-        BufferedImage img = HttpUtil.downloadImage(url + "?param=" + 300 + "y" + 300);
+    private static void downloadImage(String url, File file, boolean rewrite) {
         try {
-            if (!file.exists()) {
-                file.createNewFile();
-            }
-            ImageIO.write(img, "jpg", file);
+            HttpUtil.downloadFile(url + "?param=300y300", file, rewrite);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -130,9 +126,9 @@ public class MusicAPI {
         for (JsonElement element : playlistArray) {
             JsonObject obj = element.getAsJsonObject();
             String description = obj.get("description") instanceof JsonNull ? "没有描述，你自己进去看看" : obj.get("description").getAsString();
-            File file = new File(ConfigManager.cacheDir, "playlist_" + obj.get("id").getAsLong() + ".jpg");
+            File file = new File(ConfigManager.coverDir, "playlist_" + obj.get("id").getAsLong() + ".jpg");
 
-            downloadImage(obj.get("coverImgUrl").getAsString(), file);
+            downloadImage(obj.get("coverImgUrl").getAsString(), file, true);
 
             result.add(new PlayList(
                     obj.get("name").getAsString(),
@@ -155,10 +151,8 @@ public class MusicAPI {
                 JsonObject artist = ar.getAsJsonObject();
                 artistStr.append((!artistStr.isEmpty()) ? ", " + artist.get("name").getAsString() : artist.get("name").getAsString());
             }
-            File file = new File(ConfigManager.cacheDir, "music_" + obj.get("id").getAsLong() + ".jpg");
-            if (!file.exists()) {
-                downloadImage(obj.get("al").getAsJsonObject().get("picUrl").getAsString(), file);
-            }
+            File file = new File(ConfigManager.coverDir, "music_" + obj.get("id").getAsLong() + ".jpg");
+            downloadImage(obj.get("al").getAsJsonObject().get("picUrl").getAsString(), file, false);
             playList.getMusicList().add(new Music(
                     obj.get("name").getAsString(),
                     artistStr.toString(),
@@ -176,20 +170,22 @@ public class MusicAPI {
         return playList;
     }
 
-    public static void fetchMusicList(PlayList playList, int offset) {
+    public static void fetchMusicList(PlayList playList) {
         Logger.info("Fetching music list for id [" + playList.getId() + "]...");
-        JsonArray songs = fetchObject("/playlist/track/all?id=" + playList.getId() + "&limit=10&offset=" + offset).get("songs").getAsJsonArray();
+        JsonArray songs = fetchObject("/playlist/track/all?id=" + playList.getId()).get("songs").getAsJsonArray();
         for (JsonElement song : songs) {
+
             JsonObject obj = song.getAsJsonObject();
             StringBuilder artistStr = new StringBuilder();
             for (JsonElement ar : obj.get("ar").getAsJsonArray()) {
                 JsonObject artist = ar.getAsJsonObject();
                 artistStr.append((!artistStr.isEmpty()) ? ", " + artist.get("name").getAsString() : artist.get("name").getAsString());
             }
-            File file = new File(ConfigManager.cacheDir, "music_" + obj.get("id").getAsLong() + ".jpg");
-            if (!file.exists()) {
-                downloadImage(obj.get("al").getAsJsonObject().get("picUrl").getAsString(), file);
-            }
+
+            File file = new File(ConfigManager.coverDir, "music_" + obj.get("id").getAsLong() + ".jpg");
+
+            downloadImage(obj.get("al").getAsJsonObject().get("picUrl").getAsString(), file, false);
+
             playList.getMusicList().add(new Music(
                     obj.get("name").getAsString(),
                     artistStr.toString(),
@@ -199,6 +195,7 @@ public class MusicAPI {
                     file,
                     obj.get("fee").getAsInt() == 0
             ));
+
             if (playList.getCoverImage() == null) {
                 playList.setCoverImage(file);
             }
@@ -213,9 +210,9 @@ public class MusicAPI {
         for (JsonElement element : playlistArray) {
             JsonObject obj = element.getAsJsonObject();
             String description = (obj.get("description") instanceof JsonNull || obj.get("description") == null) ? "没有描述，你自己进去看看" : obj.get("description").getAsString();
-            File file = new File(ConfigManager.cacheDir, "playlist_" + obj.get("id").getAsLong() + ".jpg");
+            File file = new File(ConfigManager.coverDir, "playlist_" + obj.get("id").getAsLong() + ".jpg");
 
-            downloadImage(obj.get("picUrl").getAsString(), file);
+            downloadImage(obj.get("picUrl").getAsString(), file, true);
 
             result.add(new PlayList(
                     obj.get("name").getAsString(),
@@ -375,10 +372,12 @@ public class MusicAPI {
         Map<Long, File> map = getSongCovers(ids.toString());
         for (Music music : playList.getMusicList()) {
             if (map.containsKey(music.getId())) {
-                music.setCoverImage(map.get(music.getId()));
+                music.setCoverFile(map.get(music.getId()));
                 if (playList.getCoverImage() == null) {
                     playList.setCoverImage(map.get(music.getId()));
                 }
+            } else {
+                music.setCoverFile(MusicAPI.user.getAvatarFile());
             }
         }
         playList.setId(-1);
@@ -390,17 +389,8 @@ public class MusicAPI {
         Map<Long, File> result = new HashMap<>();
         for (JsonElement song : songs) {
             JsonObject obj = song.getAsJsonObject();
-            File file = new File(ConfigManager.cacheDir, "music_" + obj.get("id").getAsLong() + ".jpg");
-            if (!file.exists()) {
-                BufferedImage coverData = HttpUtil.downloadImage(obj.get("al").getAsJsonObject().get("picUrl").getAsString());
-                try {
-                    assert coverData != null;
-                    file.createNewFile();
-                    ImageIO.write(coverData, "jpg", file);
-                } catch (IOException e) {
-                    throw new RuntimeException(e);
-                }
-            }
+            File file = new File(ConfigManager.coverDir, "music_" + obj.get("id").getAsLong() + ".jpg");
+            downloadImage(obj.get("al").getAsJsonObject().get("picUrl").getAsString(), file, false);
             result.put(obj.get("id").getAsLong(), file);
         }
         return result;

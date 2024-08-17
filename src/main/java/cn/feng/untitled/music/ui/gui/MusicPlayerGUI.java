@@ -24,6 +24,7 @@ public abstract class MusicPlayerGUI extends MinecraftInstance {
     }
 
     protected CustomAnimation scrollAnim = new CustomAnimation(SmoothStepAnimation.class, 100);
+
     public void handleScroll() {
         // Scroll
         int wheel = Mouse.getDWheel();
@@ -44,13 +45,15 @@ public abstract class MusicPlayerGUI extends MinecraftInstance {
         }
     }
 
-    public abstract boolean draw(float x, float y, int mouseX, int mouseY, float cx, float cy, float scale);
-
-    public void mouseClicked(int mouseX, int mouseY, int mouseButton) {
-
+    public boolean onNano(float x, float y, int mouseX, int mouseY, float cx, float cy, float scale) {
+        return false;
     }
 
-    public void freeMemory() {
+    public boolean onRender2D(float x, float y, int mouseX, int mouseY, float cx, float cy, float scale) {
+        return false;
+    }
+
+    public void mouseClicked(int mouseX, int mouseY, int mouseButton) {
 
     }
 }

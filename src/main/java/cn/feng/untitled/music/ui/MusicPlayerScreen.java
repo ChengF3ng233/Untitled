@@ -1,5 +1,7 @@
 package cn.feng.untitled.music.ui;
 
+import cn.feng.untitled.event.api.SubscribeEvent;
+import cn.feng.untitled.event.impl.NanoEvent;
 import cn.feng.untitled.music.api.base.Music;
 import cn.feng.untitled.music.api.player.MusicPlayer;
 import cn.feng.untitled.music.thread.SearchMusicThread;
@@ -23,6 +25,8 @@ import cn.feng.untitled.util.data.resource.ResourceUtil;
 import cn.feng.untitled.util.render.RenderUtil;
 import cn.feng.untitled.util.render.RoundedUtil;
 import lombok.Getter;
+import lombok.Setter;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.client.renderer.GlStateManager;
@@ -48,6 +52,8 @@ public class MusicPlayerScreen extends GuiScreen {
     public static float width, height, topWidth, leftWidth, bottomWidth;
     private boolean dragging;
     private float dragX, dragY;
+    private float coverAngle = 0f;
+    private int mouseX, mouseY;
 
     // Animation
     private Animation windowAnim;
@@ -57,19 +63,20 @@ public class MusicPlayerScreen extends GuiScreen {
     private final UserButton userButton = new UserButton();
     @Getter
     private final TextField searchField = new TextField(150, 10, NanoFontLoader.misans, ThemeColor.bgColor, ThemeColor.outlineColor);
+    @Setter
     @Getter
     private MusicPlayerGUI currentGUI;
 
     // Thread
-    private SearchMusicThread currentThread;
+    private SearchMusicThread searchThread;
 
     // Player
     public final MusicPlayer player = new MusicPlayer();
 
-    private final IconButton playBtn = new IconButton("play.png", player::play);
-    private final IconButton pauseBtn = new IconButton("pause.png", player::pause);
-    private final IconButton preBtn = new IconButton("previous.png", player::previous);
-    private final IconButton nextBtn = new IconButton("next.png", player::next);
+    private final IconButton playBtn = new IconButton("play.png", player::play, 16);
+    private final IconButton pauseBtn = new IconButton("pause.png", player::pause, 16);
+    private final IconButton preBtn = new IconButton("previous.png", player::previous, 15);
+    private final IconButton nextBtn = new IconButton("next.png", player::next, 15);
     private final PlayerSlider playerSlider = new PlayerSlider();
     private final VolumeSlider volumeSlider = new VolumeSlider();
 
@@ -89,20 +96,26 @@ public class MusicPlayerScreen extends GuiScreen {
         categoryButtons.get(0).setSelected(true);
     }
 
-    public void setCurrentGUI(MusicPlayerGUI newGUI) {
-        currentGUI.freeMemory();
-        currentGUI = newGUI;
-    }
-
     @Override
     public void initGui() {
         windowAnim = new DecelerateAnimation(100, 1d);
     }
 
-    float coverAngle = 0f;
-
+    // onRender2D
     @Override
     public void drawScreen(int mouseX, int mouseY, float partialTicks) {
+        render(mouseX, mouseY, false);
+        this.mouseX = mouseX;
+        this.mouseY = mouseY;
+    }
+
+    @SubscribeEvent
+    private void onNano(NanoEvent e) {
+        render(mouseX, mouseY, true);
+    }
+
+    private void render(int mouseX, int mouseY, boolean isNano) {
+        if (Minecraft.getMinecraft().currentScreen != this) return;
         if (windowAnim.finished(Direction.BACKWARDS)) mc.displayGuiScreen(null);
 
         // Drag
@@ -120,104 +133,125 @@ public class MusicPlayerScreen extends GuiScreen {
         if (x + width > sr.getScaledWidth() - 10) x = sr.getScaledWidth() - 10 - width;
         if (y + height > sr.getScaledHeight() - 10) y = sr.getScaledHeight() - 10 - height;
 
-        RenderUtil.scaleStart(x + width / 2, y + height / 2, windowAnim.getOutput().floatValue());
-        RoundedUtil.drawRoundOutline(x, y, width, height, 3f, 0.2f, ThemeColor.bgColor, ThemeColor.outlineColor);
-        RoundedUtil.drawRound(x + 2f, y + 2f, leftWidth - 2f, height - 4f, 2.6f, ThemeColor.categoryColor);
-
-        NanoUtil.beginFrame();
-        NanoUtil.scaleStart(0, 0, sr.getScaleFactor() * 0.5f);
-        NanoUtil.scaleStart(x + width / 2, y + height / 2, windowAnim.getOutput().floatValue());
-
-        RenderUtil.drawImage(new ResourceLocation("untitled/icon/netease.png"), x + 12f, y + 10f, 16, 16);
-        NanoFontLoader.misans.drawGlowString("网易云音乐", x + 32f, y + 12f, 20, Color.WHITE);
+        if (isNano) {
+            NanoUtil.beginFrame();
+            NanoUtil.scaleStart(0, 0, sr.getScaleFactor() * 0.5f);
+            NanoUtil.scaleStart(x + width / 2, y + height / 2, windowAnim.getOutput().floatValue());
+            NanoFontLoader.misans.drawGlowString("网易云音乐", x + 32f, y + 12f, 20, Color.WHITE);
+        } else {
+            RenderUtil.scaleStart(x + width / 2, y + height / 2, windowAnim.getOutput().floatValue());
+            RoundedUtil.drawRoundOutline(x, y, width, height, 3f, 0.2f, ThemeColor.bgColor, ThemeColor.outlineColor);
+            RoundedUtil.drawRound(x + 2f, y + 2f, leftWidth - 2f, height - 4f, 2.6f, ThemeColor.categoryColor);
+            RenderUtil.drawImage(new ResourceLocation("untitled/icon/netease.png"), x + 12f, y + 10f, 16, 16);
+        }
 
         float btnX = x + leftWidth / 2f - categoryButtons.get(0).width / 2f;
         float btnY = y + 40f;
+
         for (Button btn : categoryButtons) {
             btn.updateState(btnX, btnY, mouseX, mouseY);
-            btn.draw();
+
+            if (isNano) {
+                btn.onNano();
+            } else btn.onRender2D();
+
             btnY += btn.height + 8f;
         }
 
         userButton.updateState(x + width - userButton.width - 10f, y + 10f - userButton.height / 2f, mouseX, mouseY);
-        userButton.draw();
+        if (isNano) {
+            userButton.onNano();
+        } else userButton.onRender2D();
 
         searchField.height = 15f;
-        searchField.draw(x + leftWidth + 30f, y + 6f, mouseX, mouseY);
 
-        RoundedUtil.drawRound(x + 2f, y + height - bottomWidth - 2f, width - 4f, bottomWidth, 2.6f, ThemeColor.playerColor);
+        if (!isNano) {
+            searchField.draw(x + leftWidth + 30f, y + 6f, mouseX, mouseY);
+            RoundedUtil.drawRound(x + 2f, y + height - bottomWidth - 2f, width - 4f, bottomWidth, 2.6f, ThemeColor.playerColor);
+        }
 
         currentGUI.setWidth(width - leftWidth);
         currentGUI.setHeight(height - topWidth - bottomWidth);
-        currentGUI.draw(x + leftWidth, y + topWidth, mouseX, mouseY, x + width / 2f, y + width / 2f, windowAnim.getOutput().floatValue());
+        if (isNano) {
+            currentGUI.onNano(x + leftWidth, y + topWidth, mouseX, mouseY, x + width / 2f, y + width / 2f, windowAnim.getOutput().floatValue());
+        } else currentGUI.onRender2D(x + leftWidth, y + topWidth, mouseX, mouseY, x + width / 2f, y + width / 2f, windowAnim.getOutput().floatValue());
 
         if (RenderUtil.hovering(mouseX, mouseY, x + leftWidth, y + topWidth, width - leftWidth, height - topWidth - bottomWidth)) {
             currentGUI.handleScroll();
         }
 
-        if (currentGUI.parent != null) {
+        if (currentGUI.parent != null && !isNano) {
             RenderUtil.drawImage(ResourceUtil.getResource("arrow-left.png", ResourceType.ICON), x + leftWidth + 5f, y + 7f, 16f, 16f,
                     RenderUtil.hovering(mouseX, mouseY, x + leftWidth + 5f, y + 7f, 16f, 16f) ? Color.WHITE : ThemeColor.greyColor);
         }
 
         Music music = player.getMusic();
+
         if (music != null && player.getMediaPlayer() != null) {
-            if (music.getTexture() == null) {
+            if (music.getCoverTexture() == null) {
                 try {
-                    music.setTexture(new DynamicTexture(ImageIO.read(music.getCoverImage())));
+                    music.setCoverTexture(new DynamicTexture(ImageIO.read(music.getCoverFile())));
                 } catch (IOException e) {
                     throw new RuntimeException(e);
                 }
             }
-            float playerY = y + (height - bottomWidth);
-            RoundedUtil.drawRound(x + 19f, playerY + 6f, 22f, 22f, 10f, ThemeColor.bgColor);
             if (!player.isPaused()) {
                 coverAngle += (float) (0.5 * RenderUtil.frameTime);
             }
-            GL11.glPushMatrix();
-            GlStateManager.bindTexture(music.getTexture().getGlTextureId());
-            GL11.glTranslatef(x + 30f, playerY + 17f, 0f);
-            GL11.glRotatef(coverAngle, 0f, 0f, 1f);
-            GL11.glTranslatef(-10f, -10f, 0f);
-            RoundedUtil.drawRoundTextured(0f, 0f, 20f, 20f, 10f, 1f);
-            GL11.glPopMatrix();
-            NanoFontLoader.misans.drawString(music.getName(), x + 45f, playerY + 7f, 15f, Color.WHITE);
-            NanoFontLoader.misans.drawString(music.getArtist(), x + 45f, playerY + 17f, 12f, ThemeColor.greyColor);
+            float playerY = y + (height - bottomWidth);
 
-            if (player.isPaused()) {
-                playBtn.setSize(16);
-                playBtn.setBg(true);
-                playBtn.updateState(x + width / 2f - 10f, playerY + 4f, mouseX, mouseY);
-                playBtn.draw();
+            if (isNano) {
+                NanoFontLoader.misans.drawString(music.getName(), x + 45f, playerY + 7f, 15f, Color.WHITE);
+                NanoFontLoader.misans.drawString(music.getArtist(), x + 45f, playerY + 17f, 12f, ThemeColor.greyColor);
             } else {
-                pauseBtn.setSize(16);
-                pauseBtn.setBg(true);
-                pauseBtn.updateState(x + width / 2f - 10f, playerY + 4f, mouseX, mouseY);
-                pauseBtn.draw();
+                RoundedUtil.drawRound(x + 19f, playerY + 6f, 22f, 22f, 10f, ThemeColor.bgColor);
+                GL11.glPushMatrix();
+                GlStateManager.bindTexture(music.getCoverTexture().getGlTextureId());
+                GL11.glTranslatef(x + 30f, playerY + 17f, 0f);
+                GL11.glRotatef(coverAngle, 0f, 0f, 1f);
+                GL11.glTranslatef(-10f, -10f, 0f);
+                RoundedUtil.drawRoundTextured(0f, 0f, 20f, 20f, 10f, 1f);
+                GL11.glPopMatrix();
             }
 
-            preBtn.setSize(15);
-            preBtn.updateState(x + width / 2f - 35f, playerY + 4f, mouseX, mouseY);
-            preBtn.draw();
+            if (!isNano) {
+                if (player.isPaused()) {
+                    playBtn.setBg(true);
+                    playBtn.updateState(x + width / 2f - 10f, playerY + 4f, mouseX, mouseY);
+                    playBtn.onRender2D();
+                } else {
+                    pauseBtn.setBg(true);
+                    pauseBtn.updateState(x + width / 2f - 10f, playerY + 4f, mouseX, mouseY);
+                    pauseBtn.onRender2D();
+                }
 
-            nextBtn.setSize(15);
-            nextBtn.updateState(x + width / 2f + 16f, playerY + 4f, mouseX, mouseY);
-            nextBtn.draw();
+                preBtn.updateState(x + width / 2f - 35f, playerY + 4f, mouseX, mouseY);
+                preBtn.onRender2D();
 
-            playerSlider.draw(x + width / 2f - 100f, playerY + 27f, mouseX, mouseY);
-            volumeSlider.draw(x + width - 120f, playerY + 27f, mouseX, mouseY);
+                nextBtn.updateState(x + width / 2f + 16f, playerY + 4f, mouseX, mouseY);
+                nextBtn.onRender2D();
+
+
+                playerSlider.render(x + width / 2f - 100f, playerY + 27f, mouseX, mouseY, false);
+                volumeSlider.render(x + width - 120f, playerY + 27f, mouseX, mouseY, false);
+            } else {
+                playerSlider.render(x + width / 2f - 100f, playerY + 27f, mouseX, mouseY, true);
+                volumeSlider.render(x + width - 120f, playerY + 27f, mouseX, mouseY, true);
+            }
         }
 
-        NanoUtil.scaleEnd();
-        NanoUtil.endFrame();
+        if (isNano) {
+            NanoUtil.scaleEnd();
+            NanoUtil.endFrame();
+        } else {
+            RenderUtil.scaleEnd();
+        }
 
-        RenderUtil.scaleEnd();
-
-        if (currentThread != null && !currentThread.isAlive()) {
-            setCurrentGUI(currentThread.getGui());
+        if (searchThread != null && !searchThread.isAlive()) {
+            setCurrentGUI(searchThread.getGui());
             searchField.text = "";
             searchField.focused = false;
-            currentThread = null;
+            searchThread = null;
         }
     }
 
@@ -228,9 +262,9 @@ public class MusicPlayerScreen extends GuiScreen {
             Keyboard.enableRepeatEvents(false);
         }
 
-        if (keyCode == Keyboard.KEY_RETURN || keyCode == Keyboard.KEY_NUMPADENTER && !searchField.text.isEmpty() && (currentThread == null || !currentThread.isAlive())) {
-            currentThread = new SearchMusicThread(this);
-            currentThread.start();
+        if (keyCode == Keyboard.KEY_RETURN || keyCode == Keyboard.KEY_NUMPADENTER && !searchField.text.isEmpty() && (searchThread == null || !searchThread.isAlive())) {
+            searchThread = new SearchMusicThread(this);
+            searchThread.start();
         }
 
         searchField.keyTyped(typedChar, keyCode);
@@ -279,8 +313,8 @@ public class MusicPlayerScreen extends GuiScreen {
             } else pauseBtn.mouseClicked(mouseX, mouseY, mouseButton);
             preBtn.mouseClicked(mouseX, mouseY, mouseButton);
             nextBtn.mouseClicked(mouseX, mouseY, mouseButton);
-            playerSlider.mouseClicked(mouseX, mouseY, mouseButton);
-            volumeSlider.mouseClicked(mouseX, mouseY, mouseButton);
+            playerSlider.mouseClicked(mouseButton);
+            volumeSlider.mouseClicked(mouseButton);
         }
     }
 

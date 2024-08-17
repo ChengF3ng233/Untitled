@@ -41,7 +41,7 @@ public class MusicInfoWidget extends Widget {
         if (player.getMusic() == null) return;
         if (coverTexture == null) {
             try {
-                coverTexture = new DynamicTexture(ImageIO.read(player.getMusic().getCoverImage()));
+                coverTexture = new DynamicTexture(ImageIO.read(player.getMusic().getCoverFile()));
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }

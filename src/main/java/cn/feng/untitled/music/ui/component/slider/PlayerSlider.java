@@ -19,7 +19,7 @@ public class PlayerSlider {
 
     private float dragDelta;
 
-    public void draw(float x, float y, int mouseX, int mouseY) {
+    public void render(float x, float y, int mouseX, int mouseY, boolean isNano) {
         float width = 200f;
 
         hovering = RenderUtil.hovering(mouseX, mouseY, x, y, width, 5f);
@@ -27,22 +27,27 @@ public class PlayerSlider {
         float sliderX = x + 15f;
         double currentTime = Client.instance.musicManager.screen.player.getCurrentTime();
         double totalTime = Client.instance.musicManager.screen.player.getMusic().getDuration();
-
-        String formattedTime = formatTime(currentTime);
-        NanoFontLoader.rubik.drawString(formattedTime, x - 5f, y - 6.5f / 2f - 0.2f, 13f, Color.WHITE);
-        RoundedUtil.drawRound(sliderX, y, 170, 1f, 1f, ThemeColor.barColor);
+        if (isNano) {
+            String formattedTime = formatTime(currentTime);
+            NanoFontLoader.rubik.drawString(formattedTime, x - 5f, y - 6.5f / 2f - 0.2f, 13f, Color.WHITE);
+        } else {
+            RoundedUtil.drawRound(sliderX, y, 170, 1f, 1f, ThemeColor.barColor);
+        }
 
         float currentWidth = dragging? mouseX - sliderX : (float) (170 * (currentTime / totalTime));
         dragDelta = dragging? mouseX - sliderX : 0f;
         if (dragDelta < 0) dragDelta = 0;
         if (dragDelta > 170f) dragDelta = 170f;
-        RoundedUtil.drawRound(x + 15f, y, currentWidth, 1f, 1f, ThemeColor.barPlayedColor);
 
-        String restOfTime = formatTime(totalTime - currentTime);
-        NanoFontLoader.rubik.drawString(restOfTime, x + 190f, y - 6.5f / 2f - 0.2f, 13f, ThemeColor.greyColor);
+        if (!isNano) {
+            RoundedUtil.drawRound(x + 15f, y, currentWidth, 1f, 1f, ThemeColor.barPlayedColor);
+        } else {
+            String restOfTime = formatTime(totalTime - currentTime);
+            NanoFontLoader.rubik.drawString(restOfTime, x + 190f, y - 6.5f / 2f - 0.2f, 13f, ThemeColor.greyColor);
+        }
     }
 
-    public void mouseClicked(int mouseX, int mouseY, int mouseButton) {
+    public void mouseClicked(int mouseButton) {
         if (hovering && mouseButton == 0 && !dragging) {
             dragging = true;
         }

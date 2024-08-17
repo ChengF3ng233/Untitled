@@ -4,6 +4,8 @@ import lombok.Getter;
 import lombok.Setter;
 import net.minecraft.client.renderer.texture.DynamicTexture;
 
+import java.io.File;
+
 /**
  * @author ChengFeng
  * @since 2024/8/13
@@ -18,6 +20,7 @@ public class User {
     private String cookie = "";
     private String avatarUrl;
     private boolean loggedIn = false;
+    private transient File avatarFile;
     private transient DynamicTexture avatarTexture;
     private transient DynamicTexture tempAvatarTexture;
 }
