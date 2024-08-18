@@ -133,7 +133,7 @@ public class PlayListGUI extends MusicPlayerGUI {
         }
 
 
-        if (isBottom && fetchThread == null && !playList.isCompletelyDownloaded() && playList.getId() != -1) {
+        if (isBottom && fetchThread == null && !playList.isCompletelyDownloaded()) {
             fetchThread = new FetchMusicsThread(playList, buttons, false);
             fetchThread.start();
         }

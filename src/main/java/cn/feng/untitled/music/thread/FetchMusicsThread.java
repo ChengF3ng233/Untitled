@@ -33,7 +33,8 @@ public class FetchMusicsThread extends Thread {
             target.add(new MusicButton(music, playList));
         }
         if (updateList) {
-            Client.instance.musicManager.screen.player.setMusicList(playList.getMusicList());
+            Client.instance.musicManager.screen.player.setPlaylist(playList);
         }
+        Client.instance.musicManager.screen.player.setMusicButtons(target);
     }
 }

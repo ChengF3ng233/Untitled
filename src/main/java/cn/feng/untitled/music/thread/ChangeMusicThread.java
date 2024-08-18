@@ -50,18 +50,9 @@ public class ChangeMusicThread extends Thread {
             }
         }
 
-/*        List<LyricLine> translatedLyrics = music.getTranslatedLyrics();
-        if (translatedLyrics.isEmpty() && music.isHasTranslate()) {
-            // 请求翻译
-            music.setTranslatedLyrics(pair == null? MusicAPI.getLyrics(music.getId()).translatedLyrics() : pair.translatedLyrics());
-            if (!music.getTranslatedLyrics().isEmpty()) {
-                music.generateTranslateMap();
-            } else music.setHasTranslate(false);
-        }*/
-
         Client.instance.musicManager.screen.player.setMusic(music);
         if (playList != null) {
-            Client.instance.musicManager.screen.player.setMusicList(playList.getMusicList());
+            Client.instance.musicManager.screen.player.setPlaylist(playList);
         }
     }
 }

@@ -2,9 +2,15 @@ package cn.feng.untitled.music.api.player;
 
 import cn.feng.untitled.Client;
 import cn.feng.untitled.config.ConfigManager;
+import cn.feng.untitled.music.api.MusicAPI;
 import cn.feng.untitled.music.api.base.LyricLine;
 import cn.feng.untitled.music.api.base.Music;
+import cn.feng.untitled.music.api.base.PlayList;
 import cn.feng.untitled.music.thread.ChangeMusicThread;
+import cn.feng.untitled.music.thread.FetchMusicsThread;
+import cn.feng.untitled.music.ui.component.Button;
+import cn.feng.untitled.music.ui.component.impl.MusicButton;
+import cn.feng.untitled.music.ui.gui.impl.PlayListGUI;
 import cn.feng.untitled.ui.widget.impl.MusicInfoWidget;
 import cn.feng.untitled.ui.widget.impl.MusicLyricWidget;
 import com.github.kokorin.jaffree.ffmpeg.FFmpeg;
@@ -36,6 +42,9 @@ public class MusicPlayer {
     @Getter
     private float[] magnitudes;
 
+    @Setter
+    private List<MusicButton> musicButtons;
+    private PlayList playList;
     private List<Music> currentMusicList;
 
     public MusicPlayer() {
@@ -108,6 +117,11 @@ public class MusicPlayer {
 
         ((MusicInfoWidget) Client.instance.uiManager.getWidget(MusicInfoWidget.class)).reset();
         mediaPlayer.play();
+
+        if (currentMusicList.indexOf(music) == currentMusicList.size() - 1 && !playList.isCompletelyDownloaded()) {
+            // 预加载
+            new FetchMusicsThread(playList, musicButtons, false).start();
+        }
     }
 
     public void play() {
@@ -126,16 +140,17 @@ public class MusicPlayer {
 
     public void next() {
         int index = currentMusicList.indexOf(music) + 1;
-        if (index >= currentMusicList.size() - 1) index = 0;
+        if (index > currentMusicList.size() - 1) index = 0;
         setMusic(currentMusicList.get(index));
     }
 
-    public void setMusicList(List<Music> list) {
-        currentMusicList = list;
+    public void setPlaylist(PlayList playList) {
+        this.playList = playList;
+        currentMusicList = playList.getMusicList();
         if (playMode == PlayMode.SHUFFLE) Collections.shuffle(currentMusicList);
     }
 
     public boolean isPaused() {
-        return mediaPlayer.getStatus() == MediaPlayer.Status.PAUSED;
+        return mediaPlayer == null || mediaPlayer.getStatus() == MediaPlayer.Status.PAUSED;
     }
 }

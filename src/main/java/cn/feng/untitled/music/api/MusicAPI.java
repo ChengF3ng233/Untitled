@@ -167,6 +167,7 @@ public class MusicAPI {
             }
         }
         playList.setId(-1);
+        playList.setCompletelyDownloaded(true);
         return playList;
     }
 
@@ -408,11 +409,10 @@ public class MusicAPI {
                 if (playList.getCoverImage() == null) {
                     playList.setCoverImage(map.get(music.getId()));
                 }
-            } else {
-                music.setCoverFile(MusicAPI.user.getAvatarFile());
             }
         }
         playList.setId(-1);
+        playList.setCompletelyDownloaded(true);
         return playList;
     }
 

@@ -2,6 +2,7 @@ package net.minecraft.client;
 
 import cn.feng.untitled.Client;
 import cn.feng.untitled.event.impl.KeyEvent;
+import cn.feng.untitled.event.impl.TickEvent;
 import cn.feng.untitled.ui.screen.SplashScreen;
 import cn.feng.untitled.util.render.RenderUtil;
 import com.google.common.collect.*;
@@ -1483,6 +1484,7 @@ public class Minecraft implements IThreadListener, IPlayerUsage {
      * Runs the current tick.
      */
     public void runTick() throws IOException {
+        Client.instance.eventBus.post(new TickEvent());
         EntityCulling.instance.clientTick();
 
         if (this.rightClickDelayTimer > 0) {

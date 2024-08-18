@@ -61,7 +61,7 @@ public enum Client {
         eventBus.register(moduleManager);
         eventBus.register(commandManager);
         eventBus.register(uiManager);
-        eventBus.register(Minecraft.getMinecraft().entityRenderer);
+        eventBus.register(musicManager);
         moduleManager.registerModules();
         commandManager.registerCommands();
         configManager.registerConfigs();
