@@ -14,6 +14,7 @@ import cn.feng.untitled.util.render.RenderUtil;
 import cn.feng.untitled.value.impl.ColorValue;
 import cn.feng.untitled.value.impl.NumberValue;
 import net.minecraft.client.gui.Gui;
+import org.lwjgl.nanovg.NanoVG;
 
 import java.awt.*;
 import java.util.List;
@@ -50,34 +51,33 @@ public class ArraylistWidget extends Widget {
         float renderY = sr.getScaledHeight() * y;
 
         NanoFontRenderer font = NanoFontLoader.misans;
-        font.setSize(fontSize.getValue().floatValue());
 
         List<Module> moduleList = new java.util.ArrayList<>(Client.instance.moduleManager.moduleList.stream().toList());
         moduleList.sort(new ModuleComparator(CompareMode.Length, font));
 
         float yGap = font.getHeight(fontSize.getValue().floatValue()) + 6f;
-        float moduleY = renderY;
+        float moduleY = renderY + yGap / 2f;
         int index = 0;
 
         float maxWidth = (font.getStringWidth(moduleList.get(0).name));
 
         if (!isNano) {
-            RenderUtil.scissorStart(renderX, moduleY, (maxWidth + 6f), (sr.getScaledHeight() - moduleY));
+            RenderUtil.scissorStart(renderX, renderY, (maxWidth + 6f), (sr.getScaledHeight() - renderY));
         } else {
             NanoUtil.scaleStart(0, 0, sr.getScaleFactor() * 0.5f);
-            NanoUtil.scissorStart(renderX, moduleY, maxWidth + 6f, sr.getScaledHeight() - moduleY);
+            NanoUtil.scissorStart(renderX, renderY, maxWidth + 6f, sr.getScaledHeight() - renderY);
         }
 
         for (Module module : moduleList) {
             double moduleX = renderX + maxWidth - 6f - (font.getStringWidth(module.name)) * module.horizontalAnim.getOutput();
 
             if (!isNano) {
-                Gui.drawNewRect(moduleX, moduleY, font.getStringWidth(module.name) + 6f, yGap, backgroundColor.getValue(index).getRGB());
+                Gui.drawNewRect(moduleX, moduleY - yGap / 2f, font.getStringWidth(module.name) + 6f, yGap, backgroundColor.getValue(index).getRGB());
             } else {
                 if (PostProcessing.bloom.getValue()) {
-                    font.drawGlowString(module.name, (float) (moduleX + 3f),  moduleY, textColor.getValue(index), true);
+                    font.drawGlowString(module.name, (float) (moduleX + 3f),  moduleY, fontSize.getValue().floatValue(), NanoVG.NVG_ALIGN_LEFT | NanoVG.NVG_ALIGN_MIDDLE, textColor.getValue(index));
                 } else {
-                    font.drawString(module.name, (float) (moduleX + 3f),  moduleY, textColor.getValue(index), true);
+                    font.drawString(module.name, (float) (moduleX + 3f),  moduleY, fontSize.getValue().floatValue(), NanoVG.NVG_ALIGN_LEFT | NanoVG.NVG_ALIGN_MIDDLE, textColor.getValue(index), true);
                 }
             }
 

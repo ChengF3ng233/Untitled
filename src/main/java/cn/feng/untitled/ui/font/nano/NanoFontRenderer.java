@@ -1,34 +1,41 @@
 package cn.feng.untitled.ui.font.nano;
 
 import cn.feng.untitled.util.MinecraftInstance;
+import cn.feng.untitled.util.data.resource.ResourceType;
+import cn.feng.untitled.util.data.resource.ResourceUtil;
+import cn.feng.untitled.util.misc.Logger;
 import lombok.Getter;
 import lombok.Setter;
-import net.minecraft.util.ResourceLocation;
 import org.lwjgl.system.MemoryUtil;
 
 import java.awt.*;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.ByteBuffer;
+import java.util.ArrayList;
+import java.util.List;
 
 import static cn.feng.untitled.ui.font.nano.NanoLoader.vg;
 import static org.lwjgl.nanovg.NanoVG.*;
 
 /**
  * 此类输出的所有坐标均以guiScale为2的mc为准。
+ *
  * @author ChengFeng
  * @since 2024/8/3
  **/
 public class NanoFontRenderer extends MinecraftInstance {
     @Getter
     private final String name;
-    private final int font;
+    private int font;
+    private final NanoFontRenderer boldRenderer;
     @Setter
     private float size;
 
-    public NanoFontRenderer(String name, ResourceLocation resource) {
+    public NanoFontRenderer(String name, String fileName) {
         this.name = name;
-        try (InputStream inputStream = mc.getResourceManager().getResource(resource).getInputStream()) {
+        try (InputStream inputStream = mc.getResourceManager().getResource(ResourceUtil.getResource(fileName + ".ttf", ResourceType.FONT)).getInputStream()) {
             byte[] data = inputStream.readAllBytes();
             ByteBuffer buffer = MemoryUtil.memAlloc(data.length);
             buffer.put(data).flip();
@@ -38,6 +45,29 @@ public class NanoFontRenderer extends MinecraftInstance {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+        boldRenderer = new NanoFontRenderer(name, fileName, font);
+    }
+
+    private NanoFontRenderer(String name, String fileName, int plainFont) {
+        this.name = name + "-bold";
+        try (InputStream inputStream = mc.getResourceManager().getResource(ResourceUtil.getResource(fileName + "-bold.ttf", ResourceType.FONT)).getInputStream()) {
+            byte[] data = inputStream.readAllBytes();
+            ByteBuffer buffer = MemoryUtil.memAlloc(data.length);
+            buffer.put(data).flip();
+
+            font = nvgCreateFontMem(vg, this.name, buffer, false);
+            size = 16;
+        } catch (FileNotFoundException ee) {
+            Logger.warn("Bold font " + fileName + " not found.");
+            font = plainFont;
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        boldRenderer = this;
+    }
+
+    public NanoFontRenderer bold() {
+        return boldRenderer;
     }
 
     public float getHeight(float size) {
@@ -45,6 +75,14 @@ public class NanoFontRenderer extends MinecraftInstance {
         nvgFontSize(vg, size);
         float[] bounds = new float[4];
         nvgTextBounds(vg, 0, 0, "AaBbCcDdEeFfGgJjYy", bounds);
+        return (bounds[3] - bounds[1]) / 2f;
+    }
+
+    public float getHeight(String text, float size) {
+        nvgFontFaceId(vg, font);
+        nvgFontSize(vg, size);
+        float[] bounds = new float[4];
+        nvgTextBounds(vg, 0, 0, text, bounds);
         return (bounds[3] - bounds[1]) / 2f;
     }
 
@@ -147,7 +185,7 @@ public class NanoFontRenderer extends MinecraftInstance {
 
         nvgClosePath(vg);
     }
-    
+
     private void renderGlowString(String text, float x, float y, float size, float radius, int align, Color textColor, Color glowColor) {
         nvgBeginPath(vg);
         nvgTextAlign(vg, align);
@@ -165,8 +203,8 @@ public class NanoFontRenderer extends MinecraftInstance {
 
         nvgClosePath(vg);
     }
-        
-    
+
+
     private void renderString(String text, float x, float y, float size) {
         nvgFontFaceId(vg, font);
         nvgFontSize(vg, size);
@@ -178,13 +216,7 @@ public class NanoFontRenderer extends MinecraftInstance {
      * @return 文本长度
      */
     public float getStringWidth(String text) {
-        nvgFontFaceId(vg, font);
-        nvgFontSize(vg, size);
-
-        float[] bounds = new float[4];
-        nvgTextBounds(vg, 0, 0, text, bounds);
-
-        return (bounds[2] - bounds[0]) / 2f;
+        return getStringWidth(text, size);
     }
 
     /**
@@ -195,10 +227,8 @@ public class NanoFontRenderer extends MinecraftInstance {
     public float getStringWidth(String text, float size) {
         nvgFontFaceId(vg, font);
         nvgFontSize(vg, size);
-
         float[] bounds = new float[4];
         nvgTextBounds(vg, 0, 0, text, bounds);
-
         return (bounds[2] - bounds[0]) / 2f;
     }
 
@@ -231,7 +261,7 @@ public class NanoFontRenderer extends MinecraftInstance {
             if (reverse) builder.reverse();
             String result = builder.toString();
             if (more && !text.equals(result)) {
-                result = reverse? "..." + result : result + "...";
+                result = reverse ? "..." + result : result + "...";
             }
             return result;
         }

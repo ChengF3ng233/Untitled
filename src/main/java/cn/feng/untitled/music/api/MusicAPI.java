@@ -239,15 +239,18 @@ public class MusicAPI {
     public static LyricPair getLyrics(long id) {
         Logger.info("Getting lyrics for id [" + id + "]");
         JsonObject response = fetchObject("/lyric/new?id=" + id);
-        boolean isNew = response.has("yrc");
-        String lyricCollection = response.get(isNew ? "yrc" : "lrc").getAsJsonObject().get("lyric").getAsString();
+
+
+        boolean newLyric = response.has("yrc");
+        String lyricCollection = response.get(newLyric ? "yrc" : "lrc").getAsJsonObject().get("lyric").getAsString();
         List<String> lines = new ArrayList<>(Arrays.stream(lyricCollection.split("\n")).toList());
         lines.removeIf(String::isEmpty);
 
         List<LyricLine> lyrics = new ArrayList<>();
         for (String line : lines) {
+            // 元数据不要
             if (line.startsWith("{")) continue;
-            if (isNew) {
+            if (newLyric) {
                 // 正则表达式匹配整行的时间戳和持续时间
                 List<LyricChar> chars = new ArrayList<>();
 
@@ -281,13 +284,21 @@ public class MusicAPI {
                     int centiseconds = Integer.parseInt(matcher.group(3)); // 厘秒
 
                     // 将时间戳转换为毫秒
-                    int timestampInMilliseconds = (minutes * 60 * 1000) + (seconds * 1000) + (centiseconds * 10);
+                    int startTime = (minutes * 60 * 1000) + (seconds * 1000) + (centiseconds * 10);
 
                     // 提取歌词内容
                     String lyric = matcher.group(4);
+                    List<String> list = new ArrayList<>(Arrays.stream(lyric.split("")).toList());
+                    list.removeIf(String::isEmpty);
 
-                    LyricChar lyricChar = new LyricChar(timestampInMilliseconds, -1, lyric);
-                    lyrics.add(new LyricLine(timestampInMilliseconds, -1, Arrays.stream(new LyricChar[]{lyricChar}).toList(), false));
+                    List<LyricChar> chars = new ArrayList<>();
+                    for (String str : list) {
+                        chars.add(new LyricChar(-1, -1, str));
+                    }
+                    if (chars.isEmpty()) {
+                        chars.add(new LyricChar(-1, -1, "[Music]"));
+                    }
+                    lyrics.add(new LyricLine(startTime, -1, chars, false));
                 } else {
                     pattern = Pattern.compile("\\[(\\d{2}):(\\d{2})\\.(\\d{3})]\\s*(.*)");
                     matcher = pattern.matcher(line);
@@ -299,13 +310,24 @@ public class MusicAPI {
                         int ms = Integer.parseInt(matcher.group(3)); // 豪秒
 
                         // 将时间戳转换为毫秒
-                        int timestampInMilliseconds = (minutes * 60 * 1000) + (seconds * 1000) + (ms);
+                        int startTime = (minutes * 60 * 1000) + (seconds * 1000) + (ms);
 
                         // 提取歌词内容
                         String lyric = matcher.group(4);
+                        List<String> list = new ArrayList<>(Arrays.stream(lyric.split("")).toList());
+                        list.removeIf(String::isEmpty);
 
-                        LyricChar lyricChar = new LyricChar(timestampInMilliseconds, -1, lyric);
-                        lyrics.add(new LyricLine(timestampInMilliseconds, -1, Arrays.stream(new LyricChar[]{lyricChar}).toList(), false));
+                        List<LyricChar> chars = new ArrayList<>();
+
+                        for (String str : list) {
+                            chars.add(new LyricChar(-1, -1, str));
+                        }
+
+                        if (chars.isEmpty()) {
+                            chars.add(new LyricChar(-1, -1, "[Music]"));
+                        }
+
+                        lyrics.add(new LyricLine(startTime, -1, chars, false));
                     }
                 }
             }

@@ -88,7 +88,7 @@ public class PlayListGUI extends MusicPlayerGUI {
             NanoFontLoader.misans.drawString(playList.getDescription(), x + 65f, y + 30f, 13f, ThemeColor.greyColor);
 
             // 歌曲信息
-            NanoFontLoader.greyCliffBold.drawString("#", x + 7f, y + 75f, 15f, ThemeColor.greyColor);
+            NanoFontLoader.greyCliff.bold().drawString("#", x + 7f, y + 75f, 15f, ThemeColor.greyColor);
             NanoFontLoader.misans.drawString("歌曲", x + 15f, y + 75f, 15f, ThemeColor.greyColor);
             NanoFontLoader.misans.drawString("专辑", x + 166f, y + 75f, 15f, ThemeColor.greyColor);
             NanoFontLoader.misans.drawString("时长", x + 286f, y + 75f, 15f, ThemeColor.greyColor);

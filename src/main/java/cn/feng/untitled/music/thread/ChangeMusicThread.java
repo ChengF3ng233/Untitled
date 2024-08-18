@@ -34,11 +34,11 @@ public class ChangeMusicThread extends Thread {
         if (music.getSongURL() == null) {
             music.setSongURL(MusicAPI.getMusicURL(music.getId(), false));
         }
+
         List<LyricLine> lyrics = music.getLyrics();
-        LyricPair pair = null;
         if (lyrics.isEmpty()) {
             // 请求逐字歌词
-            pair = MusicAPI.getLyrics(music.getId());
+            LyricPair pair = MusicAPI.getLyrics(music.getId());
             music.setLyrics(pair.lyrics());
             // 纠正低级格式的duration
             music.correctLyricDuration();
@@ -50,14 +50,14 @@ public class ChangeMusicThread extends Thread {
             }
         }
 
-        List<LyricLine> translatedLyrics = music.getTranslatedLyrics();
+/*        List<LyricLine> translatedLyrics = music.getTranslatedLyrics();
         if (translatedLyrics.isEmpty() && music.isHasTranslate()) {
             // 请求翻译
             music.setTranslatedLyrics(pair == null? MusicAPI.getLyrics(music.getId()).translatedLyrics() : pair.translatedLyrics());
             if (!music.getTranslatedLyrics().isEmpty()) {
                 music.generateTranslateMap();
             } else music.setHasTranslate(false);
-        }
+        }*/
 
         Client.instance.musicManager.screen.player.setMusic(music);
         if (playList != null) {

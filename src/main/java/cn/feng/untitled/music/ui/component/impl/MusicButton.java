@@ -43,7 +43,7 @@ public class MusicButton extends Button {
         float textY = posY + 7f;
 
         if (isNano) {
-            NanoFontLoader.greyCliffBold.drawString((playList.getMusicList().indexOf(music) + 1) + "", textX, textY + 4f, 13f, ThemeColor.greyColor);
+            NanoFontLoader.greyCliff.bold().drawString((playList.getMusicList().indexOf(music) + 1) + "", textX, textY + 4f, 13f, ThemeColor.greyColor);
         }
 
         if (!isNano) {

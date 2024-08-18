@@ -3,23 +3,21 @@ package cn.feng.untitled.value;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.Objects;
 import java.util.function.BiConsumer;
 
 /**
  * @author ChengFeng
  * @since 2024/7/28
  **/
+@Getter
 public class Value<T> {
-    @Getter
     @Setter
     private String name;
-    @Getter
     @Setter
     private T defaultValue;
-    @Getter
     protected T value;
 
-    @Getter
     @Setter
     private BiConsumer<T, T> changeAction = (oldValue, newValue) -> {};
 
@@ -42,6 +40,7 @@ public class Value<T> {
     }
 
     public void setValue(T value) {
+        if (Objects.equals(this.value, value)) return;
         changeAction.accept(this.value, value);
         this.value = value;
     }

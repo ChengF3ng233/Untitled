@@ -37,11 +37,12 @@ public class PlayListButton extends Button {
     private void render(boolean isNano) {
         gui.setWidth(width);
 
-        if (playList.getCoverTexture() == null) {
+        boolean draw = true;
+        if (playList.getCoverTexture() == null && !isNano) {
             try {
                 playList.setCoverTexture(new DynamicTexture(ImageIO.read(playList.getCoverImage())));
             } catch (IOException e) {
-                throw new RuntimeException(e);
+                draw = false;
             }
         }
 
@@ -52,10 +53,10 @@ public class PlayListButton extends Button {
         }
 
         if (isNano) {
-            NanoFontLoader.misans.drawGlowString(playList.getName(), posX + 70, posY, 20f, Color.WHITE);
+            NanoFontLoader.misans.bold().drawGlowString(playList.getName(), posX + 70, posY, 20f, Color.WHITE);
             String description = NanoFontLoader.misans.trimStringToWidth(playList.getDescription(), 200f, 16f, false, true);
             NanoFontLoader.misans.drawString(description, posX + 70, posY + 15, 16f, ThemeColor.greyColor);
-        } else {
+        } else if (draw) {
             RenderUtil.scaleStart(posX + 40, posY + 25, 1 + scaleAnim.getOutput().floatValue());
             RenderUtil.drawImage(playList.getCoverTexture(), posX + 20, posY, 40, 40);
             RenderUtil.scaleEnd();

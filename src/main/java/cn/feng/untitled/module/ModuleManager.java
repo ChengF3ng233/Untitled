@@ -1,5 +1,6 @@
 package cn.feng.untitled.module;
 
+import cn.feng.untitled.Client;
 import cn.feng.untitled.event.api.SubscribeEvent;
 import cn.feng.untitled.event.impl.KeyEvent;
 import cn.feng.untitled.module.impl.client.*;
@@ -68,6 +69,10 @@ public class ModuleManager {
 
         for (Field field : classFields) {
             addValue(field, module, module);
+        }
+
+        if (module.enabled) {
+            Client.instance.eventBus.register(module);
         }
     }
 

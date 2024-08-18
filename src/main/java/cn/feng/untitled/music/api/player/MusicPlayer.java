@@ -100,25 +100,14 @@ public class MusicPlayer {
         });
         mediaPlayer.setVolume(volume);
         music.getLyrics().forEach(LyricLine::reset);
-        ((MusicLyricWidget) Client.instance.uiManager.getWidget(MusicLyricWidget.class)).reset();
+
+        MusicLyricWidget widget = (MusicLyricWidget) Client.instance.uiManager.getWidget(MusicLyricWidget.class);
+        widget.reset();
+        Double value = widget.maxWidthValue.getValue();
+        widget.maxWidthValue.getChangeAction().accept(value, value);
+
         ((MusicInfoWidget) Client.instance.uiManager.getWidget(MusicInfoWidget.class)).reset();
         mediaPlayer.play();
-    }
-
-    public int getPlayedLyricCount() {
-        int count = 0;
-        for (LyricLine lyric : music.getLyrics()) {
-            if (getCurrentTime() > lyric.getStart() + lyric.getDuration()) count++;
-        }
-        return count;
-    }
-
-    public int getPlayedTranslateCount() {
-        int count = 0;
-        for (LyricLine lyric : music.getLyrics()) {
-            if (getCurrentTime() > lyric.getStart() + lyric.getDuration() && music.getTranslateMap().containsKey(lyric)) count++;
-        }
-        return count;
     }
 
     public void play() {

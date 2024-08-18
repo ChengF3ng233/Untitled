@@ -5,6 +5,7 @@ import cn.feng.untitled.event.impl.ShaderEvent;
 import cn.feng.untitled.music.api.player.MusicPlayer;
 import cn.feng.untitled.music.ui.ThemeColor;
 import cn.feng.untitled.ui.font.nano.NanoFontLoader;
+import cn.feng.untitled.ui.font.nano.NanoFontRenderer;
 import cn.feng.untitled.ui.widget.Widget;
 import cn.feng.untitled.util.render.RenderUtil;
 import cn.feng.untitled.value.impl.BoolValue;
@@ -58,11 +59,12 @@ public class MusicInfoWidget extends Widget {
     public void onNano() {
         MusicPlayer player = Client.instance.musicManager.screen.player;
         if (player.getMusic() == null) return;
+        NanoFontRenderer fontRenderer = NanoFontLoader.misans.bold();
         width = height + Math.max(
-                NanoFontLoader.misans.getStringWidth(player.getMusic().getName(), fontSize.getValue().floatValue()),
+                fontRenderer.getStringWidth(player.getMusic().getName(), fontSize.getValue().floatValue()),
                 NanoFontLoader.misans.getStringWidth(player.getMusic().getArtist(), fontSize.getValue().floatValue() * 0.8f)
         ) + 4f;
-        NanoFontLoader.misans.drawString(player.getMusic().getName(), x * sr.getScaledWidth() + 2f + height, y * sr.getScaledHeight() + 2f, fontSize.getValue().floatValue(), Color.WHITE, fontShadow.getValue());
+        fontRenderer.drawString(player.getMusic().getName(), x * sr.getScaledWidth() + 2f + height, y * sr.getScaledHeight() + 2f, fontSize.getValue().floatValue(), Color.WHITE, fontShadow.getValue());
         NanoFontLoader.misans.drawString(player.getMusic().getArtist(), x * sr.getScaledWidth() + 2f + height, y * sr.getScaledHeight() + fontSize.getValue().floatValue() / 2f + 6f, fontSize.getValue().floatValue() * 0.8f, ThemeColor.greyColor, fontShadow.getValue());
     }
 
