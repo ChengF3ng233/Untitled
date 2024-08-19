@@ -4,6 +4,9 @@ plugins {
     id 'com.github.johnrengelman.shadow' version '8.1.1'
 }
 
+project.ext.lwjglVersion = "3.3.4"
+project.ext.lwjglNatives = "natives-windows"
+
 group = "cn.feng"
 version = "1.0-SNAPSHOT"
 
@@ -11,10 +14,6 @@ shadowJar {
     archiveClassifier.set('all')
 
     configurations = [project.configurations.runtimeClasspath] // 包含所有 runtimeClasspath 依赖，包括 JavaFX
-
-    from('lib') {
-        include '**/*'  // 包含文件夹中的所有内容
-    }
 }
 
 tasks.build {
@@ -25,10 +24,17 @@ repositories {
     mavenCentral()
 
     maven {
+        url "https://repo.viaversion.com/everything"
+    }
+
+    maven {
+        url "https://repo.codemc.io/repository/maven-snapshots/"
+    }
+
+    maven {
         name "Velocity"
         url "https://nexus.velocitypowered.com/repository/maven-public/"
     }
-
 }
 
 tasks.withType(JavaCompile).configureEach {
@@ -43,20 +49,42 @@ javafx {
 }
 
 dependencies {
-    implementation fileTree(dir: 'lib', includes: ['*.jar'])
+    // LWJGL
+    implementation platform("org.lwjgl:lwjgl-bom:$lwjglVersion")
+    implementation "org.lwjgl:lwjgl"
+    implementation "org.lwjgl:lwjgl-glfw"
+    implementation "org.lwjgl:lwjgl-nanovg"
+    implementation "org.lwjgl:lwjgl-openal"
+    implementation "org.lwjgl:lwjgl-opengl"
+    runtimeOnly "org.lwjgl:lwjgl::$lwjglNatives"
+    runtimeOnly "org.lwjgl:lwjgl-glfw::$lwjglNatives"
+    runtimeOnly "org.lwjgl:lwjgl-nanovg::$lwjglNatives"
+    runtimeOnly "org.lwjgl:lwjgl-openal::$lwjglNatives"
+    runtimeOnly "org.lwjgl:lwjgl-opengl::$lwjglNatives"
+
+    // ViaVersion
+    implementation "com.viaversion:viabackwards:5.0.4-SNAPSHOT"
+    implementation "com.viaversion:viarewind:4.0.3-SNAPSHOT"
+    implementation "com.viaversion:viaversion:5.0.4-SNAPSHOT"
+    implementation group: 'org.yaml', name: 'snakeyaml', version: '2.2'
+
+    // Entity Culling
+    implementation 'com.logisticscraft:occlusionculling:0.0.8-20240302.230836-1'
 
     implementation group: 'com.squareup.okhttp3', name: 'okhttp', version: '5.0.0-alpha.14'
     implementation group: 'org.jetbrains', name: 'annotations', version: '24.1.0'
-    implementation group: 'org.yaml', name: 'snakeyaml', version: '2.2'
     implementation group: 'com.google.code.gson', name: 'gson', version: '2.11.0'
     implementation group: 'io.netty', name: 'netty-all', version: '5.0.0.Alpha2'
+
+    // FFmpeg
     implementation group: 'com.github.kokorin.jaffree', name: 'jaffree', version: '2023.09.10'
-    implementation group: 'org.slf4j', name: 'slf4j-api', version: '1.7.36'
     implementation group: 'org.bouncycastle', name: 'bcprov-jdk18on', version: '1.78.1'
+
+    // Log4j && Slf4j
+    implementation group: 'org.slf4j', name: 'slf4j-api', version: '1.7.36'
     implementation group: 'org.apache.logging.log4j', name: 'log4j-api', version: '2.23.1'
     implementation group: 'org.apache.logging.log4j', name: 'log4j-core', version: '2.23.1'
     implementation group: 'org.apache.logging.log4j', name: 'log4j-slf4j-impl', version: '2.23.1'
-
 
     compileOnly group: 'org.projectlombok', name: 'lombok', version: '1.18.34'
     annotationProcessor 'org.projectlombok:lombok:1.18.34'
