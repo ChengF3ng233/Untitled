@@ -146,6 +146,7 @@ public class MusicAPI {
         PlayList playList = new PlayList("每日推荐", "根据你的喜好，每日生成的推荐歌曲");
         for (JsonElement song : songs) {
             JsonObject obj = song.getAsJsonObject();
+            JsonObject privilege = obj.get("privilege").getAsJsonObject();
             StringBuilder artistStr = new StringBuilder();
             for (JsonElement ar : obj.get("ar").getAsJsonArray()) {
                 JsonObject artist = ar.getAsJsonObject();
@@ -153,15 +154,17 @@ public class MusicAPI {
             }
             File file = new File(ConfigManager.coverDir, "music_" + obj.get("id").getAsLong() + ".jpg");
             downloadImage(obj.get("al").getAsJsonObject().get("picUrl").getAsString(), file, false);
-            playList.getMusicList().add(new Music(
+            Music music = new Music(
                     obj.get("name").getAsString(),
                     artistStr.toString(),
                     obj.get("al").getAsJsonObject().get("name").getAsString(),
                     obj.get("id").getAsLong(),
                     obj.get("dt").getAsInt(),
-                    file,
-                    obj.get("fee").getAsInt() == 0
-            ));
+                    file
+            );
+            music.setFree(!("none").equals(privilege.get("flLevel").getAsString()));
+            music.setQuality(MusicQuality.getQuality(privilege.get("dlLevel").getAsString()));
+            playList.getMusicList().add(music);
             if (playList.getCoverImage() == null) {
                 playList.setCoverImage(file);
             }
@@ -173,7 +176,9 @@ public class MusicAPI {
 
     public static List<Music> fetchMusicList(PlayList playList) {
         Logger.info("Fetching music list for id [" + playList.getId() + "], offset: " + playList.getMusicList().size());
-        JsonArray songs = fetchObject("/playlist/track/all?id=" + playList.getId() + "&limit=10&offset=" + playList.getMusicList().size()).get("songs").getAsJsonArray();
+        JsonObject object = fetchObject("/playlist/track/all?id=" + playList.getId() + "&limit=10&offset=" + playList.getMusicList().size());
+        JsonArray songs = object.get("songs").getAsJsonArray();
+        JsonArray privileges = object.get("privileges").getAsJsonArray();
 
         if (songs.isEmpty()) {
             playList.setCompletelyDownloaded(true);
@@ -200,17 +205,34 @@ public class MusicAPI {
                     obj.get("al").getAsJsonObject().get("name").getAsString(),
                     obj.get("id").getAsLong(),
                     obj.get("dt").getAsInt(),
-                    file,
-                    obj.get("fee").getAsInt() == 0);
+                    file
+            );
 
-            playList.getMusicList().add(music);
             musics.add(music);
 
             if (playList.getCoverImage() == null) {
                 playList.setCoverImage(file);
             }
         }
+
+        for (JsonElement e : privileges) {
+            JsonObject privilege = e.getAsJsonObject();
+            Music music = getMusicById(privilege.get("id").getAsLong(), musics);
+            if (music == null) continue;
+            music.setFree(!("none").equals(privilege.get("flLevel").getAsString()));
+            music.setQuality(MusicQuality.getQuality(privilege.get("dlLevel").getAsString()));
+        }
+
+        playList.getMusicList().addAll(musics);
+
         return musics;
+    }
+
+    private static Music getMusicById(long id, List<Music> list) {
+        for (Music music : list) {
+            if (music.getId() == id) return music;
+        }
+        return null;
     }
 
     public static List<PlayList> getRecommendedPlayLists() {
@@ -218,6 +240,7 @@ public class MusicAPI {
         JsonArray playlistArray = fetchObject("/recommend/resource").get("recommend").getAsJsonArray();
 
         List<PlayList> result = new ArrayList<>();
+
         for (JsonElement element : playlistArray) {
             JsonObject obj = element.getAsJsonObject();
             String description = (obj.get("description") instanceof JsonNull || obj.get("description") == null) ? "没有描述，你自己进去看看" : obj.get("description").getAsString();
@@ -366,23 +389,18 @@ public class MusicAPI {
         return new LyricPair(lyrics, translatedLyrics);
     }
 
-    public static String getMusicURL(long id, boolean retry) {
-        for (JsonElement data : fetchObject("/song/url?id=" + id).get("data").getAsJsonArray()) {
-            // 获取第一个，因为就一个
-            return data.getAsJsonObject().get("url").getAsString();
-        }
-        return null;
-/*        try {
-            for (JsonElement data : fetchObject("/song/url/v1?id=" + id + "&level=" + (retry? "standard" : "exhigh")).get("data").getAsJsonArray()) {
+    public static String getMusicURL(long id, boolean retry, MusicQuality quality) {
+        try {
+            for (JsonElement data : fetchObject("/song/url/v1?id=" + id + "&level=" + (retry? "standard" : quality.name())).get("data").getAsJsonArray()) {
                 // 获取第一个，因为就一个
                 return data.getAsJsonObject().get("url").getAsString();
             }
         } catch (JsonSyntaxException e) {
             if (retry) throw new NullPointerException("No music source [" + id + "].");
             Logger.error("Failed to get exhigh music [" + id + "], retry...");
-            return getMusicURL(id, true);
+            return getMusicURL(id, true, quality);
         }
-        return null;*/
+        return null;
     }
 
     public static PlayList search(String keywords) {
@@ -402,8 +420,7 @@ public class MusicAPI {
                     artistStr.toString(),
                     obj.get("album").getAsJsonObject().get("name").getAsString(),
                     obj.get("id").getAsLong(),
-                    obj.get("duration").getAsInt(),
-                    obj.get("fee").getAsInt() == 0
+                    obj.get("duration").getAsInt()
             ));
             ids.append(ids.isEmpty()? obj.get("id").getAsLong() : "," + obj.get("id").getAsLong());
         }

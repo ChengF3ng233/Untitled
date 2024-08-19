@@ -24,6 +24,7 @@ public class ToggleSprint extends Module {
 
     @Override
     public void onDisable() {
+        if (mc.thePlayer == null) return;
         mc.thePlayer.setSprinting(false);
     }
 }

@@ -4,6 +4,7 @@ import cn.feng.untitled.Client;
 import cn.feng.untitled.config.ConfigManager;
 import cn.feng.untitled.music.api.base.LyricLine;
 import cn.feng.untitled.music.api.base.Music;
+import cn.feng.untitled.music.api.base.MusicQuality;
 import cn.feng.untitled.music.api.base.PlayList;
 import cn.feng.untitled.music.thread.ChangeMusicThread;
 import cn.feng.untitled.music.thread.FetchMusicsThread;
@@ -37,6 +38,9 @@ public class MusicPlayer {
     private MediaPlayer mediaPlayer;
     @Getter
     private PlayMode playMode = PlayMode.LOOP;
+    @Getter
+    @Setter
+    private MusicQuality quality = MusicQuality.exhigh;
     @Getter
     private float[] magnitudes;
 

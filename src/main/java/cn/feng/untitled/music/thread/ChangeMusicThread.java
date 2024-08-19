@@ -33,7 +33,7 @@ public class ChangeMusicThread extends Thread {
     public void run() {
         // 请求歌曲URL
         if (music.getSongURL() == null) {
-            music.setSongURL(MusicAPI.getMusicURL(music.getId(), false));
+            music.setSongURL(MusicAPI.getMusicURL(music.getId(), false, Client.instance.musicManager.screen.player.getQuality()));
         }
 
         List<LyricLine> lyrics = music.getLyrics();
