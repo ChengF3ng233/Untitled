@@ -79,6 +79,7 @@ public class NanoFontRenderer extends MinecraftInstance {
     }
 
     public float getHeight(String text, float size) {
+        if (text == null) return 0f;
         nvgFontFaceId(vg, font);
         nvgFontSize(vg, size);
         float[] bounds = new float[4];
@@ -225,6 +226,7 @@ public class NanoFontRenderer extends MinecraftInstance {
      * @return 文本长度
      */
     public float getStringWidth(String text, float size) {
+        if (text == null) return 0f;
         nvgFontFaceId(vg, font);
         nvgFontSize(vg, size);
         float[] bounds = new float[4];
