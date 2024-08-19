@@ -31,6 +31,7 @@ public class ChangeMusicThread extends Thread {
 
     @Override
     public void run() {
+        // 请求歌曲URL
         if (music.getSongURL() == null) {
             music.setSongURL(MusicAPI.getMusicURL(music.getId(), false));
         }

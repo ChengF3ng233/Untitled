@@ -76,10 +76,10 @@ public class PlayListButton extends Button {
     @Override
     public void mouseClicked(int mouseX, int mouseY, int button) {
         if (hovering && button == 0) {
-            Client.instance.musicManager.screen.setCurrentGUI(gui);
             if (playList.getMusicList().isEmpty()) {
                 new FetchMusicsThread(playList, gui.buttons, true).start();
             }
+            Client.instance.musicManager.screen.setCurrentGUI(gui);
         }
     }
 }

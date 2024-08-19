@@ -7,6 +7,5 @@ import lombok.Getter;
  * @author ChengFeng
  * @since 2024/8/13
  **/
-@Getter
 public record ScanResult(QRCodeState state, JsonObject response) {
 }

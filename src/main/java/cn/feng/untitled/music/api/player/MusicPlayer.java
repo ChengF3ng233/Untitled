@@ -2,17 +2,15 @@ package cn.feng.untitled.music.api.player;
 
 import cn.feng.untitled.Client;
 import cn.feng.untitled.config.ConfigManager;
-import cn.feng.untitled.music.api.MusicAPI;
 import cn.feng.untitled.music.api.base.LyricLine;
 import cn.feng.untitled.music.api.base.Music;
 import cn.feng.untitled.music.api.base.PlayList;
 import cn.feng.untitled.music.thread.ChangeMusicThread;
 import cn.feng.untitled.music.thread.FetchMusicsThread;
-import cn.feng.untitled.music.ui.component.Button;
 import cn.feng.untitled.music.ui.component.impl.MusicButton;
-import cn.feng.untitled.music.ui.gui.impl.PlayListGUI;
 import cn.feng.untitled.ui.widget.impl.MusicInfoWidget;
 import cn.feng.untitled.ui.widget.impl.MusicLyricWidget;
+import cn.feng.untitled.util.misc.Logger;
 import com.github.kokorin.jaffree.ffmpeg.FFmpeg;
 import com.github.kokorin.jaffree.ffmpeg.UrlInput;
 import com.github.kokorin.jaffree.ffmpeg.UrlOutput;
@@ -24,6 +22,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -37,8 +36,7 @@ public class MusicPlayer {
     @Getter
     private MediaPlayer mediaPlayer;
     @Getter
-    @Setter
-    private PlayMode playMode = PlayMode.ORDERED;
+    private PlayMode playMode = PlayMode.LOOP;
     @Getter
     private float[] magnitudes;
 
@@ -102,7 +100,7 @@ public class MusicPlayer {
         double volume = mediaPlayer == null ? 1d : mediaPlayer.getVolume();
         if (mediaPlayer != null) mediaPlayer.stop();
         mediaPlayer = new MediaPlayer(media);
-        mediaPlayer.setOnEndOfMedia(this::next);
+        mediaPlayer.setOnEndOfMedia(() -> next(false));
         mediaPlayer.setAudioSpectrumInterval(0.025);
         mediaPlayer.setAudioSpectrumListener((timestamp, duration, magnitudes, phases) -> {
             this.magnitudes = magnitudes;
@@ -118,7 +116,7 @@ public class MusicPlayer {
         ((MusicInfoWidget) Client.instance.uiManager.getWidget(MusicInfoWidget.class)).reset();
         mediaPlayer.play();
 
-        if (currentMusicList.indexOf(music) == currentMusicList.size() - 1 && !playList.isCompletelyDownloaded()) {
+        if (currentMusicList != null && currentMusicList.indexOf(music) == currentMusicList.size() - 1 && !playList.isCompletelyDownloaded()) {
             // 预加载
             new FetchMusicsThread(playList, musicButtons, false).start();
         }
@@ -132,22 +130,41 @@ public class MusicPlayer {
         mediaPlayer.pause();
     }
 
-    public void previous() {
-        int index = currentMusicList.indexOf(music) - 1;
-        if (index < 0) index = currentMusicList.size() - 1;
+    public void previous(boolean force) {
+        int index;
+        if (playMode == PlayMode.RECYCLED && !force) {
+            index = currentMusicList.indexOf(music);
+        } else {
+            index = currentMusicList.indexOf(music) - 1;
+            if (index < 0) index = (playMode == PlayMode.LISTED? 0 : currentMusicList.size() - 1);
+        }
         setMusic(currentMusicList.get(index));
     }
 
-    public void next() {
-        int index = currentMusicList.indexOf(music) + 1;
-        if (index > currentMusicList.size() - 1) index = 0;
+    public void next(boolean force) {
+        int index;
+        if (playMode == PlayMode.RECYCLED && !force) {
+            index = currentMusicList.indexOf(music);
+        } else {
+            index = currentMusicList.indexOf(music) + 1;
+            if (index > currentMusicList.size() - 1) index = (playMode == PlayMode.LISTED ? currentMusicList.size() - 1 : 0);
+        }
         setMusic(currentMusicList.get(index));
     }
 
     public void setPlaylist(PlayList playList) {
         this.playList = playList;
-        currentMusicList = playList.getMusicList();
-        if (playMode == PlayMode.SHUFFLE) Collections.shuffle(currentMusicList);
+        setPlayMode(this.playMode, true);
+        Logger.info("Playlist updated: " + playList.getName());
+    }
+
+    public void setPlayMode(PlayMode playMode, boolean force) {
+        if (this.playMode == playMode && !force) return;
+        this.playMode = playMode;
+        switch (playMode) {
+            case SHUFFLED -> Collections.shuffle(currentMusicList);
+            case LISTED, LOOP -> currentMusicList = new ArrayList<>(playList.getMusicList());
+        }
     }
 
     public boolean isPaused() {

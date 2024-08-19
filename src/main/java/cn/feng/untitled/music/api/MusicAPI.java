@@ -367,7 +367,12 @@ public class MusicAPI {
     }
 
     public static String getMusicURL(long id, boolean retry) {
-        try {
+        for (JsonElement data : fetchObject("/song/url?id=" + id).get("data").getAsJsonArray()) {
+            // 获取第一个，因为就一个
+            return data.getAsJsonObject().get("url").getAsString();
+        }
+        return null;
+/*        try {
             for (JsonElement data : fetchObject("/song/url/v1?id=" + id + "&level=" + (retry? "standard" : "exhigh")).get("data").getAsJsonArray()) {
                 // 获取第一个，因为就一个
                 return data.getAsJsonObject().get("url").getAsString();
@@ -377,7 +382,7 @@ public class MusicAPI {
             Logger.error("Failed to get exhigh music [" + id + "], retry...");
             return getMusicURL(id, true);
         }
-        return null;
+        return null;*/
     }
 
     public static PlayList search(String keywords) {

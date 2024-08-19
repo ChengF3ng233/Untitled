@@ -4,10 +4,12 @@ import cn.feng.untitled.event.api.SubscribeEvent;
 import cn.feng.untitled.event.impl.NanoEvent;
 import cn.feng.untitled.music.api.base.Music;
 import cn.feng.untitled.music.api.player.MusicPlayer;
+import cn.feng.untitled.music.api.player.PlayMode;
 import cn.feng.untitled.music.thread.SearchMusicThread;
 import cn.feng.untitled.music.ui.component.Button;
 import cn.feng.untitled.music.ui.component.impl.CategoryButton;
 import cn.feng.untitled.music.ui.component.impl.IconButton;
+import cn.feng.untitled.music.ui.component.impl.SwitchIconButton;
 import cn.feng.untitled.music.ui.component.impl.UserButton;
 import cn.feng.untitled.music.ui.component.slider.PlayerSlider;
 import cn.feng.untitled.music.ui.component.slider.VolumeSlider;
@@ -39,6 +41,7 @@ import javax.imageio.ImageIO;
 import java.awt.*;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -73,10 +76,11 @@ public class MusicPlayerScreen extends GuiScreen {
     // Player
     public final MusicPlayer player = new MusicPlayer();
 
-    private final IconButton playBtn = new IconButton("play.png", player::play, 16);
-    private final IconButton pauseBtn = new IconButton("pause.png", player::pause, 16);
-    private final IconButton preBtn = new IconButton("previous.png", player::previous, 15);
-    private final IconButton nextBtn = new IconButton("next.png", player::next, 15);
+    private final IconButton playBtn = new IconButton("play.png", player::play, 15);
+    private final IconButton pauseBtn = new IconButton("pause.png", player::pause, 15);
+    private final IconButton preBtn = new IconButton("previous.png", () -> player.previous(true), 14);
+    private final IconButton nextBtn = new IconButton("next.png", () -> player.next(true), 14);
+    private final SwitchIconButton orderBtn = new SwitchIconButton("loop.png", Arrays.stream(new String[]{"loop.png", "ordered.png", "shuffle.png", "recycle.png"}).toList(), 13);
     private final PlayerSlider playerSlider = new PlayerSlider();
     private final VolumeSlider volumeSlider = new VolumeSlider();
 
@@ -94,6 +98,18 @@ public class MusicPlayerScreen extends GuiScreen {
 
         currentGUI = categoryButtons.get(0).getGui();
         categoryButtons.get(0).setSelected(true);
+
+        orderBtn.setAction(() -> {
+            if (player.getMusic() == null || player.getMediaPlayer() == null) return;
+            player.setPlayMode(
+                    switch (orderBtn.getFileName()) {
+                        case "loop.png" -> PlayMode.LOOP;
+                        case "shuffle.png" -> PlayMode.SHUFFLED;
+                        case "recycle.png" -> PlayMode.RECYCLED;
+                        default -> PlayMode.LISTED;
+                    }, false
+            );
+        });
     }
 
     @Override
@@ -174,7 +190,8 @@ public class MusicPlayerScreen extends GuiScreen {
         currentGUI.setHeight(height - topWidth - bottomWidth);
         if (isNano) {
             currentGUI.onNano(x + leftWidth, y + topWidth, mouseX, mouseY, x + width / 2f, y + width / 2f, windowAnim.getOutput().floatValue());
-        } else currentGUI.onRender2D(x + leftWidth, y + topWidth, mouseX, mouseY, x + width / 2f, y + width / 2f, windowAnim.getOutput().floatValue());
+        } else
+            currentGUI.onRender2D(x + leftWidth, y + topWidth, mouseX, mouseY, x + width / 2f, y + width / 2f, windowAnim.getOutput().floatValue());
 
         if (RenderUtil.hovering(mouseX, mouseY, x + leftWidth, y + topWidth, width - leftWidth, height - topWidth - bottomWidth)) {
             currentGUI.handleScroll();
@@ -231,6 +248,8 @@ public class MusicPlayerScreen extends GuiScreen {
                 nextBtn.updateState(x + width / 2f + 16f, playerY + 4f, mouseX, mouseY);
                 nextBtn.onRender2D();
 
+                orderBtn.updateState(x + width / 2f + 50f, playerY + 5f, mouseX, mouseY);
+                orderBtn.onRender2D();
 
                 playerSlider.render(x + width / 2f - 100f, playerY + 27f, mouseX, mouseY, false);
                 volumeSlider.render(x + width - 120f, playerY + 27f, mouseX, mouseY, false);
@@ -313,6 +332,7 @@ public class MusicPlayerScreen extends GuiScreen {
             } else pauseBtn.mouseClicked(mouseX, mouseY, mouseButton);
             preBtn.mouseClicked(mouseX, mouseY, mouseButton);
             nextBtn.mouseClicked(mouseX, mouseY, mouseButton);
+            orderBtn.mouseClicked(mouseX, mouseY, mouseButton);
             playerSlider.mouseClicked(mouseButton);
             volumeSlider.mouseClicked(mouseButton);
         }

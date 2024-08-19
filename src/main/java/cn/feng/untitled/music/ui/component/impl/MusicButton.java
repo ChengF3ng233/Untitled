@@ -27,7 +27,6 @@ public class MusicButton extends Button {
     private final PlayList playList;
     private ChangeMusicThread thread;
 
-
     public MusicButton(Music music, PlayList playList) {
         this.music = music;
         this.playList = playList;

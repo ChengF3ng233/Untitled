@@ -4,8 +4,6 @@ import cn.feng.untitled.Client;
 import cn.feng.untitled.event.impl.NanoEvent;
 import cn.feng.untitled.ui.font.nano.NanoLoader;
 import cn.feng.untitled.ui.font.nano.NanoUtil;
-import javafx.application.Platform;
-import javafx.embed.swing.JFXPanel;
 import lombok.Getter;
 import org.lwjgl.BufferUtils;
 import org.lwjgl.Sys;
@@ -13,7 +11,6 @@ import org.lwjgl.glfw.*;
 import org.lwjgl.input.KeyCodes;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
-import org.lwjgl.nanovg.NanoVG;
 
 import java.awt.*;
 import java.nio.ByteBuffer;
@@ -37,7 +34,7 @@ public class Display {
     @Getter
     private static DisplayMode desktopDisplayMode = new DisplayMode(854, 480);
 
-    private static int latestEventKey = 0;
+    private static final int latestEventKey = 0;
 
     private static int displayX = 0;
     private static int displayY = 0;
@@ -178,10 +175,10 @@ public class Display {
                         Keyboard.addGlfwKeyEvent(window, key, scancode, action, mods, '\0');
                     }
                 } else { // Other key with no char event associated
-                    char mappedChar = key == GLFW_KEY_ENTER ? 0x0D:
-                            key == GLFW_KEY_ESCAPE ? 0x1B:
-                                    key == GLFW_KEY_TAB ? 0x09:
-                                            key == GLFW_KEY_BACKSPACE ? 0x08:
+                    char mappedChar = key == GLFW_KEY_ENTER ? 0x0D :
+                            key == GLFW_KEY_ESCAPE ? 0x1B :
+                                    key == GLFW_KEY_TAB ? 0x09 :
+                                            key == GLFW_KEY_BACKSPACE ? 0x08 :
                                                     '\0';
                     Keyboard.addGlfwKeyEvent(window, key, scancode, action, mods, mappedChar);
                 }
@@ -220,7 +217,7 @@ public class Display {
 
             @Override
             public void invoke(long window, int button, int action, int mods) {
-                Mouse.addButtonEvent(button, action == GLFW.GLFW_PRESS ? true : false);
+                Mouse.addButtonEvent(button, action == GLFW.GLFW_PRESS);
             }
         };
 
@@ -357,7 +354,7 @@ public class Display {
     }
 
     public static void update(boolean processMessages) {
-        if (Client.instance.loaded && NanoLoader.shouldRender()) {
+        if (Client.instance.loaded && NanoLoader.shouldRender() && displayFocused) {
             NanoUtil.beginFrame();
             Client.instance.eventBus.post(new NanoEvent(NanoLoader.vg));
             NanoUtil.endFrame();
@@ -511,8 +508,10 @@ public class Display {
         System.out.println("TODO: Implement Display.setDisplayModeAndFullscreen(DisplayMode)");
     }
 
-    private static int savedX[] = new int[1], savedY[] = new int[1];
-    private static int savedW[] = new int[1], savedH[] = new int[1];
+    private static final int[] savedX = new int[1];
+    private static final int[] savedY = new int[1];
+    private static final int[] savedW = new int[1];
+    private static final int[] savedH = new int[1];
 
     public static void setFullscreen(boolean fullscreen) {
         final long window = getWindow();

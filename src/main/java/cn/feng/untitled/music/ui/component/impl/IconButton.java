@@ -15,16 +15,24 @@ import org.lwjgl.input.Mouse;
  * @since 2024/8/14
  **/
 public class IconButton extends Button {
-    private final ResourceLocation file;
-    private final Runnable action;
+    protected ResourceLocation icon;
+    @Setter
+    private Runnable action;
     private final int size;
     @Setter
     private boolean bg;
 
-    public IconButton(String file, Runnable action, int size) {
-        this.file = ResourceUtil.getResource(file, ResourceType.ICON);
+    public IconButton(String icon, Runnable action, int size) {
+        this.icon = ResourceUtil.getResource(icon, ResourceType.ICON);
         this.action = action;
         this.size = size;
+        height = size;
+        width = size;
+    }
+
+    public IconButton(String icon, int size) {
+        this.size = size;
+        this.icon = ResourceUtil.getResource(icon, ResourceType.ICON);
         height = size;
         width = size;
     }
@@ -35,7 +43,7 @@ public class IconButton extends Button {
         if (bg) {
             RoundedUtil.drawRound(posX - 2f, posY - 2f, size + 4f, size + 4f, 9.5f, ThemeColor.redColor);
         }
-        RenderUtil.drawImage(file, posX, posY, size, size);
+        RenderUtil.drawImage(icon, posX, posY, size, size);
         RenderUtil.scaleEnd();
     }
 
