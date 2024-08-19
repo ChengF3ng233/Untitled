@@ -3,6 +3,8 @@ package cn.feng.untitled.music.ui.component.slider;
 import cn.feng.untitled.Client;
 import cn.feng.untitled.music.ui.ThemeColor;
 import cn.feng.untitled.ui.font.nano.NanoFontLoader;
+import cn.feng.untitled.util.data.resource.ResourceType;
+import cn.feng.untitled.util.data.resource.ResourceUtil;
 import cn.feng.untitled.util.render.RenderUtil;
 import cn.feng.untitled.util.render.RoundedUtil;
 
@@ -25,9 +27,10 @@ public class VolumeSlider {
         double currentVolume = Client.instance.musicManager.screen.player.getVolume();
         double totalVolume = 100d;
 
-        if (isNano) {
-            NanoFontLoader.misans.drawString("音量", x, y - 6.5f / 2f - 0.2f, 13f, Color.WHITE);
-        } else {
+        String fileName = (currentVolume == 0? "volume_0" : (currentVolume <= 50? "volume_1" : "volume_2")) + ".png";
+
+        if (!isNano) {
+            RenderUtil.drawImage(ResourceUtil.getResource(fileName, ResourceType.ICON), x, y - 6f, 12f, 12f);
             RoundedUtil.drawRound(sliderX, y, 70, 1f, 1f, ThemeColor.barColor);
         }
 
