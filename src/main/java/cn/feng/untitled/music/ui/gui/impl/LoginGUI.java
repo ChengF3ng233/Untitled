@@ -48,8 +48,8 @@ public class LoginGUI extends MusicPlayerGUI {
     private boolean render(boolean isNano) {
         // 一些api
         ScanResult result = thread.getResult();
-        QRCodeState state = result == null ? QRCodeState.WAITING_SCAN : result.getState();
-        JsonObject response = result == null ? new JsonObject() : result.getResponse();
+        QRCodeState state = result == null ? QRCodeState.WAITING_SCAN : result.state();
+        JsonObject response = result == null ? new JsonObject() : result.response();
         QRCode qrCode = thread.getQrCode();
         User user = MusicAPI.user;
         boolean waitingConfirm = state == QRCodeState.WAITING_CONFIRM;

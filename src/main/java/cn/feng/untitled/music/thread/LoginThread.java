@@ -46,9 +46,9 @@ public class LoginThread extends Thread {
         do {
             if (timer.hasTimeElapsed(1000)) {
                 result = MusicAPI.getScanResult(qrCode.key());
-                ChatUtil.sendMessage("Login state: " + result.getState());
+                ChatUtil.sendMessage("Login state: " + result.state());
                 timer.reset();
             }
-        } while (result == null || result.getState() == QRCodeState.WAITING_SCAN || result.getState() == QRCodeState.WAITING_CONFIRM);
+        } while (result == null || result.state() == QRCodeState.WAITING_SCAN || result.state() == QRCodeState.WAITING_CONFIRM);
     }
 }
