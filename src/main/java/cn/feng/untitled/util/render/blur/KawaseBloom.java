@@ -21,7 +21,7 @@ public class KawaseBloom extends MinecraftInstance {
     public static ShaderUtil kawaseDown = new ShaderUtil("kawaseDownBloom");
     public static ShaderUtil kawaseUp = new ShaderUtil("kawaseUpBloom");
 
-    public static Framebuffer framebuffer = new Framebuffer(1, 1, true);
+    public static Framebuffer framebuffer = new Framebuffer(1, 1, false);
 
 
     private static int currentIterations;
@@ -35,11 +35,10 @@ public class KawaseBloom extends MinecraftInstance {
         framebufferList.clear();
 
         //Have to make the framebuffer null so that it does not try to delete a framebuffer that has already been deleted
-        framebufferList.add(framebuffer = RenderUtil.createFrameBuffer(null, true));
-
+        framebufferList.add(framebuffer = RenderUtil.createFrameBuffer(null, false));
 
         for (int i = 1; i <= iterations; i++) {
-            Framebuffer currentBuffer = new Framebuffer((int) (mc.displayWidth / Math.pow(2, i)), (int) (mc.displayHeight / Math.pow(2, i)), true);
+            Framebuffer currentBuffer = new Framebuffer((int) (mc.displayWidth / Math.pow(2, i)), (int) (mc.displayHeight / Math.pow(2, i)), false);
             currentBuffer.setFramebufferFilter(GL_LINEAR);
 
             GlStateManager.bindTexture(currentBuffer.framebufferTexture);
