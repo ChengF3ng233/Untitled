@@ -2,17 +2,14 @@ package cn.feng.untitled.util.data;
 
 import cn.feng.untitled.music.api.MusicAPI;
 import cn.feng.untitled.util.misc.Logger;
-import com.github.kokorin.jaffree.ffmpeg.FFmpeg;
-import com.github.kokorin.jaffree.ffmpeg.FFmpegResult;
-import com.github.kokorin.jaffree.ffmpeg.UrlInput;
-import com.github.kokorin.jaffree.ffmpeg.UrlOutput;
 
 import javax.imageio.ImageIO;
 import javax.imageio.ImageReader;
 import javax.imageio.stream.ImageInputStream;
 import java.awt.image.BufferedImage;
-import java.io.*;
-import java.net.HttpURLConnection;
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
 import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.StandardCopyOption;
@@ -44,11 +41,7 @@ public class HttpUtil {
             } else {
                 // 使用 FFmpeg 转换图像
                 if (file.exists()) file.delete();
-                FFmpeg.atPath(new File("../ffmpeg/bin").toPath())
-                        .addInput(UrlInput.fromPath(tempFile.toPath()))
-                        .addOutput(UrlOutput.toPath(file.toPath()))
-                        .addArguments("-f", "image2")
-                        .execute();
+                FFMPEGUtil.convertImage(tempFile, file);
 
                 Logger.info("Converted image: " + url + " to " + file.getName());
             }
@@ -58,7 +51,7 @@ public class HttpUtil {
         } finally {
             // 清理临时文件
             if (tempFile.exists()) {
-                tempFile.delete();
+                Files.delete(tempFile.toPath());
             }
         }
     }
@@ -80,12 +73,13 @@ public class HttpUtil {
             return readers.hasNext(); // 如果有 ImageReader，说明文件是支持的格式
         }
     }
+
     private static BufferedImage downloadImage(String imageUrl, int count) {
         try {
             URL url = new URL(imageUrl);
             try (InputStream inputStream = url.openStream()) {
                 BufferedImage image = ImageIO.read(inputStream);
-                return image == null? ImageIO.read(new URL(MusicAPI.user.getAvatarUrl())) : image;
+                return image == null ? ImageIO.read(new URL(MusicAPI.user.getAvatarUrl())) : image;
             }
         } catch (IOException e) {
             if (count >= 4) {

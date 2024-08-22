@@ -404,7 +404,8 @@ public class MusicAPI {
     }
 
     public static PlayList search(String keywords) {
-        Logger.info("Searching keywords [" + keywords + "]");
+        String sanitizedKeywords = keywords.replaceAll("[\\r\\n]", "");
+        Logger.info("Searching keywords [" + sanitizedKeywords + "]");
         PlayList playList = new PlayList("搜索结果：" + keywords, "你刚搜的歌");
         JsonArray songs = fetchObject("/search?keywords=" + keywords + "&limit=10").get("result").getAsJsonObject().get("songs").getAsJsonArray();
         StringBuilder ids = new StringBuilder();

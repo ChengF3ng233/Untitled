@@ -11,10 +11,8 @@ import cn.feng.untitled.music.thread.FetchMusicsThread;
 import cn.feng.untitled.music.ui.component.impl.MusicButton;
 import cn.feng.untitled.ui.widget.impl.MusicInfoWidget;
 import cn.feng.untitled.ui.widget.impl.MusicLyricWidget;
+import cn.feng.untitled.util.data.FFMPEGUtil;
 import cn.feng.untitled.util.misc.Logger;
-import com.github.kokorin.jaffree.ffmpeg.FFmpeg;
-import com.github.kokorin.jaffree.ffmpeg.UrlInput;
-import com.github.kokorin.jaffree.ffmpeg.UrlOutput;
 import javafx.embed.swing.JFXPanel;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
@@ -86,16 +84,8 @@ public class MusicPlayer {
         if (songURL.endsWith("flac")) {
             File converted = new File(ConfigManager.musicDir, music.getId() + ".wav");
             if (!converted.exists()) {
-                FFmpeg ffmpeg = FFmpeg.atPath(new File("../ffmpeg/bin").toPath());
-
-                // 构建转换命令
-                ffmpeg.addInput(UrlInput.fromUrl(songURL))
-                        .addOutput(UrlOutput.toPath(converted.toPath()))
-                        .addArguments("-c:a", "pcm_s16le")
-                        .addArguments("-threads", Runtime.getRuntime().availableProcessors() + "")
-                        .execute();
+                FFMPEGUtil.convertMusic(songURL, converted);
             }
-
             media = new Media(converted.toURI().toString());
         } else {
             media = new Media(songURL);
@@ -140,7 +130,7 @@ public class MusicPlayer {
             index = currentMusicList.indexOf(music);
         } else {
             index = currentMusicList.indexOf(music) - 1;
-            if (index < 0) index = (playMode == PlayMode.LISTED? 0 : currentMusicList.size() - 1);
+            if (index < 0) index = (playMode == PlayMode.LISTED ? 0 : currentMusicList.size() - 1);
         }
         setMusic(currentMusicList.get(index));
     }
@@ -151,7 +141,8 @@ public class MusicPlayer {
             index = currentMusicList.indexOf(music);
         } else {
             index = currentMusicList.indexOf(music) + 1;
-            if (index > currentMusicList.size() - 1) index = (playMode == PlayMode.LISTED ? currentMusicList.size() - 1 : 0);
+            if (index > currentMusicList.size() - 1)
+                index = (playMode == PlayMode.LISTED ? currentMusicList.size() - 1 : 0);
         }
         setMusic(currentMusicList.get(index));
     }

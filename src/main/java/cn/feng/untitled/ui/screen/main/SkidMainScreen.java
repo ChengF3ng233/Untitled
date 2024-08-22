@@ -1,6 +1,5 @@
 package cn.feng.untitled.ui.screen.main;
 
-import cn.feng.untitled.Client;
 import cn.feng.untitled.ui.font.nano.NanoFontLoader;
 import cn.feng.untitled.ui.font.nano.NanoUtil;
 import cn.feng.untitled.ui.screen.component.SkidButton;
@@ -44,15 +43,6 @@ public class SkidMainScreen extends GuiScreen {
 
         try {
             videoPlayer.init(ResourceUtil.getResource("bg.mp4", ResourceType.VIDEO));
-        } catch (FFmpegFrameGrabber.Exception e) {
-            throw new RuntimeException(e);
-        }
-    }
-
-    @Override
-    public void onGuiClosed() {
-        try {
-            videoPlayer.stop();
         } catch (FFmpegFrameGrabber.Exception e) {
             throw new RuntimeException(e);
         }
