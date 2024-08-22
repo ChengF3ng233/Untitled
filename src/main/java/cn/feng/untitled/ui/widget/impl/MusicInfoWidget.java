@@ -22,7 +22,6 @@ import java.io.IOException;
  * @since 2024/8/16
  **/
 public class MusicInfoWidget extends Widget {
-    private DynamicTexture coverTexture;
     public MusicInfoWidget() {
         super("MusicInfo", true);
         x = 0;
@@ -40,19 +39,15 @@ public class MusicInfoWidget extends Widget {
     public void onRender2D() {
         MusicPlayer player = Client.instance.musicManager.screen.player;
         if (player.getMusic() == null) return;
-        if (coverTexture == null) {
+        if (player.getMusic().getCoverTexture() == null) {
             try {
-                coverTexture = new DynamicTexture(ImageIO.read(player.getMusic().getCoverFile()));
+                player.getMusic().setCoverTexture(new DynamicTexture(ImageIO.read(player.getMusic().getCoverFile())));
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
         }
         height = heightValue.getValue().floatValue();
-        RenderUtil.drawImage(coverTexture, x * sr.getScaledWidth(), y * sr.getScaledHeight(), height, height);
-    }
-
-    public void reset() {
-        coverTexture = null;
+        RenderUtil.drawImage(player.getMusic().getCoverTexture(), x * sr.getScaledWidth(), y * sr.getScaledHeight(), height, height);
     }
 
     @Override

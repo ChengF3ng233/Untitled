@@ -113,7 +113,6 @@ public class MusicPlayer {
         Double value = widget.maxWidthValue.getValue();
         widget.maxWidthValue.getChangeAction().accept(value, value);
 
-        ((MusicInfoWidget) Client.instance.uiManager.getWidget(MusicInfoWidget.class)).reset();
         mediaPlayer.play();
 
         if (currentMusicList != null && currentMusicList.indexOf(music) == currentMusicList.size() - 1 && !playList.isCompletelyDownloaded()) {
