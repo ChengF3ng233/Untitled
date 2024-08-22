@@ -2,6 +2,7 @@ package cn.feng.untitled.music.ui;
 
 import cn.feng.untitled.event.api.SubscribeEvent;
 import cn.feng.untitled.event.impl.NanoEvent;
+import cn.feng.untitled.module.impl.client.PostProcessing;
 import cn.feng.untitled.music.api.base.Music;
 import cn.feng.untitled.music.api.player.MusicPlayer;
 import cn.feng.untitled.music.api.player.PlayMode;
@@ -23,6 +24,7 @@ import cn.feng.untitled.util.data.resource.ResourceType;
 import cn.feng.untitled.util.data.resource.ResourceUtil;
 import cn.feng.untitled.util.render.RenderUtil;
 import cn.feng.untitled.util.render.RoundedUtil;
+import cn.feng.untitled.util.render.blur.BlurUtil;
 import lombok.Getter;
 import lombok.Setter;
 import net.minecraft.client.Minecraft;
@@ -118,6 +120,12 @@ public class MusicPlayerScreen extends GuiScreen {
     // onRender2D
     @Override
     public void drawScreen(int mouseX, int mouseY, float partialTicks) {
+        ScaledResolution sr = new ScaledResolution(mc);
+        if (PostProcessing.blur.getValue()) {
+            BlurUtil.processStart();
+            GuiScreen.drawNewRect(0, 0, sr.getScaledWidth(), sr.getScaledHeight(), Color.BLACK.getRGB());
+            BlurUtil.blurEnd();
+        }
         render(mouseX, mouseY, false);
         this.mouseX = mouseX;
         this.mouseY = mouseY;

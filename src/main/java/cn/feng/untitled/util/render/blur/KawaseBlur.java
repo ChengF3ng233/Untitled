@@ -16,22 +16,17 @@ import java.util.List;
 import static org.lwjgl.opengl.GL11.GL_LINEAR;
 
 public class KawaseBlur extends MinecraftInstance {
-
     public static ShaderUtil kawaseDown = new ShaderUtil("kawaseDown");
     public static ShaderUtil kawaseUp = new ShaderUtil("kawaseUp");
 
     public static Framebuffer framebuffer = new Framebuffer(1, 1, false);
 
-    public static void setupUniforms(float offset) {
-        kawaseDown.setUniformf("offset", offset, offset);
-        kawaseUp.setUniformf("offset", offset, offset);
-    }
-
     private static int currentIterations;
 
     private static final List<Framebuffer> framebufferList = new ArrayList<>();
 
-    private static void initFramebuffers(float iterations) {
+    private static void initFrameBuffers(float iterations) {
+        // 移除现有的framebuffer
         for (Framebuffer framebuffer : framebufferList) {
             framebuffer.deleteFramebuffer();
         }
@@ -40,9 +35,8 @@ public class KawaseBlur extends MinecraftInstance {
         //Have to make the framebuffer null so that it does not try to delete a framebuffer that has already been deleted
         framebufferList.add(framebuffer = RenderUtil.createFrameBuffer(null));
 
-
         for (int i = 1; i <= iterations; i++) {
-            Framebuffer currentBuffer = new Framebuffer((int) (mc.displayWidth / Math.pow(2, i)), (int) (mc.displayHeight / Math.pow(2, i)), false);
+            Framebuffer currentBuffer = new Framebuffer((int) (mc.displayWidth / Math.pow(3, i)), (int) (mc.displayHeight / Math.pow(3, i)), false);
             currentBuffer.setFramebufferFilter(GL_LINEAR);
             GlStateManager.bindTexture(currentBuffer.framebufferTexture);
             GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_WRAP_S, GL14.GL_MIRRORED_REPEAT);
@@ -55,7 +49,7 @@ public class KawaseBlur extends MinecraftInstance {
 
     public static void renderBlur(int stencilFrameBufferTexture, int iterations, int offset) {
         if (currentIterations != iterations || framebuffer.framebufferWidth != mc.displayWidth || framebuffer.framebufferHeight != mc.displayHeight) {
-            initFramebuffers(iterations);
+            initFrameBuffers(iterations);
             currentIterations = iterations;
         }
 
@@ -75,6 +69,7 @@ public class KawaseBlur extends MinecraftInstance {
         Framebuffer lastBuffer = framebufferList.get(0);
         lastBuffer.framebufferClear();
         lastBuffer.bindFramebuffer(false);
+
         kawaseUp.init();
         kawaseUp.setUniformf("offset", offset, offset);
         kawaseUp.setUniformi("inTexture", 0);
@@ -88,7 +83,6 @@ public class KawaseBlur extends MinecraftInstance {
         RenderUtil.bindTexture(framebufferList.get(1).framebufferTexture);
         ShaderUtil.drawQuads();
         kawaseUp.unload();
-
 
         mc.getFramebuffer().bindFramebuffer(true);
         RenderUtil.bindTexture(framebufferList.get(0).framebufferTexture);

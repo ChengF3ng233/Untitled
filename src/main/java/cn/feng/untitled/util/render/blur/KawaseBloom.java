@@ -63,16 +63,21 @@ public class KawaseBloom extends MinecraftInstance {
         GlStateManager.blendFunc(GL_ONE, GL_ONE);
 
         GL11.glClearColor(0, 0, 0, 0);
-        renderFBO(framebufferList.get(1), framebufferTexture, kawaseDown, offset);
 
-        //Downsample
+        // 初次渲染，使用基础偏移量
+        float currentOffset = offset;
+        renderFBO(framebufferList.get(1), framebufferTexture, kawaseDown, currentOffset);
+
+        // Downsample 过程
         for (int i = 1; i < iterations; i++) {
-            renderFBO(framebufferList.get(i + 1), framebufferList.get(i).framebufferTexture, kawaseDown, offset);
+            currentOffset = offset / (float) Math.pow(1.5, i);
+            renderFBO(framebufferList.get(i + 1), framebufferList.get(i).framebufferTexture, kawaseDown, currentOffset);
         }
 
-        //Upsample
+        // Upsample 过程
         for (int i = iterations; i > 1; i--) {
-            renderFBO(framebufferList.get(i - 1), framebufferList.get(i).framebufferTexture, kawaseUp, offset);
+            currentOffset = offset / (float) Math.pow(1.5, i - 1);
+            renderFBO(framebufferList.get(i - 1), framebufferList.get(i).framebufferTexture, kawaseUp, currentOffset);
         }
 
         Framebuffer lastBuffer = framebufferList.get(0);
