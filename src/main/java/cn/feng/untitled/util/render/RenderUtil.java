@@ -45,22 +45,37 @@ public class RenderUtil extends MinecraftInstance {
         GlStateManager.enableAlpha();
         GlStateManager.alphaFunc(GL_GREATER, (float) (limit * .01));
     }
-    public static void drawPolyline(float[] vertices) {
-        // 开始绘制折线
-        glBegin(GL_LINE_STRIP);
-        glEnable(GL_LINE_SMOOTH);
-        glHint(GL_LINE_SMOOTH_HINT, GL_NICEST);
 
-        // 提供顶点坐标
-        for (int i = 0; i < vertices.length; i += 2) {
-            glVertex2f(vertices[i], vertices[i + 1]);
+    public static void drawCircle(float cx, float cy, float r, int num_segments, int c) {
+        glPushMatrix();
+        cx *= 2.0f;
+        cy *= 2.0f;
+        float f = (float) (c >> 24 & 0xFF) / 255.0f;
+        float f1 = (float) (c >> 16 & 0xFF) / 255.0f;
+        float f2 = (float) (c >> 8 & 0xFF) / 255.0f;
+        float f3 = (float) (c & 0xFF) / 255.0f;
+        float theta = (float) (6.2831852 / (double) num_segments);
+        float p = (float) Math.cos(theta);
+        float s = (float) Math.sin(theta);
+        float x = r * 2.0f;
+        float y = 0.0f;
+        GLUtil.setup2DRendering();
+        glScalef(0.5f, 0.5f, 0.5f);
+        glColor4f(f1, f2, f3, f);
+        glBegin(2);
+        for (int ii = 0; ii < num_segments; ++ii) {
+            glVertex2f(cx, cy);
+            glVertex2f(x + cx, y + cy);
+            float t = x;
+            x = p * x - s * y;
+            y = s * t + p * y;
         }
-
-        // 结束绘制
-        glDisable(GL_LINE_SMOOTH);
         glEnd();
+        glScalef(2.0f, 2.0f, 2.0f);
+        GLUtil.end2DRendering();
+        GlStateManager.color(1.0f, 1.0f, 1.0f, 1.0f);
+        glPopMatrix();
     }
-
 
     public static Framebuffer createFrameBuffer(Framebuffer framebuffer) {
         return createFrameBuffer(framebuffer, false);

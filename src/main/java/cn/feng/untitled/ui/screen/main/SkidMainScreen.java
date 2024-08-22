@@ -3,9 +3,9 @@ package cn.feng.untitled.ui.screen.main;
 import cn.feng.untitled.ui.font.nano.NanoFontLoader;
 import cn.feng.untitled.ui.font.nano.NanoUtil;
 import cn.feng.untitled.ui.screen.component.SkidButton;
-import cn.feng.untitled.ui.screen.component.UntitledButton;
 import cn.feng.untitled.util.render.RenderUtil;
 import cn.feng.untitled.util.render.blur.BlurUtil;
+import cn.feng.untitled.util.render.particle.ParticleManager;
 import net.minecraft.client.gui.*;
 import net.minecraft.util.ResourceLocation;
 import org.lwjgl.nanovg.NanoVG;
@@ -26,6 +26,7 @@ import java.util.Locale;
  **/
 public class SkidMainScreen extends GuiScreen {
     private final List<SkidButton> buttonList = new ArrayList<>();
+    private final ParticleManager particleManager = new ParticleManager();
 
     public SkidMainScreen() {
         buttonList.add(new SkidButton("Single Player", () -> mc.displayGuiScreen(new GuiSelectWorld(this))));
@@ -88,6 +89,12 @@ public class SkidMainScreen extends GuiScreen {
                 new Color(0, 0, 0, 220),
                 new Color(0, 0, 0, 210)
         );
+
+
+
+        particleManager.setAmount(60);
+        particleManager.renderParticles();
+
 
         NanoUtil.beginFrame();
 
