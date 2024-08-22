@@ -14,6 +14,7 @@ public class ResourceUtil {
                             case FONT -> "font/";
                             case ICON -> "icon/";
                             case IMAGE -> "image/";
+                            case VIDEO -> "video/";
                         } +
                         fileName
         );

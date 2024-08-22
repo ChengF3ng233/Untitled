@@ -1,13 +1,19 @@
 package cn.feng.untitled.ui.screen.main;
 
+import cn.feng.untitled.Client;
 import cn.feng.untitled.ui.font.nano.NanoFontLoader;
 import cn.feng.untitled.ui.font.nano.NanoUtil;
 import cn.feng.untitled.ui.screen.component.SkidButton;
+import cn.feng.untitled.util.data.resource.ResourceType;
+import cn.feng.untitled.util.data.resource.ResourceUtil;
 import cn.feng.untitled.util.render.RenderUtil;
 import cn.feng.untitled.util.render.blur.BlurUtil;
 import cn.feng.untitled.util.render.particle.ParticleManager;
+import cn.feng.untitled.util.render.video.VideoPlayer;
 import net.minecraft.client.gui.*;
 import net.minecraft.util.ResourceLocation;
+import org.bytedeco.javacv.FFmpegFrameGrabber;
+import org.bytedeco.javacv.FrameGrabber;
 import org.lwjgl.nanovg.NanoVG;
 
 import javax.swing.*;
@@ -28,12 +34,28 @@ public class SkidMainScreen extends GuiScreen {
     private final List<SkidButton> buttonList = new ArrayList<>();
     private final ParticleManager particleManager = new ParticleManager();
 
+    private final VideoPlayer videoPlayer = new VideoPlayer();
     public SkidMainScreen() {
         buttonList.add(new SkidButton("Single Player", () -> mc.displayGuiScreen(new GuiSelectWorld(this))));
         buttonList.add(new SkidButton("Multi Player", () -> mc.displayGuiScreen(new GuiMultiplayer(this))));
         buttonList.add(new SkidButton("Alt Manager", () -> JOptionPane.showMessageDialog(null, "我几把没写呢")));
         buttonList.add(new SkidButton("Options", () -> mc.displayGuiScreen(new GuiOptions(this, mc.gameSettings))));
         buttonList.add(new SkidButton("Exit", () -> mc.shutdown()));
+
+        try {
+            videoPlayer.init(ResourceUtil.getResource("bg.mp4", ResourceType.VIDEO));
+        } catch (FFmpegFrameGrabber.Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Override
+    public void onGuiClosed() {
+        try {
+            videoPlayer.stop();
+        } catch (FFmpegFrameGrabber.Exception e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @Override
@@ -42,7 +64,12 @@ public class SkidMainScreen extends GuiScreen {
         int scaledWidth = sr.getScaledWidth();
         int scaledHeight = sr.getScaledHeight();
 
-        RenderUtil.drawImage(new ResourceLocation("untitled/image/background2.png"), 0, 0, scaledWidth, scaledHeight);
+        try {
+            videoPlayer.render(0, 0, scaledWidth, scaledHeight);
+        } catch (FrameGrabber.Exception e) {
+            RenderUtil.drawImage(new ResourceLocation("untitled/image/background2.png"), 0, 0, scaledWidth, scaledHeight);
+        }
+
         BlurUtil.processStart();
         RenderUtil.drawQuads(
                 new float[]{0, 0},
@@ -90,11 +117,7 @@ public class SkidMainScreen extends GuiScreen {
                 new Color(0, 0, 0, 210)
         );
 
-
-
-        particleManager.setAmount(60);
-        particleManager.renderParticles();
-
+        particleManager.renderParticles(1000, 3000, 60);
 
         NanoUtil.beginFrame();
 
@@ -136,10 +159,10 @@ public class SkidMainScreen extends GuiScreen {
 
 
         NanoFontLoader.rubik.bold().drawGlowString(year, scaledWidth - 30f, 70f, 35f, NanoVG.NVG_ALIGN_RIGHT, textColor);
-        NanoFontLoader.rubik.bold().drawGlowString(month, scaledWidth - 34f - NanoFontLoader.rubik.bold().getStringWidth(year) * 2, 84f, 60f, textColor);
-        NanoFontLoader.rubik.bold().drawGlowString(day, scaledWidth - 34f - NanoFontLoader.rubik.bold().getStringWidth(year) * 2, 113f, 40f, textColor);
+        NanoFontLoader.rubik.bold().drawGlowString(month, scaledWidth - 34f - NanoFontLoader.rubik.bold().getStringWidth(year) * 2, 70f, 60f, textColor);
+        NanoFontLoader.rubik.bold().drawGlowString(day, scaledWidth - 34f - NanoFontLoader.rubik.bold().getStringWidth(year) * 2, 100f, 35f, textColor);
 
-        NanoUtil.rotateStart(scaledWidth - 30f, 120f, 2f);
+        NanoUtil.rotateStart(scaledWidth - 30f, 100f, 2f);
         NanoFontLoader.rubik.bold().drawString("TIME /", 0f, 0f, 25f, textColor);
         NanoFontLoader.rubik.bold().drawString("CALENDAR", 0f, 13f, 25f, textColor);
         NanoUtil.rotateEnd();
