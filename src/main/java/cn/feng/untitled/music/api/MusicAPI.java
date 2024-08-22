@@ -264,7 +264,6 @@ public class MusicAPI {
         Logger.info("Getting lyrics for id [" + id + "]");
         JsonObject response = fetchObject("/lyric/new?id=" + id);
 
-
         boolean newLyric = response.has("yrc");
         String lyricCollection = response.get(newLyric ? "yrc" : "lrc").getAsJsonObject().get("lyric").getAsString();
         List<String> lines = new ArrayList<>(Arrays.stream(lyricCollection.split("\n")).toList());
@@ -386,6 +385,7 @@ public class MusicAPI {
                 }
             }
         }
+
         return new LyricPair(lyrics, translatedLyrics);
     }
 
