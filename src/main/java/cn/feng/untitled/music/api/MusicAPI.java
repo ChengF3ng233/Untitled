@@ -1,5 +1,6 @@
 package cn.feng.untitled.music.api;
 
+import cn.feng.untitled.Client;
 import cn.feng.untitled.config.ConfigManager;
 import cn.feng.untitled.music.api.base.*;
 import cn.feng.untitled.music.api.user.QRCode;
@@ -21,6 +22,9 @@ import java.io.IOException;
 import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import static cn.feng.untitled.music.util.LyricUtil.parseLyrics;
+import static cn.feng.untitled.music.util.LyricUtil.parseTranslatedLyrics;
 
 /**
  * @author ChengFeng
@@ -147,26 +151,35 @@ public class MusicAPI {
         for (JsonElement song : songs) {
             JsonObject obj = song.getAsJsonObject();
             JsonObject privilege = obj.get("privilege").getAsJsonObject();
-            StringBuilder artistStr = new StringBuilder();
-            for (JsonElement ar : obj.get("ar").getAsJsonArray()) {
-                JsonObject artist = ar.getAsJsonObject();
-                artistStr.append((!artistStr.isEmpty()) ? ", " + artist.get("name").getAsString() : artist.get("name").getAsString());
+
+            Music music;
+            if (Client.instance.musicManager.musicMap.containsKey(obj.get("id").getAsLong())) {
+                music = Client.instance.musicManager.musicMap.get(obj.get("id").getAsLong());
+            } else {
+                StringBuilder artistStr = new StringBuilder();
+                for (JsonElement ar : obj.get("ar").getAsJsonArray()) {
+                    JsonObject artist = ar.getAsJsonObject();
+                    artistStr.append((!artistStr.isEmpty()) ? ", " + artist.get("name").getAsString() : artist.get("name").getAsString());
+                }
+                File file = new File(ConfigManager.coverDir, "music_" + obj.get("id").getAsLong() + ".jpg");
+                downloadImage(obj.get("al").getAsJsonObject().get("picUrl").getAsString(), file, false);
+                music = new Music(
+                        obj.get("name").getAsString(),
+                        artistStr.toString(),
+                        obj.get("al").getAsJsonObject().get("name").getAsString(),
+                        obj.get("id").getAsLong(),
+                        obj.get("dt").getAsInt(),
+                        file
+                );
+                music.setFree(!("none").equals(privilege.get("flLevel").getAsString()));
+                music.setQuality(MusicQuality.getQuality(privilege.get("dlLevel").getAsString()));
+
+                Client.instance.musicManager.musicMap.put(music.getId(), music);
             }
-            File file = new File(ConfigManager.coverDir, "music_" + obj.get("id").getAsLong() + ".jpg");
-            downloadImage(obj.get("al").getAsJsonObject().get("picUrl").getAsString(), file, false);
-            Music music = new Music(
-                    obj.get("name").getAsString(),
-                    artistStr.toString(),
-                    obj.get("al").getAsJsonObject().get("name").getAsString(),
-                    obj.get("id").getAsLong(),
-                    obj.get("dt").getAsInt(),
-                    file
-            );
-            music.setFree(!("none").equals(privilege.get("flLevel").getAsString()));
-            music.setQuality(MusicQuality.getQuality(privilege.get("dlLevel").getAsString()));
+
             playList.getMusicList().add(music);
             if (playList.getCoverImage() == null) {
-                playList.setCoverImage(file);
+                playList.setCoverImage(music.getCoverFile());
             }
         }
         playList.setId(-1);
@@ -189,29 +202,37 @@ public class MusicAPI {
         List<Music> musics = new ArrayList<>();
         for (JsonElement song : songs) {
             JsonObject obj = song.getAsJsonObject();
-            StringBuilder artistStr = new StringBuilder();
-            for (JsonElement ar : obj.get("ar").getAsJsonArray()) {
-                JsonObject artist = ar.getAsJsonObject();
-                artistStr.append((!artistStr.isEmpty()) ? ", " + artist.get("name").getAsString() : artist.get("name").getAsString());
+
+            Music music;
+            if (Client.instance.musicManager.musicMap.containsKey(obj.get("id").getAsLong())) {
+                music = Client.instance.musicManager.musicMap.get(obj.get("id").getAsLong());
+            } else {
+                StringBuilder artistStr = new StringBuilder();
+                for (JsonElement ar : obj.get("ar").getAsJsonArray()) {
+                    JsonObject artist = ar.getAsJsonObject();
+                    artistStr.append((!artistStr.isEmpty()) ? ", " + artist.get("name").getAsString() : artist.get("name").getAsString());
+                }
+
+                File file = new File(ConfigManager.coverDir, "music_" + obj.get("id").getAsLong() + ".jpg");
+
+                downloadImage(obj.get("al").getAsJsonObject().get("picUrl").getAsString(), file, false);
+
+                music = new Music(
+                        obj.get("name").getAsString(),
+                        artistStr.toString(),
+                        obj.get("al").getAsJsonObject().get("name").getAsString(),
+                        obj.get("id").getAsLong(),
+                        obj.get("dt").getAsInt(),
+                        file
+                );
+
+                Client.instance.musicManager.musicMap.put(obj.get("id").getAsLong(), music);
             }
-
-            File file = new File(ConfigManager.coverDir, "music_" + obj.get("id").getAsLong() + ".jpg");
-
-            downloadImage(obj.get("al").getAsJsonObject().get("picUrl").getAsString(), file, false);
-
-            Music music = new Music(
-                    obj.get("name").getAsString(),
-                    artistStr.toString(),
-                    obj.get("al").getAsJsonObject().get("name").getAsString(),
-                    obj.get("id").getAsLong(),
-                    obj.get("dt").getAsInt(),
-                    file
-            );
 
             musics.add(music);
 
             if (playList.getCoverImage() == null) {
-                playList.setCoverImage(file);
+                playList.setCoverImage(music.getCoverFile());
             }
         }
 
@@ -264,127 +285,8 @@ public class MusicAPI {
         Logger.info("Getting lyrics for id [" + id + "]");
         JsonObject response = fetchObject("/lyric/new?id=" + id);
 
-        boolean newLyric = response.has("yrc");
-        String lyricCollection = response.get(newLyric ? "yrc" : "lrc").getAsJsonObject().get("lyric").getAsString();
-        List<String> lines = new ArrayList<>(Arrays.stream(lyricCollection.split("\n")).toList());
-        lines.removeIf(String::isEmpty);
-
-        List<LyricLine> lyrics = new ArrayList<>();
-        for (String line : lines) {
-            // 元数据不要
-            if (line.startsWith("{")) continue;
-            if (newLyric) {
-                // 正则表达式匹配整行的时间戳和持续时间
-                List<LyricChar> chars = new ArrayList<>();
-
-                // 正则表达式匹配每个字符的时间戳、持续时间和字符内容
-                Pattern charPattern = Pattern.compile("\\((\\d+),(\\d+),\\d+\\)([^()]+)");
-                Matcher charMatcher = charPattern.matcher(line);
-
-                while (charMatcher.find()) {
-                    int charStartTime = Integer.parseInt(charMatcher.group(1));
-                    int charDuration = Integer.parseInt(charMatcher.group(2));
-                    String character = charMatcher.group(3);
-                    chars.add(new LyricChar(charStartTime, charDuration, character));
-                }
-
-                Pattern linePattern = Pattern.compile("\\[(\\d+),(\\d+)]");
-                Matcher lineMatcher = linePattern.matcher(line);
-
-                if (lineMatcher.find()) {
-                    int lineStartTime = Integer.parseInt(lineMatcher.group(1));
-                    int lineDuration = Integer.parseInt(lineMatcher.group(2));
-                    lyrics.add(new LyricLine(lineStartTime, lineDuration, chars, false));
-                }
-            } else {
-                Pattern pattern = Pattern.compile("\\[(\\d{2}):(\\d{2})\\.(\\d{2})]\\s*(.*)");
-                Matcher matcher = pattern.matcher(line);
-
-                if (matcher.find()) {
-                    // 提取时间戳部分
-                    int minutes = Integer.parseInt(matcher.group(1)); // 分钟
-                    int seconds = Integer.parseInt(matcher.group(2)); // 秒
-                    int centiseconds = Integer.parseInt(matcher.group(3)); // 厘秒
-
-                    // 将时间戳转换为毫秒
-                    int startTime = (minutes * 60 * 1000) + (seconds * 1000) + (centiseconds * 10);
-
-                    // 提取歌词内容
-                    String lyric = matcher.group(4);
-                    List<String> list = new ArrayList<>(Arrays.stream(lyric.split("")).toList());
-                    list.removeIf(String::isEmpty);
-
-                    List<LyricChar> chars = new ArrayList<>();
-                    for (String str : list) {
-                        chars.add(new LyricChar(-1, -1, str));
-                    }
-                    if (chars.isEmpty()) {
-                        chars.add(new LyricChar(-1, -1, "[Music]"));
-                    }
-                    lyrics.add(new LyricLine(startTime, -1, chars, false));
-                } else {
-                    pattern = Pattern.compile("\\[(\\d{2}):(\\d{2})\\.(\\d{3})]\\s*(.*)");
-                    matcher = pattern.matcher(line);
-
-                    if (matcher.find()) {
-                        // 提取时间戳部分
-                        int minutes = Integer.parseInt(matcher.group(1)); // 分钟
-                        int seconds = Integer.parseInt(matcher.group(2)); // 秒
-                        int ms = Integer.parseInt(matcher.group(3)); // 豪秒
-
-                        // 将时间戳转换为毫秒
-                        int startTime = (minutes * 60 * 1000) + (seconds * 1000) + (ms);
-
-                        // 提取歌词内容
-                        String lyric = matcher.group(4);
-                        List<String> list = new ArrayList<>(Arrays.stream(lyric.split("")).toList());
-                        list.removeIf(String::isEmpty);
-
-                        List<LyricChar> chars = new ArrayList<>();
-
-                        for (String str : list) {
-                            chars.add(new LyricChar(-1, -1, str));
-                        }
-
-                        if (chars.isEmpty()) {
-                            chars.add(new LyricChar(-1, -1, "[Music]"));
-                        }
-
-                        lyrics.add(new LyricLine(startTime, -1, chars, false));
-                    }
-                }
-            }
-        }
-
-        boolean newTranslate = response.has("ytlrc");
-        JsonElement je = response.getAsJsonObject().get(newTranslate ? "ytlrc" : "tlyric");
-        List<LyricLine> translatedLyrics = new ArrayList<>();
-        if (!(je instanceof JsonNull) && je != null)  {
-            String transCollection = je.getAsJsonObject().get("lyric").getAsString();
-            List<String> translates = new ArrayList<>(Arrays.stream(transCollection.split("\n")).toList());
-            translates.removeIf(String::isEmpty);
-
-            for (String line : translates) {
-                Pattern pattern = Pattern.compile(newTranslate? "\\[(\\d{2}):(\\d{2})\\.(\\d{3})]\\s*(.*)" : "\\[(\\d{2}):(\\d{2})\\.(\\d{2})]\\s*(.*)");
-                Matcher matcher = pattern.matcher(line);
-
-                if (matcher.find()) {
-                    // 提取时间戳部分
-                    int minutes = Integer.parseInt(matcher.group(1)); // 分钟
-                    int seconds = Integer.parseInt(matcher.group(2)); // 秒
-                    int centiseconds = Integer.parseInt(matcher.group(3)); // 厘秒
-
-                    // 将时间戳转换为毫秒
-                    int startTime = (minutes * 60 * 1000) + (seconds * 1000) + (centiseconds * (newTranslate? 1 : 10));
-
-                    // 提取歌词内容
-                    String lyric = matcher.group(4);
-
-                    LyricChar lyricChar = new LyricChar(startTime, -1, lyric);
-                    translatedLyrics.add(new LyricLine(startTime, -1, Arrays.stream(new LyricChar[]{lyricChar}).toList(), true));
-                }
-            }
-        }
+        List<LyricLine> lyrics = parseLyrics(response);
+        List<LyricLine> translatedLyrics = parseTranslatedLyrics(response);
 
         return new LyricPair(lyrics, translatedLyrics);
     }
@@ -411,18 +313,27 @@ public class MusicAPI {
         StringBuilder ids = new StringBuilder();
         for (JsonElement song : songs) {
             JsonObject obj = song.getAsJsonObject();
-            StringBuilder artistStr = new StringBuilder();
-            for (JsonElement ar : obj.get("artists").getAsJsonArray()) {
-                JsonObject artist = ar.getAsJsonObject();
-                artistStr.append((!artistStr.isEmpty()) ? ", " + artist.get("name").getAsString() : artist.get("name").getAsString());
+
+            Music music;
+            if (Client.instance.musicManager.musicMap.containsKey(obj.get("id").getAsLong())) {
+                music = Client.instance.musicManager.musicMap.get(obj.get("id").getAsLong());
+            } else {
+                StringBuilder artistStr = new StringBuilder();
+                for (JsonElement ar : obj.get("artists").getAsJsonArray()) {
+                    JsonObject artist = ar.getAsJsonObject();
+                    artistStr.append((!artistStr.isEmpty()) ? ", " + artist.get("name").getAsString() : artist.get("name").getAsString());
+                }
+                music = new Music(
+                        obj.get("name").getAsString(),
+                        artistStr.toString(),
+                        obj.get("album").getAsJsonObject().get("name").getAsString(),
+                        obj.get("id").getAsLong(),
+                        obj.get("duration").getAsInt()
+                );
+                Client.instance.musicManager.musicMap.put(music.getId(), music);
             }
-            playList.getMusicList().add(new Music(
-                    obj.get("name").getAsString(),
-                    artistStr.toString(),
-                    obj.get("album").getAsJsonObject().get("name").getAsString(),
-                    obj.get("id").getAsLong(),
-                    obj.get("duration").getAsInt()
-            ));
+
+            playList.getMusicList().add(music);
             ids.append(ids.isEmpty()? obj.get("id").getAsLong() : "," + obj.get("id").getAsLong());
         }
         Map<Long, File> map = getSongCovers(ids.toString());
