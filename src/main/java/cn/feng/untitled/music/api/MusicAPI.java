@@ -79,7 +79,7 @@ public class MusicAPI {
     }
 
     public static QRCode genQRCode() throws IOException {
-        Logger.info("Generating QR code...");
+        Logger.debug("Generating QR code...");
         JsonObject keyObj = fetchObject("/login/qr/key?timestamp=" + System.currentTimeMillis());
         String uniqueKey = keyObj.get("data").getAsJsonObject().get("unikey").getAsString();
 
@@ -98,7 +98,7 @@ public class MusicAPI {
     }
 
     public static ScanResult getScanResult(String key) {
-        Logger.info("Checking scan result...");
+        Logger.debug("Checking scan result...");
         JsonObject object = fetchObject("/login/qr/check?key=" + key + "&timestamp=" + System.currentTimeMillis());
         int code = object.get("code").getAsInt();
 
@@ -113,7 +113,7 @@ public class MusicAPI {
     }
 
     public static void updateUserInfo() {
-        Logger.info("Updating user info...");
+        Logger.debug("Updating user info...");
         JsonObject responseData = fetchObject("/login/status?timestamp=" + System.currentTimeMillis()).get("data").getAsJsonObject();
         JsonObject profile = responseData.get("profile").getAsJsonObject();
         user.setUid(profile.get("userId").getAsString());
@@ -124,7 +124,7 @@ public class MusicAPI {
     }
 
     public static List<PlayList> getUserPlayLists() {
-        Logger.info("Getting user playlists...");
+        Logger.debug("Getting user playlists...");
         JsonArray playlistArray = fetchObject("/user/playlist?uid=" + user.getUid()).get("playlist").getAsJsonArray();
         List<PlayList> result = new ArrayList<>();
         for (JsonElement element : playlistArray) {
@@ -145,7 +145,7 @@ public class MusicAPI {
     }
 
     public static PlayList getDailySongs() {
-        Logger.info("Getting daily songs..");
+        Logger.debug("Getting daily songs..");
         JsonArray songs = fetchObject("/recommend/songs").get("data").getAsJsonObject().get("dailySongs").getAsJsonArray();
         PlayList playList = new PlayList("每日推荐", "根据你的喜好，每日生成的推荐歌曲");
         for (JsonElement song : songs) {
@@ -188,14 +188,14 @@ public class MusicAPI {
     }
 
     public static List<Music> fetchMusicList(PlayList playList) {
-        Logger.info("Fetching music list for id [" + playList.getId() + "], offset: " + playList.getMusicList().size());
+        Logger.debug("Fetching music list for id [" + playList.getId() + "], offset: " + playList.getMusicList().size());
         JsonObject object = fetchObject("/playlist/track/all?id=" + playList.getId() + "&limit=10&offset=" + playList.getMusicList().size());
         JsonArray songs = object.get("songs").getAsJsonArray();
         JsonArray privileges = object.get("privileges").getAsJsonArray();
 
         if (songs.isEmpty()) {
             playList.setCompletelyDownloaded(true);
-            Logger.info("Playlist [" + playList.getId() + "] is completely downloaded");
+            Logger.debug("Playlist [" + playList.getId() + "] is completely downloaded");
             return Collections.emptyList();
         }
 
@@ -257,7 +257,7 @@ public class MusicAPI {
     }
 
     public static List<PlayList> getRecommendedPlayLists() {
-        Logger.info("Getting recommended playlists...");
+        Logger.debug("Getting recommended playlists...");
         JsonArray playlistArray = fetchObject("/recommend/resource").get("recommend").getAsJsonArray();
 
         List<PlayList> result = new ArrayList<>();
@@ -282,7 +282,7 @@ public class MusicAPI {
     }
 
     public static LyricPair getLyrics(long id) {
-        Logger.info("Getting lyrics for id [" + id + "]");
+        Logger.debug("Getting lyrics for id [" + id + "]");
         JsonObject response = fetchObject("/lyric/new?id=" + id);
 
         List<LyricLine> lyrics = parseLyrics(response);
@@ -307,7 +307,7 @@ public class MusicAPI {
 
     public static PlayList search(String keywords) {
         String sanitizedKeywords = keywords.replaceAll("[\\r\\n]", "");
-        Logger.info("Searching keywords [" + sanitizedKeywords + "]");
+        Logger.debug("Searching keywords [" + sanitizedKeywords + "]");
         PlayList playList = new PlayList("搜索结果：" + keywords, "你刚搜的歌");
         JsonArray songs = fetchObject("/search?keywords=" + keywords + "&limit=10").get("result").getAsJsonObject().get("songs").getAsJsonArray();
         StringBuilder ids = new StringBuilder();

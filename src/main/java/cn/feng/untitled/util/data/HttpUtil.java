@@ -37,13 +37,13 @@ public class HttpUtil {
             if (isSupportedImageFormat(tempFile)) {
                 // 如果是 JPG 文件，将临时文件重命名为目标文件
                 Files.move(tempFile.toPath(), file.toPath(), StandardCopyOption.REPLACE_EXISTING);
-                Logger.info("Downloaded image: " + url + " to " + file.getName());
+                Logger.debug("Downloaded image: " + url + " to " + file.getName());
             } else {
                 // 使用 FFmpeg 转换图像
                 if (file.exists()) file.delete();
                 FFMPEGUtil.convertImage(tempFile, file);
 
-                Logger.info("Converted image: " + url + " to " + file.getName());
+                Logger.debug("Converted image: " + url + " to " + file.getName());
             }
         } catch (IOException e) {
             Logger.error("IO Exception: " + e.getMessage());
