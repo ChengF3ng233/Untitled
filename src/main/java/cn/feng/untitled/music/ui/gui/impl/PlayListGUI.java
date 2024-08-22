@@ -36,8 +36,6 @@ public class PlayListGUI extends MusicPlayerGUI {
     // 针对已有歌单的情况
     public PlayListGUI(PlayList playList, MusicPlayerGUI parent) {
         super(parent);
-        this.playList = playList;
-
         setPlayList(playList);
     }
 
@@ -47,9 +45,13 @@ public class PlayListGUI extends MusicPlayerGUI {
     }
 
     public void setPlayList(PlayList playList) {
-        buttons.clear();
-        for (Music music : playList.getMusicList()) {
-            buttons.add(new MusicButton(music, playList));
+        this.playList = playList;
+
+        if (!this.playList.getMusicList().isEmpty()) {
+            buttons.clear();
+            for (Music music : playList.getMusicList()) {
+                buttons.add(new MusicButton(music, playList));
+            }
         }
     }
 

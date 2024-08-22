@@ -37,7 +37,6 @@ public class MusicPlayer {
     @Getter
     private PlayMode playMode = PlayMode.LOOP;
     @Getter
-    @Setter
     private MusicQuality quality = MusicQuality.exhigh;
     @Getter
     private float[] magnitudes;
@@ -69,6 +68,13 @@ public class MusicPlayer {
 
     public void setVolume(double volume) {
         mediaPlayer.setVolume(volume / 100d);
+    }
+
+    public void setQuality(MusicQuality quality) {
+        this.quality = quality;
+        for (Music m : Client.instance.musicManager.musicMap.values()) {
+            m.setSongURL(null);
+        }
     }
 
     public void setMusic(Music music) {
