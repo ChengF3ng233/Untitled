@@ -1,6 +1,8 @@
 package cn.feng.untitled.ui.clickgui.gui;
 
 import cn.feng.untitled.ui.clickgui.ThemeColor;
+import cn.feng.untitled.ui.font.awt.CenterType;
+import cn.feng.untitled.ui.font.awt.FontRenderer;
 import cn.feng.untitled.ui.font.nano.NanoFontRenderer;
 import cn.feng.untitled.util.animation.advanced.Direction;
 import cn.feng.untitled.util.animation.advanced.composed.ColorAnimation;
@@ -26,12 +28,12 @@ public class TextField {
     public float radius;
     public String text;
 
-    private final NanoFontRenderer font;
+    private final FontRenderer font;
     public Color backgroundColor, outlineColor;
     private final ColorAnimation textColorAnim;
     private final ColorAnimation cursorColorAnim;
 
-    public TextField(float width, float height, NanoFontRenderer font, Color backgroundColor, Color outlineColor) {
+    public TextField(float width, float height, FontRenderer font, Color backgroundColor, Color outlineColor) {
         this.text = "";
         this.width = width;
         this.textMaxWidth = width - 2f;
@@ -69,14 +71,12 @@ public class TextField {
             cursorRestored = true;
         }
 
-        font.setSize(16);
-
         RoundedUtil.drawRoundOutline(posX, posY, width, height, radius, 0.1f, backgroundColor, outlineColor);
 
         String visibleText = font.getStringWidth(text) > textMaxWidth - 3f - offsetX? font.trimStringToWidth(text, textMaxWidth - 3f - offsetX, true) : text;
         float textX = posX + 2f;
         float textY = posY + height / 2f;
-        font.drawString(visibleText, textX + offsetX + 1f, textY, NanoVG.NVG_ALIGN_MIDDLE, textColorAnim.getOutput(), true);
+        font.drawCenteredString(visibleText, textX + offsetX + 1f, textY, textColorAnim.getOutput().getRGB(), CenterType.Vertical, true);
 
         if (focused) {
             float h = height * 0.6f;

@@ -71,7 +71,7 @@ public class ClickGUI extends GuiScreen {
         currentPanel = categoryPanelList.get(0);
 
         float iconSize = 14f;
-        searchField = new TextField(60f, 20f, NanoFontLoader.misans, ThemeColor.titleColor, ThemeColor.grayColor);
+        searchField = new TextField(60f, 20f, FontLoader.miSans(16), ThemeColor.titleColor, ThemeColor.grayColor);
         searchField.radius = 5f;
         searchField.offsetX = iconSize + 2f;
 
@@ -115,9 +115,6 @@ public class ClickGUI extends GuiScreen {
         }
 
         RenderUtil.scaleStart(x + width / 2, y + height / 2, windowAnim.getOutput().floatValue());
-
-        NanoUtil.beginFrame();
-        NanoUtil.scaleStart(x + width / 2, y + height / 2, windowAnim.getOutput().floatValue());
 
         // Window BG
         RoundedUtil.drawRound(x, y, width, height, radius, ThemeColor.windowColor);
@@ -163,7 +160,6 @@ public class ClickGUI extends GuiScreen {
         }
 
         RoundedUtil.drawRound(categoryX - 2f, categoryY + panelAnim.getOutput().floatValue() - 5f, leftWidth - 14f, currentPanel.height + 10f, 4f, ThemeColor.barColor);
-
 
         for (CategoryType type : CategoryType.values()) {
             FontLoader.greyCliff(14).drawString(type.toString(), categoryX, categoryY - 15f, ThemeColor.grayColor.getRGB());
@@ -252,9 +248,6 @@ public class ClickGUI extends GuiScreen {
         } else if (!selected && iconColorAnim.getDirection() == Direction.BACKWARDS) {
             iconColorAnim.changeDirection();
         }
-
-        NanoUtil.scaleEnd();
-        NanoUtil.endFrame();
 
         RenderUtil.scaleEnd();
     }

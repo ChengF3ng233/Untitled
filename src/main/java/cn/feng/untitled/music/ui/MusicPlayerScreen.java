@@ -15,6 +15,7 @@ import cn.feng.untitled.music.ui.gui.MusicPlayerGUI;
 import cn.feng.untitled.music.ui.gui.impl.PlayListGUI;
 import cn.feng.untitled.music.ui.gui.impl.PlayListListGUI;
 import cn.feng.untitled.ui.clickgui.gui.TextField;
+import cn.feng.untitled.ui.font.awt.FontLoader;
 import cn.feng.untitled.ui.font.nano.NanoFontLoader;
 import cn.feng.untitled.ui.font.nano.NanoUtil;
 import cn.feng.untitled.util.animation.advanced.Animation;
@@ -64,7 +65,7 @@ public class MusicPlayerScreen extends GuiScreen {
     public final List<CategoryButton> categoryButtons = new ArrayList<>();
     private final UserButton userButton = new UserButton();
     @Getter
-    private final TextField searchField = new TextField(150, 10, NanoFontLoader.misans, ThemeColor.bgColor, ThemeColor.outlineColor);
+    private final TextField searchField = new TextField(150, 10, FontLoader.miSans(16), ThemeColor.bgColor, ThemeColor.outlineColor);
     @Setter
     @Getter
     private MusicPlayerGUI currentGUI;
