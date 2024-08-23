@@ -31,7 +31,7 @@ import static cn.feng.untitled.music.util.LyricUtil.parseTranslatedLyrics;
  * @since 2024/8/11
  **/
 public class MusicAPI {
-    public static final String host = "http://localhost:3000";
+    public static final String host = "https://music.skidder.top";
     public static User user = new User();
 
     public static String fetch(String api, String cookie) {
