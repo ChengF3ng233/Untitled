@@ -6,6 +6,7 @@ import cn.feng.untitled.event.impl.ChatGUIEvent;
 import cn.feng.untitled.event.impl.NanoEvent;
 import cn.feng.untitled.event.impl.Render2DEvent;
 import cn.feng.untitled.event.impl.ShaderEvent;
+import cn.feng.untitled.event.type.EventPriority;
 import cn.feng.untitled.ui.clickgui.ClickGUI;
 import cn.feng.untitled.ui.screen.main.SkidMainScreen;
 import cn.feng.untitled.ui.widget.Widget;
@@ -70,7 +71,7 @@ public class UIManager extends MinecraftInstance {
         }
     }
 
-    @SubscribeEvent
+    @SubscribeEvent(priority = EventPriority.HIGHEST)
     private void onNano(NanoEvent event) {
         for (Widget widget : widgetList) {
             if (Client.instance.moduleManager.getModule(widget).enabled) {

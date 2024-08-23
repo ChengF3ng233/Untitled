@@ -54,10 +54,10 @@ public class SkidMainScreen extends GuiScreen {
         int scaledWidth = sr.getScaledWidth();
         int scaledHeight = sr.getScaledHeight();
 
-        try {
-            videoPlayer.render(0, 0, scaledWidth, scaledHeight);
+       try {
+           videoPlayer.render(0, 0, scaledWidth, scaledHeight);
         } catch (FrameGrabber.Exception e) {
-            RenderUtil.drawImage(new ResourceLocation("untitled/image/background2.png"), 0, 0, scaledWidth, scaledHeight);
+           RenderUtil.drawImage(new ResourceLocation("untitled/image/background2.png"), 0, 0, scaledWidth, scaledHeight);
         }
 
         BlurUtil.processStart();
@@ -81,6 +81,8 @@ public class SkidMainScreen extends GuiScreen {
         );
         BlurUtil.bloomEnd(2, 1);
 
+
+        particleManager.renderParticles(1000, 3000, 60);
 
         RenderUtil.drawQuads(
                 new float[]{scaledWidth * 0.57f - scaledWidth * 0.11f, 0},
@@ -106,8 +108,6 @@ public class SkidMainScreen extends GuiScreen {
                 new Color(0, 0, 0, 220),
                 new Color(0, 0, 0, 210)
         );
-
-        particleManager.renderParticles(1000, 3000, 60);
 
         NanoUtil.beginFrame();
 
