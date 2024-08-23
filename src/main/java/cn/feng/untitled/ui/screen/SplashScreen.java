@@ -19,15 +19,20 @@ import java.awt.*;
 public class SplashScreen extends GuiScreen {
     private final GuiScreen current;
     private final GuiScreen target;
-    private final Animation alphaAnim;
+    private Animation alphaAnim;
 
     private final Minecraft mc = Minecraft.getMinecraft();
 
     public SplashScreen(GuiScreen current, GuiScreen target) {
         this.current = current;
         this.target = target;
+    }
 
-        alphaAnim = new SmoothStepAnimation(500, 1d);
+    @Override
+    public void initGui() {
+        if (alphaAnim == null) {
+            alphaAnim = new SmoothStepAnimation(500, 1d);
+        }
     }
 
     @Override

@@ -865,7 +865,7 @@ public class Minecraft implements IThreadListener, IPlayerUsage {
     }
 
     public void displayScreen(GuiScreen guiScreenIn) {
-        if (this.currentScreen != null) {
+        if (this.currentScreen != null && !(guiScreenIn instanceof SplashScreen)) {
             this.currentScreen.onGuiClosed();
         }
 

@@ -7,57 +7,48 @@ import static org.lwjgl.opengl.GL13.GL_TEXTURE0;
 import static org.lwjgl.opengl.GL13.glActiveTexture;
 
 /**
- * Texture-binder in LWJGL.
+ * 异步纹理绑定
  *
- * @version 1.0.0
+ * @version 1.1.0
  *
  * @author LingYuWeiGuang
  * @author HyperTap
+ * @author ChengFeng
  */
 public class TextureBinder {
-    private int imageWidth, imageHeight, internalformat, textureID;
-    private ByteBuffer imageBuffer;
+    private int width;
+    private int height;
+    private final int textureID;
+    private ByteBuffer buffer;
 
-    /**
-     * Set image.
-     *
-     * @param buffer image object
-     * @param width image width
-     * @param height image height
-     */
-    public void setBuffer(ByteBuffer buffer, int width, int height) {
-        this.setBuffer(buffer, width, height, GL_RGB);
+    public TextureBinder() {
+        // 使用唯一的TextureID
+        textureID = glGenTextures();
     }
 
     /**
-     * Set image.
+     * 设定纹理数据、宽度、高度
      *
-     * @param buffer image object
-     * @param width image width
-     * @param height image height
-     * @param internalformat image color format
+     * @param buffer 纹理数据
+     * @param width 纹理宽度
+     * @param height 纹理高度
      */
-    public void setBuffer(ByteBuffer buffer, int width, int height, int internalformat) {
-        this.internalformat = internalformat;
-        this.imageWidth = width;
-        this.imageHeight = height;
-        this.imageBuffer = buffer;
+    public void setTexture(ByteBuffer buffer, int width, int height) {
+        this.buffer = buffer;
+        this.width = width;
+        this.height = height;
     }
 
     /**
-     * Binding texture form buffered images.
+     * 绑定纹理
      */
     public void bindTexture() {
-        glDeleteTextures(this.textureID);
-
-        this.textureID = glGenTextures();
-
         glActiveTexture(GL_TEXTURE0);
         glBindTexture(GL_TEXTURE_2D, textureID);
 
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 
-        glTexImage2D(GL_TEXTURE_2D, 0, this.internalformat, this.imageWidth, this.imageHeight, 0, this.internalformat, GL_UNSIGNED_BYTE, this.imageBuffer);
+        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, this.width, this.height, 0, GL_RGB, GL_UNSIGNED_BYTE, this.buffer);
     }
 }

@@ -49,6 +49,19 @@ public class SkidMainScreen extends GuiScreen {
     }
 
     @Override
+    public void initGui() {
+        if (videoPlayer.getPaused().get()) {
+            videoPlayer.getPaused().set(false);
+        }
+    }
+
+    @Override
+    public void onGuiClosed() {
+        // 暂停抓取
+        videoPlayer.getPaused().set(true);
+    }
+
+    @Override
     public void drawScreen(int mouseX, int mouseY, float partialTicks) {
         ScaledResolution sr = new ScaledResolution(mc);
         int scaledWidth = sr.getScaledWidth();

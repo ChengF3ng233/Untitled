@@ -1,8 +1,8 @@
 package cn.feng.untitled.util.render.video;
 
 import cn.feng.untitled.util.MinecraftInstance;
-import cn.feng.untitled.util.misc.TimerUtil;
-import cn.feng.untitled.util.render.RenderUtil;
+import cn.feng.untitled.util.misc.Logger;
+import lombok.Getter;
 import net.minecraft.util.ResourceLocation;
 import org.bytedeco.ffmpeg.global.avutil;
 import org.bytedeco.javacv.FFmpegFrameGrabber;
@@ -21,32 +21,25 @@ import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  * Video-player in Minecraft.
  *
- * @version 1.1.0
- *
  * @author LingYuWeiGuang
  * @author HyperTap
  * @author ChengFeng
+ * @version 1.1.0
  */
 public class VideoPlayer extends MinecraftInstance {
     private FFmpegFrameGrabber frameGrabber;
     private TextureBinder textureBinder;
 
     private int frameLength;
-    private int currentFrame;
+    @Getter
+    private final AtomicBoolean paused = new AtomicBoolean(false);
 
     private ScheduledExecutorService scheduler;
     private ScheduledFuture<?> scheduledFuture;
-
-    public final AtomicBoolean paused = new AtomicBoolean(false);
-    private final AtomicBoolean stopped = new AtomicBoolean(false);
-
-    private static final Logger logger = Logger.getLogger("VideoPlayer");
 
     /**
      * 读取一个视频文件
@@ -60,6 +53,8 @@ public class VideoPlayer extends MinecraftInstance {
         try {
             videoTemp = File.createTempFile("video_temp", ".mp4");
             InputStream inputStream = mc.getResourceManager().getResource(resource).getInputStream();
+
+            // 覆写
             Files.copy(inputStream, videoTemp.toPath(), StandardCopyOption.REPLACE_EXISTING);
             videoTemp.deleteOnExit();
         } catch (IOException e) {
@@ -72,47 +67,43 @@ public class VideoPlayer extends MinecraftInstance {
 
         textureBinder = new TextureBinder();
 
-        stopped.set(false);
         frameGrabber.start();
         frameLength = frameGrabber.getLengthInFrames();
 
         double frameRate = frameGrabber.getFrameRate();
 
         scheduler = Executors.newSingleThreadScheduledExecutor();
-        scheduledFuture = scheduler.scheduleAtFixedRate(this::doGetBuffer, 0, (long) (1000 / frameRate), TimeUnit.MILLISECONDS);
+        scheduledFuture = scheduler.scheduleAtFixedRate(this::grabNextFrame, 0, (long) (1000 / frameRate), TimeUnit.MILLISECONDS);
     }
 
-    private void doGetBuffer() {
+    /**
+     * 没完没了地抓取下一帧并设置纹理绑定器数据
+     */
+    private void grabNextFrame() {
+        // 暂停了就不再抓了
+        if (paused.get()) return;
         try {
-            if (currentFrame < frameLength - 1) {
-                Frame frame = frameGrabber.grabImage();
-                if (frame != null) {
-                    if (frame.image != null) {
-                        textureBinder.setBuffer((ByteBuffer) frame.image[0], frame.imageWidth, frame.imageHeight);
-
-                        currentFrame++;
-                    }
+            Frame frame = frameGrabber.grabImage();
+            if (frame != null && frame.image != null) {
+                textureBinder.setTexture((ByteBuffer) frame.image[0], frame.imageWidth, frame.imageHeight);
+                if (frameGrabber.getFrameNumber() == frameLength - 1) {
+                    frameGrabber.setFrameNumber(0);
                 }
-            } else {
-                currentFrame = 0;
-                frameGrabber.setFrameNumber(0);
             }
         } catch (FFmpegFrameGrabber.Exception e) {
-            logger.log(Level.WARNING, e.getMessage());
+            Logger.error(e.getMessage());
         }
     }
 
     /**
      * 绑定纹理并渲染到指定矩形。
      *
-     * @param left 左端
-     * @param top 顶端
-     * @param right 右端
+     * @param left   左端
+     * @param top    顶端
+     * @param right  右端
      * @param bottom 底端
      */
     public void render(int left, int top, int right, int bottom) throws FrameGrabber.Exception {
-        if (stopped.get() || paused.get()) return;
-
         textureBinder.bindTexture();
 
         GL11.glPushMatrix();
@@ -141,14 +132,10 @@ public class VideoPlayer extends MinecraftInstance {
     }
 
     /**
-     * Stop play video frame.
+     * 不画了。
+     * @throws FFmpegFrameGrabber.Exception
      */
     public void stop() throws FFmpegFrameGrabber.Exception {
-        if (stopped.get()) return;
-
-        stopped.set(true);
-        paused.set(false);
-
         if (scheduledFuture != null && !scheduledFuture.isCancelled()) {
             scheduledFuture.cancel(true);
         }
@@ -158,8 +145,6 @@ public class VideoPlayer extends MinecraftInstance {
         }
 
         textureBinder = null;
-
-        currentFrame = 0;
 
         if (frameGrabber != null) {
             frameGrabber.stop();
