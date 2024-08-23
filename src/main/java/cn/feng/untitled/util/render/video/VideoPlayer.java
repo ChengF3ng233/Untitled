@@ -1,6 +1,8 @@
 package cn.feng.untitled.util.render.video;
 
 import cn.feng.untitled.util.MinecraftInstance;
+import cn.feng.untitled.util.misc.TimerUtil;
+import cn.feng.untitled.util.render.RenderUtil;
 import net.minecraft.util.ResourceLocation;
 import org.bytedeco.ffmpeg.global.avutil;
 import org.bytedeco.javacv.FFmpegFrameGrabber;
@@ -12,7 +14,6 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.ByteBuffer;
-import java.nio.file.CopyOption;
 import java.nio.file.Files;
 import java.nio.file.StandardCopyOption;
 import java.util.concurrent.Executors;
@@ -26,7 +27,7 @@ import java.util.logging.Logger;
 /**
  * Video-player in Minecraft.
  *
- * @version 1.0.0
+ * @version 1.1.0
  *
  * @author LingYuWeiGuang
  * @author HyperTap
@@ -37,7 +38,7 @@ public class VideoPlayer extends MinecraftInstance {
     private TextureBinder textureBinder;
 
     private int frameLength;
-    private int count; // frames counter
+    private int currentFrame;
 
     private ScheduledExecutorService scheduler;
     private ScheduledFuture<?> scheduledFuture;
@@ -48,13 +49,14 @@ public class VideoPlayer extends MinecraftInstance {
     private static final Logger logger = Logger.getLogger("VideoPlayer");
 
     /**
-     * Start video-player object.
+     * 读取一个视频文件
      *
-     * @param resource As you can see.
+     * @param resource 资源地址
      */
     public void init(ResourceLocation resource) throws FFmpegFrameGrabber.Exception {
         File videoTemp;
 
+        // 创建缓存文件
         try {
             videoTemp = File.createTempFile("video_temp", ".mp4");
             InputStream inputStream = mc.getResourceManager().getResource(resource).getInputStream();
@@ -70,8 +72,6 @@ public class VideoPlayer extends MinecraftInstance {
 
         textureBinder = new TextureBinder();
 
-        count = 0;
-
         stopped.set(false);
         frameGrabber.start();
         frameLength = frameGrabber.getLengthInFrames();
@@ -83,20 +83,18 @@ public class VideoPlayer extends MinecraftInstance {
     }
 
     private void doGetBuffer() {
-        if (paused.get() || stopped.get()) return;
-
         try {
-            if (count < frameLength - 1) {
+            if (currentFrame < frameLength - 1) {
                 Frame frame = frameGrabber.grabImage();
                 if (frame != null) {
                     if (frame.image != null) {
                         textureBinder.setBuffer((ByteBuffer) frame.image[0], frame.imageWidth, frame.imageHeight);
 
-                        count++;
+                        currentFrame++;
                     }
                 }
             } else {
-                count = 0;
+                currentFrame = 0;
                 frameGrabber.setFrameNumber(0);
             }
         } catch (FFmpegFrameGrabber.Exception e) {
@@ -105,12 +103,12 @@ public class VideoPlayer extends MinecraftInstance {
     }
 
     /**
-     * Binding texture and play video frame.
+     * 绑定纹理并渲染到指定矩形。
      *
-     * @param left rect left
-     * @param top rect top
-     * @param right rect right
-     * @param bottom rect bottom
+     * @param left 左端
+     * @param top 顶端
+     * @param right 右端
+     * @param bottom 底端
      */
     public void render(int left, int top, int right, int bottom) throws FrameGrabber.Exception {
         if (stopped.get() || paused.get()) return;
@@ -124,7 +122,7 @@ public class VideoPlayer extends MinecraftInstance {
         GL11.glDepthMask(false);
         GL11.glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
 
-        // draw Quad
+        // 绘制矩形
         GL11.glBegin(GL11.GL_QUADS);
         GL11.glTexCoord2f(0.0f, 1.0f);
         GL11.glVertex3f(left, bottom, 0);
@@ -161,7 +159,7 @@ public class VideoPlayer extends MinecraftInstance {
 
         textureBinder = null;
 
-        count = 0;
+        currentFrame = 0;
 
         if (frameGrabber != null) {
             frameGrabber.stop();
