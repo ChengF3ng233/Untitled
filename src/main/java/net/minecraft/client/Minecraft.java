@@ -3,6 +3,8 @@ package net.minecraft.client;
 import cn.feng.untitled.Client;
 import cn.feng.untitled.event.impl.KeyEvent;
 import cn.feng.untitled.event.impl.TickEvent;
+import cn.feng.untitled.ui.font.nano.NanoFontLoader;
+import cn.feng.untitled.ui.font.nano.NanoUtil;
 import cn.feng.untitled.ui.screen.SplashScreen;
 import cn.feng.untitled.util.render.RenderUtil;
 import com.google.common.collect.*;
@@ -36,7 +38,6 @@ import net.minecraft.client.renderer.*;
 import net.minecraft.client.renderer.chunk.RenderChunk;
 import net.minecraft.client.renderer.entity.RenderItem;
 import net.minecraft.client.renderer.entity.RenderManager;
-import net.minecraft.client.renderer.texture.DynamicTexture;
 import net.minecraft.client.renderer.texture.TextureManager;
 import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
@@ -96,10 +97,13 @@ import org.lwjgl.LWJGLException;
 import org.lwjgl.Sys;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
+import org.lwjgl.nanovg.NanoVG;
 import org.lwjgl.opengl.*;
+import org.lwjgl.opengl.DisplayMode;
 import org.lwjgl.util.glu.GLU;
 
 import javax.imageio.ImageIO;
+import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -111,6 +115,7 @@ import java.nio.ByteOrder;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.*;
+import java.util.List;
 import java.util.concurrent.Callable;
 import java.util.concurrent.Executors;
 import java.util.concurrent.FutureTask;
@@ -494,10 +499,10 @@ public class Minecraft implements IThreadListener, IPlayerUsage {
         this.mcResourceManager = new SimpleReloadableResourceManager(this.metadataSerializer_);
         this.mcLanguageManager = new LanguageManager(this.metadataSerializer_, this.gameSettings.language);
         this.mcResourceManager.registerReloadListener(this.mcLanguageManager);
+        this.drawSplashScreen("Minecraft 初始化");
         this.refreshResources();
         this.renderEngine = new TextureManager(this.mcResourceManager);
         this.mcResourceManager.registerReloadListener(this.renderEngine);
-        this.drawSplashScreen(this.renderEngine);
         this.skinManager = new SkinManager(this.renderEngine, new File(this.fileAssets, "skins"), this.sessionService);
         this.saveLoader = new AnvilSaveConverter(new File(this.mcDataDir, "saves"));
         this.mcSoundHandler = new SoundHandler(this.mcResourceManager, this.gameSettings);
@@ -525,6 +530,7 @@ public class Minecraft implements IThreadListener, IPlayerUsage {
             }
         });
         this.mouseHelper = new MouseHelper();
+        this.drawSplashScreen("Minecraft 预加载");
         this.checkGLError("Pre startup");
         GlStateManager.enableTexture2D();
         GlStateManager.shadeModel(7425);
@@ -537,6 +543,7 @@ public class Minecraft implements IThreadListener, IPlayerUsage {
         GlStateManager.matrixMode(5889);
         GlStateManager.loadIdentity();
         GlStateManager.matrixMode(5888);
+        this.drawSplashScreen("Minecraft 启动");
         this.checkGLError("Startup");
         this.textureMapBlocks = new TextureMap("textures");
         this.textureMapBlocks.setMipmapLevels(this.gameSettings.mipmapLevels);
@@ -558,12 +565,15 @@ public class Minecraft implements IThreadListener, IPlayerUsage {
         this.guiAchievement = new GuiAchievement(this);
         GlStateManager.viewport(0, 0, this.displayWidth, this.displayHeight);
         this.effectRenderer = new EffectRenderer(this.theWorld, this.renderEngine);
+
         this.checkGLError("Post startup");
 
+        this.drawSplashScreen("客户端加载");
         Client.instance.start();
         entityRenderer.cameraPosAnim.setCurrent(0f, 0f, -0.1f);
         entityRenderer.cameraPosAnim.setTarget(0f, 0f, -0.1f);
 
+        this.drawSplashScreen("Minecraft 后加载");
         this.ingameGUI = new GuiIngame(this);
 
         if (this.serverName != null) {
@@ -600,7 +610,7 @@ public class Minecraft implements IThreadListener, IPlayerUsage {
 
     private void createDisplay() {
         Display.setResizable(true);
-        Display.setTitle("Minecraft 1.8.9" + " | LWJGL Version " + Sys.getVersion());
+        Display.setTitle("Minecraft 1.8.9");
         Display.create((new PixelFormat()).withDepthBits(24));
     }
 
@@ -778,52 +788,46 @@ public class Minecraft implements IThreadListener, IPlayerUsage {
         this.displayHeight = displaymode.getHeight();
     }
 
-    private void drawSplashScreen(TextureManager textureManagerInstance) {
-        ScaledResolution scaledresolution = new ScaledResolution(this);
-        int i = scaledresolution.getScaleFactor();
-        Framebuffer framebuffer = new Framebuffer(scaledresolution.getScaledWidth() * i, scaledresolution.getScaledHeight() * i, true);
+    private void drawSplashScreen(String state) {
+        ScaledResolution scaledResolution = new ScaledResolution(Minecraft.getMinecraft());
+        int scaleFactor = scaledResolution.getScaleFactor();
+
+        Framebuffer framebuffer = new Framebuffer(scaledResolution.getScaledWidth() * scaleFactor, scaledResolution.getScaledHeight() * scaleFactor, true);
         framebuffer.bindFramebuffer(false);
-        GlStateManager.matrixMode(5889);
+        GlStateManager.matrixMode(GL11.GL_PROJECTION);
         GlStateManager.loadIdentity();
-        GlStateManager.ortho(0.0D, scaledresolution.getScaledWidth(), scaledresolution.getScaledHeight(), 0.0D, 1000.0D, 3000.0D);
-        GlStateManager.matrixMode(5888);
+        GlStateManager.ortho(0.0D, scaledResolution.getScaledWidth(), scaledResolution.getScaledHeight(), 0.0D, 1000.0D, 3000.0D);
+        GlStateManager.matrixMode(GL11.GL_MODELVIEW);
         GlStateManager.loadIdentity();
         GlStateManager.translate(0.0F, 0.0F, -2000.0F);
         GlStateManager.disableLighting();
         GlStateManager.disableFog();
         GlStateManager.disableDepth();
         GlStateManager.enableTexture2D();
-        InputStream inputstream = null;
 
-        try {
-            inputstream = this.mcDefaultResourcePack.getInputStream(locationMojangPng);
-            this.mojangLogo = textureManagerInstance.getDynamicTextureLocation("logo", new DynamicTexture(ImageIO.read(inputstream)));
-            textureManagerInstance.bindTexture(this.mojangLogo);
-        } catch (IOException ioexception) {
-            logger.error("Unable to load logo: {}", locationMojangPng, ioexception);
-        } finally {
-            IOUtils.closeQuietly(inputstream);
-        }
+        float cx = scaledResolution.getScaledWidth() / 2f;
+        float cy = scaledResolution.getScaledHeight() / 2f;
 
-        Tessellator tessellator = Tessellator.getInstance();
-        WorldRenderer worldrenderer = tessellator.getWorldRenderer();
-        worldrenderer.begin(7, DefaultVertexFormats.POSITION_TEX_COLOR);
-        worldrenderer.pos(0.0D, this.displayHeight, 0.0D).tex(0.0D, 0.0D).color(255, 255, 255, 255).endVertex();
-        worldrenderer.pos(this.displayWidth, this.displayHeight, 0.0D).tex(0.0D, 0.0D).color(255, 255, 255, 255).endVertex();
-        worldrenderer.pos(this.displayWidth, 0.0D, 0.0D).tex(0.0D, 0.0D).color(255, 255, 255, 255).endVertex();
-        worldrenderer.pos(0.0D, 0.0D, 0.0D).tex(0.0D, 0.0D).color(255, 255, 255, 255).endVertex();
-        tessellator.draw();
-        GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
-        int j = 256;
-        int k = 256;
-        this.draw((scaledresolution.getScaledWidth() - j) / 2, (scaledresolution.getScaledHeight() - k) / 2, 0, 0, j, k, 255, 255, 255, 255);
-        GlStateManager.disableLighting();
-        GlStateManager.disableFog();
+        RenderUtil.drawRect(0, 0, scaledResolution.getScaledWidth(), scaledResolution.getScaledHeight(), new Color(30, 30, 30).getRGB());
+
+        NanoUtil.beginFrame();
+        NanoFontLoader.misans.bold().drawGlowString("千杯酒已喝下去", cx, cy - 65f, 40f, NanoVG.NVG_ALIGN_CENTER | NanoVG.NVG_ALIGN_BASELINE, Color.WHITE);
+        NanoFontLoader.misans.bold().drawGlowString("都不醉", cx, cy - 35f, 40f, NanoVG.NVG_ALIGN_CENTER | NanoVG.NVG_ALIGN_BASELINE, Color.WHITE);
+        NanoFontLoader.misans.bold().drawGlowString("何况秋风秋雨", cx, cy - 5f, 40f, NanoVG.NVG_ALIGN_CENTER | NanoVG.NVG_ALIGN_BASELINE, Color.WHITE);
+        NanoFontLoader.emoji.drawGlowString("🦅🦅🦅", cx, cy + 5f, 40f, NanoVG.NVG_ALIGN_CENTER | NanoVG.NVG_ALIGN_TOP, Color.WHITE);
+        NanoFontLoader.misans.bold().drawGlowString("小福崽子真没见过黑神话奥", cx, cy + 35f, 40f, NanoVG.NVG_ALIGN_CENTER | NanoVG.NVG_ALIGN_TOP, Color.RED);
+        NanoFontLoader.misans.bold().drawGlowString("我让你见识见识什么叫黑手！！！", cx, cy + 65f, 40f, NanoVG.NVG_ALIGN_CENTER | NanoVG.NVG_ALIGN_TOP, Color.RED);
+
+        NanoFontLoader.misans.drawString(state, cx, cy + 130f, 25f, NanoVG.NVG_ALIGN_CENTER | NanoVG.NVG_ALIGN_TOP, Color.WHITE);
+        NanoUtil.endFrame();
+
         framebuffer.unbindFramebuffer();
-        framebuffer.framebufferRender(scaledresolution.getScaledWidth() * i, scaledresolution.getScaledHeight() * i);
+        framebuffer.framebufferRender(scaledResolution.getScaledWidth() * scaleFactor, scaledResolution.getScaledHeight() * scaleFactor);
+
         GlStateManager.enableAlpha();
         GlStateManager.alphaFunc(516, 0.1F);
-        this.updateDisplay();
+
+        updateDisplay();
     }
 
     /**

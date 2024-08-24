@@ -23,7 +23,7 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
- * Video-player in Minecraft.
+ *
  *
  * @author LingYuWeiGuang
  * @author HyperTap
@@ -132,7 +132,7 @@ public class VideoPlayer extends MinecraftInstance {
     }
 
     /**
-     * 不画了。
+     * 调用这个，你就别想再启动了！
      * @throws FFmpegFrameGrabber.Exception
      */
     public void stop() throws FFmpegFrameGrabber.Exception {

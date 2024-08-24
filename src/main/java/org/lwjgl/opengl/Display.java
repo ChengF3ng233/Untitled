@@ -2,6 +2,7 @@ package org.lwjgl.opengl;
 
 import cn.feng.untitled.Client;
 import cn.feng.untitled.event.impl.NanoEvent;
+import cn.feng.untitled.ui.font.nano.NanoFontLoader;
 import cn.feng.untitled.ui.font.nano.NanoLoader;
 import cn.feng.untitled.ui.font.nano.NanoUtil;
 import lombok.Getter;
@@ -300,6 +301,7 @@ public class Display {
         drawable = new DrawableGL();
         GL.createCapabilities();
         NanoLoader.createContext();
+        NanoFontLoader.registerFonts();
 
         if (savedIcons != null) {
             setIcon(savedIcons);

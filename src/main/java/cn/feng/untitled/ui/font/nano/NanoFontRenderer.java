@@ -13,8 +13,6 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.ByteBuffer;
-import java.util.ArrayList;
-import java.util.List;
 
 import static cn.feng.untitled.ui.font.nano.NanoLoader.vg;
 import static org.lwjgl.nanovg.NanoVG.*;
@@ -35,7 +33,7 @@ public class NanoFontRenderer extends MinecraftInstance {
 
     public NanoFontRenderer(String name, String fileName) {
         this.name = name;
-        try (InputStream inputStream = mc.getResourceManager().getResource(ResourceUtil.getResource(fileName + ".ttf", ResourceType.FONT)).getInputStream()) {
+        try (InputStream inputStream = ResourceUtil.getResourceAsStream(fileName + ".ttf", ResourceType.FONT)) {
             byte[] data = inputStream.readAllBytes();
             ByteBuffer buffer = MemoryUtil.memAlloc(data.length);
             buffer.put(data).flip();
@@ -50,14 +48,14 @@ public class NanoFontRenderer extends MinecraftInstance {
 
     private NanoFontRenderer(String name, String fileName, int plainFont) {
         this.name = name + "-bold";
-        try (InputStream inputStream = mc.getResourceManager().getResource(ResourceUtil.getResource(fileName + "-bold.ttf", ResourceType.FONT)).getInputStream()) {
+        try (InputStream inputStream = ResourceUtil.getResourceAsStream(fileName + "-bold.ttf", ResourceType.FONT)) {
             byte[] data = inputStream.readAllBytes();
             ByteBuffer buffer = MemoryUtil.memAlloc(data.length);
             buffer.put(data).flip();
 
             font = nvgCreateFontMem(vg, this.name, buffer, false);
             size = 16;
-        } catch (FileNotFoundException ee) {
+        } catch (NullPointerException ee) {
             Logger.warn("Bold font " + fileName + " not found.");
             font = plainFont;
         } catch (IOException e) {

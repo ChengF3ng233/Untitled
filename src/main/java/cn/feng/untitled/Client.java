@@ -58,7 +58,6 @@ public enum Client {
 
         Logger.info("Loading fonts...");
         FontLoader.registerFonts();
-        NanoFontLoader.registerFonts();
 
         Logger.info("Registering...");
         eventBus.register(moduleManager);

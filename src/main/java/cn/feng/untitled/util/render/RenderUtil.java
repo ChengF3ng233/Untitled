@@ -8,6 +8,7 @@ import net.minecraft.client.renderer.texture.DynamicTexture;
 import net.minecraft.client.shader.Framebuffer;
 import net.minecraft.util.ResourceLocation;
 import org.lwjgl.input.Mouse;
+import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL13;
 
 import java.awt.*;
@@ -22,7 +23,7 @@ import static org.lwjgl.opengl.GL11.*;
  * @since 2024/7/28
  **/
 public class RenderUtil extends MinecraftInstance {
-    private static final Map<BufferedImage, Integer> textureMap = new HashMap<>();
+    private static Map<BufferedImage, Integer> textureMap = new HashMap<>();
 
     // 上一帧的帧时间
     public static double lastFrame = System.nanoTime();
@@ -91,7 +92,7 @@ public class RenderUtil extends MinecraftInstance {
         return framebuffer;
     }
 
-    public static void drawRect(final float x, final float y, final float x2, final float y2, final int color) {
+    public static void drawRect(float x, float y, float x2, float y2, int color) {
         glEnable(GL_BLEND);
         glDisable(GL_TEXTURE_2D);
         glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
@@ -109,6 +110,32 @@ public class RenderUtil extends MinecraftInstance {
         glEnable(GL_TEXTURE_2D);
         glDisable(GL_BLEND);
         glDisable(GL_LINE_SMOOTH);
+    }
+
+    public static void drawRectWithTexture(float left, float top, float right, float bottom) {
+        glPushMatrix();
+        glDisable(GL_DEPTH_TEST);
+        glEnable(GL_BLEND);
+        glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+        glDepthMask(false);
+        glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
+
+        // 绘制矩形
+        glBegin(GL_QUADS);
+        glTexCoord2f(0.0f, 1.0f);
+        glVertex3f(left, bottom, 0);
+        glTexCoord2f(1.0f, 1.0f);
+        glVertex3f(right, bottom, 0);
+        glTexCoord2f(1.0f, 0.0f);
+        glVertex3f(right, top, 0);
+        glTexCoord2f(0.0f, 0.0f);
+        glVertex3f(left, top, 0);
+        glEnd();
+
+        glEnable(GL_DEPTH_TEST);
+        glDepthMask(true);
+        glPopMatrix();
+        glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
     }
 
     public static void drawQuads(float[] leftTop, float[] leftBottom, float[] rightTop, float[] rightBottom, Color rightColor, Color leftColor) {
@@ -227,7 +254,7 @@ public class RenderUtil extends MinecraftInstance {
         glPushMatrix();
         glEnable(GL_SCISSOR_TEST);
         ScaledResolution sr = new ScaledResolution(mc);
-        final double scale = sr.getScaleFactor();
+        double scale = sr.getScaleFactor();
         double finalHeight = height * scale;
         double finalY = (sr.getScaledHeight() - y) * scale;
         double finalX = x * scale;
