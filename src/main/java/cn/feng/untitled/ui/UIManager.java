@@ -35,9 +35,9 @@ public class UIManager extends MinecraftInstance {
 
     public void registerWidgets() {
         register(new ArraylistWidget());
-        register(new MusicVisualizerWidget());
-        register(new MusicLyricWidget());
         register(new MusicInfoWidget());
+        register(new MusicLyricWidget());
+        register(new MusicVisualizerWidget());
     }
 
     public Widget getWidget(Class<? extends Widget> w) {
@@ -103,6 +103,7 @@ public class UIManager extends MinecraftInstance {
         for (Widget widget : widgetList) {
             if (Client.instance.moduleManager.getModule(widget).enabled) {
                 widget.onChatGUI(event.mouseX, event.mouseY, (draggingWidget == null || draggingWidget == widget));
+                if (widget.dragging) draggingWidget = widget;
             }
         }
     }

@@ -1,7 +1,6 @@
 package cn.feng.untitled.ui.widget;
 
 import cn.feng.untitled.event.impl.ShaderEvent;
-import cn.feng.untitled.ui.clickgui.ThemeColor;
 import cn.feng.untitled.ui.font.awt.FontLoader;
 import cn.feng.untitled.util.MinecraftInstance;
 import cn.feng.untitled.util.animation.advanced.Direction;
@@ -39,7 +38,7 @@ public abstract class Widget extends MinecraftInstance {
         this.width = 100f;
         this.height = 100f;
 
-        colorAnim = new ColorAnimation(Color.WHITE, ThemeColor.grayColor, 100);
+        colorAnim = new ColorAnimation(Color.WHITE, ColorUtil.TRANSPARENT_COLOR, 100);
     }
 
     public void onShader(ShaderEvent event) {
@@ -77,12 +76,15 @@ public abstract class Widget extends MinecraftInstance {
         }
 
         FontLoader.rubik(16).drawString(name, renderX, renderY - FontLoader.rubik(16).getFontHeight() - 3f, colorAnim.getOutput().getRGB(), true);
-        RoundedUtil.drawRoundOutline(renderX, renderY, width, height, 3f, 0.2f, ColorUtil.TRANSPARENT_COLOR, colorAnim.getOutput());
+
+        if (dragging) {
+            RoundedUtil.drawRoundOutline(renderX, renderY, width, height, 2f, 0.05f, ColorUtil.TRANSPARENT_COLOR, colorAnim.getOutput());
+        }
 
         if (hovering && Mouse.isButtonDown(0) && !dragging && drag) {
-             dragging = true;
-             dragX = mouseX;
-             dragY = mouseY;
+            dragging = true;
+            dragX = mouseX;
+            dragY = mouseY;
         }
 
         if (!Mouse.isButtonDown(0)) dragging = false;
