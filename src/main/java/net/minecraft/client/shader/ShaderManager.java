@@ -1,6 +1,6 @@
 package net.minecraft.client.shader;
 
-import com.google.common.base.Charsets;
+import java.nio.charset.StandardCharsets;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.gson.JsonArray;
@@ -22,6 +22,7 @@ import org.apache.logging.log4j.Logger;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.Map;
 
@@ -51,14 +52,13 @@ public class ShaderManager {
     private boolean isDirty;
 
     public ShaderManager(IResourceManager resourceManager, String programName) throws IOException {
-        JsonParser jsonparser = new JsonParser();
         ResourceLocation resourcelocation = new ResourceLocation("shaders/program/" + programName + ".json");
         this.programFilename = programName;
         InputStream inputstream = null;
 
         try {
             inputstream = resourceManager.getResource(resourcelocation).getInputStream();
-            JsonObject jsonobject = jsonparser.parse(IOUtils.toString(inputstream, Charsets.UTF_8)).getAsJsonObject();
+            JsonObject jsonobject = JsonParser.parseString(IOUtils.toString(inputstream, StandardCharsets.UTF_8)).getAsJsonObject();
             String s = JsonUtils.getString(jsonobject, "vertex");
             String s1 = JsonUtils.getString(jsonobject, "fragment");
             JsonArray jsonarray = JsonUtils.getJsonArray(jsonobject, "samplers", null);

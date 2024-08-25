@@ -1,6 +1,6 @@
 package net.minecraft.server;
 
-import com.google.common.base.Charsets;
+import java.nio.charset.StandardCharsets;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Queues;
 import com.google.common.util.concurrent.Futures;
@@ -44,6 +44,7 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.net.Proxy;
+import java.nio.charset.StandardCharsets;
 import java.security.KeyPair;
 import java.text.SimpleDateFormat;
 import java.util.List;
@@ -577,7 +578,7 @@ public abstract class MinecraftServer implements Runnable, ICommandSender, IThre
                 Validate.validState(bufferedimage.getHeight() == 64, "Must be 64 pixels high");
                 ImageIO.write(bufferedimage, "PNG", new ByteBufOutputStream(bytebuf));
                 ByteBuf bytebuf1 = Base64.encode(bytebuf);
-                response.setFavicon("data:image/png;base64," + bytebuf1.toString(Charsets.UTF_8));
+                response.setFavicon("data:image/png;base64," + bytebuf1.toString(StandardCharsets.UTF_8));
             } catch (Exception exception) {
                 logger.error("Couldn't load server icon", exception);
             } finally {

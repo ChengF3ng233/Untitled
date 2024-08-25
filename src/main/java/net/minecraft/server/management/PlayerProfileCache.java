@@ -1,6 +1,6 @@
 package net.minecraft.server.management;
 
-import com.google.common.base.Charsets;
+import java.nio.charset.StandardCharsets;
 import com.google.common.collect.Iterators;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
@@ -17,6 +17,7 @@ import org.apache.commons.io.IOUtils;
 import java.io.*;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
+import java.nio.charset.StandardCharsets;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -185,7 +186,7 @@ public class PlayerProfileCache {
         BufferedReader bufferedreader = null;
 
         try {
-            bufferedreader = Files.newReader(this.usercacheFile, Charsets.UTF_8);
+            bufferedreader = Files.newReader(this.usercacheFile, StandardCharsets.UTF_8);
             List<PlayerProfileCache.ProfileEntry> list = this.gson.fromJson(bufferedreader, TYPE);
             this.usernameToProfileEntryMap.clear();
             this.uuidToProfileEntryMap.clear();
@@ -211,7 +212,7 @@ public class PlayerProfileCache {
         BufferedWriter bufferedwriter = null;
 
         try {
-            bufferedwriter = Files.newWriter(this.usercacheFile, Charsets.UTF_8);
+            bufferedwriter = Files.newWriter(this.usercacheFile, StandardCharsets.UTF_8);
             bufferedwriter.write(s);
         } catch (FileNotFoundException var8) {
         } catch (IOException var9) {

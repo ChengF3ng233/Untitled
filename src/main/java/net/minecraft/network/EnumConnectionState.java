@@ -19,6 +19,7 @@ import net.minecraft.network.status.server.S00PacketServerInfo;
 import net.minecraft.network.status.server.S01PacketPong;
 import org.apache.logging.log4j.LogManager;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.Map;
 
 public enum EnumConnectionState {
@@ -172,7 +173,7 @@ public enum EnumConnectionState {
                     }
 
                     try {
-                        oclass.newInstance();
+                        oclass.getConstructor().newInstance();
                     } catch (Throwable var10) {
                         throw new Error("Packet " + oclass + " fails instantiation checks! " + oclass);
                     }
@@ -222,9 +223,8 @@ public enum EnumConnectionState {
         return (Integer) ((BiMap) this.directionMaps.get(direction)).inverse().get(packetIn.getClass());
     }
 
-    public Packet getPacket(EnumPacketDirection direction, int packetId) throws InstantiationException, IllegalAccessException {
+    public Packet getPacket(EnumPacketDirection direction, int packetId) throws InstantiationException, IllegalAccessException, NoSuchMethodException, InvocationTargetException {
         Class<? extends Packet> oclass = (Class) ((BiMap) this.directionMaps.get(direction)).get(packetId);
-        return oclass == null ? null : oclass.newInstance();
+        return oclass == null ? null : oclass.getConstructor().newInstance();
     }
-
 }

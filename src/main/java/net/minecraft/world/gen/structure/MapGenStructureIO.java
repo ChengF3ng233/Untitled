@@ -55,7 +55,7 @@ public class MapGenStructureIO {
             Class<? extends StructureStart> oclass = startNameToClassMap.get(tagCompound.getString("id"));
 
             if (oclass != null) {
-                structurestart = oclass.newInstance();
+                structurestart = oclass.getConstructor().newInstance();
             }
         } catch (Exception exception) {
             logger.warn("Failed Start with id {}", tagCompound.getString("id"));
@@ -78,7 +78,7 @@ public class MapGenStructureIO {
             Class<? extends StructureComponent> oclass = componentNameToClassMap.get(tagCompound.getString("id"));
 
             if (oclass != null) {
-                structurecomponent = oclass.newInstance();
+                structurecomponent = oclass.getConstructor().newInstance();
             }
         } catch (Exception exception) {
             logger.warn("Failed Piece with id {}", tagCompound.getString("id"));

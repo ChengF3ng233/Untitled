@@ -1,6 +1,6 @@
 package net.minecraft.entity.player;
 
-import com.google.common.base.Charsets;
+import java.nio.charset.StandardCharsets;
 import com.google.common.collect.Lists;
 import com.mojang.authlib.GameProfile;
 import lombok.Getter;
@@ -44,6 +44,7 @@ import net.minecraft.tileentity.TileEntitySign;
 import net.minecraft.util.*;
 import net.minecraft.world.*;
 
+import java.nio.charset.StandardCharsets;
 import java.util.Collection;
 import java.util.List;
 import java.util.UUID;
@@ -211,7 +212,7 @@ public abstract class EntityPlayer extends EntityLivingBase {
     }
 
     public static UUID getOfflineUUID(String username) {
-        return UUID.nameUUIDFromBytes(("OfflinePlayer:" + username).getBytes(Charsets.UTF_8));
+        return UUID.nameUUIDFromBytes(("OfflinePlayer:" + username).getBytes(StandardCharsets.UTF_8));
     }
 
     protected void applyEntityAttributes() {

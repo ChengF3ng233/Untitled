@@ -1,6 +1,6 @@
 package net.minecraft.client.network;
 
-import com.google.common.base.Charsets;
+import java.nio.charset.StandardCharsets;
 import com.google.common.base.Splitter;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
@@ -190,7 +190,7 @@ public class OldServerPinger {
                         short short1 = p_channelRead0_2_.readUnsignedByte();
 
                         if (short1 == 255) {
-                            String s = new String(p_channelRead0_2_.readBytes(p_channelRead0_2_.readShort() * 2).array(), Charsets.UTF_16BE);
+                            String s = new String(p_channelRead0_2_.readBytes(p_channelRead0_2_.readShort() * 2).array(), StandardCharsets.UTF_16BE);
                             String[] astring = Iterables.toArray(OldServerPinger.PING_RESPONSE_SPLITTER.split(s), String.class);
 
                             if ("\u00a71".equals(astring[0])) {

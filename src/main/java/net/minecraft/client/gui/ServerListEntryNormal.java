@@ -1,6 +1,6 @@
 package net.minecraft.client.gui;
 
-import com.google.common.base.Charsets;
+import java.nio.charset.StandardCharsets;
 import com.google.common.util.concurrent.ThreadFactoryBuilder;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.ByteBufInputStream;
@@ -19,6 +19,7 @@ import org.apache.logging.log4j.Logger;
 
 import java.awt.image.BufferedImage;
 import java.net.UnknownHostException;
+import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.concurrent.ScheduledThreadPoolExecutor;
 import java.util.concurrent.ThreadPoolExecutor;
@@ -193,7 +194,7 @@ public class ServerListEntryNormal implements GuiListExtended.IGuiListEntry {
             this.mc.getTextureManager().deleteTexture(this.serverIcon);
             this.field_148305_h = null;
         } else {
-            ByteBuf bytebuf = Unpooled.copiedBuffer(this.server.getBase64EncodedIconData(), Charsets.UTF_8);
+            ByteBuf bytebuf = Unpooled.copiedBuffer(this.server.getBase64EncodedIconData(), StandardCharsets.UTF_8);
             ByteBuf bytebuf1 = Base64.decode(bytebuf);
             BufferedImage bufferedimage;
             label101:

@@ -9,6 +9,7 @@ import org.apache.commons.io.IOUtils;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.charset.StandardCharsets;
 import java.util.IllegalFormatException;
 import java.util.Map;
 import java.util.regex.Pattern;
@@ -42,7 +43,7 @@ public class StringTranslate {
     public StringTranslate() {
         InputStream inputstream = StringTranslate.class.getResourceAsStream("/assets/minecraft/lang/en_US.lang");
 
-        for (String s : IOUtils.readLines(inputstream, Charsets.UTF_8)) {
+        for (String s : IOUtils.readLines(inputstream, StandardCharsets.UTF_8)) {
             if (!s.isEmpty() && s.charAt(0) != 35) {
                 String[] astring = Iterables.toArray(equalSignSplitter.split(s), String.class);
 

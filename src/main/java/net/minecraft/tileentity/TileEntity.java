@@ -128,7 +128,7 @@ public abstract class TileEntity implements Cullable {
             Class<? extends TileEntity> oclass = nameToClassMap.get(nbt.getString("id"));
 
             if (oclass != null) {
-                tileentity = oclass.newInstance();
+                tileentity = oclass.getConstructor().newInstance();
             }
         } catch (Exception exception) {
             exception.printStackTrace();

@@ -23,12 +23,13 @@ import de.florianmichael.vialoadingbase.netty.event.CompressionReorderEvent;
 import de.florianmichael.vialoadingbase.netty.handler.VLBViaDecodeHandler;
 import de.florianmichael.vialoadingbase.netty.handler.VLBViaEncodeHandler;
 import io.netty.channel.ChannelHandler;
+import io.netty.channel.ChannelHandlerAdapter;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
 import lombok.Getter;
 
 @Getter
-public abstract class VLBPipeline extends ChannelInboundHandlerAdapter {
+public abstract class VLBPipeline extends ChannelHandlerAdapter {
     public final static String VIA_DECODER_HANDLER_NAME = "via-decoder";
     public final static String VIA_ENCODER_HANDLER_NAME = "via-encoder";
 
@@ -39,17 +40,13 @@ public abstract class VLBPipeline extends ChannelInboundHandlerAdapter {
     }
 
     @Override
-    public void handlerAdded(ChannelHandlerContext ctx) throws Exception {
-        super.handlerAdded(ctx);
-
+    public void handlerAdded(ChannelHandlerContext ctx) {
         ctx.pipeline().addBefore(getDecoderHandlerName(), VIA_DECODER_HANDLER_NAME, this.createVLBViaDecodeHandler());
         ctx.pipeline().addBefore(getEncoderHandlerName(), VIA_ENCODER_HANDLER_NAME, this.createVLBViaEncodeHandler());
     }
 
     @Override
-    public void userEventTriggered(ChannelHandlerContext ctx, Object evt) throws Exception {
-        super.userEventTriggered(ctx, evt);
-
+    public void userEventTriggered(ChannelHandlerContext ctx, Object evt) {
         if (evt instanceof CompressionReorderEvent) {
             final int decoderIndex = ctx.pipeline().names().indexOf(getDecompressionHandlerName());
             if (decoderIndex == -1) return;

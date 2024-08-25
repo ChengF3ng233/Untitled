@@ -46,7 +46,7 @@ public class EventBus {
                 sortList(event);
             }
         } else {
-            registry.put(event, new ArrayList<EventData>() {
+            registry.put(event, new ArrayList<>() {
                 {
                     add(data);
                 }
@@ -99,15 +99,12 @@ public class EventBus {
 
         if (depth == SubscriberDepth.DEEP_SUPER) {
             Class<?> sup = clazz.getSuperclass();
-            for (Method method : sup.getDeclaredMethods()) {
-                registerReflection(instance, method);
-            }
 
-            while ((sup = sup.getSuperclass()) != null) {
+            do {
                 for (Method method : sup.getDeclaredMethods()) {
                     registerReflection(instance, method);
                 }
-            }
+            } while ((sup = sup.getSuperclass()) != null);
 
             registerInterface(instance, clazz);
         }

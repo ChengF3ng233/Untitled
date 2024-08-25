@@ -1,6 +1,6 @@
 package net.minecraft.server.management;
 
-import com.google.common.base.Charsets;
+import java.nio.charset.StandardCharsets;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.io.Files;
@@ -17,6 +17,7 @@ import java.io.IOException;
 import java.io.Writer;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
+import java.nio.charset.StandardCharsets;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
@@ -124,7 +125,7 @@ public class UserList<K, V extends UserListEntry<K>> {
         BufferedWriter bufferedwriter = null;
 
         try {
-            bufferedwriter = Files.newWriter(this.saveFile, Charsets.UTF_8);
+            bufferedwriter = Files.newWriter(this.saveFile, StandardCharsets.UTF_8);
             bufferedwriter.write(s);
         } finally {
             IOUtils.closeQuietly(bufferedwriter);

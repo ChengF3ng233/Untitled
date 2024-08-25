@@ -20,6 +20,10 @@ package de.florianmichael.viamcp;
 
 import com.viaversion.viaversion.api.connection.UserConnection;
 import de.florianmichael.vialoadingbase.netty.VLBPipeline;
+import io.netty.channel.ChannelHandlerContext;
+import io.netty.channel.ChannelPromise;
+
+import java.net.SocketAddress;
 
 public class MCPVLBPipeline extends VLBPipeline {
 

@@ -1,6 +1,6 @@
 package net.minecraft.client.resources.model;
 
-import com.google.common.base.Charsets;
+import java.nio.charset.StandardCharsets;
 import com.google.common.base.Joiner;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
@@ -171,7 +171,7 @@ public class ModelBakery {
 
                     try {
                         inputstream = iresource.getInputStream();
-                        ModelBlockDefinition modelblockdefinition1 = ModelBlockDefinition.parseFromReader(new InputStreamReader(inputstream, Charsets.UTF_8));
+                        ModelBlockDefinition modelblockdefinition1 = ModelBlockDefinition.parseFromReader(new InputStreamReader(inputstream, StandardCharsets.UTF_8));
                         list.add(modelblockdefinition1);
                     } catch (Exception exception) {
                         throw new RuntimeException("Encountered an exception when loading model definition of '" + p_177586_1_ + "' from: '" + iresource.getResourceLocation() + "' in resourcepack: '" + iresource.getResourcePackName() + "'", exception);
@@ -237,7 +237,7 @@ public class ModelBakery {
             } else {
                 p_177594_1_ = this.getModelLocation(p_177594_1_);
                 IResource iresource = this.resourceManager.getResource(p_177594_1_);
-                reader = new InputStreamReader(iresource.getInputStream(), Charsets.UTF_8);
+                reader = new InputStreamReader(iresource.getInputStream(), StandardCharsets.UTF_8);
             }
 
             ModelBlock modelblock;

@@ -2,6 +2,7 @@ package org.lwjgl.opengl;
 
 import cn.feng.untitled.Client;
 import cn.feng.untitled.event.impl.NanoEvent;
+import cn.feng.untitled.event.type.EventType;
 import cn.feng.untitled.ui.font.nano.NanoFontLoader;
 import cn.feng.untitled.ui.font.nano.NanoLoader;
 import cn.feng.untitled.ui.font.nano.NanoUtil;
@@ -358,7 +359,7 @@ public class Display {
     public static void update(boolean processMessages) {
         if (Client.instance.loaded && NanoLoader.shouldRender() && displayFocused) {
             NanoUtil.beginFrame();
-            Client.instance.eventBus.post(new NanoEvent(NanoLoader.vg));
+            Client.instance.eventBus.post(new NanoEvent());
             NanoUtil.endFrame();
         }
 

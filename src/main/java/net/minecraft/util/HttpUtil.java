@@ -203,7 +203,7 @@ public class HttpUtil {
                             InputStream inputstream1 = httpurlconnection.getErrorStream();
 
                             try {
-                                HttpUtil.logger.error(IOUtils.toString(inputstream1));
+                                HttpUtil.logger.error(IOUtils.toString(inputstream1, StandardCharsets.UTF_8));
                             } catch (IOException ioexception) {
                                 ioexception.printStackTrace();
                             }

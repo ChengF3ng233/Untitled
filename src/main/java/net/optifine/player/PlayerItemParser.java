@@ -51,7 +51,6 @@ public class PlayerItemParser {
     public static final String BOX_UV_RIGHT = "uvRight";
     public static final String ITEM_TYPE_MODEL = "PlayerItem";
     public static final String MODEL_TYPE_BOX = "ModelBox";
-    private static final JsonParser jsonParser = new JsonParser();
 
     public static PlayerItemModel parseItemModel(JsonObject obj) {
         String s = Json.getString(obj, "type");

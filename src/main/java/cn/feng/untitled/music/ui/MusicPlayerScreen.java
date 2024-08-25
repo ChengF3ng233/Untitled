@@ -2,6 +2,7 @@ package cn.feng.untitled.music.ui;
 
 import cn.feng.untitled.event.api.SubscribeEvent;
 import cn.feng.untitled.event.impl.NanoEvent;
+import cn.feng.untitled.event.type.EventType;
 import cn.feng.untitled.module.impl.client.PostProcessing;
 import cn.feng.untitled.music.api.base.Music;
 import cn.feng.untitled.music.api.player.MusicPlayer;

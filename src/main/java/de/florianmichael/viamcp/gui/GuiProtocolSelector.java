@@ -92,12 +92,12 @@ public class GuiProtocolSelector extends GuiScreen {
 
         @Override
         protected int getSize() {
-            return ViaLoadingBase.getProtocols().size();
+            return ViaLoadingBase.PROTOCOLS.size();
         }
 
         @Override
         protected void elementClicked(int i, boolean b, int i1, int i2) {
-            final ProtocolVersion protocolVersion = ViaLoadingBase.getProtocols().get(i);
+            final ProtocolVersion protocolVersion = ViaLoadingBase.PROTOCOLS.get(i);
             ViaLoadingBase.getInstance().reload(protocolVersion);
         }
 
@@ -113,10 +113,10 @@ public class GuiProtocolSelector extends GuiScreen {
 
         @Override
         protected void drawSlot(int i, int i1, int i2, int i3, int i4, int i5) {
-            drawCenteredString(mc.fontRendererObj,(ViaLoadingBase.PROTOCOLS.indexOf(ViaLoadingBase.getInstance().getTargetVersion()) == i ? EnumChatFormatting.GREEN.toString() + EnumChatFormatting.BOLD : EnumChatFormatting.GRAY.toString()) + ViaLoadingBase.getProtocols().get(i).getName(), width / 2, i2 + 2, -1);
+            drawCenteredString(mc.fontRendererObj,(ViaLoadingBase.PROTOCOLS.indexOf(ViaLoadingBase.getInstance().getTargetVersion()) == i ? EnumChatFormatting.GREEN.toString() + EnumChatFormatting.BOLD : EnumChatFormatting.GRAY.toString()) + ViaLoadingBase.PROTOCOLS.get(i).getName(), width / 2, i2 + 2, -1);
             GlStateManager.pushMatrix();
             GlStateManager.scale(0.5, 0.5, 0.5);
-            drawCenteredString(mc.fontRendererObj, "PVN: " + ViaLoadingBase.getProtocols().get(i).getVersion(), width, (i2 + 2) * 2 + 20, -1);
+            drawCenteredString(mc.fontRendererObj, "PVN: " + ViaLoadingBase.PROTOCOLS.get(i).getVersion(), width, (i2 + 2) * 2 + 20, -1);
             GlStateManager.popMatrix();
         }
     }

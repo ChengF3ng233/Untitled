@@ -1,9 +1,10 @@
 package net.minecraft.network;
 
-import com.google.common.base.Charsets;
+import java.nio.charset.StandardCharsets;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 import io.netty.channel.ChannelFutureListener;
+import io.netty.channel.ChannelHandlerAdapter;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
 import net.minecraft.server.MinecraftServer;
@@ -12,7 +13,7 @@ import org.apache.logging.log4j.Logger;
 
 import java.net.InetSocketAddress;
 
-public class PingResponseHandler extends ChannelInboundHandlerAdapter {
+public class PingResponseHandler extends ChannelHandlerAdapter {
     private static final Logger logger = LogManager.getLogger();
     private final NetworkSystem networkSystem;
 
@@ -51,7 +52,7 @@ public class PingResponseHandler extends ChannelInboundHandlerAdapter {
                     default:
                         boolean flag1 = bytebuf.readUnsignedByte() == 1;
                         flag1 = flag1 & bytebuf.readUnsignedByte() == 250;
-                        flag1 = flag1 & "MC|PingHost".equals(new String(bytebuf.readBytes(bytebuf.readShort() * 2).array(), Charsets.UTF_16BE));
+                        flag1 = flag1 & "MC|PingHost".equals(new String(bytebuf.readBytes(bytebuf.readShort() * 2).array(), StandardCharsets.UTF_16BE));
                         int j = bytebuf.readUnsignedShort();
                         flag1 = flag1 & bytebuf.readUnsignedByte() >= 73;
                         flag1 = flag1 & 3 + bytebuf.readBytes(bytebuf.readShort() * 2).array().length + 4 == j;

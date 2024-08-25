@@ -1,6 +1,6 @@
 package net.optifine.shaders;
 
-import com.google.common.base.Charsets;
+import java.nio.charset.StandardCharsets;
 import lombok.Getter;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
@@ -2533,7 +2533,7 @@ public class Shaders {
                 abyte[i - 1] = 10;
             }
 
-            String s = new String(abyte, Charsets.US_ASCII);
+            String s = new String(abyte, StandardCharsets.US_ASCII);
             s = StrUtils.trim(s, " \n\r\t");
             SMCLog.info("Info log: " + name + "\n" + s);
             return false;
