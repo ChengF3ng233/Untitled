@@ -45,15 +45,15 @@ public class VolumeSlider {
             RoundedUtil.drawRound(sliderX, y, 70, 1f, 1f, ThemeColor.barColor);
         }
 
-        float currentWidth = dragging ? dragDelta : (float) (70 * (currentVolume / totalVolume));
         dragDelta = dragging ? mouseX - sliderX : 0f;
         if (dragDelta < 0) dragDelta = 0;
         if (dragDelta > 70f) dragDelta = 70f;
+        float currentWidth = dragging ? dragDelta : (float) (70 * (currentVolume / totalVolume));
         if (dragging)
             Client.instance.musicManager.screen.player.setVolume((dragDelta / 70f) * 100d);
         if (!isNano) {
-            RoundedUtil.drawRound(x + 15f, y, currentWidth, 1f, 1f, hovering? ThemeColor.redColor : ThemeColor.barPlayedColor);
-            if (hovering) {
+            RoundedUtil.drawRound(x + 15f, y, currentWidth, 1f, 1f, (hovering || dragging)? ThemeColor.redColor : ThemeColor.barPlayedColor);
+            if (hovering || dragging) {
                 RoundedUtil.drawRound(sliderX + currentWidth - 2.5f, y - 2f, 5f, 5f, 2f, Color.WHITE);
             }
         } else {

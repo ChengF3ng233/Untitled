@@ -27,14 +27,13 @@ public class PlayerSlider {
         hovering = RenderUtil.hovering(mouseX, mouseY, x, y - 3f, width, 5f);
 
         float sliderX = x + 15f;
+        dragDelta = dragging? mouseX - sliderX : 0f;
+        if (dragDelta < 0) dragDelta = 0;
+        if (dragDelta > 170f) dragDelta = 170f;
         double currentTime = Client.instance.musicManager.screen.player.getCurrentTime();
         double totalTime = Client.instance.musicManager.screen.player.getMusic().getDuration();
         float currentWidth = dragging? dragDelta : (float) (170 * (currentTime / totalTime));
         currentWidth = Math.min(currentWidth, 170f);
-
-        dragDelta = dragging? mouseX - sliderX : 0f;
-        if (dragDelta < 0) dragDelta = 0;
-        if (dragDelta > 170f) dragDelta = 170f;
 
         if (hovering) {
             cursorRestored = false;
@@ -52,8 +51,8 @@ public class PlayerSlider {
         }
 
         if (!isNano) {
-            RoundedUtil.drawRound(x + 15f, y, currentWidth, 1f, 1f, hovering? ThemeColor.redColor : ThemeColor.barPlayedColor);
-            if (hovering) {
+            RoundedUtil.drawRound(x + 15f, y, currentWidth, 1f, 1f, (hovering || dragging)? ThemeColor.redColor : ThemeColor.barPlayedColor);
+            if (hovering || dragging) {
                 RoundedUtil.drawRound(sliderX + currentWidth - 2.5f, y - 2f, 5f, 5f, 2f, Color.WHITE);
             }
         } else {
