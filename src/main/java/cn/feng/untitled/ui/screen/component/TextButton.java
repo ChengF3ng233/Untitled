@@ -7,7 +7,6 @@ import cn.feng.untitled.util.animation.advanced.Direction;
 import cn.feng.untitled.util.animation.advanced.impl.SmoothStepAnimation;
 import cn.feng.untitled.util.render.RenderUtil;
 import net.minecraft.client.gui.Gui;
-import org.lwjgl.nanovg.NanoVG;
 
 import java.awt.*;
 
@@ -15,14 +14,14 @@ import java.awt.*;
  * @author ChengFeng
  * @since 2024/8/11
  **/
-public class SkidButton {
+public class TextButton {
     public float posX, posY, width, height;
     private final String text;
     public Runnable action;
 
     private final Animation xAnim = new SmoothStepAnimation(200, 1f, Direction.BACKWARDS);
 
-    public SkidButton(String text, Runnable action) {
+    public TextButton(String text, Runnable action) {
         this.text = text;
         this.action = action;
         this.width = NanoFontLoader.script.getStringWidth(text, 30f);

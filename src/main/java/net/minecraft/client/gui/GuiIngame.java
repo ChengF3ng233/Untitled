@@ -358,7 +358,7 @@ public class GuiIngame extends Gui {
         GlStateManager.disableLighting();
         GlStateManager.enableAlpha();
 
-        PostProcessing.blurScreen();
+        PostProcessing.drawBlur();
         Client.instance.eventBus.post(new Render2DEvent(partialTicks));
     }
 

@@ -8,7 +8,7 @@ import cn.feng.untitled.event.impl.Render2DEvent;
 import cn.feng.untitled.event.impl.ShaderEvent;
 import cn.feng.untitled.event.type.EventPriority;
 import cn.feng.untitled.ui.clickgui.ClickGUI;
-import cn.feng.untitled.ui.screen.main.SkidMainScreen;
+import cn.feng.untitled.ui.screen.main.FlatMainScreen;
 import cn.feng.untitled.ui.widget.Widget;
 import cn.feng.untitled.ui.widget.impl.ArraylistWidget;
 import cn.feng.untitled.ui.widget.impl.MusicInfoWidget;
@@ -56,7 +56,7 @@ public class UIManager extends MinecraftInstance {
 
     public void initGUI() {
         clickGUI = new ClickGUI();
-        mainScreen = new SkidMainScreen();
+        mainScreen = new FlatMainScreen();
 
         Client.instance.eventBus.register(clickGUI);
     }

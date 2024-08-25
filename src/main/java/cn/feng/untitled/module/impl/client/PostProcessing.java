@@ -24,20 +24,23 @@ public class PostProcessing extends Module {
     private static Framebuffer stencilFramebuffer = new Framebuffer(1, 1, false);
 
     public static final BoolValue blur = new BoolValue("Blur", false);
-    public static final NumberValue blurRadius = new NumberValue("BlurRadius", 3f,  5f, 1f, 1f);
+    public static final NumberValue blurIterations = new NumberValue("BlurIterations", 3f,  5f, 1f, 1f);
     public static final NumberValue blurOffset = new NumberValue("BlurOffset", 3f,  5f, 1f, 1f);
     public static final BoolValue bloom = new BoolValue("Bloom", false);
-    public static final NumberValue bloomRadius = new NumberValue("BloomRadius", 3f,  5f, 1f, 1f);
+    public static final NumberValue bloomIterations = new NumberValue("BloomIterations", 3f,  5f, 1f, 1f);
     public static final NumberValue bloomOffset = new NumberValue("BloomOffset", 3f,  5f, 1f, 1f);
 
-    public static void blurScreen() {
+    /**
+     * 仅用于Widget在GuiInGame绘制模糊效果
+     */
+    public static void drawBlur() {
         if (blur.getValue()) {
             stencilFramebuffer = RenderUtil.createFrameBuffer(stencilFramebuffer);
             stencilFramebuffer.framebufferClear();
             stencilFramebuffer.bindFramebuffer(false);
             Client.instance.eventBus.post(new ShaderEvent(false));
             stencilFramebuffer.unbindFramebuffer();
-            KawaseBlur.renderBlur(stencilFramebuffer.framebufferTexture, blurRadius.getValue().intValue(), blurOffset.getValue().intValue());
+            KawaseBlur.renderBlur(stencilFramebuffer.framebufferTexture, blurIterations.getValue().intValue(), blurOffset.getValue().intValue());
         }
 
         if (bloom.getValue()) {
@@ -46,7 +49,7 @@ public class PostProcessing extends Module {
             stencilFramebuffer.bindFramebuffer(false);
             Client.instance.eventBus.post(new ShaderEvent(true));
             stencilFramebuffer.unbindFramebuffer();
-            KawaseBloom.renderBlur(stencilFramebuffer.framebufferTexture, bloomRadius.getValue().intValue(), bloomOffset.getValue().intValue());
+            KawaseBloom.renderBlur(stencilFramebuffer.framebufferTexture, bloomIterations.getValue().intValue(), bloomOffset.getValue().intValue());
         }
     }
 }

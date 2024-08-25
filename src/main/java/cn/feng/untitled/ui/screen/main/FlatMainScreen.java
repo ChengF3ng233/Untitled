@@ -2,7 +2,7 @@ package cn.feng.untitled.ui.screen.main;
 
 import cn.feng.untitled.ui.font.nano.NanoFontLoader;
 import cn.feng.untitled.ui.font.nano.NanoUtil;
-import cn.feng.untitled.ui.screen.component.SkidButton;
+import cn.feng.untitled.ui.screen.component.TextButton;
 import cn.feng.untitled.util.data.resource.ResourceType;
 import cn.feng.untitled.util.data.resource.ResourceUtil;
 import cn.feng.untitled.util.render.RenderUtil;
@@ -29,17 +29,17 @@ import java.util.Locale;
  * @author ChengFeng
  * @since 2024/8/11
  **/
-public class SkidMainScreen extends GuiScreen {
-    private final List<SkidButton> buttonList = new ArrayList<>();
+public class FlatMainScreen extends GuiScreen {
+    private final List<TextButton> buttonList = new ArrayList<>();
     private final ParticleManager particleManager = new ParticleManager();
 
     private final VideoPlayer videoPlayer = new VideoPlayer();
-    public SkidMainScreen() {
-        buttonList.add(new SkidButton("Single Player", () -> mc.displayGuiScreen(new GuiSelectWorld(this))));
-        buttonList.add(new SkidButton("Multi Player", () -> mc.displayGuiScreen(new GuiMultiplayer(this))));
-        buttonList.add(new SkidButton("Alt Manager", () -> JOptionPane.showMessageDialog(null, "我几把没写呢")));
-        buttonList.add(new SkidButton("Options", () -> mc.displayGuiScreen(new GuiOptions(this, mc.gameSettings))));
-        buttonList.add(new SkidButton("Exit", () -> mc.shutdown()));
+    public FlatMainScreen() {
+        buttonList.add(new TextButton("Single Player", () -> mc.displayGuiScreen(new GuiSelectWorld(this))));
+        buttonList.add(new TextButton("Multi Player", () -> mc.displayGuiScreen(new GuiMultiplayer(this))));
+        buttonList.add(new TextButton("Alt Manager", () -> JOptionPane.showMessageDialog(null, "我几把没写呢")));
+        buttonList.add(new TextButton("Options", () -> mc.displayGuiScreen(new GuiOptions(this, mc.gameSettings))));
+        buttonList.add(new TextButton("Exit", () -> mc.shutdown()));
 
         try {
             videoPlayer.init(ResourceUtil.getResource("bg.mp4", ResourceType.VIDEO));
@@ -83,6 +83,7 @@ public class SkidMainScreen extends GuiScreen {
                 Color.BLACK
         );
         BlurUtil.blurEnd(2, 3);
+
         BlurUtil.processStart();
         RenderUtil.drawQuads(
                 new float[]{0, 0},
@@ -93,7 +94,6 @@ public class SkidMainScreen extends GuiScreen {
                 Color.BLACK
         );
         BlurUtil.bloomEnd(2, 1);
-
 
         particleManager.renderParticles(1000, 3000, 60);
 
@@ -131,7 +131,7 @@ public class SkidMainScreen extends GuiScreen {
 
         float buttonX = 30f;
         float buttonY = scaledHeight * 0.3f;
-        for (SkidButton button : buttonList) {
+        for (TextButton button : buttonList) {
             button.draw(buttonX, buttonY, mouseX, mouseY);
             buttonY += button.height + 10f;
         }
@@ -189,8 +189,8 @@ public class SkidMainScreen extends GuiScreen {
 
     @Override
     protected void mouseClicked(int mouseX, int mouseY, int mouseButton) throws IOException {
-        for (SkidButton skidButton : buttonList) {
-            skidButton.onMouseClicked(mouseX, mouseY, mouseButton);
+        for (TextButton textButton : buttonList) {
+            textButton.onMouseClicked(mouseX, mouseY, mouseButton);
         }
     }
 }
