@@ -75,7 +75,9 @@ public abstract class Widget extends MinecraftInstance {
             colorAnim.changeDirection();
         }
 
-        FontLoader.rubik(16).drawString(name, renderX, renderY - FontLoader.rubik(16).getFontHeight() - 3f, colorAnim.getOutput().getRGB(), true);
+        if (colorAnim.getOutput().getAlpha() != 0) {
+            FontLoader.rubik(16).drawString(name, renderX, renderY - FontLoader.rubik(16).getFontHeight() - 3f, colorAnim.getOutput().getRGB(), true);
+        }
 
         if (dragging) {
             RoundedUtil.drawRoundOutline(renderX, renderY, width, height, 2f, 0.05f, ColorUtil.TRANSPARENT_COLOR, colorAnim.getOutput());

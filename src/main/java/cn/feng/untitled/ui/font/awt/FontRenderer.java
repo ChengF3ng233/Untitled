@@ -238,9 +238,9 @@ public class FontRenderer extends Font {
 
         // 处理颜色
 
-/*        if ((color & -67108864) == 0) {
+        if ((color & -67108864) == 0) {
             color |= -16777216;
-        }*/
+        }
 
         if (shadowMode) {
             color = (color & 16579836) >> 2 | color & -16777216;;
