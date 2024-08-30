@@ -2,7 +2,6 @@ package cn.feng.untitled.music.ui;
 
 import cn.feng.untitled.event.api.SubscribeEvent;
 import cn.feng.untitled.event.impl.NanoEvent;
-import cn.feng.untitled.event.type.EventType;
 import cn.feng.untitled.module.impl.client.PostProcessing;
 import cn.feng.untitled.music.api.base.Music;
 import cn.feng.untitled.music.api.player.MusicPlayer;
@@ -21,24 +20,18 @@ import cn.feng.untitled.ui.font.nano.NanoFontLoader;
 import cn.feng.untitled.ui.font.nano.NanoUtil;
 import cn.feng.untitled.util.animation.advanced.Animation;
 import cn.feng.untitled.util.animation.advanced.Direction;
-import cn.feng.untitled.util.animation.advanced.impl.DecelerateAnimation;
+import cn.feng.untitled.util.animation.advanced.impl.SmoothStepAnimation;
 import cn.feng.untitled.util.data.resource.ResourceType;
 import cn.feng.untitled.util.data.resource.ResourceUtil;
 import cn.feng.untitled.util.render.RenderUtil;
-import cn.feng.untitled.util.render.RoundedUtil;
 import cn.feng.untitled.util.render.blur.BlurUtil;
 import lombok.Getter;
 import lombok.Setter;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.gui.ScaledResolution;
-import net.minecraft.client.renderer.GlStateManager;
-import net.minecraft.client.renderer.texture.DynamicTexture;
-import net.minecraft.util.ResourceLocation;
 import org.lwjgl.input.Keyboard;
-import org.lwjgl.opengl.GL11;
 
-import javax.imageio.ImageIO;
 import java.awt.*;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -116,7 +109,7 @@ public class MusicPlayerScreen extends GuiScreen {
 
     @Override
     public void initGui() {
-        windowAnim = new DecelerateAnimation(100, 1d);
+        windowAnim = new SmoothStepAnimation(150, 1d);
     }
 
     // onRender2D
@@ -128,17 +121,12 @@ public class MusicPlayerScreen extends GuiScreen {
             GuiScreen.drawNewRect(0, 0, sr.getScaledWidth(), sr.getScaledHeight(), Color.BLACK.getRGB());
             BlurUtil.blurEnd();
         }
-        render(mouseX, mouseY, false);
         this.mouseX = mouseX;
         this.mouseY = mouseY;
     }
 
     @SubscribeEvent
     private void onNano(NanoEvent e) {
-        render(mouseX, mouseY, true);
-    }
-
-    private void render(int mouseX, int mouseY, boolean isNano) {
         if (Minecraft.getMinecraft().currentScreen != this) return;
         if (windowAnim.finished(Direction.BACKWARDS)) mc.displayGuiScreen(null);
 
@@ -157,126 +145,90 @@ public class MusicPlayerScreen extends GuiScreen {
         if (x + width > sr.getScaledWidth() - 10) x = sr.getScaledWidth() - 10 - width;
         if (y + height > sr.getScaledHeight() - 10) y = sr.getScaledHeight() - 10 - height;
 
-        if (isNano) {
-            NanoUtil.beginFrame();
-            NanoUtil.scaleStart(0, 0, sr.getScaleFactor() * 0.5f);
-            NanoUtil.scaleStart(x + width / 2, y + height / 2, windowAnim.getOutput().floatValue());
-            NanoFontLoader.misans.drawGlowString("网易云音乐", x + 32f, y + 12f, 20, Color.WHITE);
-        } else {
-            RenderUtil.scaleStart(x + width / 2, y + height / 2, windowAnim.getOutput().floatValue());
-            RoundedUtil.drawRoundOutline(x, y, width, height, 3f, 0.2f, ThemeColor.bgColor, ThemeColor.outlineColor);
-            RoundedUtil.drawRound(x + 2f, y + 2f, leftWidth - 2f, height - 4f, 2.6f, ThemeColor.categoryColor);
-            RenderUtil.drawImage(new ResourceLocation("untitled/icon/netease.png"), x + 12f, y + 10f, 16, 16);
-        }
+        NanoUtil.scaleStart(0, 0, sr.getScaleFactor() * 0.5f);
+        NanoUtil.scaleStart(x + width / 2, y + height / 2, windowAnim.getOutput().floatValue());
+
+        NanoUtil.drawRoundedOutlineRect(x, y, width, height, 3f, 1f, ThemeColor.bgColor, ThemeColor.outlineColor);
+        NanoUtil.drawRoundedRect(x + 1f, y + 1f, leftWidth - 2f, height - 2f, 3f, 0f, 0f, 3f, ThemeColor.categoryColor);
+
+        NanoUtil.drawImageRect("netease", ResourceUtil.getResourceAsStream("netease.png", ResourceType.ICON), x + 12f, y + 8f, 16, 16);
+        NanoFontLoader.misans.drawGlowString("网易云音乐", x + 32f, y + 12f, 20, Color.WHITE);
+
 
         float btnX = x + leftWidth / 2f - categoryButtons.get(0).width / 2f;
         float btnY = y + 40f;
 
         for (Button btn : categoryButtons) {
             btn.updateState(btnX, btnY, mouseX, mouseY);
-
-            if (isNano) {
-                btn.onNano();
-            } else btn.onRender2D();
-
+            btn.render();
             btnY += btn.height + 8f;
         }
 
         userButton.updateState(x + width - userButton.width - 10f, y + 10f - userButton.height / 2f, mouseX, mouseY);
-        if (isNano) {
-            userButton.onNano();
-        } else userButton.onRender2D();
+        userButton.render();
 
         searchField.height = 15f;
-
-        if (!isNano) {
-            searchField.draw(x + leftWidth + 30f, y + 6f, mouseX, mouseY);
-            RoundedUtil.drawRound(x + 2f, y + height - bottomWidth - 2f, width - 4f, bottomWidth, 2.6f, ThemeColor.playerColor);
-        }
+        searchField.draw(x + leftWidth + 30f, y + 6f, mouseX, mouseY);
 
         currentGUI.setWidth(width - leftWidth);
         currentGUI.setHeight(height - topWidth - bottomWidth);
-        if (isNano) {
-            currentGUI.onNano(x + leftWidth, y + topWidth, mouseX, mouseY, x + width / 2f, y + width / 2f, windowAnim.getOutput().floatValue());
-        } else
-            currentGUI.onRender2D(x + leftWidth, y + topWidth, mouseX, mouseY, x + width / 2f, y + width / 2f, windowAnim.getOutput().floatValue());
+        currentGUI.render(x + leftWidth, y + topWidth, mouseX, mouseY, x + width / 2f, y + width / 2f, windowAnim.getOutput().floatValue());
 
         if (RenderUtil.hovering(mouseX, mouseY, x + leftWidth, y + topWidth, width - leftWidth, height - topWidth - bottomWidth)) {
             currentGUI.handleScroll();
         }
 
-        if (currentGUI.parent != null && !isNano) {
-            RenderUtil.drawImage(ResourceUtil.getResource("arrow-left.png", ResourceType.ICON), x + leftWidth + 5f, y + 7f, 16f, 16f,
+        if (currentGUI.parent != null) {
+            NanoUtil.drawImageRect(ResourceUtil.getResource("arrow-left.png", ResourceType.ICON), x + leftWidth + 5f, y + 7f, 16f, 16f,
                     RenderUtil.hovering(mouseX, mouseY, x + leftWidth + 5f, y + 7f, 16f, 16f) ? Color.WHITE : ThemeColor.greyColor);
         }
 
+        // Player bottom
         Music music = player.getMusic();
-
+        NanoUtil.drawRoundedRect(x + 1f, y + height - bottomWidth - 1f, width - 2f, bottomWidth, 0f, 0f, 3f, 3f, ThemeColor.playerColor);
         if (music != null && player.getMediaPlayer() != null) {
-            if (music.getCoverTexture() == null) {
-                try {
-                    music.setCoverTexture(new DynamicTexture(ImageIO.read(music.getCoverFile())));
-                } catch (IOException e) {
-                    throw new RuntimeException(e);
-                }
+            if (music.getCoverTexture() == 0) {
+                music.setCoverTexture(NanoUtil.genImageId(music.getCoverFile()));
             }
             if (!player.isPaused()) {
                 coverAngle += (float) (0.5 * RenderUtil.frameTime);
             }
             float playerY = y + (height - bottomWidth);
 
-            if (isNano) {
-                NanoFontLoader.misans.drawString(music.getName(), x + 45f, playerY + 7f, 15f, Color.WHITE);
-                NanoFontLoader.misans.drawString(music.getArtist(), x + 45f, playerY + 17f, 12f, ThemeColor.greyColor);
+            NanoFontLoader.misans.drawString(music.getName(), x + 45f, playerY + 7f, 15f, Color.WHITE);
+            NanoFontLoader.misans.drawString(music.getArtist(), x + 45f, playerY + 17f, 12f, ThemeColor.greyColor);
+
+            NanoUtil.rotateStart(x + 30f, playerY + 17f, coverAngle);
+            NanoUtil.drawImageCircle(music.getCoverTexture(), 0, 0, 10f);
+            NanoUtil.rotateEnd();
+
+            if (player.isPaused()) {
+                playBtn.setBg(true);
+                playBtn.updateState(x + width / 2f - 10f, playerY + 4f, mouseX, mouseY);
+                playBtn.render();
             } else {
-                RoundedUtil.drawRound(x + 19f, playerY + 6f, 22f, 22f, 10f, ThemeColor.bgColor);
-                GL11.glPushMatrix();
-                GlStateManager.bindTexture(music.getCoverTexture().getGlTextureId());
-                GL11.glTranslatef(x + 30f, playerY + 17f, 0f);
-                GL11.glRotatef(coverAngle, 0f, 0f, 1f);
-                GL11.glTranslatef(-10f, -10f, 0f);
-                RoundedUtil.drawRoundTextured(0f, 0f, 20f, 20f, 10f, 1f);
-                GL11.glPopMatrix();
+                pauseBtn.setBg(true);
+                pauseBtn.updateState(x + width / 2f - 10f, playerY + 4f, mouseX, mouseY);
+                pauseBtn.render();
             }
 
-            if (!isNano) {
-                if (player.isPaused()) {
-                    playBtn.setBg(true);
-                    playBtn.updateState(x + width / 2f - 10f, playerY + 4f, mouseX, mouseY);
-                    playBtn.onRender2D();
-                } else {
-                    pauseBtn.setBg(true);
-                    pauseBtn.updateState(x + width / 2f - 10f, playerY + 4f, mouseX, mouseY);
-                    pauseBtn.onRender2D();
-                }
+            preBtn.updateState(x + width / 2f - 35f, playerY + 4f, mouseX, mouseY);
+            preBtn.render();
 
-                preBtn.updateState(x + width / 2f - 35f, playerY + 4f, mouseX, mouseY);
-                preBtn.onRender2D();
+            nextBtn.updateState(x + width / 2f + 16f, playerY + 4f, mouseX, mouseY);
+            nextBtn.render();
 
-                nextBtn.updateState(x + width / 2f + 16f, playerY + 4f, mouseX, mouseY);
-                nextBtn.onRender2D();
+            orderBtn.updateState(x + width / 2f + 50f, playerY + 5f, mouseX, mouseY);
+            orderBtn.render();
 
-                orderBtn.updateState(x + width / 2f + 50f, playerY + 5f, mouseX, mouseY);
-                orderBtn.onRender2D();
+            qualityBtn.updateState(x + width / 2f - 55f - qualityBtn.width, playerY + 6f, mouseX, mouseY);
+            qualityBtn.render();
 
-                qualityBtn.updateState(x + width / 2f - 55f - qualityBtn.width, playerY + 6f, mouseX, mouseY);
-                qualityBtn.onRender2D();
-
-                playerSlider.render(x + width / 2f - 100f, playerY + 27f, mouseX, mouseY, false);
-                volumeSlider.render(x + width - 120f, playerY + 27f, mouseX, mouseY, false);
-            } else {
-                qualityBtn.onNano();
-                playerSlider.render(x + width / 2f - 100f, playerY + 27f, mouseX, mouseY, true);
-                volumeSlider.render(x + width - 120f, playerY + 27f, mouseX, mouseY, true);
-            }
+            playerSlider.render(x + width / 2f - 100f, playerY + 27f, mouseX, mouseY);
+            volumeSlider.render(x + width - 120f, playerY + 27f, mouseX, mouseY);
         }
 
-        if (isNano) {
-            NanoUtil.scaleEnd();
-            NanoUtil.endFrame();
-        } else {
-            RenderUtil.scaleEnd();
-        }
+        NanoUtil.scaleEnd();
 
         if (searchThread != null && !searchThread.isAlive()) {
             setCurrentGUI(searchThread.getGui());

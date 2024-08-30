@@ -12,11 +12,7 @@ public abstract class Button {
     protected String text;
     public boolean hovering;
 
-    public void onNano() {
-
-    }
-
-    public void onRender2D() {
+    public void render() {
 
     }
 

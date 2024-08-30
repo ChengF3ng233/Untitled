@@ -1,10 +1,21 @@
 package cn.feng.untitled.ui.font.nano;
 
 import cn.feng.untitled.util.MinecraftInstance;
+import net.minecraft.util.ResourceLocation;
 import org.lwjgl.nanovg.NVGColor;
+import org.lwjgl.nanovg.NVGPaint;
 import org.lwjgl.nanovg.NanoVG;
+import org.lwjgl.system.MemoryUtil;
 
 import java.awt.*;
+import java.awt.image.BufferedImage;
+import java.awt.image.DataBufferByte;
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.nio.ByteBuffer;
+import java.util.HashMap;
+import java.util.Map;
 
 import static cn.feng.untitled.ui.font.nano.NanoLoader.vg;
 import static org.lwjgl.nanovg.NanoVG.*;
@@ -14,8 +25,207 @@ import static org.lwjgl.nanovg.NanoVG.*;
  * @since 2024/8/4
  **/
 public class NanoUtil extends MinecraftInstance {
+    public static final Map<String, Integer> imageMap = new HashMap<>();
+
     public static void beginFrame() {
         nvgBeginFrame(vg, mc.displayWidth, mc.displayHeight, 1f);
+    }
+
+    public static void beginPath() {
+        nvgBeginPath(vg);
+    }
+
+    public static void closePath() {
+        nvgClosePath(vg);
+    }
+
+    public static void drawRoundedRect(float x, float y, float width, float height, float radius, Color color) {
+        beginPath();
+        nvgRoundedRect(vg, x * 2, y * 2, width * 2, height * 2, radius * 2);
+        fillColor(color);
+        nvgFill(vg);
+    }
+
+    public static void drawRect(float x, float y, float width, float height, Color color) {
+        beginPath();
+        nvgRect(vg, x * 2, y * 2, width * 2, height * 2);
+        fillColor(color);
+        nvgFill(vg);
+    }
+
+    public static void drawRoundedRect(float x, float y, float width, float height, float leftTopRadius, float rightTopRadius, float rightBottomRadius, float leftBottomRadius, Color color) {
+        beginPath();
+        nvgRoundedRectVarying(vg, x * 2, y * 2, width * 2, height * 2, leftTopRadius * 2, rightTopRadius * 2, rightBottomRadius * 2, leftBottomRadius * 2);
+        fillColor(color);
+        nvgFill(vg);
+    }
+
+    public static int genImageId(InputStream inputStream) {
+        byte[] data;
+        try {
+            data = inputStream.readAllBytes();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
+        ByteBuffer buffer = MemoryUtil.memAlloc(data.length);
+        buffer.put(data).flip();
+
+        return nvgCreateImageMem(vg, 0, buffer);
+    }
+
+    public static int genImageId(BufferedImage image) {
+        byte[] data = ((DataBufferByte) image.getData().getDataBuffer()).getData();
+
+        ByteBuffer buffer = MemoryUtil.memAlloc(data.length);
+        buffer.put(data).flip();
+
+        return nvgCreateImageMem(vg, 0, buffer);
+    }
+
+    public static int genImageId(File file) {
+        return nvgCreateImage(vg, file.getAbsolutePath(), 0);
+    }
+
+    public static void drawImageRect(String name, InputStream inputStream, float x, float y, float width, float height) {
+        int imageId = imageMap.containsKey(name) ? imageMap.get(name) : genImageId(inputStream);
+
+        if (imageId == -1 || imageId == 0) {
+            // 处理图像加载失败的情况
+            return;
+        }
+
+        drawImageRect(imageId, x, y, width, height);
+
+        imageMap.put(name, imageId);
+    }
+
+    public static void drawImageRect(ResourceLocation location, float x, float y, float width, float height) {
+        int imageId = 0;
+        if (imageMap.containsKey(location.getResourcePath())) {
+            imageId = imageMap.get(location.getResourcePath());
+        } else {
+            try {
+                InputStream inputStream = mc.getResourceManager().getResource(location).getInputStream();
+                imageId = genImageId(inputStream);
+            } catch (IOException e) {
+
+            }
+        }
+
+        if (imageId == -1 || imageId == 0) {
+            // 处理图像加载失败的情况
+            return;
+        }
+
+        drawImageRect(imageId, x, y, width, height);
+
+        imageMap.put(location.getResourcePath(), imageId);
+    }
+
+    public static void drawImageRect(ResourceLocation location, float x, float y, float width, float height, Color color) {
+        int imageId = 0;
+        if (imageMap.containsKey(location.getResourcePath())) {
+            imageId = imageMap.get(location.getResourcePath());
+        } else {
+            try {
+                InputStream inputStream = mc.getResourceManager().getResource(location).getInputStream();
+                imageId = genImageId(inputStream);
+            } catch (IOException e) {
+
+            }
+        }
+
+        if (imageId == -1 || imageId == 0) {
+            // 处理图像加载失败的情况
+            return;
+        }
+
+        drawImageRect(imageId, x, y, width, height, color);
+
+        imageMap.put(location.getResourcePath(), imageId);
+    }
+
+    public static void drawImageRect(int imageId, float x, float y, float width, float height) {
+        NVGPaint imgPaint = NVGPaint.calloc();
+
+        float renderX = x * 2;
+        float renderY = y * 2;
+        float renderWidth = width * 2;
+        float renderHeight = height * 2;
+
+        nvgBeginPath(vg);  // 开始一个新的路径
+        nvgRect(vg, renderX, renderY, renderWidth, renderHeight);  // 定义一个矩形区域用于绘制图像
+        nvgImagePattern(vg, renderX, renderY, renderWidth, renderHeight, 0, imageId, 1.0f, imgPaint);
+        nvgFillPaint(vg, imgPaint);  // 设置填充样式为图像
+        nvgFill(vg);  // 填充图像
+
+        imgPaint.free();
+    }
+
+    public static void drawImageRect(int imageId, float x, float y, float width, float height, Color color) {
+        NVGPaint imgPaint = NVGPaint.calloc();
+
+        float renderX = x * 2;
+        float renderY = y * 2;
+        float renderWidth = width * 2;
+        float renderHeight = height * 2;
+
+        nvgBeginPath(vg);  // 开始一个新的路径
+        nvgRect(vg, renderX, renderY, renderWidth, renderHeight);  // 定义一个矩形区域用于绘制图像
+        nvgImagePattern(vg, renderX, renderY, renderWidth, renderHeight, 0, imageId, 1.0f, imgPaint);
+        fillColor(color);
+        nvgFillPaint(vg, imgPaint);  // 设置填充样式为图像
+        nvgFill(vg);  // 填充图像
+
+        imgPaint.free();
+    }
+
+    public static void drawImageCircle(String name, InputStream inputStream, float x, float y, float radius) {
+        int imageId = imageMap.containsKey(name) ? imageMap.get(name) : genImageId(inputStream);
+
+        if (imageId == -1 || imageId == 0) {
+            // 处理图像加载失败的情况
+            return;
+        }
+
+        drawImageCircle(imageId, x, y, radius);
+
+        imageMap.put(name, imageId);
+    }
+
+    public static void drawImageCircle(int imageId, float x, float y, float radius) {
+        drawImageCircle(imageId, x, y, radius, 0f);
+    }
+
+    public static void drawImageCircle(int imageId, float x, float y, float radius, float angle) {
+        NVGPaint imgPaint = NVGPaint.calloc();
+
+        float renderX = x * 2;
+        float renderY = y * 2;
+        float renderRadius = radius * 2;
+
+        nvgBeginPath(vg);  // 开始一个新的路径
+        nvgCircle(vg, renderX, renderY, renderRadius);  // 定义一个圆形区域用于绘制图像
+        nvgImagePattern(vg, renderX - renderRadius, renderY - renderRadius, renderRadius * 2f, renderRadius * 2f, angle, imageId, 1.0f, imgPaint);
+        nvgFillPaint(vg, imgPaint);  // 设置填充样式为图像
+        nvgFill(vg);  // 填充图像
+
+        imgPaint.free();
+    }
+
+    public static void drawRoundedOutlineRect(float x, float y, float width, float height, float radius, float outlineWidth, Color fillColor, Color outlineColor) {
+        drawRoundedRect(x, y, width, height, radius, fillColor);
+        strokeColor(outlineColor);
+        nvgStrokeWidth(vg, outlineWidth);
+        nvgStroke(vg);
+    }
+
+    public static void drawCircle(float centerX, float centerY, float radius, Color color) {
+        beginPath();
+        nvgCircle(vg, centerX * 2, centerY * 2, radius * 2);
+        fillColor(color);
+        nvgFill(vg);
     }
 
     public static void scaleStart(float centerX, float centerY, float scale) {
@@ -45,7 +255,7 @@ public class NanoUtil extends MinecraftInstance {
         nvgBeginPath(vg);
 
         // 设置线条颜色和宽度
-        nvgStrokeColor(new Color(color));
+        strokeColor(new Color(color));
         nvgStrokeWidth(vg, lineWidth * 2f);
 
         // 移动到第一个点
@@ -67,7 +277,7 @@ public class NanoUtil extends MinecraftInstance {
         // 移动到绘制区域的中心点
         nvgTranslate(vg, centerX * 2f, centerY * 2f);
 
-        nvgRotate(vg, NVG_PI / angle); // NVG_PI / 6 = 30度
+        nvgRotate(vg, NVG_PI / angle);
     }
 
     public static void rotateEnd() {
@@ -92,14 +302,14 @@ public class NanoUtil extends MinecraftInstance {
         nvgRestore(vg);
     }
 
-    public static void nvgColor(Color color) {
+    public static void fillColor(Color color) {
         NVGColor nvgColor = NVGColor.calloc();
         nvgColor.r(color.getRed() / 255f).g(color.getGreen() / 255f).b(color.getBlue() / 255f).a(color.getAlpha() / 255f);
         nvgFillColor(NanoLoader.vg, nvgColor);
         nvgColor.free();
     }
 
-    public static void nvgStrokeColor(Color color) {
+    public static void strokeColor(Color color) {
         NVGColor nvgColor = NVGColor.calloc();
         nvgColor.r(color.getRed() / 255f).g(color.getGreen() / 255f).b(color.getBlue() / 255f).a(color.getAlpha() / 255f);
         NanoVG.nvgStrokeColor(vg, nvgColor);

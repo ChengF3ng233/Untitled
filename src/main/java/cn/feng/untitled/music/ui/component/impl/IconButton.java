@@ -2,10 +2,9 @@ package cn.feng.untitled.music.ui.component.impl;
 
 import cn.feng.untitled.music.ui.ThemeColor;
 import cn.feng.untitled.music.ui.component.Button;
+import cn.feng.untitled.ui.font.nano.NanoUtil;
 import cn.feng.untitled.util.data.resource.ResourceType;
 import cn.feng.untitled.util.data.resource.ResourceUtil;
-import cn.feng.untitled.util.render.RenderUtil;
-import cn.feng.untitled.util.render.RoundedUtil;
 import lombok.Setter;
 import net.minecraft.util.ResourceLocation;
 import org.lwjgl.input.Mouse;
@@ -38,13 +37,13 @@ public class IconButton extends Button {
     }
 
     @Override
-    public void onRender2D() {
-        RenderUtil.scaleStart(posX + size / 2f, posY + size / 2f, hovering? (Mouse.isButtonDown(0)? 1.03f : 1.07f) : 1f);
+    public void render() {
+        NanoUtil.scaleStart(posX + size / 2f, posY + size / 2f, hovering ? (Mouse.isButtonDown(0) ? 1.03f : 1.07f) : 1f);
         if (bg) {
-            RoundedUtil.drawRound(posX - 2f, posY - 2f, size + 4f, size + 4f, 9.5f, ThemeColor.redColor);
+            NanoUtil.drawCircle(posX + size / 2f, posY + size / 2f, size / 1.5f, ThemeColor.redColor);
         }
-        RenderUtil.drawImage(icon, posX, posY, size, size);
-        RenderUtil.scaleEnd();
+        NanoUtil.drawImageRect(icon, posX, posY, size, size);
+        NanoUtil.scaleEnd();
     }
 
     @Override

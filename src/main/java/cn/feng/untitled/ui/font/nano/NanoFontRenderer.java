@@ -9,7 +9,6 @@ import lombok.Setter;
 import org.lwjgl.system.MemoryUtil;
 
 import java.awt.*;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.ByteBuffer;
@@ -178,7 +177,7 @@ public class NanoFontRenderer extends MinecraftInstance {
         float renderX = x * 2;
         float renderY = y * 2 + 2f;
 
-        NanoUtil.nvgColor(color);
+        NanoUtil.fillColor(color);
 
         renderString(text, renderX, renderY, size);
 
@@ -192,11 +191,11 @@ public class NanoFontRenderer extends MinecraftInstance {
         float renderX = x * 2;
         float renderY = y * 2 + 1f;
 
-        NanoUtil.nvgColor(glowColor);
+        NanoUtil.fillColor(glowColor);
         nvgFontBlur(vg, radius);
         renderString(text, renderX, renderY, size);
 
-        NanoUtil.nvgColor(textColor);
+        NanoUtil.fillColor(textColor);
         nvgFontBlur(vg, 0f);
         renderString(text, renderX, renderY, size);
 

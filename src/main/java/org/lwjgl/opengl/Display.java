@@ -357,7 +357,7 @@ public class Display {
     }
 
     public static void update(boolean processMessages) {
-        if (Client.instance.loaded && NanoLoader.shouldRender() && displayFocused) {
+        if (Client.instance.loaded && NanoLoader.shouldRender()) {
             NanoUtil.beginFrame();
             Client.instance.eventBus.post(new NanoEvent());
             NanoUtil.endFrame();

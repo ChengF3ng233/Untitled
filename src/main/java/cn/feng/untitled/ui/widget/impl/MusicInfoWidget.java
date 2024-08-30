@@ -6,6 +6,7 @@ import cn.feng.untitled.music.api.player.MusicPlayer;
 import cn.feng.untitled.music.ui.ThemeColor;
 import cn.feng.untitled.ui.font.nano.NanoFontLoader;
 import cn.feng.untitled.ui.font.nano.NanoFontRenderer;
+import cn.feng.untitled.ui.font.nano.NanoUtil;
 import cn.feng.untitled.ui.widget.Widget;
 import cn.feng.untitled.util.render.RenderUtil;
 import cn.feng.untitled.value.impl.BoolValue;
@@ -34,22 +35,6 @@ public class MusicInfoWidget extends Widget {
     private final NumberValue fontSize = new NumberValue("FontSize", 20, 30, 15, 0.1);
     private final BoolValue fontShadow = new BoolValue("FontShadow", true);
 
-
-    @Override
-    public void onRender2D() {
-        MusicPlayer player = Client.instance.musicManager.screen.player;
-        if (player.getMusic() == null) return;
-        if (player.getMusic().getCoverTexture() == null) {
-            try {
-                player.getMusic().setCoverTexture(new DynamicTexture(ImageIO.read(player.getMusic().getCoverFile())));
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
-        }
-        height = heightValue.getValue().floatValue();
-        RenderUtil.drawImage(player.getMusic().getCoverTexture(), x * sr.getScaledWidth(), y * sr.getScaledHeight(), height, height);
-    }
-
     @Override
     public void onNano() {
         MusicPlayer player = Client.instance.musicManager.screen.player;
@@ -61,6 +46,12 @@ public class MusicInfoWidget extends Widget {
         ) + 4f;
         fontRenderer.drawString(player.getMusic().getName(), x * sr.getScaledWidth() + 2f + height, y * sr.getScaledHeight() + 2f, fontSize.getValue().floatValue(), Color.WHITE, fontShadow.getValue());
         NanoFontLoader.misans.drawString(player.getMusic().getArtist(), x * sr.getScaledWidth() + 2f + height, y * sr.getScaledHeight() + fontSize.getValue().floatValue() / 2f + 6f, fontSize.getValue().floatValue() * 0.8f, ThemeColor.greyColor, fontShadow.getValue());
+
+        if (player.getMusic().getCoverTexture() == 0) {
+            player.getMusic().setCoverTexture(NanoUtil.genImageId(player.getMusic().getCoverFile()));
+        }
+        height = heightValue.getValue().floatValue();
+        NanoUtil.drawImageRect(player.getMusic().getCoverTexture(), x * sr.getScaledWidth(), y * sr.getScaledHeight(), height, height);
     }
 
     @Override

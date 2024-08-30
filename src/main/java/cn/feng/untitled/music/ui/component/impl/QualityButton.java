@@ -7,6 +7,7 @@ import cn.feng.untitled.music.ui.ThemeColor;
 import cn.feng.untitled.music.ui.component.Button;
 import cn.feng.untitled.ui.font.nano.NanoFontLoader;
 import cn.feng.untitled.ui.font.nano.NanoFontRenderer;
+import cn.feng.untitled.ui.font.nano.NanoUtil;
 import cn.feng.untitled.util.render.RoundedUtil;
 import org.lwjgl.nanovg.NanoVG;
 
@@ -18,25 +19,13 @@ import java.awt.*;
  **/
 public class QualityButton extends Button {
     @Override
-    public void onNano() {
-        render(true);
-    }
-
-    @Override
-    public void onRender2D() {
-        render(false);
-    }
-
-    private void render(boolean isNano) {
+    public void render() {
         NanoFontRenderer fontRenderer = NanoFontLoader.misans;
         MusicPlayer player = Client.instance.musicManager.screen.player;
         height = 10f;
         width = fontRenderer.getStringWidth(player.getQuality().getDisplayName(), 13f) + 4f;
-        if (isNano) {
-           fontRenderer.drawString(player.getQuality().getDisplayName(), posX + width / 2f, posY + height / 2f, 13f, NanoVG.NVG_ALIGN_CENTER | NanoVG.NVG_ALIGN_MIDDLE, Color.WHITE);
-        } else {
-            RoundedUtil.drawRoundOutline(posX, posY, width, height, 2f, 0.5f, ThemeColor.playerColor, hovering? ThemeColor.outlineColor.brighter() : ThemeColor.outlineColor);
-        }
+        NanoUtil.drawRoundedOutlineRect(posX, posY, width, height, 2f, 1f, ThemeColor.playerColor, hovering? ThemeColor.outlineColor.brighter() : ThemeColor.outlineColor);
+        fontRenderer.drawString(player.getQuality().getDisplayName(), posX + width / 2f, posY + height / 2f, 13f, NanoVG.NVG_ALIGN_CENTER | NanoVG.NVG_ALIGN_MIDDLE, Color.WHITE);
     }
 
     @Override
@@ -45,6 +34,10 @@ public class QualityButton extends Button {
         if (player.getMusic() == null) return;
         if (hovering && button == 0) {
             int level = player.getQuality().getLevel() + 1;
+            if (player.getMusic().getQuality() == null) {
+                player.setQuality(MusicQuality.exhigh);
+                return;
+            }
             if (level > player.getMusic().getQuality().getLevel()) level = 0;
             player.setQuality(MusicQuality.getQuality(level));
         }

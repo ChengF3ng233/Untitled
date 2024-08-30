@@ -26,16 +26,19 @@ public class ResourceUtil extends MinecraftInstance {
         );
     }
 
-    public static InputStream getResourceAsStream(String fileName, ResourceType type) throws IOException {
-        String location = "/assets/minecraft/untitled/" +
-                switch (type) {
-                    case FONT -> "font/";
-                    case ICON -> "icon/";
-                    case IMAGE -> "image/";
-                    case VIDEO -> "video/";
-                } +
-                fileName;
-        System.out.println(location);
-        return ResourceUtil.class.getResourceAsStream(location);
+    public static InputStream getResourceAsStream(String fileName, ResourceType type) {
+        try {
+            String location = "/assets/minecraft/untitled/" +
+                    switch (type) {
+                        case FONT -> "font/";
+                        case ICON -> "icon/";
+                        case IMAGE -> "image/";
+                        case VIDEO -> "video/";
+                    } +
+                    fileName;
+            return ResourceUtil.class.getResourceAsStream(location);
+        } catch (Exception e) {
+            return null;
+        }
     }
 }

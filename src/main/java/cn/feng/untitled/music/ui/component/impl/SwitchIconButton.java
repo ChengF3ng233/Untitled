@@ -28,8 +28,8 @@ public class SwitchIconButton extends IconButton {
     }
 
     @Override
-    public void onRender2D() {
-        super.onRender2D();
+    public void render() {
+        super.render();
     }
 
     @Override

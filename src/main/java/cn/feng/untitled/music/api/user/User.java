@@ -20,6 +20,6 @@ public class User {
     private String cookie = "";
     private String avatarUrl;
     private boolean loggedIn = false;
-    private transient DynamicTexture avatarTexture;
-    private transient DynamicTexture tempAvatarTexture;
+    private transient int avatarTexture = 0;
+    private transient int tempAvatarTexture = 0;
 }

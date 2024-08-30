@@ -5,7 +5,7 @@ import java.util.Map;
 public class I18n {
     private static Locale i18nLocale;
 
-    static void setLocale(Locale i18nLocaleIn) {
+    public static void setLocale(Locale i18nLocaleIn) {
         i18nLocale = i18nLocaleIn;
     }
 

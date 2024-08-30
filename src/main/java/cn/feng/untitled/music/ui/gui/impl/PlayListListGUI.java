@@ -6,11 +6,9 @@ import cn.feng.untitled.music.ui.component.impl.PlayListButton;
 import cn.feng.untitled.music.ui.gui.MusicPlayerGUI;
 import cn.feng.untitled.ui.font.nano.NanoFontLoader;
 import cn.feng.untitled.ui.font.nano.NanoUtil;
-import cn.feng.untitled.util.render.RenderUtil;
 import lombok.Getter;
 import lombok.Setter;
 import org.lwjgl.nanovg.NanoVG;
-import org.lwjgl.opengl.GL11;
 
 import java.awt.*;
 import java.util.ArrayList;
@@ -32,20 +30,10 @@ public class PlayListListGUI extends MusicPlayerGUI {
     }
 
     @Override
-    public boolean onNano(float x, float y, int mouseX, int mouseY, float cx, float cy, float scale) {
-        return render(x, y, mouseX, mouseY, cx, cy, scale, true);
-    }
-
-    @Override
-    public boolean onRender2D(float x, float y, int mouseX, int mouseY, float cx, float cy, float scale) {
-        return render(x, y, mouseX, mouseY, cx, cy, scale, false);
-    }
-
-    private boolean render(float x, float y, int mouseX, int mouseY, float cx, float cy, float scale, boolean isNano) {
+    public boolean render(float x, float y, int mouseX, int mouseY, float cx, float cy, float scale) {
+        ArrayList<PlayListButton> buttons = new ArrayList<>(this.buttons);
         if (buttons.isEmpty()) {
-            if (isNano) {
-                NanoFontLoader.misans.drawGlowString(MusicAPI.user.isLoggedIn()? "获取中" : "请先登录", x + width / 2f, y + 50f, 30f, NanoVG.NVG_ALIGN_CENTER, Color.WHITE);
-            }
+            NanoFontLoader.misans.drawGlowString(MusicAPI.user.isLoggedIn() ? "获取中" : "请先登录", x + width / 2f, y + 50f, 30f, NanoVG.NVG_ALIGN_CENTER, Color.WHITE);
             return false;
         }
 
@@ -59,23 +47,17 @@ public class PlayListListGUI extends MusicPlayerGUI {
 
         float buttonY = posY;
 
-        if (!isNano) {
-            RenderUtil.scissorStart(leftX, topY, rightX - leftX, Math.max(bottomY - topY - 3f, 0f));
-        } else NanoUtil.scissorStart(leftX, topY, rightX - leftX, Math.max(bottomY - topY - 3f, 0f));
+        NanoUtil.scissorStart(leftX, topY, rightX - leftX, Math.max(bottomY - topY - 3f, 0f));
         for (PlayListButton button : buttons) {
             // 懒加载
             if (buttonY < bottomY) {
                 button.width = this.width;
                 button.updateState(posX, buttonY, mouseX, mouseY);
-                if (isNano) {
-                    button.onNano();
-                } else button.onRender2D();
+                button.render();
             }
             buttonY += button.height + 10f;
         }
-        if (isNano) {
-            NanoUtil.scissorEnd();
-        } else RenderUtil.scissorEnd();
+        NanoUtil.scissorEnd();
 
         height = buttonY - posY;
         return true;
@@ -83,6 +65,7 @@ public class PlayListListGUI extends MusicPlayerGUI {
 
     @Override
     public void mouseClicked(int mouseX, int mouseY, int mouseButton) {
+        ArrayList<PlayListButton> buttons = new ArrayList<>(this.buttons);
         for (PlayListButton button : buttons) {
             button.mouseClicked(mouseX, mouseY, mouseButton);
         }

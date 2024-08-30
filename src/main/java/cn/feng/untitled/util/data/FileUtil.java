@@ -1,6 +1,12 @@
 package cn.feng.untitled.util.data;
 
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
+import java.awt.image.DataBufferByte;
+import java.awt.image.DataBufferInt;
 import java.io.*;
+import java.nio.ByteBuffer;
+import java.nio.ByteOrder;
 
 public class FileUtil {
 
@@ -46,4 +52,26 @@ public class FileUtil {
         return stringBuilder.toString();
     }
 
+    public static ByteBuffer toByteBuffer(InputStream inputStream) {
+        try {
+            BufferedImage image = ImageIO.read(inputStream);
+            // 获取图像的宽度和高度
+            int width = image.getWidth();
+            int height = image.getHeight();
+
+            // 获取图像的像素数据
+            DataBufferByte dataBufferByte = (DataBufferByte) image.getRaster().getDataBuffer();
+            byte[] data = dataBufferByte.getData();
+
+            // 创建一个 ByteBuffer 用于存储图像数据
+            ByteBuffer byteBuffer = ByteBuffer.allocateDirect(width * height * 4);
+            byteBuffer.order(ByteOrder.nativeOrder()); // 使用本地字节顺序
+            byteBuffer.put(data);
+            byteBuffer.flip();
+
+            return byteBuffer;
+        } catch (IOException e) {
+            return null;
+        }
+    }
 }

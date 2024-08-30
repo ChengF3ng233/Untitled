@@ -42,14 +42,9 @@ public abstract class MusicPlayerGUI extends MinecraftInstance {
         scrollAnim.getAnimation().reset();
     }
 
-    public boolean onNano(float x, float y, int mouseX, int mouseY, float cx, float cy, float scale) {
+    public boolean render(float x, float y, int mouseX, int mouseY, float cx, float cy, float scale) {
         return false;
     }
-
-    public boolean onRender2D(float x, float y, int mouseX, int mouseY, float cx, float cy, float scale) {
-        return false;
-    }
-
     public void mouseClicked(int mouseX, int mouseY, int mouseButton) {
 
     }

@@ -1,13 +1,13 @@
 package cn.feng.untitled.music.ui.component.impl;
 
-import cn.feng.untitled.music.ui.ThemeColor;
 import cn.feng.untitled.music.ui.MusicCategory;
+import cn.feng.untitled.music.ui.ThemeColor;
 import cn.feng.untitled.music.ui.component.Button;
 import cn.feng.untitled.music.ui.gui.MusicPlayerGUI;
 import cn.feng.untitled.ui.font.nano.NanoFontLoader;
+import cn.feng.untitled.ui.font.nano.NanoUtil;
 import cn.feng.untitled.util.render.ColorUtil;
 import cn.feng.untitled.util.render.RenderUtil;
-import cn.feng.untitled.util.render.RoundedUtil;
 import lombok.Getter;
 import lombok.Setter;
 import org.lwjgl.nanovg.NanoVG;
@@ -35,23 +35,11 @@ public class CategoryButton extends Button {
     }
 
     @Override
-    public void onNano() {
-        render(true);
-    }
-
-    @Override
-    public void onRender2D() {
-        render(false);
-    }
-
-    private void render(boolean isNano) {
+    public void render() {
         float textY = posY + height / 2f;
-        if (isNano) {
-            NanoFontLoader.misans.drawString(text, posX + 20f, textY, 17f, NanoVG.NVG_ALIGN_LEFT | NanoVG.NVG_ALIGN_MIDDLE, Color.WHITE);
-        } else {
-            RoundedUtil.drawRound(posX, posY, width, height, 3f, true, selected ? ThemeColor.redColor : (hovering ? new Color(50, 50, 50, 150) : ColorUtil.TRANSPARENT_COLOR));
-            RenderUtil.drawImage(category.icon, posX + 3f, textY - 6f, 12, 12);
-        }
+        NanoUtil.drawRoundedRect(posX, posY, width, height, 3f, selected ? ThemeColor.redColor : (hovering ? new Color(50, 50, 50, 150) : ColorUtil.TRANSPARENT_COLOR));
+        NanoFontLoader.misans.drawString(text, posX + 20f, textY, 17f, NanoVG.NVG_ALIGN_LEFT | NanoVG.NVG_ALIGN_MIDDLE, Color.WHITE);
+        NanoUtil.drawImageRect(category.icon, posX + 3f, textY - 6f, 12, 12);
     }
 
     @Override

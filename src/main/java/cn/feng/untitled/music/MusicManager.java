@@ -7,6 +7,7 @@ import cn.feng.untitled.music.api.MusicAPI;
 import cn.feng.untitled.music.api.base.Music;
 import cn.feng.untitled.music.thread.GetPlayListsThread;
 import cn.feng.untitled.music.ui.MusicPlayerScreen;
+import cn.feng.untitled.ui.font.nano.NanoUtil;
 import cn.feng.untitled.util.MinecraftInstance;
 import cn.feng.untitled.util.data.HttpUtil;
 import net.minecraft.client.renderer.texture.DynamicTexture;
@@ -33,7 +34,7 @@ public class MusicManager extends MinecraftInstance {
         if (MusicAPI.user.isLoggedIn()) {
             new GetPlayListsThread().start();
             BufferedImage image = HttpUtil.downloadImage(MusicAPI.user.getAvatarUrl());
-            MusicAPI.user.setAvatarTexture(new DynamicTexture(image));
+            MusicAPI.user.setAvatarTexture(NanoUtil.genImageId(image));
         }
     }
 

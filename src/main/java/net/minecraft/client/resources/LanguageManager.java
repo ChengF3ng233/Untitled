@@ -15,7 +15,7 @@ import java.util.Map;
 import java.util.SortedSet;
 
 public class LanguageManager implements IResourceManagerReloadListener {
-    protected static final Locale currentLocale = new Locale();
+    public static final Locale currentLocale = new Locale();
     private static final Logger logger = LogManager.getLogger();
     private final IMetadataSerializer theMetadataSerializer;
     private String currentLanguage;

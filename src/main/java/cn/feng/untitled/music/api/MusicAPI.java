@@ -7,6 +7,7 @@ import cn.feng.untitled.music.api.user.QRCode;
 import cn.feng.untitled.music.api.user.QRCodeState;
 import cn.feng.untitled.music.api.user.ScanResult;
 import cn.feng.untitled.music.api.user.User;
+import cn.feng.untitled.ui.font.nano.NanoUtil;
 import cn.feng.untitled.util.data.DataUtil;
 import cn.feng.untitled.util.data.HttpUtil;
 import cn.feng.untitled.util.misc.Logger;
@@ -120,7 +121,7 @@ public class MusicAPI {
         user.setNickname(profile.get("nickname").getAsString());
         String avatarUrl = profile.get("avatarUrl").getAsString();
         user.setAvatarUrl(avatarUrl);
-        user.setAvatarTexture(new DynamicTexture(HttpUtil.downloadImage(avatarUrl)));
+        user.setAvatarTexture(NanoUtil.genImageId(HttpUtil.downloadImage(avatarUrl)));
     }
 
     public static List<PlayList> getUserPlayLists() {

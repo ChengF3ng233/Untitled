@@ -3,6 +3,7 @@ package cn.feng.untitled.music.ui.component.slider;
 import cn.feng.untitled.Client;
 import cn.feng.untitled.music.ui.ThemeColor;
 import cn.feng.untitled.ui.font.nano.NanoFontLoader;
+import cn.feng.untitled.ui.font.nano.NanoUtil;
 import cn.feng.untitled.util.render.RenderUtil;
 import cn.feng.untitled.util.render.RoundedUtil;
 import org.lwjgl.glfw.GLFW;
@@ -21,7 +22,7 @@ public class PlayerSlider {
     private boolean dragging, hovering, cursorRestored = false;
     private float dragDelta;
 
-    public void render(float x, float y, int mouseX, int mouseY, boolean isNano) {
+    public void render(float x, float y, int mouseX, int mouseY) {
         float width = 200f;
 
         hovering = RenderUtil.hovering(mouseX, mouseY, x, y - 3f, width, 5f);
@@ -43,22 +44,18 @@ public class PlayerSlider {
             cursorRestored = true;
         }
 
-        if (isNano) {
-            String formattedTime = formatTime(currentTime);
-            NanoFontLoader.rubik.drawString(formattedTime, x - 5f, y - 6.5f / 2f - 0.2f, 13f, Color.WHITE);
-        } else {
-            RoundedUtil.drawRound(sliderX, y, 170, 1f, 1f, ThemeColor.barColor);
+
+        NanoUtil.drawRoundedRect(sliderX, y, 170, 1f, 1f, ThemeColor.barColor);
+        NanoUtil.drawRoundedRect(x + 15f, y, currentWidth, 1f, 1f, (hovering || dragging)? ThemeColor.redColor : ThemeColor.barPlayedColor);
+
+        if (hovering || dragging) {
+            NanoUtil.drawCircle(sliderX + currentWidth, y + 0.5f, 2f, Color.WHITE);
         }
 
-        if (!isNano) {
-            RoundedUtil.drawRound(x + 15f, y, currentWidth, 1f, 1f, (hovering || dragging)? ThemeColor.redColor : ThemeColor.barPlayedColor);
-            if (hovering || dragging) {
-                RoundedUtil.drawRound(sliderX + currentWidth - 2.5f, y - 2f, 5f, 5f, 2f, Color.WHITE);
-            }
-        } else {
-            String restOfTime = formatTime(totalTime - currentTime);
-            NanoFontLoader.rubik.drawString(restOfTime, x + 190f, y - 6.5f / 2f - 0.2f, 13f, ThemeColor.greyColor);
-        }
+        String formattedTime = formatTime(currentTime);
+        NanoFontLoader.rubik.drawString(formattedTime, x - 5f, y - 6.5f / 2f - 0.2f, 13f, Color.WHITE);
+        String restOfTime = formatTime(totalTime - currentTime);
+        NanoFontLoader.rubik.drawString(restOfTime, x + 190f, y - 6.5f / 2f - 0.2f, 13f, ThemeColor.greyColor);
     }
 
     public void mouseClicked(int mouseButton) {
