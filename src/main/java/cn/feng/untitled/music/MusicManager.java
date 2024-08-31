@@ -7,15 +7,12 @@ import cn.feng.untitled.music.api.MusicAPI;
 import cn.feng.untitled.music.api.base.Music;
 import cn.feng.untitled.music.thread.GetPlayListsThread;
 import cn.feng.untitled.music.ui.MusicPlayerScreen;
-import cn.feng.untitled.ui.font.nano.NanoUtil;
+import cn.feng.untitled.util.render.nano.NanoUtil;
 import cn.feng.untitled.util.MinecraftInstance;
 import cn.feng.untitled.util.data.HttpUtil;
-import net.minecraft.client.renderer.texture.DynamicTexture;
 
 import java.awt.image.BufferedImage;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 /**

@@ -7,12 +7,11 @@ import cn.feng.untitled.music.api.user.QRCode;
 import cn.feng.untitled.music.api.user.QRCodeState;
 import cn.feng.untitled.music.api.user.ScanResult;
 import cn.feng.untitled.music.api.user.User;
-import cn.feng.untitled.ui.font.nano.NanoUtil;
+import cn.feng.untitled.util.render.nano.NanoUtil;
 import cn.feng.untitled.util.data.DataUtil;
 import cn.feng.untitled.util.data.HttpUtil;
 import cn.feng.untitled.util.misc.Logger;
 import com.google.gson.*;
-import net.minecraft.client.renderer.texture.DynamicTexture;
 import okhttp3.*;
 
 import javax.imageio.ImageIO;
@@ -21,8 +20,6 @@ import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.IOException;
 import java.util.*;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import static cn.feng.untitled.music.util.LyricUtil.parseLyrics;
 import static cn.feng.untitled.music.util.LyricUtil.parseTranslatedLyrics;

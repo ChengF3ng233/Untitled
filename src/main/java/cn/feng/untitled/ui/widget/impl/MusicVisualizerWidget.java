@@ -2,7 +2,8 @@ package cn.feng.untitled.ui.widget.impl;
 
 import cn.feng.untitled.Client;
 import cn.feng.untitled.music.ui.ThemeColor;
-import cn.feng.untitled.ui.font.nano.NanoUtil;
+import cn.feng.untitled.util.render.nano.GradientType;
+import cn.feng.untitled.util.render.nano.NanoUtil;
 import cn.feng.untitled.ui.widget.Widget;
 import cn.feng.untitled.util.data.MathUtil;
 import cn.feng.untitled.util.render.RenderUtil;
@@ -44,8 +45,7 @@ public class MusicVisualizerWidget extends Widget {
     private float[] magnitudeInterp = null;
 
     @Override
-    public void onRender2D() {
-        GL11.glPushMatrix();
+    public void render() {
         width = fillValue.getValue() ? sr.getScaledWidth() : widthValue.getValue().floatValue();
         height = heightValue.getValue().floatValue();
         float renderX = sr.getScaledWidth() * x;
@@ -66,6 +66,8 @@ public class MusicVisualizerWidget extends Widget {
                 magnitudeInterp[i] = (float) MathUtil.lerp(magnitudeInterp[i], magnitudes[i], RenderUtil.frameTime * 0.5);
             }
 
+            NanoUtil.scissorStart(renderX, renderY, width, height);
+
             vertex[0] = renderX;
             vertex[1] = renderY + height;
             renderX += step;
@@ -80,9 +82,9 @@ public class MusicVisualizerWidget extends Widget {
                 vertex[vertexIndex] = renderX;
                 vertex[vertexIndex + 1] = realY;
 
-                if (modeValue.getValue().equals("Rect"))
+                if (modeValue.getValue().equals("Rect") && realY != renderY + height)
                 {
-                    RoundedUtil.drawGradientVertical(renderX - step, realY + (renderY + heightValue.getValue().floatValue()) * (sr.getScaleFactor() * 0.5f - 1), step, Math.max(renderY + height - realY, 1), rectRadius.getValue().floatValue(), rectFirst.getValue(colorIndex), rectSecond.getValue(colorIndex));
+                    NanoUtil.drawRoundedRect(renderX - step, realY, step, renderY + height - realY, rectRadius.getValue().floatValue(), rectRadius.getValue().floatValue(), 0, 0, rectFirst.getValue(colorIndex));
                     colorIndex += indexOffset.getValue().intValue();
                 }
 
@@ -93,7 +95,8 @@ public class MusicVisualizerWidget extends Widget {
             if (modeValue.getValue().equals("Polyline")) {
                 NanoUtil.drawPolyline(vertex, lineColor.getValue().getRGB(), 0.8f);
             }
+
+            NanoUtil.scissorEnd();
         }
-        GL11.glPopMatrix();
     }
 }

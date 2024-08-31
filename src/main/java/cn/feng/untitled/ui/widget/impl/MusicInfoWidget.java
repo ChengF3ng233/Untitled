@@ -6,17 +6,13 @@ import cn.feng.untitled.music.api.player.MusicPlayer;
 import cn.feng.untitled.music.ui.ThemeColor;
 import cn.feng.untitled.ui.font.nano.NanoFontLoader;
 import cn.feng.untitled.ui.font.nano.NanoFontRenderer;
-import cn.feng.untitled.ui.font.nano.NanoUtil;
+import cn.feng.untitled.util.render.nano.NanoUtil;
 import cn.feng.untitled.ui.widget.Widget;
-import cn.feng.untitled.util.render.RenderUtil;
 import cn.feng.untitled.value.impl.BoolValue;
 import cn.feng.untitled.value.impl.NumberValue;
 import net.minecraft.client.gui.Gui;
-import net.minecraft.client.renderer.texture.DynamicTexture;
 
-import javax.imageio.ImageIO;
 import java.awt.*;
-import java.io.IOException;
 
 /**
  * @author ChengFeng
@@ -36,7 +32,7 @@ public class MusicInfoWidget extends Widget {
     private final BoolValue fontShadow = new BoolValue("FontShadow", true);
 
     @Override
-    public void onNano() {
+    public void render() {
         MusicPlayer player = Client.instance.musicManager.screen.player;
         if (player.getMusic() == null) return;
         NanoFontRenderer fontRenderer = NanoFontLoader.misans.bold();

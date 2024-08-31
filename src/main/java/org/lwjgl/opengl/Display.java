@@ -2,11 +2,12 @@ package org.lwjgl.opengl;
 
 import cn.feng.untitled.Client;
 import cn.feng.untitled.event.impl.NanoEvent;
-import cn.feng.untitled.event.type.EventType;
 import cn.feng.untitled.ui.font.nano.NanoFontLoader;
-import cn.feng.untitled.ui.font.nano.NanoLoader;
-import cn.feng.untitled.ui.font.nano.NanoUtil;
+import cn.feng.untitled.util.render.nano.NanoLoader;
+import cn.feng.untitled.util.render.nano.NanoUtil;
 import lombok.Getter;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.ScaledResolution;
 import org.lwjgl.BufferUtils;
 import org.lwjgl.Sys;
 import org.lwjgl.glfw.*;

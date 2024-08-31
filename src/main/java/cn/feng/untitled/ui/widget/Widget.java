@@ -45,11 +45,7 @@ public abstract class Widget extends MinecraftInstance {
 
     }
 
-    public void onNano() {
-
-    }
-
-    public void onRender2D() {
+    public void render() {
 
     }
 

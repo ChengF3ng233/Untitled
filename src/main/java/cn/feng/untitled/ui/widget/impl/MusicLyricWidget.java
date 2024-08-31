@@ -6,7 +6,7 @@ import cn.feng.untitled.music.api.base.LyricLine;
 import cn.feng.untitled.music.api.base.Music;
 import cn.feng.untitled.music.api.player.MusicPlayer;
 import cn.feng.untitled.ui.font.nano.NanoFontLoader;
-import cn.feng.untitled.ui.font.nano.NanoUtil;
+import cn.feng.untitled.util.render.nano.NanoUtil;
 import cn.feng.untitled.ui.widget.Widget;
 import cn.feng.untitled.util.animation.advanced.composed.CustomAnimation;
 import cn.feng.untitled.util.animation.advanced.impl.DecelerateAnimation;
@@ -74,7 +74,7 @@ public class MusicLyricWidget extends Widget {
     private final CustomAnimation scrollAnim = new CustomAnimation(DecelerateAnimation.class, 300, 0f, 0f);
 
     @Override
-    public void onNano() {
+    public void render() {
         // 整个歌词组件的高度
         height = heightValue.getValue().floatValue();
         MusicPlayer player = Client.instance.musicManager.screen.player;

@@ -8,7 +8,7 @@ import cn.feng.untitled.music.ui.component.button.Button;
 import cn.feng.untitled.music.ui.gui.MusicPlayerGUI;
 import cn.feng.untitled.music.ui.gui.impl.PlayListGUI;
 import cn.feng.untitled.ui.font.nano.NanoFontLoader;
-import cn.feng.untitled.ui.font.nano.NanoUtil;
+import cn.feng.untitled.util.render.nano.NanoUtil;
 import cn.feng.untitled.util.animation.advanced.Animation;
 import cn.feng.untitled.util.animation.advanced.Direction;
 import cn.feng.untitled.util.animation.advanced.impl.DecelerateAnimation;

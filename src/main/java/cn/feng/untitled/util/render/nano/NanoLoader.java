@@ -1,4 +1,4 @@
-package cn.feng.untitled.ui.font.nano;
+package cn.feng.untitled.util.render.nano;
 
 import net.minecraft.client.Minecraft;
 import org.lwjgl.nanovg.NanoVG;
@@ -11,7 +11,7 @@ import org.lwjgl.nanovg.NanoVGGL3;
 public class NanoLoader {
     public static long vg;
     public static void createContext() {
-        vg = NanoVGGL3.nvgCreate(NanoVGGL3.NVG_ANTIALIAS | NanoVGGL3.NVG_STENCIL_STROKES);
+        vg = NanoVGGL3.nvgCreate(NanoVGGL3.NVG_ANTIALIAS);
 
         NanoVG.nvgShapeAntiAlias(vg, true);
     }

@@ -4,7 +4,7 @@ import cn.feng.untitled.Client;
 import cn.feng.untitled.event.impl.KeyEvent;
 import cn.feng.untitled.event.impl.TickEvent;
 import cn.feng.untitled.ui.font.nano.NanoFontLoader;
-import cn.feng.untitled.ui.font.nano.NanoUtil;
+import cn.feng.untitled.util.render.nano.NanoUtil;
 import cn.feng.untitled.ui.screen.SplashScreen;
 import cn.feng.untitled.util.render.RenderUtil;
 import com.google.common.collect.*;

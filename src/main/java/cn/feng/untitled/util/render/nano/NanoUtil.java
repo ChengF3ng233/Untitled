@@ -1,6 +1,8 @@
-package cn.feng.untitled.ui.font.nano;
+package cn.feng.untitled.util.render.nano;
 
 import cn.feng.untitled.util.MinecraftInstance;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.util.ResourceLocation;
 import org.lwjgl.nanovg.NVGColor;
 import org.lwjgl.nanovg.NVGPaint;
@@ -17,7 +19,7 @@ import java.nio.ByteBuffer;
 import java.util.HashMap;
 import java.util.Map;
 
-import static cn.feng.untitled.ui.font.nano.NanoLoader.vg;
+import static cn.feng.untitled.util.render.nano.NanoLoader.vg;
 import static org.lwjgl.nanovg.NanoVG.*;
 
 /**
@@ -29,6 +31,9 @@ public class NanoUtil extends MinecraftInstance {
 
     public static void beginFrame() {
         nvgBeginFrame(vg, mc.displayWidth, mc.displayHeight, 1f);
+        ScaledResolution sr = new ScaledResolution(mc);
+        // 适应mc的scale
+        NanoUtil.scaleStart(0, 0, sr.getScaleFactor());
     }
 
     public static void beginPath() {
@@ -41,23 +46,29 @@ public class NanoUtil extends MinecraftInstance {
 
     public static void drawRoundedRect(float x, float y, float width, float height, float radius, Color color) {
         beginPath();
-        nvgRoundedRect(vg, x * 2, y * 2, width * 2, height * 2, radius * 2);
+        nvgRoundedRect(vg, x, y, width, height, radius);
         fillColor(color);
         nvgFill(vg);
     }
 
     public static void drawRect(float x, float y, float width, float height, Color color) {
         beginPath();
-        nvgRect(vg, x * 2, y * 2, width * 2, height * 2);
+        nvgRect(vg, x, y, width, height);
         fillColor(color);
         nvgFill(vg);
     }
 
     public static void drawRoundedRect(float x, float y, float width, float height, float leftTopRadius, float rightTopRadius, float rightBottomRadius, float leftBottomRadius, Color color) {
         beginPath();
-        nvgRoundedRectVarying(vg, x * 2, y * 2, width * 2, height * 2, leftTopRadius * 2, rightTopRadius * 2, rightBottomRadius * 2, leftBottomRadius * 2);
+        nvgRoundedRectVarying(vg, x, y, width, height, leftTopRadius, rightTopRadius, rightBottomRadius, leftBottomRadius);
         fillColor(color);
         nvgFill(vg);
+    }
+
+    public static NVGColor getColor(Color color) {
+        NVGColor nvgColor = NVGColor.calloc();
+        nvgColor.r(color.getRed() / 255f).g(color.getGreen() / 255f).b(color.getBlue() / 255f).a(color.getAlpha() / 255f);
+        return nvgColor;
     }
 
     public static int genImageId(InputStream inputStream) {
@@ -149,14 +160,9 @@ public class NanoUtil extends MinecraftInstance {
     public static void drawImageRect(int imageId, float x, float y, float width, float height) {
         NVGPaint imgPaint = NVGPaint.calloc();
 
-        float renderX = x * 2;
-        float renderY = y * 2;
-        float renderWidth = width * 2;
-        float renderHeight = height * 2;
-
         nvgBeginPath(vg);  // 开始一个新的路径
-        nvgRect(vg, renderX, renderY, renderWidth, renderHeight);  // 定义一个矩形区域用于绘制图像
-        nvgImagePattern(vg, renderX, renderY, renderWidth, renderHeight, 0, imageId, 1.0f, imgPaint);
+        nvgRect(vg, x, y, width, height);  // 定义一个矩形区域用于绘制图像
+        nvgImagePattern(vg, x, y, width, height, 0, imageId, 1.0f, imgPaint);
         nvgFillPaint(vg, imgPaint);  // 设置填充样式为图像
         nvgFill(vg);  // 填充图像
 
@@ -166,14 +172,9 @@ public class NanoUtil extends MinecraftInstance {
     public static void drawImageRect(int imageId, float x, float y, float width, float height, Color color) {
         NVGPaint imgPaint = NVGPaint.calloc();
 
-        float renderX = x * 2;
-        float renderY = y * 2;
-        float renderWidth = width * 2;
-        float renderHeight = height * 2;
-
         nvgBeginPath(vg);  // 开始一个新的路径
-        nvgRect(vg, renderX, renderY, renderWidth, renderHeight);  // 定义一个矩形区域用于绘制图像
-        nvgImagePattern(vg, renderX, renderY, renderWidth, renderHeight, 0, imageId, 1.0f, imgPaint);
+        nvgRect(vg, x, y, width, height);  // 定义一个矩形区域用于绘制图像
+        nvgImagePattern(vg, x, y, width, height, 0, imageId, 1.0f, imgPaint);
         fillColor(color);
         nvgFillPaint(vg, imgPaint);  // 设置填充样式为图像
         nvgFill(vg);  // 填充图像
@@ -201,13 +202,9 @@ public class NanoUtil extends MinecraftInstance {
     public static void drawImageCircle(int imageId, float x, float y, float radius, float angle) {
         NVGPaint imgPaint = NVGPaint.calloc();
 
-        float renderX = x * 2;
-        float renderY = y * 2;
-        float renderRadius = radius * 2;
-
         nvgBeginPath(vg);  // 开始一个新的路径
-        nvgCircle(vg, renderX, renderY, renderRadius);  // 定义一个圆形区域用于绘制图像
-        nvgImagePattern(vg, renderX - renderRadius, renderY - renderRadius, renderRadius * 2f, renderRadius * 2f, angle, imageId, 1.0f, imgPaint);
+        nvgCircle(vg, x, y, radius);  // 定义一个圆形区域用于绘制图像
+        nvgImagePattern(vg, x - radius, y - radius, radius * 2f, radius * 2f, angle, imageId, 1.0f, imgPaint);
         nvgFillPaint(vg, imgPaint);  // 设置填充样式为图像
         nvgFill(vg);  // 填充图像
 
@@ -223,16 +220,16 @@ public class NanoUtil extends MinecraftInstance {
 
     public static void drawCircle(float centerX, float centerY, float radius, Color color) {
         beginPath();
-        nvgCircle(vg, centerX * 2, centerY * 2, radius * 2);
+        nvgCircle(vg, centerX, centerY, radius);
         fillColor(color);
         nvgFill(vg);
     }
 
     public static void scaleStart(float centerX, float centerY, float scale) {
         nvgSave(vg);
-        nvgTranslate(vg, centerX * 2, centerY * 2);
+        nvgTranslate(vg, centerX, centerY);
         nvgScale(vg, scale, scale);
-        nvgTranslate(vg, -centerX * 2, -centerY * 2);
+        nvgTranslate(vg, -centerX, -centerY);
     }
 
     public static void scaleEnd() {
@@ -256,14 +253,14 @@ public class NanoUtil extends MinecraftInstance {
 
         // 设置线条颜色和宽度
         strokeColor(new Color(color));
-        nvgStrokeWidth(vg, lineWidth * 2f);
+        nvgStrokeWidth(vg, lineWidth);
 
         // 移动到第一个点
-        nvgMoveTo(vg, points[0] * 2f, points[1] * 2f);
+        nvgMoveTo(vg, points[0], points[1]);
 
         // 添加折线的每个点
         for (int i = 2; i < points.length; i += 2) {
-            nvgLineTo(vg, points[i] * 2f, points[i + 1] * 2f);
+            nvgLineTo(vg, points[i], points[i + 1]);
         }
 
         // 描边路径
@@ -275,7 +272,7 @@ public class NanoUtil extends MinecraftInstance {
         nvgSave(vg);
 
         // 移动到绘制区域的中心点
-        nvgTranslate(vg, centerX * 2f, centerY * 2f);
+        nvgTranslate(vg, centerX, centerY);
 
         nvgRotate(vg, NVG_PI / angle);
     }
@@ -286,7 +283,7 @@ public class NanoUtil extends MinecraftInstance {
 
     public static void transformStart(float x, float y) {
         nvgSave(vg);
-        nvgTranslate(vg, x * 2f, y * 2f);
+        nvgTranslate(vg, x, y);
     }
 
     public static void transformEnd() {
@@ -295,7 +292,7 @@ public class NanoUtil extends MinecraftInstance {
 
     public static void scissorStart(float x, float y, float width, float height) {
         nvgSave(vg);
-        nvgScissor(vg, x * 2f, y * 2f, width * 2f, height * 2f);
+        nvgScissor(vg, x, y, width, height);
     }
 
     public static void scissorEnd() {

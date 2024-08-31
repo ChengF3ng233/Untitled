@@ -5,15 +5,13 @@ import cn.feng.untitled.module.Module;
 import cn.feng.untitled.module.impl.client.PostProcessing;
 import cn.feng.untitled.ui.font.nano.NanoFontLoader;
 import cn.feng.untitled.ui.font.nano.NanoFontRenderer;
-import cn.feng.untitled.ui.font.nano.NanoUtil;
+import cn.feng.untitled.util.render.nano.NanoUtil;
 import cn.feng.untitled.ui.widget.Widget;
 import cn.feng.untitled.util.animation.advanced.Direction;
 import cn.feng.untitled.util.data.compare.CompareMode;
 import cn.feng.untitled.util.data.compare.ModuleComparator;
-import cn.feng.untitled.util.render.RenderUtil;
 import cn.feng.untitled.value.impl.ColorValue;
 import cn.feng.untitled.value.impl.NumberValue;
-import net.minecraft.client.gui.Gui;
 import org.lwjgl.nanovg.NanoVG;
 
 import java.awt.*;
@@ -37,16 +35,7 @@ public class ArraylistWidget extends Widget {
     private final NumberValue indexOffset = new NumberValue("IndexOffset", 6f, 20f, 0f, 1f);
 
     @Override
-    public void onNano() {
-        render(true);
-    }
-
-    @Override
-    public void onRender2D() {
-        render(false);
-    }
-
-    private void render(boolean isNano) {
+    public void render() {
         float renderX = sr.getScaledWidth() * x;
         float renderY = sr.getScaledHeight() * y;
 
@@ -61,24 +50,16 @@ public class ArraylistWidget extends Widget {
 
         float maxWidth = (font.getStringWidth(moduleList.get(0).name));
 
-        if (!isNano) {
-            RenderUtil.scissorStart(renderX, renderY, (maxWidth + 6f), (sr.getScaledHeight() - renderY));
-        } else {
-            NanoUtil.scaleStart(0, 0, sr.getScaleFactor() * 0.5f);
-            NanoUtil.scissorStart(renderX, renderY, maxWidth + 6f, sr.getScaledHeight() - renderY);
-        }
+        NanoUtil.scissorStart(renderX, renderY, maxWidth + 6f, sr.getScaledHeight() - renderY);
 
         for (Module module : moduleList) {
             double moduleX = renderX + maxWidth - 6f - (font.getStringWidth(module.name)) * module.horizontalAnim.getOutput();
 
-            if (!isNano) {
-                Gui.drawNewRect(moduleX, moduleY - yGap / 2f, font.getStringWidth(module.name) + 6f, yGap, backgroundColor.getValue(index).getRGB());
+            NanoUtil.drawRect((float) moduleX, moduleY - yGap / 2f, font.getStringWidth(module.name) + 6f, yGap, backgroundColor.getValue(index));
+            if (PostProcessing.bloom.getValue()) {
+                font.drawGlowString(module.name, (float) (moduleX + 3f), moduleY, fontSize.getValue().floatValue(), NanoVG.NVG_ALIGN_LEFT | NanoVG.NVG_ALIGN_MIDDLE, textColor.getValue(index));
             } else {
-                if (PostProcessing.bloom.getValue()) {
-                    font.drawGlowString(module.name, (float) (moduleX + 3f),  moduleY, fontSize.getValue().floatValue(), NanoVG.NVG_ALIGN_LEFT | NanoVG.NVG_ALIGN_MIDDLE, textColor.getValue(index));
-                } else {
-                    font.drawString(module.name, (float) (moduleX + 3f),  moduleY, fontSize.getValue().floatValue(), NanoVG.NVG_ALIGN_LEFT | NanoVG.NVG_ALIGN_MIDDLE, textColor.getValue(index), true);
-                }
+                font.drawString(module.name, (float) (moduleX + 3f), moduleY, fontSize.getValue().floatValue(), NanoVG.NVG_ALIGN_LEFT | NanoVG.NVG_ALIGN_MIDDLE, textColor.getValue(index), true);
             }
 
             moduleY += module.verticalAnim.getOutput().floatValue() * yGap;
@@ -94,9 +75,7 @@ public class ArraylistWidget extends Widget {
             if (module.enabled) index += indexOffset.getValue().intValue();
         }
 
-        if (isNano) {
-            NanoUtil.scissorEnd();
-        } else RenderUtil.scissorEnd();
+        NanoUtil.scissorEnd();
 
         this.width = maxWidth;
         this.height = moduleY - renderY;

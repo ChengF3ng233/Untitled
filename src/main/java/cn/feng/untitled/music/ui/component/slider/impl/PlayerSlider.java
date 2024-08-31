@@ -4,7 +4,7 @@ import cn.feng.untitled.Client;
 import cn.feng.untitled.music.ui.ThemeColor;
 import cn.feng.untitled.music.ui.component.slider.Slider;
 import cn.feng.untitled.ui.font.nano.NanoFontLoader;
-import cn.feng.untitled.ui.font.nano.NanoUtil;
+import cn.feng.untitled.util.render.nano.NanoUtil;
 import cn.feng.untitled.util.render.RenderUtil;
 import org.lwjgl.glfw.GLFW;
 import org.lwjgl.opengl.Display;

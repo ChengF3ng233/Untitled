@@ -8,7 +8,7 @@ import cn.feng.untitled.music.ui.ThemeColor;
 import cn.feng.untitled.music.ui.component.button.impl.MusicButton;
 import cn.feng.untitled.music.ui.gui.MusicPlayerGUI;
 import cn.feng.untitled.ui.font.nano.NanoFontLoader;
-import cn.feng.untitled.ui.font.nano.NanoUtil;
+import cn.feng.untitled.util.render.nano.NanoUtil;
 import cn.feng.untitled.util.render.RenderUtil;
 import org.lwjgl.input.Mouse;
 import org.lwjgl.nanovg.NanoVG;

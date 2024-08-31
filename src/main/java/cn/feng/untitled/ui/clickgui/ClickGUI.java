@@ -9,8 +9,6 @@ import cn.feng.untitled.ui.clickgui.panel.impl.ModulePanel;
 import cn.feng.untitled.ui.font.awt.CenterType;
 import cn.feng.untitled.ui.font.awt.FontLoader;
 import cn.feng.untitled.ui.font.awt.FontRenderer;
-import cn.feng.untitled.ui.font.nano.NanoFontLoader;
-import cn.feng.untitled.ui.font.nano.NanoUtil;
 import cn.feng.untitled.util.animation.advanced.Animation;
 import cn.feng.untitled.util.animation.advanced.Direction;
 import cn.feng.untitled.util.animation.advanced.composed.ColorAnimation;

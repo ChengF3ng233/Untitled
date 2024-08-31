@@ -11,7 +11,7 @@ import cn.feng.untitled.music.thread.LoginThread;
 import cn.feng.untitled.music.ui.ThemeColor;
 import cn.feng.untitled.music.ui.gui.MusicPlayerGUI;
 import cn.feng.untitled.ui.font.nano.NanoFontLoader;
-import cn.feng.untitled.ui.font.nano.NanoUtil;
+import cn.feng.untitled.util.render.nano.NanoUtil;
 import cn.feng.untitled.util.data.HttpUtil;
 import com.google.gson.JsonObject;
 import net.minecraft.client.gui.ScaledResolution;

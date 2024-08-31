@@ -4,7 +4,7 @@ import cn.feng.untitled.Client;
 import cn.feng.untitled.music.ui.ThemeColor;
 import cn.feng.untitled.music.ui.component.slider.Slider;
 import cn.feng.untitled.ui.font.nano.NanoFontLoader;
-import cn.feng.untitled.ui.font.nano.NanoUtil;
+import cn.feng.untitled.util.render.nano.NanoUtil;
 import cn.feng.untitled.util.data.resource.ResourceType;
 import cn.feng.untitled.util.data.resource.ResourceUtil;
 import cn.feng.untitled.util.render.RenderUtil;

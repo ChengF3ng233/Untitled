@@ -2,12 +2,11 @@ package cn.feng.untitled.music.ui.component;
 
 import cn.feng.untitled.ui.clickgui.ThemeColor;
 import cn.feng.untitled.ui.font.nano.NanoFontRenderer;
-import cn.feng.untitled.ui.font.nano.NanoUtil;
+import cn.feng.untitled.util.render.nano.NanoUtil;
 import cn.feng.untitled.util.animation.advanced.Direction;
 import cn.feng.untitled.util.animation.advanced.composed.ColorAnimation;
 import cn.feng.untitled.util.render.ColorUtil;
 import cn.feng.untitled.util.render.RenderUtil;
-import cn.feng.untitled.util.render.RoundedUtil;
 import org.lwjgl.glfw.GLFW;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.nanovg.NanoVG;

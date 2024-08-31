@@ -1,7 +1,7 @@
 package cn.feng.untitled.ui.screen.main;
 
 import cn.feng.untitled.ui.font.nano.NanoFontLoader;
-import cn.feng.untitled.ui.font.nano.NanoUtil;
+import cn.feng.untitled.util.render.nano.NanoUtil;
 import cn.feng.untitled.ui.screen.component.TextButton;
 import cn.feng.untitled.util.data.resource.ResourceType;
 import cn.feng.untitled.util.data.resource.ResourceUtil;

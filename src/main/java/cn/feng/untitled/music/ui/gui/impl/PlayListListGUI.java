@@ -5,7 +5,7 @@ import cn.feng.untitled.music.api.base.PlayList;
 import cn.feng.untitled.music.ui.component.button.impl.PlayListButton;
 import cn.feng.untitled.music.ui.gui.MusicPlayerGUI;
 import cn.feng.untitled.ui.font.nano.NanoFontLoader;
-import cn.feng.untitled.ui.font.nano.NanoUtil;
+import cn.feng.untitled.util.render.nano.NanoUtil;
 import lombok.Getter;
 import lombok.Setter;
 import org.lwjgl.nanovg.NanoVG;

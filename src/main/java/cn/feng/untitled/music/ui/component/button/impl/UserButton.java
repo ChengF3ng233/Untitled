@@ -8,7 +8,7 @@ import cn.feng.untitled.music.ui.ThemeColor;
 import cn.feng.untitled.music.ui.component.button.Button;
 import cn.feng.untitled.music.ui.gui.impl.LoginGUI;
 import cn.feng.untitled.ui.font.nano.NanoFontLoader;
-import cn.feng.untitled.ui.font.nano.NanoUtil;
+import cn.feng.untitled.util.render.nano.NanoUtil;
 
 import java.awt.*;
 import java.io.IOException;
@@ -53,7 +53,7 @@ public class UserButton extends Button {
     @Override
     public void mouseClicked(int mouseX, int mouseY, int button) {
         if (button == 0 && hovering && !MusicAPI.user.isLoggedIn()) loginGUI = new LoginGUI();
-        if (!hovering) {
+        if (!hovering && loginGUI != null   ) {
             loginGUI.terminate();
             loginGUI = null;
         }

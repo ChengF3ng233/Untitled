@@ -4,6 +4,7 @@ import cn.feng.untitled.util.MinecraftInstance;
 import cn.feng.untitled.util.data.resource.ResourceType;
 import cn.feng.untitled.util.data.resource.ResourceUtil;
 import cn.feng.untitled.util.misc.Logger;
+import cn.feng.untitled.util.render.nano.NanoUtil;
 import lombok.Getter;
 import lombok.Setter;
 import org.lwjgl.system.MemoryUtil;
@@ -13,7 +14,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.nio.ByteBuffer;
 
-import static cn.feng.untitled.ui.font.nano.NanoLoader.vg;
+import static cn.feng.untitled.util.render.nano.NanoLoader.vg;
 import static org.lwjgl.nanovg.NanoVG.*;
 
 /**
@@ -174,12 +175,9 @@ public class NanoFontRenderer extends MinecraftInstance {
         nvgBeginPath(vg);
         nvgTextAlign(vg, align);
 
-        float renderX = x * 2;
-        float renderY = y * 2 + 2f;
-
         NanoUtil.fillColor(color);
 
-        renderString(text, renderX, renderY, size);
+        renderString(text, x, y + 1f, size);
 
         nvgClosePath(vg);
     }
@@ -188,16 +186,13 @@ public class NanoFontRenderer extends MinecraftInstance {
         nvgBeginPath(vg);
         nvgTextAlign(vg, align);
 
-        float renderX = x * 2;
-        float renderY = y * 2 + 1f;
-
         NanoUtil.fillColor(glowColor);
         nvgFontBlur(vg, radius);
-        renderString(text, renderX, renderY, size);
+        renderString(text, x, y + 1f, size);
 
         NanoUtil.fillColor(textColor);
         nvgFontBlur(vg, 0f);
-        renderString(text, renderX, renderY, size);
+        renderString(text, x, y + 1f, size);
 
         nvgClosePath(vg);
     }
@@ -205,7 +200,7 @@ public class NanoFontRenderer extends MinecraftInstance {
 
     private void renderString(String text, float x, float y, float size) {
         nvgFontFaceId(vg, font);
-        nvgFontSize(vg, size);
+        nvgFontSize(vg, size / 2f);
         nvgText(vg, x, y, text);
     }
 
