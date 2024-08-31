@@ -53,5 +53,9 @@ public class UserButton extends Button {
     @Override
     public void mouseClicked(int mouseX, int mouseY, int button) {
         if (button == 0 && hovering && !MusicAPI.user.isLoggedIn()) loginGUI = new LoginGUI();
+        if (!hovering) {
+            loginGUI.terminate();
+            loginGUI = null;
+        }
     }
 }

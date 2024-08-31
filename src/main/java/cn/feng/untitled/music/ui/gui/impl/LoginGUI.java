@@ -28,6 +28,7 @@ public class LoginGUI extends MusicPlayerGUI {
 
     private LoginThread thread;
     private int qrCodeTexture;
+    private boolean terminated = false;
 
     public LoginGUI() {
         super(Client.instance.musicManager.screen.getCurrentGUI());
@@ -42,11 +43,17 @@ public class LoginGUI extends MusicPlayerGUI {
         thread.start();
     }
 
+    public void terminate() {
+        thread.interrupt();
+        terminated = true;
+    }
+
     /**
      * @return 是否扫描成功
      */
     @Override
     public boolean render(float x, float y, int mouseX, int mouseY, float cx, float cy, float scale) {
+        if (terminated) return false;
         // 一些api
         ScanResult result = thread.getResult();
         QRCodeState state = result == null ? QRCodeState.WAITING_SCAN : result.state();

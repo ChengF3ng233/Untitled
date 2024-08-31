@@ -50,7 +50,6 @@ public class MusicPlayerScreen extends GuiScreen {
     public static float width, height, topWidth, leftWidth, bottomWidth;
     private boolean dragging;
     private float dragX, dragY;
-    private float coverAngle = 0f;
     private int mouseX, mouseY;
 
     // Animation
@@ -193,9 +192,7 @@ public class MusicPlayerScreen extends GuiScreen {
             if (music.getCoverTexture() == 0) {
                 music.setCoverTexture(NanoUtil.genImageId(music.getCoverFile()));
             }
-            if (!player.isPaused()) {
-                coverAngle += (float) (0.5 * RenderUtil.frameTime);
-            }
+
             float playerY = y + (height - bottomWidth);
 
             NanoFontLoader.misans.drawString(music.getName(), x + 45f, playerY + 7f, 15f, Color.WHITE);
