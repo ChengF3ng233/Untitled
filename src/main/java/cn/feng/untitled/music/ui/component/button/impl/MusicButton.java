@@ -1,10 +1,10 @@
-package cn.feng.untitled.music.ui.component.impl;
+package cn.feng.untitled.music.ui.component.button.impl;
 
 import cn.feng.untitled.music.api.base.Music;
 import cn.feng.untitled.music.api.base.PlayList;
 import cn.feng.untitled.music.thread.ChangeMusicThread;
 import cn.feng.untitled.music.ui.ThemeColor;
-import cn.feng.untitled.music.ui.component.Button;
+import cn.feng.untitled.music.ui.component.button.Button;
 import cn.feng.untitled.ui.font.nano.NanoFontLoader;
 import cn.feng.untitled.ui.font.nano.NanoFontRenderer;
 import cn.feng.untitled.ui.font.nano.NanoUtil;

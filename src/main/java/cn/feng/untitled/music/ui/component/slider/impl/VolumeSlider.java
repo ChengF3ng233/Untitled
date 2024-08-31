@@ -1,7 +1,8 @@
-package cn.feng.untitled.music.ui.component.slider;
+package cn.feng.untitled.music.ui.component.slider.impl;
 
 import cn.feng.untitled.Client;
 import cn.feng.untitled.music.ui.ThemeColor;
+import cn.feng.untitled.music.ui.component.slider.Slider;
 import cn.feng.untitled.ui.font.nano.NanoFontLoader;
 import cn.feng.untitled.ui.font.nano.NanoUtil;
 import cn.feng.untitled.util.data.resource.ResourceType;
@@ -17,9 +18,7 @@ import java.awt.*;
  * @author ChengFeng
  * @since 2024/8/14
  **/
-public class VolumeSlider {
-    private boolean dragging, hovering, cursorRestored = false;
-
+public class VolumeSlider extends Slider {
     public void render(float x, float y, int mouseX, int mouseY) {
         float width = 100f;
 
@@ -31,7 +30,7 @@ public class VolumeSlider {
 
         String fileName = (currentVolume == 0 ? "volume_0" : (currentVolume <= 50 ? "volume_1" : "volume_2")) + ".png";
 
-        if (hovering) {
+        if (hovering || dragging) {
             cursorRestored = false;
             GLFW.glfwSetCursor(Display.getWindow(), GLFW.glfwCreateStandardCursor(GLFW.GLFW_HAND_CURSOR));
         } else if (!cursorRestored) {
@@ -55,17 +54,5 @@ public class VolumeSlider {
 
         if (dragging)
             Client.instance.musicManager.screen.player.setVolume((dragDelta / 70f) * 100d);
-    }
-
-    public void mouseClicked(int mouseButton) {
-        if (hovering && mouseButton == 0 && !dragging) {
-            dragging = true;
-        }
-    }
-
-    public void mouseReleased() {
-        if (dragging) {
-            dragging = false;
-        }
     }
 }

@@ -5,7 +5,7 @@ import cn.feng.untitled.music.api.base.PlayList;
 import cn.feng.untitled.music.thread.FetchMusicsThread;
 import cn.feng.untitled.music.ui.MusicPlayerScreen;
 import cn.feng.untitled.music.ui.ThemeColor;
-import cn.feng.untitled.music.ui.component.impl.MusicButton;
+import cn.feng.untitled.music.ui.component.button.impl.MusicButton;
 import cn.feng.untitled.music.ui.gui.MusicPlayerGUI;
 import cn.feng.untitled.ui.font.nano.NanoFontLoader;
 import cn.feng.untitled.ui.font.nano.NanoUtil;

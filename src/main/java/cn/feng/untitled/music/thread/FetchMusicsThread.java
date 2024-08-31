@@ -4,7 +4,7 @@ import cn.feng.untitled.Client;
 import cn.feng.untitled.music.api.base.Music;
 import cn.feng.untitled.music.api.MusicAPI;
 import cn.feng.untitled.music.api.base.PlayList;
-import cn.feng.untitled.music.ui.component.impl.MusicButton;
+import cn.feng.untitled.music.ui.component.button.impl.MusicButton;
 import lombok.Getter;
 
 import java.util.List;

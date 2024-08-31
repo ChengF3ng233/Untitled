@@ -8,7 +8,7 @@ import cn.feng.untitled.music.api.base.MusicQuality;
 import cn.feng.untitled.music.api.base.PlayList;
 import cn.feng.untitled.music.thread.ChangeMusicThread;
 import cn.feng.untitled.music.thread.FetchMusicsThread;
-import cn.feng.untitled.music.ui.component.impl.MusicButton;
+import cn.feng.untitled.music.ui.component.button.impl.MusicButton;
 import cn.feng.untitled.ui.widget.impl.MusicLyricWidget;
 import cn.feng.untitled.util.data.FFMPEGUtil;
 import cn.feng.untitled.util.misc.Logger;

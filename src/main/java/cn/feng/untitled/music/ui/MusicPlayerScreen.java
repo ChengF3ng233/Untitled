@@ -7,10 +7,11 @@ import cn.feng.untitled.music.api.base.Music;
 import cn.feng.untitled.music.api.player.MusicPlayer;
 import cn.feng.untitled.music.api.player.PlayMode;
 import cn.feng.untitled.music.thread.SearchMusicThread;
-import cn.feng.untitled.music.ui.component.Button;
-import cn.feng.untitled.music.ui.component.impl.*;
-import cn.feng.untitled.music.ui.component.slider.PlayerSlider;
-import cn.feng.untitled.music.ui.component.slider.VolumeSlider;
+import cn.feng.untitled.music.ui.component.NanoTextField;
+import cn.feng.untitled.music.ui.component.button.Button;
+import cn.feng.untitled.music.ui.component.button.impl.*;
+import cn.feng.untitled.music.ui.component.slider.impl.PlayerSlider;
+import cn.feng.untitled.music.ui.component.slider.impl.VolumeSlider;
 import cn.feng.untitled.music.ui.gui.MusicPlayerGUI;
 import cn.feng.untitled.music.ui.gui.impl.PlayListGUI;
 import cn.feng.untitled.music.ui.gui.impl.PlayListListGUI;
@@ -59,7 +60,7 @@ public class MusicPlayerScreen extends GuiScreen {
     public final List<CategoryButton> categoryButtons = new ArrayList<>();
     private final UserButton userButton = new UserButton();
     @Getter
-    private final TextField searchField = new TextField(150, 10, FontLoader.miSans(16), ThemeColor.bgColor, ThemeColor.outlineColor);
+    private final NanoTextField searchField = new NanoTextField(150, 10, NanoFontLoader.misans, ThemeColor.bgColor, ThemeColor.outlineColor);
     @Setter
     @Getter
     private MusicPlayerGUI currentGUI;
@@ -120,6 +121,8 @@ public class MusicPlayerScreen extends GuiScreen {
             BlurUtil.processStart();
             GuiScreen.drawNewRect(0, 0, sr.getScaledWidth(), sr.getScaledHeight(), Color.BLACK.getRGB());
             BlurUtil.blurEnd();
+        } else {
+            GuiScreen.drawNewRect(0, 0, sr.getScaledWidth(), sr.getScaledHeight(), new Color(0, 0, 0, 100).getRGB());
         }
         this.mouseX = mouseX;
         this.mouseY = mouseY;
@@ -168,7 +171,7 @@ public class MusicPlayerScreen extends GuiScreen {
         userButton.render();
 
         searchField.height = 15f;
-        searchField.draw(x + leftWidth + 30f, y + 6f, mouseX, mouseY);
+        searchField.draw(x + leftWidth + 30f, y + 7f, mouseX, mouseY);
 
         currentGUI.setWidth(width - leftWidth);
         currentGUI.setHeight(height - topWidth - bottomWidth);
@@ -198,9 +201,8 @@ public class MusicPlayerScreen extends GuiScreen {
             NanoFontLoader.misans.drawString(music.getName(), x + 45f, playerY + 7f, 15f, Color.WHITE);
             NanoFontLoader.misans.drawString(music.getArtist(), x + 45f, playerY + 17f, 12f, ThemeColor.greyColor);
 
-            NanoUtil.rotateStart(x + 30f, playerY + 17f, coverAngle);
-            NanoUtil.drawImageCircle(music.getCoverTexture(), 0, 0, 10f);
-            NanoUtil.rotateEnd();
+            NanoUtil.drawCircle(x + 30f, playerY + 17f, 11f, ThemeColor.barColor);
+            NanoUtil.drawImageCircle(music.getCoverTexture(), x + 30f, playerY + 17f, 10f);
 
             if (player.isPaused()) {
                 playBtn.setBg(true);

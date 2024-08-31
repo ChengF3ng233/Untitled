@@ -1,7 +1,7 @@
-package cn.feng.untitled.music.ui.component.impl;
+package cn.feng.untitled.music.ui.component.button.impl;
 
 import cn.feng.untitled.music.ui.ThemeColor;
-import cn.feng.untitled.music.ui.component.Button;
+import cn.feng.untitled.music.ui.component.button.Button;
 import cn.feng.untitled.ui.font.nano.NanoUtil;
 import cn.feng.untitled.util.data.resource.ResourceType;
 import cn.feng.untitled.util.data.resource.ResourceUtil;

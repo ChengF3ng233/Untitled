@@ -1,4 +1,4 @@
-package cn.feng.untitled.music.ui.component.impl;
+package cn.feng.untitled.music.ui.component.button.impl;
 
 import cn.feng.untitled.util.data.resource.ResourceType;
 import cn.feng.untitled.util.data.resource.ResourceUtil;
