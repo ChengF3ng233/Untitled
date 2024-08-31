@@ -33,7 +33,7 @@ public class NanoUtil extends MinecraftInstance {
         nvgBeginFrame(vg, mc.displayWidth, mc.displayHeight, 1f);
         ScaledResolution sr = new ScaledResolution(mc);
         // 适应mc的scale
-        NanoUtil.scaleStart(0, 0, sr.getScaleFactor());
+        scaleStart(0, 0, sr.getScaleFactor());
     }
 
     public static void beginPath() {

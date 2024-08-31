@@ -145,7 +145,6 @@ public class MusicPlayerScreen extends GuiScreen {
         if (x + width > sr.getScaledWidth() - 10) x = sr.getScaledWidth() - 10 - width;
         if (y + height > sr.getScaledHeight() - 10) y = sr.getScaledHeight() - 10 - height;
 
-        NanoUtil.scaleStart(0, 0, sr.getScaleFactor() * 0.5f);
         NanoUtil.scaleStart(x + width / 2, y + height / 2, windowAnim.getOutput().floatValue());
 
         NanoUtil.drawRoundedOutlineRect(x, y, width, height, 3f, 1f, ThemeColor.bgColor, ThemeColor.outlineColor);
