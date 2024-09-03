@@ -13,7 +13,4 @@ public class HUD extends Module {
     public HUD() {
         super("HUD", ModuleCategory.Render, true);
     }
-
-    public static final BoolValue fancyFont = new BoolValue("FancyFont", true);
-    public static final BoolValue crossHair = new BoolValue("CrossHair", true);
 }

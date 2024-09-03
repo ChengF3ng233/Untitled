@@ -1,9 +1,5 @@
 package net.minecraft.client.gui;
 
-import cn.feng.untitled.Client;
-import cn.feng.untitled.module.impl.render.HUD;
-import cn.feng.untitled.ui.font.awt.CenterType;
-import cn.feng.untitled.ui.font.awt.FontLoader;
 import cn.feng.untitled.util.render.GLUtil;
 import cn.feng.untitled.util.render.RenderUtil;
 import net.minecraft.client.renderer.GlStateManager;
@@ -105,6 +101,7 @@ public class Gui {
         worldrenderer.pos(x, y, 0.0D).tex(u * f, v * f1).endVertex();
         tessellator.draw();
     }
+
     /**
      * Draw a 1 pixel wide horizontal line. Args: x1, x2, y, color
      */
@@ -167,10 +164,6 @@ public class Gui {
      * Renders the specified text to the screen, center-aligned. Args : renderer, string, x, y, color
      */
     public void drawCenteredString(FontRenderer fontRendererIn, String text, int x, int y, int color) {
-        if (HUD.fancyFont.getValue() && Client.instance.moduleManager.getModule(HUD.class).enabled) {
-            FontLoader.miSans(17).drawCenteredString(text, x, y + FontLoader.miSans(17).getFontHeight() / 2f, color, CenterType.Horizontal);
-            return;
-        }
         fontRendererIn.drawStringWithShadow(text, (float) (x - fontRendererIn.getStringWidth(text) / 2), (float) y, color);
     }
 

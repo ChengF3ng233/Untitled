@@ -3,9 +3,6 @@ package net.minecraft.client.gui;
 import cn.feng.untitled.Client;
 import cn.feng.untitled.event.impl.Render2DEvent;
 import cn.feng.untitled.module.impl.client.PostProcessing;
-import cn.feng.untitled.module.impl.render.HUD;
-import cn.feng.untitled.util.render.ColorUtil;
-import cn.feng.untitled.util.render.blur.BlurUtil;
 import com.google.common.base.Predicate;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
@@ -41,7 +38,6 @@ import net.minecraft.util.*;
 import net.minecraft.world.border.WorldBorder;
 import net.optifine.CustomColors;
 
-import java.awt.*;
 import java.util.Collection;
 import java.util.List;
 import java.util.Random;
@@ -187,21 +183,9 @@ public class GuiIngame extends Gui {
         GlStateManager.enableBlend();
 
         if (this.showCrosshair()) {
-            if (HUD.crossHair.getValue() && Client.instance.moduleManager.getModule(HUD.class).enabled) {
-                BlurUtil.processStart();
-
-                Gui.drawNewRect(i / 2 - 5, j / 2 - 1, 9, 1, Color.WHITE.getRGB());
-                Gui.drawNewRect(i / 2 - 1, j / 2 - 5, 1, 9, Color.WHITE.getRGB());
-
-                BlurUtil.bloomEnd(2, 1);
-
-                Gui.drawNewRect(i / 2 - 5, j / 2 - 1, 9, 1, ColorUtil.applyOpacity(Color.WHITE, 0.7f).getRGB());
-                Gui.drawNewRect(i / 2 - 1, j / 2 - 5, 1, 9, ColorUtil.applyOpacity(Color.WHITE, 0.7f).getRGB());
-            } else {
-                GlStateManager.tryBlendFuncSeparate(775, 769, 1, 0);
-                GlStateManager.enableAlpha();
-                this.drawTexturedModalRect(i / 2 - 7, j / 2 - 7, 0, 0, 16, 16);
-            }
+            GlStateManager.tryBlendFuncSeparate(775, 769, 1, 0);
+            GlStateManager.enableAlpha();
+            this.drawTexturedModalRect(i / 2 - 7, j / 2 - 7, 0, 0, 16, 16);
         }
 
         GlStateManager.enableAlpha();
