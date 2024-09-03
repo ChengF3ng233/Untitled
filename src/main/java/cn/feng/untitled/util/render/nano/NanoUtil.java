@@ -1,7 +1,7 @@
 package cn.feng.untitled.util.render.nano;
 
+import cn.feng.untitled.config.ConfigManager;
 import cn.feng.untitled.util.MinecraftInstance;
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.util.ResourceLocation;
 import org.lwjgl.nanovg.NVGColor;
@@ -9,6 +9,7 @@ import org.lwjgl.nanovg.NVGPaint;
 import org.lwjgl.nanovg.NanoVG;
 import org.lwjgl.system.MemoryUtil;
 
+import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.awt.image.DataBufferByte;
@@ -18,6 +19,7 @@ import java.io.InputStream;
 import java.nio.ByteBuffer;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.ThreadLocalRandom;
 
 import static cn.feng.untitled.util.render.nano.NanoLoader.vg;
 import static org.lwjgl.nanovg.NanoVG.*;
@@ -86,12 +88,14 @@ public class NanoUtil extends MinecraftInstance {
     }
 
     public static int genImageId(BufferedImage image) {
-        byte[] data = ((DataBufferByte) image.getData().getDataBuffer()).getData();
+        File cacheFile = new File(ConfigManager.cacheDir, ThreadLocalRandom.current().nextFloat() + ".png");
+        try {
+            ImageIO.write(image, "png", cacheFile);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
 
-        ByteBuffer buffer = MemoryUtil.memAlloc(data.length);
-        buffer.put(data).flip();
-
-        return nvgCreateImageMem(vg, 0, buffer);
+        return nvgCreateImage(vg, cacheFile.getAbsolutePath(), 0);
     }
 
     public static int genImageId(File file) {

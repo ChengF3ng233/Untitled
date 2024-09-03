@@ -21,6 +21,7 @@ import java.util.List;
  **/
 public class ConfigManager extends MinecraftInstance {
     public static final File rootDir = new File(mc.mcDataDir, Client.instance.CLIENT_NAME);
+    public static final File cacheDir = new File(rootDir, "cover");
     public static final File coverDir = new File(rootDir, "cover");
     public static final File musicDir = new File(rootDir, "music");
     public static final Gson gson = new GsonBuilder().setPrettyPrinting().create();
@@ -29,6 +30,7 @@ public class ConfigManager extends MinecraftInstance {
     public ConfigManager() {
         configList = new ArrayList<>();
         if (!rootDir.exists()) rootDir.mkdir();
+        if (!cacheDir.exists()) cacheDir.mkdir();
         if (!coverDir.exists()) coverDir.mkdir();
         if (!musicDir.exists()) musicDir.mkdir();
     }

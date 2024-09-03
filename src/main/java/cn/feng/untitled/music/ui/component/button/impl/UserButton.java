@@ -9,6 +9,7 @@ import cn.feng.untitled.music.ui.component.button.Button;
 import cn.feng.untitled.music.ui.gui.impl.LoginGUI;
 import cn.feng.untitled.ui.font.nano.NanoFontLoader;
 import cn.feng.untitled.util.render.nano.NanoUtil;
+import org.lwjgl.nanovg.NanoVG;
 
 import java.awt.*;
 import java.io.IOException;
@@ -19,8 +20,6 @@ import java.net.URL;
  * @since 2024/8/13
  **/
 public class UserButton extends Button {
-    private LoginGUI loginGUI;
-
     public UserButton() {
         height = 10f;
     }
@@ -30,8 +29,8 @@ public class UserButton extends Button {
         User user = MusicAPI.user;
         String text = user.isLoggedIn() ? user.getNickname() : "未登录";
 
-        NanoUtil.drawRoundedRect(posX + 20, posY + height / 2f, width - 20, height, 2f, ThemeColor.playerColor);
-        NanoFontLoader.misans.drawString(text, posX + 20, posY + 0.5f + height / 2f, 14f, hovering ? Color.WHITE : ThemeColor.greyColor);
+        NanoUtil.drawRoundedRect(posX + 20, posY, width - 20, height, 2f, ThemeColor.playerColor);
+        NanoFontLoader.misans.drawString(text, posX + 20, posY + height / 2f, 14f, NanoVG.NVG_ALIGN_MIDDLE, hovering ? Color.WHITE : ThemeColor.greyColor);
         width = 20f + NanoFontLoader.misans.getStringWidth(text, 14);
         if (user.isLoggedIn()) {
             if (user.getAvatarTexture() == 0) {
@@ -41,21 +40,11 @@ public class UserButton extends Button {
 
                 }
             }
-            NanoUtil.drawImageCircle(user.getAvatarTexture(), posX + 20 - 4 - 6, posY + height / 2f + 5f, 6);
-        }
-
-        if (loginGUI != null && loginGUI.render(0, 0, 0, 0, 0, 0, 0) /*参数不重要*/) {
-            loginGUI = null;
-            Client.instance.configManager.saveConfig(MusicConfig.class);
+            NanoUtil.drawImageCircle(user.getAvatarTexture(), posX + 10, posY + height / 2f, 6);
         }
     }
 
     @Override
     public void mouseClicked(int mouseX, int mouseY, int button) {
-        if (button == 0 && hovering && !MusicAPI.user.isLoggedIn()) loginGUI = new LoginGUI();
-        if (!hovering && loginGUI != null   ) {
-            loginGUI.terminate();
-            loginGUI = null;
-        }
     }
 }

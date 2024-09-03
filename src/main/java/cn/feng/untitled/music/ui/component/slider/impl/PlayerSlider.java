@@ -1,12 +1,15 @@
 package cn.feng.untitled.music.ui.component.slider.impl;
 
 import cn.feng.untitled.Client;
+import cn.feng.untitled.music.api.base.LyricLine;
+import cn.feng.untitled.music.api.player.MusicPlayer;
 import cn.feng.untitled.music.ui.ThemeColor;
 import cn.feng.untitled.music.ui.component.slider.Slider;
 import cn.feng.untitled.ui.font.nano.NanoFontLoader;
 import cn.feng.untitled.util.render.nano.NanoUtil;
 import cn.feng.untitled.util.render.RenderUtil;
 import org.lwjgl.glfw.GLFW;
+import org.lwjgl.nanovg.NanoVG;
 import org.lwjgl.opengl.Display;
 import org.lwjgl.system.MemoryUtil;
 
@@ -21,15 +24,15 @@ import static cn.feng.untitled.util.data.TimeUtil.formatTime;
 public class PlayerSlider extends Slider {
     public void render(float x, float y, int mouseX, int mouseY) {
         float width = 200f;
-
+        MusicPlayer player = Client.instance.musicManager.screen.player;
         hovering = RenderUtil.hovering(mouseX, mouseY, x, y - 3f, width, 5f);
 
         float sliderX = x + 15f;
         dragDelta = dragging? mouseX - sliderX : 0f;
         if (dragDelta < 0) dragDelta = 0;
         if (dragDelta > 170f) dragDelta = 170f;
-        double currentTime = Client.instance.musicManager.screen.player.getCurrentTime();
-        double totalTime = Client.instance.musicManager.screen.player.getMusic().getDuration();
+        double currentTime = player.getCurrentTime();
+        double totalTime = player.getMusic().getDuration();
         float currentWidth = dragging? dragDelta : (float) (170 * (currentTime / totalTime));
         currentWidth = Math.min(currentWidth, 170f);
 
@@ -43,6 +46,20 @@ public class PlayerSlider extends Slider {
 
 
         NanoUtil.drawRoundedRect(sliderX, y, 170, 1f, 1f, ThemeColor.barColor);
+
+        if (hovering || dragging) {
+            float hoverDelta = mouseX - sliderX;
+            if (hoverDelta < 0) hoverDelta = 0;
+            if (hoverDelta > 170) hoverDelta = 170f;
+            float percent = hoverDelta / 170f;
+            float hoverTime = percent * player.getMusic().getDuration();
+            LyricLine line;
+            NanoUtil.drawRoundedRect(sliderX, y, hoverDelta, 1f, 1f, ThemeColor.barLoadedColor);
+            if ((line = player.getMusic().getCurrentLine(hoverTime)) != null) {
+                NanoFontLoader.misans.drawString(line.getLine(), mouseX, y - 2f, 13f, NanoVG.NVG_ALIGN_CENTER, Color.WHITE);
+            }
+        }
+
         NanoUtil.drawRoundedRect(x + 15f, y, currentWidth, 1f, 1f, (hovering || dragging)? ThemeColor.redColor : ThemeColor.barPlayedColor);
 
         if (hovering || dragging) {

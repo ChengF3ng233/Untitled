@@ -35,19 +35,24 @@ public class MusicInfoWidget extends Widget {
     public void render() {
         MusicPlayer player = Client.instance.musicManager.screen.player;
         if (player.getMusic() == null) return;
+        float renderX = x * sr.getScaledWidth();
+        float renderY = y * sr.getScaledHeight();
         NanoFontRenderer fontRenderer = NanoFontLoader.misans.bold();
         width = height + Math.max(
                 fontRenderer.getStringWidth(player.getMusic().getName(), fontSize.getValue().floatValue()),
                 NanoFontLoader.misans.getStringWidth(player.getMusic().getArtist(), fontSize.getValue().floatValue() * 0.8f)
         ) + 4f;
-        fontRenderer.drawString(player.getMusic().getName(), x * sr.getScaledWidth() + 2f + height, y * sr.getScaledHeight() + 2f, fontSize.getValue().floatValue(), Color.WHITE, fontShadow.getValue());
-        NanoFontLoader.misans.drawString(player.getMusic().getArtist(), x * sr.getScaledWidth() + 2f + height, y * sr.getScaledHeight() + fontSize.getValue().floatValue() / 2f + 6f, fontSize.getValue().floatValue() * 0.8f, ThemeColor.greyColor, fontShadow.getValue());
+        fontRenderer.drawString(player.getMusic().getName(), renderX + 2f + height, renderY + 2f, fontSize.getValue().floatValue(), Color.WHITE, fontShadow.getValue());
+        NanoFontLoader.misans.drawString(player.getMusic().getArtist(), renderX + 2f + height, renderY + fontSize.getValue().floatValue() / 2f + 6f, fontSize.getValue().floatValue() * 0.8f, ThemeColor.greyColor, fontShadow.getValue());
 
         if (player.getMusic().getCoverTexture() == 0) {
             player.getMusic().setCoverTexture(NanoUtil.genImageId(player.getMusic().getCoverFile()));
         }
         height = heightValue.getValue().floatValue();
-        NanoUtil.drawImageRect(player.getMusic().getCoverTexture(), x * sr.getScaledWidth(), y * sr.getScaledHeight(), height, height);
+        NanoUtil.drawImageRect(player.getMusic().getCoverTexture(), renderX, renderY, height, height);
+        NanoUtil.drawRoundedRect(renderX + 2f + height, renderY + height - 5f, width -  height - 2f, 2f, 1f, ThemeColor.greyColor);
+        if (player.getMediaPlayer() == null) return;
+        NanoUtil.drawRoundedRect(renderX + 2f + height, renderY + height - 5f, (float) ((width -  height - 2f) * (player.getCurrentTime() / player.getMusic().getDuration())), 2f, 1f, Color.WHITE);
     }
 
     @Override

@@ -29,7 +29,7 @@ import static cn.feng.untitled.music.util.LyricUtil.parseTranslatedLyrics;
  * @since 2024/8/11
  **/
 public class MusicAPI {
-    public static final String host = "https://music.skidder.top";
+    public static final String host = "https://music.chengf3ng.top";
     public static User user = new User();
 
     public static String fetch(String api, String cookie) {
@@ -334,6 +334,7 @@ public class MusicAPI {
             playList.getMusicList().add(music);
             ids.append(ids.isEmpty()? obj.get("id").getAsLong() : "," + obj.get("id").getAsLong());
         }
+
         Map<Long, File> map = getSongCovers(ids.toString());
         for (Music music : playList.getMusicList()) {
             if (map.containsKey(music.getId())) {
@@ -343,6 +344,7 @@ public class MusicAPI {
                 }
             }
         }
+
         playList.setId(-1);
         playList.setCompletelyDownloaded(true);
         return playList;

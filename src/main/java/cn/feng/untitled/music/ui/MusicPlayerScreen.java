@@ -1,8 +1,11 @@
 package cn.feng.untitled.music.ui;
 
+import cn.feng.untitled.Client;
+import cn.feng.untitled.config.impl.MusicConfig;
 import cn.feng.untitled.event.api.SubscribeEvent;
 import cn.feng.untitled.event.impl.NanoEvent;
 import cn.feng.untitled.module.impl.client.PostProcessing;
+import cn.feng.untitled.music.api.MusicAPI;
 import cn.feng.untitled.music.api.base.Music;
 import cn.feng.untitled.music.api.player.MusicPlayer;
 import cn.feng.untitled.music.api.player.PlayMode;
@@ -13,6 +16,7 @@ import cn.feng.untitled.music.ui.component.button.impl.*;
 import cn.feng.untitled.music.ui.component.slider.impl.PlayerSlider;
 import cn.feng.untitled.music.ui.component.slider.impl.VolumeSlider;
 import cn.feng.untitled.music.ui.gui.MusicPlayerGUI;
+import cn.feng.untitled.music.ui.gui.impl.LoginGUI;
 import cn.feng.untitled.music.ui.gui.impl.PlayListGUI;
 import cn.feng.untitled.music.ui.gui.impl.PlayListListGUI;
 import cn.feng.untitled.ui.font.nano.NanoFontLoader;
@@ -76,6 +80,9 @@ public class MusicPlayerScreen extends GuiScreen {
     private final QualityButton qualityBtn = new QualityButton();
     private final PlayerSlider playerSlider = new PlayerSlider();
     private final VolumeSlider volumeSlider = new VolumeSlider();
+
+    // Login
+    private LoginGUI loginGUI;
 
     public MusicPlayerScreen() {
         x = 10f;
@@ -163,7 +170,7 @@ public class MusicPlayerScreen extends GuiScreen {
             btnY += btn.height + 8f;
         }
 
-        userButton.updateState(x + width - userButton.width - 10f, y + 10f - userButton.height / 2f, mouseX, mouseY);
+        userButton.updateState(x + width - userButton.width - 10f, y + 10f, mouseX, mouseY);
         userButton.render();
 
         searchField.height = 15f;
@@ -224,6 +231,12 @@ public class MusicPlayerScreen extends GuiScreen {
             volumeSlider.render(x + width - 120f, playerY + 27f, mouseX, mouseY);
         }
 
+        // 登录
+        if (loginGUI != null && loginGUI.render(0, 0, mouseX, mouseY, 0, 0, 0) /*参数不重要*/) {
+            loginGUI = null;
+            Client.instance.configManager.saveConfig(MusicConfig.class);
+        }
+
         NanoUtil.scaleEnd();
 
         if (searchThread != null && !searchThread.isAlive()) {
@@ -232,6 +245,11 @@ public class MusicPlayerScreen extends GuiScreen {
             searchField.focused = false;
             searchThread = null;
         }
+    }
+
+    @Override
+    public boolean doesGuiPauseGame() {
+        return false;
     }
 
     @Override
@@ -259,6 +277,15 @@ public class MusicPlayerScreen extends GuiScreen {
 
         if (RenderUtil.hovering(mouseX, mouseY, x + leftWidth + 5f, y + 7f, 16f, 16f) && mouseButton == 0 && currentGUI.parent != null) {
             setCurrentGUI(currentGUI.parent);
+        }
+
+        if (loginGUI != null && !loginGUI.isHovering() && mouseButton == 0) {
+            loginGUI.terminate();
+            loginGUI = null;
+        }
+
+        if (mouseButton == 0 && userButton.hovering && loginGUI == null) {
+            loginGUI = new LoginGUI();
         }
 
         if (RenderUtil.hovering(mouseX, mouseY, x, y, leftWidth, height)) {

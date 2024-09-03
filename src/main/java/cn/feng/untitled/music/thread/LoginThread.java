@@ -7,6 +7,7 @@ import cn.feng.untitled.music.api.user.ScanResult;
 import cn.feng.untitled.util.misc.ChatUtil;
 import cn.feng.untitled.util.misc.TimerUtil;
 import lombok.Getter;
+import lombok.Setter;
 
 import java.io.IOException;
 
@@ -19,6 +20,8 @@ public class LoginThread extends Thread {
     private QRCode qrCode;
     private ScanResult result;
     private final TimerUtil timer;
+    @Setter
+    private boolean shouldCancel = false;
 
     public LoginThread() {
         timer = new TimerUtil();
@@ -44,6 +47,7 @@ public class LoginThread extends Thread {
 
         // 每隔一秒向服务器请求扫描结果
         do {
+            if (shouldCancel) break;
             if (timer.hasTimeElapsed(1000)) {
                 result = MusicAPI.getScanResult(qrCode.key());
                 ChatUtil.sendMessage("Login state: " + result.state());

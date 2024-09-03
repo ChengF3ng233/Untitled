@@ -18,8 +18,6 @@ import static cn.feng.untitled.util.render.nano.NanoLoader.vg;
 import static org.lwjgl.nanovg.NanoVG.*;
 
 /**
- * 此类输出的所有坐标均以guiScale为2的mc为准。
- *
  * @author ChengFeng
  * @since 2024/8/3
  **/
@@ -56,7 +54,7 @@ public class NanoFontRenderer extends MinecraftInstance {
             font = nvgCreateFontMem(vg, this.name, buffer, false);
             size = 16;
         } catch (NullPointerException ee) {
-            Logger.warn("Bold font " + fileName + " not found.");
+            Logger.debug("Bold font " + fileName + " not found.");
             font = plainFont;
         } catch (IOException e) {
             throw new RuntimeException(e);

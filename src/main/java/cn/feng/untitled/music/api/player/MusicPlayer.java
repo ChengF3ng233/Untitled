@@ -154,7 +154,7 @@ public class MusicPlayer {
     public void setPlaylist(PlayList playList) {
         this.playList = playList;
         setPlayMode(this.playMode, true);
-        Logger.info("Playlist updated: " + playList.getName());
+        Logger.debug("Playlist updated: " + playList.getName());
     }
 
     public void setPlayMode(PlayMode playMode, boolean force) {

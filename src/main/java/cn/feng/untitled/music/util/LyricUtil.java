@@ -18,25 +18,23 @@ import java.util.regex.Pattern;
  **/
 public class LyricUtil {
     public static List<LyricLine> parseLyrics(JsonObject response) {
-        boolean newLyric = response.has("yrc");
-        String lyricCollection = response.get(newLyric ? "yrc" : "lrc")
+        boolean isNewLyric = response.has("yrc");
+
+        String allLyrics = response.get(isNewLyric ? "yrc" : "lrc")
                 .getAsJsonObject()
                 .get("lyric")
                 .getAsString();
 
-        List<String> lines = Arrays.stream(lyricCollection.split("\n"))
+        List<String> lines = Arrays.stream(allLyrics.split("\n"))
                 .filter(line -> !line.isEmpty() && !line.startsWith("{"))
                 .toList();
 
-        List<LyricLine> lyrics = new ArrayList<>();
+        List<LyricLine> lyricLines = new ArrayList<>();
         for (String line : lines) {
-            if (newLyric) {
-                lyrics.add(parseNewLyricLine(line));
-            } else {
-                lyrics.add(parseOldLyricLine(line));
-            }
+            lyricLines.add(isNewLyric? parseNewLyricLine(line) : parseOldLyricLine(line));
         }
-        return lyrics;
+
+        return lyricLines;
     }
 
     private static LyricLine parseNewLyricLine(String line) {
@@ -60,9 +58,14 @@ public class LyricUtil {
             return new LyricLine(lineStartTime, lineDuration, chars, false);
         }
 
-        return null; // or throw an exception if the pattern does not match
+        return null;
     }
 
+    /**
+     * 老歌词没有单行时长，暂时设置为-1
+     * @param line 歌词
+     * @return 包装过的歌词
+     */
     private static LyricLine parseOldLyricLine(String line) {
         Pattern pattern = Pattern.compile("\\[(\\d{2}):(\\d{2})\\.(\\d{2,3})]\\s*(.*)");
         Matcher matcher = pattern.matcher(line);
@@ -74,6 +77,7 @@ public class LyricUtil {
             int startTime = (minutes * 60 * 1000) + (seconds * 1000) + (matcher.group(3).length() == 3 ? fraction : fraction * 10);
 
             String lyric = matcher.group(4);
+
             List<LyricChar> chars = lyric.isEmpty() ? List.of(new LyricChar(-1, -1, "[Music]"))
                     : Arrays.stream(lyric.split(""))
                     .map(str -> new LyricChar(-1, -1, str))
@@ -81,18 +85,18 @@ public class LyricUtil {
             return new LyricLine(startTime, -1, chars, false);
         }
 
-        return null; // or throw an exception if the pattern does not match
+        return null;
     }
 
     public static List<LyricLine> parseTranslatedLyrics(JsonObject response) {
-        boolean newTranslate = response.has("ytlrc");
-        JsonElement je = response.get(newTranslate ? "ytlrc" : "tlyric");
+        boolean isNewTranslate = response.has("ytlrc");
+        JsonElement je = response.get(isNewTranslate ? "ytlrc" : "tlyric");
 
         if (!(je instanceof JsonNull) && je != null) {
             String transCollection = je.getAsJsonObject().get("lyric").getAsString();
             return Arrays.stream(transCollection.split("\n"))
                     .filter(line -> !line.isEmpty())
-                    .map(line -> parseTranslatedLyricLine(line, newTranslate))
+                    .map(line -> parseTranslatedLyricLine(line, isNewTranslate))
                     .toList();
         }
 
@@ -115,6 +119,6 @@ public class LyricUtil {
             return new LyricLine(startTime, -1, List.of(lyricChar), true);
         }
 
-        return null; // or throw an exception if the pattern does not match
+        return null;
     }
 }
