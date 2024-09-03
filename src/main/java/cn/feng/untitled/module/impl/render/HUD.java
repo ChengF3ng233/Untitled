@@ -13,4 +13,7 @@ public class HUD extends Module {
     public HUD() {
         super("HUD", ModuleCategory.Render, true);
     }
+
+    public static final BoolValue renderBossHealth = new BoolValue("RenderBossHealth", true);
+    public static final BoolValue renderPumpkin = new BoolValue("RenderPumpkin", false);
 }
