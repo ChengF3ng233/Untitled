@@ -1,54 +1,51 @@
 package net.minecraft.client.gui;
 
-import cn.feng.untitled.ui.font.awt.CenterType;
-import cn.feng.untitled.ui.font.awt.FontLoader;
-import cn.feng.untitled.util.animation.advanced.Direction;
-import cn.feng.untitled.util.animation.advanced.composed.ColorAnimation;
-import cn.feng.untitled.util.render.RoundedUtil;
 import lombok.Setter;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.audio.PositionedSoundRecord;
 import net.minecraft.client.audio.SoundHandler;
+import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.util.ResourceLocation;
-
-import java.awt.*;
 
 public class GuiButton extends Gui {
     protected static final ResourceLocation buttonTextures = new ResourceLocation("textures/gui/widgets.png");
+
     /**
-     * Outline color animation.
+     * Button width in pixels
      */
-    private final ColorAnimation colorAnim;
+    @Setter
+    protected int width;
+
+    /**
+     * Button height in pixels
+     */
+    protected int height;
+
     /**
      * The x position of this control.
      */
     public int xPosition;
+
     /**
      * The y position of this control.
      */
     public int yPosition;
+
     /**
      * The string displayed on this control.
      */
     public String displayString;
     public int id;
+
     /**
      * True if this control is enabled, false to disable.
      */
     public boolean enabled;
+
     /**
      * Hides the button completely if false.
      */
     public boolean visible;
-    /**
-     * UntitledButton width in pixels
-     */
-    @Setter
-    protected int width;
-    /**
-     * UntitledButton height in pixels
-     */
-    protected int height;
     protected boolean hovered;
 
     public GuiButton(int buttonId, int x, int y, String buttonText) {
@@ -56,15 +53,16 @@ public class GuiButton extends Gui {
     }
 
     public GuiButton(int buttonId, int x, int y, int widthIn, int heightIn, String buttonText) {
+        this.width = 200;
+        this.height = 20;
         this.enabled = true;
         this.visible = true;
         this.id = buttonId;
-        this.xPosition = x + 1;
-        this.yPosition = y + 1;
-        this.width = widthIn - 2;
+        this.xPosition = x;
+        this.yPosition = y;
+        this.width = widthIn;
         this.height = heightIn;
         this.displayString = buttonText;
-        this.colorAnim = new ColorAnimation(new Color(255, 255, 255, 70), Color.WHITE, 100);
     }
 
     /**
@@ -88,14 +86,26 @@ public class GuiButton extends Gui {
      */
     public void drawButton(Minecraft mc, int mouseX, int mouseY) {
         if (this.visible) {
+            FontRenderer fontrenderer = mc.fontRendererObj;
+            mc.getTextureManager().bindTexture(buttonTextures);
+            GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
             this.hovered = mouseX >= this.xPosition && mouseY >= this.yPosition && mouseX < this.xPosition + this.width && mouseY < this.yPosition + this.height;
-            if (hovered) {
-                if (colorAnim.getDirection() == Direction.BACKWARDS) colorAnim.changeDirection();
-            } else if (colorAnim.getDirection() == Direction.FORWARDS) colorAnim.changeDirection();
-
+            int i = this.getHoverState(this.hovered);
+            GlStateManager.enableBlend();
+            GlStateManager.tryBlendFuncSeparate(770, 771, 1, 0);
+            GlStateManager.blendFunc(770, 771);
+            this.drawTexturedModalRect(this.xPosition, this.yPosition, 0, 46 + i * 20, this.width / 2, this.height);
+            this.drawTexturedModalRect(this.xPosition + this.width / 2, this.yPosition, 200 - this.width / 2, 46 + i * 20, this.width / 2, this.height);
             this.mouseDragged(mc, mouseX, mouseY);
-            RoundedUtil.drawRoundOutline(this.xPosition, this.yPosition, this.width, this.height, 2f, 0.1f, new Color(0, 0, 0, 100), enabled ? colorAnim.getOutput() : new Color(50, 50, 50, 255));
-            FontLoader.greyCliff(18).drawCenteredString(displayString, this.xPosition + this.width / 2f, this.yPosition + this.height / 2f, Color.WHITE.getRGB(), CenterType.Both);
+            int j = 14737632;
+
+            if (!this.enabled) {
+                j = 10526880;
+            } else if (this.hovered) {
+                j = 16777120;
+            }
+
+            this.drawCenteredString(fontrenderer, this.displayString, this.xPosition + this.width / 2, this.yPosition + (this.height - 8) / 2, j);
         }
     }
 
@@ -136,5 +146,4 @@ public class GuiButton extends Gui {
     public int getButtonWidth() {
         return this.width;
     }
-
 }
