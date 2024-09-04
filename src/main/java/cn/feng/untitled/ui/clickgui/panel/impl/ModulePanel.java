@@ -6,8 +6,8 @@ import cn.feng.untitled.ui.clickgui.ClickGUI;
 import cn.feng.untitled.ui.clickgui.ThemeColor;
 import cn.feng.untitled.ui.clickgui.component.impl.ButtonComponent;
 import cn.feng.untitled.ui.clickgui.panel.Panel;
-import cn.feng.untitled.ui.font.awt.FontLoader;
-import cn.feng.untitled.ui.font.awt.FontRenderer;
+import cn.feng.untitled.ui.font.awt.AWTFontLoader;
+import cn.feng.untitled.ui.font.awt.AWTAWTFontRenderer;
 import cn.feng.untitled.util.animation.advanced.Direction;
 import cn.feng.untitled.util.animation.advanced.composed.ColorAnimation;
 import cn.feng.untitled.util.render.RenderUtil;
@@ -56,7 +56,7 @@ public class ModulePanel extends Panel {
     public void draw(float x, float y, int mouseX, int mouseY) {
         this.x = x;
         this.y = y;
-        FontRenderer font = FontLoader.rubik(15);
+        AWTAWTFontRenderer font = AWTFontLoader.rubik(15);
 
         final float gap = 5f;
         float panelY = y + font.getFontHeight() + 3f;
@@ -79,7 +79,7 @@ public class ModulePanel extends Panel {
         // Panel
         RoundedUtil.drawRoundOutline(x, panelY, width, height, 3f, 0.2f, ThemeColor.panelColor, ThemeColor.outlineColor);
 
-        FontRenderer font2 = FontLoader.greyCliff(16);
+        AWTAWTFontRenderer font2 = AWTFontLoader.greyCliff(16);
         font2.drawString("Enabled", contentX, contentY + 1f, Color.WHITE.getRGB());
         if (module.locked) {
             RenderUtil.drawImage(new ResourceLocation("untitled/icon/lock.png"), contentX + width - 17f, contentY - 3f, 12f, 12f);
@@ -100,7 +100,7 @@ public class ModulePanel extends Panel {
 
     @Override
     public void onMouseClick(int mouseX, int mouseY, int button) {
-        if (RenderUtil.hovering(mouseX, mouseY, x, y - 2f, width, FontLoader.rubik(15).getFontHeight() + 4f) && button == 0) {
+        if (RenderUtil.hovering(mouseX, mouseY, x, y - 2f, width, AWTFontLoader.rubik(15).getFontHeight() + 4f) && button == 0) {
             listening = true;
         }
 

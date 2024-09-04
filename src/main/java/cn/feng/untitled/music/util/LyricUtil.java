@@ -2,6 +2,7 @@ package cn.feng.untitled.music.util;
 
 import cn.feng.untitled.music.api.base.LyricChar;
 import cn.feng.untitled.music.api.base.LyricLine;
+import cn.feng.untitled.util.misc.Logger;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonNull;
 import com.google.gson.JsonObject;
@@ -31,7 +32,9 @@ public class LyricUtil {
 
         List<LyricLine> lyricLines = new ArrayList<>();
         for (String line : lines) {
-            lyricLines.add(isNewLyric? parseNewLyricLine(line) : parseOldLyricLine(line));
+            LyricLine lyricLine = isNewLyric ? parseNewLyricLine(line) : parseOldLyricLine(line);
+            if (lyricLine == null) continue;
+            lyricLines.add(lyricLine);
         }
 
         return lyricLines;
@@ -49,7 +52,7 @@ public class LyricUtil {
             chars.add(new LyricChar(charStartTime, charDuration, character));
         }
 
-        Pattern linePattern = Pattern.compile("\\[(\\d+),(\\d+)]");
+        Pattern linePattern = Pattern.compile("\\[(\\d{2}):(\\d{2}):(\\d{2})]");
         Matcher lineMatcher = linePattern.matcher(line);
 
         if (lineMatcher.find()) {
@@ -58,6 +61,7 @@ public class LyricUtil {
             return new LyricLine(lineStartTime, lineDuration, chars, false);
         }
 
+        Logger.error(line);
         return null;
     }
 
@@ -85,6 +89,7 @@ public class LyricUtil {
             return new LyricLine(startTime, -1, chars, false);
         }
 
+        Logger.error(line);
         return null;
     }
 
@@ -119,6 +124,7 @@ public class LyricUtil {
             return new LyricLine(startTime, -1, List.of(lyricChar), true);
         }
 
+        Logger.error(line);
         return null;
     }
 }

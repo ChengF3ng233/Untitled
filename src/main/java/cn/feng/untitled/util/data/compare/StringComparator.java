@@ -1,6 +1,6 @@
 package cn.feng.untitled.util.data.compare;
 
-import cn.feng.untitled.ui.font.awt.Font;
+import cn.feng.untitled.ui.font.awt.AWTFont;
 
 import java.util.Comparator;
 
@@ -9,14 +9,14 @@ import java.util.Comparator;
  * @since 2024/8/1
  **/
 public class StringComparator implements Comparator<String> {
-    private final Font font;
+    private final AWTFont AWTFont;
 
-    public StringComparator(Font font) {
-        this.font = font;
+    public StringComparator(AWTFont AWTFont) {
+        this.AWTFont = AWTFont;
     }
 
     @Override
     public int compare(String o1, String o2) {
-        return Integer.compare(font.getStringWidth(o1), font.getStringWidth(o2));
+        return Integer.compare(AWTFont.getStringWidth(o1), AWTFont.getStringWidth(o2));
     }
 }

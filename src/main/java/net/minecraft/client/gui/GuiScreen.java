@@ -68,7 +68,7 @@ public abstract class GuiScreen extends Gui implements GuiYesNoCallback {
     protected List<GuiButton> buttonList = Lists.newArrayList();
     protected List<GuiLabel> labelList = Lists.newArrayList();
     /**
-     * The FontRenderer used by GuiScreen
+     * The AWTAWTFontRenderer used by GuiScreen
      */
     protected FontRenderer fontRendererObj;
 

@@ -6,6 +6,7 @@ import cn.feng.untitled.music.api.base.LyricLine;
 import cn.feng.untitled.music.api.base.Music;
 import cn.feng.untitled.music.api.player.MusicPlayer;
 import cn.feng.untitled.ui.font.nano.NanoFontLoader;
+import cn.feng.untitled.ui.widget.WidgetAlign;
 import cn.feng.untitled.util.render.nano.NanoUtil;
 import cn.feng.untitled.ui.widget.Widget;
 import cn.feng.untitled.util.animation.advanced.composed.CustomAnimation;
@@ -26,7 +27,7 @@ import java.util.Map;
  **/
 public class MusicLyricWidget extends Widget {
     public MusicLyricWidget() {
-        super("MusicLyric", true);
+        super("MusicLyric", true, WidgetAlign.CENTER | WidgetAlign.TOP);
         x = 0.7f;
         y = 0.7f;
 
@@ -82,8 +83,7 @@ public class MusicLyricWidget extends Widget {
             return;
 
         // 组件的左上角
-        float renderX = x * sr.getScaledWidth();
-        float renderY = y * sr.getScaledHeight();
+        super.render();
 
         // 第一行歌词的Y（中间）
         float lyricTopY = renderY + scrollAnim.getOutput().floatValue() + height / 2f;
@@ -137,10 +137,6 @@ public class MusicLyricWidget extends Widget {
         MusicPlayer player = Client.instance.musicManager.screen.player;
         if (player.getMusic() == null || player.getMusic().getLyrics().isEmpty() || player.getMediaPlayer() == null)
             return;
-
-        // 组件的左上角
-        float renderX = x * sr.getScaledWidth();
-        float renderY = y * sr.getScaledHeight();
 
         // 第一行歌词的Y（中间）
         float lyricTopY = renderY + scrollAnim.getOutput().floatValue() + height / 2f;

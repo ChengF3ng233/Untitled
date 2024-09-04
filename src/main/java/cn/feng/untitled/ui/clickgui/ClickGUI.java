@@ -6,9 +6,9 @@ import cn.feng.untitled.ui.clickgui.gui.TextField;
 import cn.feng.untitled.ui.clickgui.panel.Panel;
 import cn.feng.untitled.ui.clickgui.panel.impl.CategoryPanel;
 import cn.feng.untitled.ui.clickgui.panel.impl.ModulePanel;
+import cn.feng.untitled.ui.font.awt.AWTFontLoader;
+import cn.feng.untitled.ui.font.awt.AWTAWTFontRenderer;
 import cn.feng.untitled.ui.font.awt.CenterType;
-import cn.feng.untitled.ui.font.awt.FontLoader;
-import cn.feng.untitled.ui.font.awt.FontRenderer;
 import cn.feng.untitled.util.animation.advanced.Animation;
 import cn.feng.untitled.util.animation.advanced.Direction;
 import cn.feng.untitled.util.animation.advanced.composed.ColorAnimation;
@@ -69,7 +69,7 @@ public class ClickGUI extends GuiScreen {
         currentPanel = categoryPanelList.get(0);
 
         float iconSize = 14f;
-        searchField = new TextField(60f, 20f, FontLoader.miSans(16), ThemeColor.titleColor, ThemeColor.grayColor);
+        searchField = new TextField(60f, 20f, AWTFontLoader.miSans(16), ThemeColor.titleColor, ThemeColor.grayColor);
         searchField.radius = 5f;
         searchField.offsetX = iconSize + 2f;
 
@@ -136,7 +136,7 @@ public class ClickGUI extends GuiScreen {
         StencilUtil.uninitStencilBuffer();
 
         // Title
-        FontRenderer font = FontLoader.rubik_bold(28);
+        AWTAWTFontRenderer font = AWTFontLoader.rubik_bold(28);
         float centerX = x + leftWidth / 2f;
         if (PostProcessing.bloom.getValue()) {
             BlurUtil.processStart();
@@ -160,7 +160,7 @@ public class ClickGUI extends GuiScreen {
         RoundedUtil.drawRound(categoryX - 2f, categoryY + panelAnim.getOutput().floatValue() - 5f, leftWidth - 14f, currentPanel.height + 10f, 4f, ThemeColor.barColor);
 
         for (CategoryType type : CategoryType.values()) {
-            FontLoader.greyCliff(14).drawString(type.toString(), categoryX, categoryY - 15f, ThemeColor.grayColor.getRGB());
+            AWTFontLoader.greyCliff(14).drawString(type.toString(), categoryX, categoryY - 15f, ThemeColor.grayColor.getRGB());
             for (CategoryPanel panel : categoryPanelList) {
                 if (!CategoryType.getType(panel.category).equals(type)) continue;
 
@@ -282,7 +282,7 @@ public class ClickGUI extends GuiScreen {
 
         for (CategoryPanel panel : categoryPanelList) {
             if (RenderUtil.hovering(mouseX, mouseY, panel.x, panel.y - 2, panel.width, panel.height + 4) && mouseButton == 0 && panel != currentPanel) {
-                float categoryY = y + FontLoader.rubik_bold(28).getFontHeight() + 50f;
+                float categoryY = y + AWTFontLoader.rubik_bold(28).getFontHeight() + 50f;
                 panelAnim.setStartPoint(currentPanel.y - categoryY);
                 currentPanel = panel;
                 panelAnim.setEndPoint(panel.y - categoryY);

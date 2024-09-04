@@ -3,7 +3,7 @@ package cn.feng.untitled.ui.clickgui.component.impl;
 import cn.feng.untitled.ui.clickgui.ThemeColor;
 import cn.feng.untitled.ui.clickgui.component.Component;
 import cn.feng.untitled.ui.font.awt.CenterType;
-import cn.feng.untitled.ui.font.awt.FontLoader;
+import cn.feng.untitled.ui.font.awt.AWTFontLoader;
 import cn.feng.untitled.util.animation.advanced.Animation;
 import cn.feng.untitled.util.animation.advanced.Direction;
 import cn.feng.untitled.util.animation.advanced.composed.ColorAnimation;
@@ -85,7 +85,7 @@ public class NumberComponent extends Component<Double> {
         } else if (alphaAnim.getDirection() == Direction.FORWARDS) alphaAnim.changeDirection();
 
         if (alphaAnim.getOutput() != 0) {
-            FontLoader.rubik(13).drawCenteredString(String.valueOf(MathUtil.round(value.getValue(), 2)), this.posX + 0.5f + valueX.floatValue(), this.posY - 7f, ColorUtil.applyOpacity(Color.WHITE.getRGB(), alphaAnim.getOutput().floatValue()), CenterType.Horizontal, true);
+            AWTFontLoader.rubik(13).drawCenteredString(String.valueOf(MathUtil.round(value.getValue(), 2)), this.posX + 0.5f + valueX.floatValue(), this.posY - 7f, ColorUtil.applyOpacity(Color.WHITE.getRGB(), alphaAnim.getOutput().floatValue()), CenterType.Horizontal, true);
         }
         RoundedUtil.drawRound(this.posX, this.posY, width, barHeight, 1f, ThemeColor.barBgColor);
         RoundedUtil.drawRound(this.posX, this.posY, valueX.floatValue(), barHeight, 1f, ThemeColor.barColor);

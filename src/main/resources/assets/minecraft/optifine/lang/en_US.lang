@@ -356,7 +356,7 @@ of.options.BETTER_SNOW.tooltip.5=when bordering with snow blocks.
 of.options.CUSTOM_FONTS=Custom Fonts
 of.options.CUSTOM_FONTS.tooltip.1=Custom Fonts
 of.options.CUSTOM_FONTS.tooltip.2=  ON - uses custom fonts (default), slower
-of.options.CUSTOM_FONTS.tooltip.3=  OFF - uses default font, faster
+of.options.CUSTOM_FONTS.tooltip.3=  OFF - uses default AWTFont, faster
 of.options.CUSTOM_FONTS.tooltip.4=The custom fonts are supplied by the current
 of.options.CUSTOM_FONTS.tooltip.5=resource pack.
 

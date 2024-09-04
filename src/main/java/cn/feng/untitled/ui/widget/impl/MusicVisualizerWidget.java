@@ -46,10 +46,9 @@ public class MusicVisualizerWidget extends Widget {
 
     @Override
     public void render() {
+        super.render();
         width = fillValue.getValue() ? sr.getScaledWidth() : widthValue.getValue().floatValue();
         height = heightValue.getValue().floatValue();
-        float renderX = sr.getScaledWidth() * x;
-        float renderY = sr.getScaledHeight() * y;
         float step = width / bands.getValue().intValue();
         MediaPlayer mediaPlayer = Client.instance.musicManager.screen.player.getMediaPlayer();
         if (mediaPlayer != null && Client.instance.musicManager.screen.player.getMagnitudes() != null) {

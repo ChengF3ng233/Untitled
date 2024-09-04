@@ -35,8 +35,7 @@ public class MusicInfoWidget extends Widget {
     public void render() {
         MusicPlayer player = Client.instance.musicManager.screen.player;
         if (player.getMusic() == null) return;
-        float renderX = x * sr.getScaledWidth();
-        float renderY = y * sr.getScaledHeight();
+        super.render();
         NanoFontRenderer fontRenderer = NanoFontLoader.misans.bold();
         width = height + Math.max(
                 fontRenderer.getStringWidth(player.getMusic().getName(), fontSize.getValue().floatValue()),

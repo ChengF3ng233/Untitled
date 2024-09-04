@@ -7,15 +7,10 @@ import cn.feng.untitled.module.ModuleManager;
 import cn.feng.untitled.music.MusicManager;
 import cn.feng.untitled.network.NetworkManager;
 import cn.feng.untitled.ui.UIManager;
-import cn.feng.untitled.ui.font.awt.FontLoader;
-import cn.feng.untitled.ui.font.nano.NanoFontLoader;
-import cn.feng.untitled.util.data.resource.ResourceType;
-import cn.feng.untitled.util.data.resource.ResourceUtil;
+import cn.feng.untitled.ui.font.awt.AWTFontLoader;
 import cn.feng.untitled.util.misc.Logger;
-import cn.feng.untitled.util.render.video.VideoPlayer;
 import de.florianmichael.viamcp.ViaMCP;
 import dev.tr7zw.entityculling.EntityCulling;
-import org.bytedeco.javacv.FFmpegFrameGrabber;
 import org.lwjgl.Sys;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.Display;
@@ -57,7 +52,7 @@ public enum Client {
         musicManager = new MusicManager();
 
         Logger.info("Loading fonts...");
-        FontLoader.registerFonts();
+        AWTFontLoader.registerFonts();
 
         Logger.info("Registering...");
         eventBus.register(moduleManager);

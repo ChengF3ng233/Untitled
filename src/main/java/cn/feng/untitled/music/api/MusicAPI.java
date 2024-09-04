@@ -291,16 +291,14 @@ public class MusicAPI {
 
     public static String getMusicURL(long id, boolean retry, MusicQuality quality) {
         try {
-            for (JsonElement data : fetchObject("/song/url/v1?id=" + id + "&level=" + (retry? "standard" : quality.name())).get("data").getAsJsonArray()) {
-                // 获取第一个，因为就一个
-                return data.getAsJsonObject().get("url").getAsString();
-            }
-        } catch (JsonSyntaxException e) {
+            JsonObject obj = fetchObject("/song/download/url/v1?id=" + id + "&level=" + (retry ? "standard" : quality.name())).get("data").getAsJsonObject();
+            JsonElement url = obj.get("url");
+            return url.getAsString();
+        } catch (Exception e) {
             if (retry) throw new NullPointerException("No music source [" + id + "].");
             Logger.error("Failed to get exhigh music [" + id + "], retry...");
             return getMusicURL(id, true, quality);
         }
-        return null;
     }
 
     public static PlayList search(String keywords) {

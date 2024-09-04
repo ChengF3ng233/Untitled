@@ -351,7 +351,7 @@ of.options.BETTER_SNOW.tooltip.5=ktoré susedia so snehom.
 of.options.CUSTOM_FONTS=Vlastné fonty
 of.options.CUSTOM_FONTS.tooltip.1=Vlastné fonty
 of.options.CUSTOM_FONTS.tooltip.2=  ZAP - (štandard) používa vlastné fonty, pomalšie
-of.options.CUSTOM_FONTS.tooltip.3=  VYP - používa štandardný font, rýchlejšie
+of.options.CUSTOM_FONTS.tooltip.3=  VYP - používa štandardný AWTFont, rýchlejšie
 of.options.CUSTOM_FONTS.tooltip.4=Vlastné fonty závisia od zvoleného
 of.options.CUSTOM_FONTS.tooltip.5=zdrojového balíka.
 

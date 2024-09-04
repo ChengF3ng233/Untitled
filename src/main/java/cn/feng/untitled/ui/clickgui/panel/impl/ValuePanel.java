@@ -3,7 +3,7 @@ package cn.feng.untitled.ui.clickgui.panel.impl;
 import cn.feng.untitled.ui.clickgui.component.Component;
 import cn.feng.untitled.ui.clickgui.component.impl.*;
 import cn.feng.untitled.ui.clickgui.panel.Panel;
-import cn.feng.untitled.ui.font.awt.FontLoader;
+import cn.feng.untitled.ui.font.awt.AWTFontLoader;
 import cn.feng.untitled.value.Value;
 import cn.feng.untitled.value.impl.*;
 
@@ -44,7 +44,7 @@ public class ValuePanel extends Panel {
         if (component instanceof ButtonComponent bc) {
             textColor = bc.textColAnim.getOutput().getRGB();
         }
-        FontLoader.greyCliff(16).drawString(value.getName(), x, y + 1, textColor);
+        AWTFontLoader.greyCliff(16).drawString(value.getName(), x, y + 1, textColor);
         component.draw(x, y, mouseX, mouseY);
         height = component.height;
     }

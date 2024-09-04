@@ -3,8 +3,8 @@ package cn.feng.untitled.ui.clickgui.component.impl;
 import cn.feng.untitled.ui.clickgui.ThemeColor;
 import cn.feng.untitled.ui.clickgui.component.Component;
 import cn.feng.untitled.ui.clickgui.gui.Icon;
-import cn.feng.untitled.ui.font.awt.Font;
-import cn.feng.untitled.ui.font.awt.FontLoader;
+import cn.feng.untitled.ui.font.awt.AWTFontLoader;
+import cn.feng.untitled.ui.font.awt.AWTFont;
 import cn.feng.untitled.util.animation.advanced.Direction;
 import cn.feng.untitled.util.animation.advanced.composed.ColorAnimation;
 import cn.feng.untitled.util.data.compare.StringComparator;
@@ -22,7 +22,7 @@ import java.util.List;
  * @since 2024/8/1
  **/
 public class ModeComponent extends Component<String> {
-    private final Font font = FontLoader.greyCliff(16);
+    private final AWTFont AWTFont = AWTFontLoader.greyCliff(16);
     private final Icon left;
     private final Icon right;
     private final ColorAnimation colorAnim;
@@ -31,8 +31,8 @@ public class ModeComponent extends Component<String> {
     public ModeComponent(ModeValue value) {
         super(value);
         List<String> modes = new ArrayList<>(List.of(value.values));
-        modes.sort(new StringComparator(font));
-        width = font.getStringWidth(modes.get(modes.size() - 1));
+        modes.sort(new StringComparator(AWTFont));
+        width = AWTFont.getStringWidth(modes.get(modes.size() - 1));
         height = 13f;
         left = new Icon(new ResourceLocation("untitled/icon/arrow-left.png"), 12f);
         right = new Icon(new ResourceLocation("untitled/icon/arrow-right.png"), 12f);
@@ -63,7 +63,7 @@ public class ModeComponent extends Component<String> {
 
         left.draw(this.posX - 9f, this.posY, mouseX, mouseY);
         right.draw(this.posX + width + 3f, this.posY, mouseX, mouseY);
-        font.drawString(value.getValue(), this.posX + 3f, this.posY + 3.5f, colorAnim.getOutput().getRGB());
+        AWTFont.drawString(value.getValue(), this.posX + 3f, this.posY + 3.5f, colorAnim.getOutput().getRGB());
     }
 
     @Override

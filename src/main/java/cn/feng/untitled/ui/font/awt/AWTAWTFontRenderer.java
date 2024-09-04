@@ -23,7 +23,7 @@ import java.util.regex.Pattern;
  * @author ChengFeng
  * @since 2024/7/29
  **/
-public class FontRenderer extends Font {
+public class AWTAWTFontRenderer extends AWTFont {
     private static final Color TRANSPARENT_COLOR = new Color(255, 255, 255, 0);
     private static final int[] COLOR_CODES = new int[32];
 
@@ -38,7 +38,7 @@ public class FontRenderer extends Font {
     private final Map<Character, FontCharacter> boldCharacters = new HashMap<>();
     private final boolean chinese;
 
-    public FontRenderer(java.awt.Font font, boolean chinese) {
+    public AWTAWTFontRenderer(java.awt.Font font, boolean chinese) {
         this.font = font;
         this.fontHeight = (float) (font.getStringBounds("ABCDEFGHOKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz", new FontRenderContext(new AffineTransform(), true, true)).getHeight() / 4.0D);
         this.chinese = chinese;
@@ -148,7 +148,7 @@ public class FontRenderer extends Font {
     }
 
     public String trimStringToWidth(String text, float width, boolean reverse) {
-        if (!chinese && isChinese(text)) return FontLoader.miSans(font.getSize() - 1).trimStringToWidth(text, width, reverse);
+        if (!chinese && isChinese(text)) return AWTFontLoader.miSans(font.getSize() - 1).trimStringToWidth(text, width, reverse);
 
         if (text == null) {
             return "";
@@ -199,7 +199,7 @@ public class FontRenderer extends Font {
     }
 
     public int drawCenteredString(String text, double x, double y, int color, CenterType type, boolean shadow) {
-        if (!this.chinese && isChinese(text)) return FontLoader.miSans(this.font.getSize() - 1).drawCenteredString(text, x, y, color, type, shadow);
+        if (!this.chinese && isChinese(text)) return AWTFontLoader.miSans(this.font.getSize() - 1).drawCenteredString(text, x, y, color, type, shadow);
 
         boolean xCenter = type == CenterType.Both || type == CenterType.Horizontal;
         boolean yCenter = type == CenterType.Both || type == CenterType.Vertical;
@@ -220,7 +220,7 @@ public class FontRenderer extends Font {
     }
 
     public int renderString(String text, double x, double y, int color, boolean shadowMode) {
-        if (!chinese && isChinese(text)) return FontLoader.miSans(font.getSize() - 1).renderString(text, x, y, color, shadowMode);
+        if (!chinese && isChinese(text)) return AWTFontLoader.miSans(font.getSize() - 1).renderString(text, x, y, color, shadowMode);
 
         GL11.glPushMatrix();
         GL11.glPushAttrib(1048575);
@@ -360,7 +360,7 @@ public class FontRenderer extends Font {
 
     public int getStringWidth(String text) {
         if (!this.chinese && this.isChinese(text)) {
-            return FontLoader.miSans(font.getSize() - 1).getStringWidth(text);
+            return AWTFontLoader.miSans(font.getSize() - 1).getStringWidth(text);
         } else {
             boolean hasCode = text.contains("§");
 

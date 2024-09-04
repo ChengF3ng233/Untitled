@@ -131,7 +131,7 @@ options.guiScale.tooltip.3=  Petit, normal i gran - desde 1x fins a 3x
 options.guiScale.tooltip.4=  Desde 4x fins a 10x - disponible en pantalles 4K.
 options.guiScale.tooltip.5=
 options.guiScale.tooltip.6=Els valors impars (1x, 3x, 5x...) no són compatibles
-options.guiScale.tooltip.7=amb la font unicode.
+options.guiScale.tooltip.7=amb la AWTFont unicode.
 options.guiScale.tooltip.8=Una interfaç petita pot millorar el rendiment.
 
 options.vbo=utilitzar VBOs
@@ -789,7 +789,7 @@ of.options.ADVANCED_TOOLTIPS.tooltip.2=  SÍ - mostrar descripcions
 of.options.ADVANCED_TOOLTIPS.tooltip.3=  NO - no mostrar descripcions (per defecte)
 of.options.ADVANCED_TOOLTIPS.tooltip.4=  
 of.options.ADVANCED_TOOLTIPS.tooltip.5=Aquesta opció permet veure informació més detallada sobre
-of.options.ADVANCED_TOOLTIPS.tooltip.6=objectes (ID, durabilitat) i shaders (ID, font,
+of.options.ADVANCED_TOOLTIPS.tooltip.6=objectes (ID, durabilitat) i shaders (ID, AWTFont,
 of.options.ADVANCED_TOOLTIPS.tooltip.7=valor predeterminat).
 
 of.options.SHOW_GL_ERRORS=Mostrar errors de GL

@@ -1,7 +1,7 @@
 package cn.feng.untitled.util.data.compare;
 
 import cn.feng.untitled.module.Module;
-import cn.feng.untitled.ui.font.awt.Font;
+import cn.feng.untitled.ui.font.awt.AWTFont;
 import cn.feng.untitled.ui.font.nano.NanoFontRenderer;
 
 import java.util.Comparator;
@@ -12,18 +12,18 @@ import java.util.Comparator;
  **/
 public class ModuleComparator implements Comparator<Module> {
     private final CompareMode mode;
-    private final Font font;
+    private final AWTFont AWTFont;
     private final NanoFontRenderer nanoFont;
 
-    public ModuleComparator(CompareMode mode, Font font) {
+    public ModuleComparator(CompareMode mode, AWTFont AWTFont) {
         this.mode = mode;
-        this.font = font;
+        this.AWTFont = AWTFont;
         this.nanoFont = null;
     }
 
     public ModuleComparator(CompareMode mode, NanoFontRenderer font) {
         this.mode = mode;
-        this.font = null;
+        this.AWTFont = null;
         this.nanoFont = font;
     }
 
@@ -34,8 +34,8 @@ public class ModuleComparator implements Comparator<Module> {
         } else {
             if (nanoFont != null) {
                 return Float.compare(nanoFont.getStringWidth(o2.name), nanoFont.getStringWidth(o1.name));
-            } else if (font != null) {
-                return Integer.compare(font.getStringWidth(o2.name), font.getStringWidth(o1.name));
+            } else if (AWTFont != null) {
+                return Integer.compare(AWTFont.getStringWidth(o2.name), AWTFont.getStringWidth(o1.name));
             }
 
             return 0;

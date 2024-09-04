@@ -1,9 +1,8 @@
 package cn.feng.untitled.ui.clickgui.gui;
 
 import cn.feng.untitled.ui.clickgui.ThemeColor;
+import cn.feng.untitled.ui.font.awt.AWTAWTFontRenderer;
 import cn.feng.untitled.ui.font.awt.CenterType;
-import cn.feng.untitled.ui.font.awt.FontRenderer;
-import cn.feng.untitled.ui.font.nano.NanoFontRenderer;
 import cn.feng.untitled.util.animation.advanced.Direction;
 import cn.feng.untitled.util.animation.advanced.composed.ColorAnimation;
 import cn.feng.untitled.util.render.ColorUtil;
@@ -11,7 +10,6 @@ import cn.feng.untitled.util.render.RenderUtil;
 import cn.feng.untitled.util.render.RoundedUtil;
 import org.lwjgl.glfw.GLFW;
 import org.lwjgl.input.Keyboard;
-import org.lwjgl.nanovg.NanoVG;
 import org.lwjgl.opengl.Display;
 import org.lwjgl.system.MemoryUtil;
 
@@ -28,12 +26,12 @@ public class TextField {
     public float radius;
     public String text;
 
-    private final FontRenderer font;
+    private final AWTAWTFontRenderer font;
     public Color backgroundColor, outlineColor;
     private final ColorAnimation textColorAnim;
     private final ColorAnimation cursorColorAnim;
 
-    public TextField(float width, float height, FontRenderer font, Color backgroundColor, Color outlineColor) {
+    public TextField(float width, float height, AWTAWTFontRenderer font, Color backgroundColor, Color outlineColor) {
         this.text = "";
         this.width = width;
         this.textMaxWidth = width - 2f;

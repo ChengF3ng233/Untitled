@@ -4,7 +4,7 @@ import cn.feng.untitled.Client;
 import cn.feng.untitled.module.Module;
 import cn.feng.untitled.module.ModuleCategory;
 import cn.feng.untitled.ui.clickgui.panel.Panel;
-import cn.feng.untitled.ui.font.awt.FontLoader;
+import cn.feng.untitled.ui.font.awt.AWTFontLoader;
 import cn.feng.untitled.util.animation.simple.SimpleAnimation;
 import org.lwjgl.input.Mouse;
 
@@ -39,10 +39,10 @@ public class CategoryPanel extends Panel {
     public void draw(float x, float y, int mouseX, int mouseY) {
         this.x = x;
         this.y = y;
-        this.height = FontLoader.greyCliff(18).getFontHeight();
+        this.height = AWTFontLoader.greyCliff(18).getFontHeight();
         scrollAnim.speed = 0.2f;
 
-        FontLoader.greyCliff(18).drawString(category.name(), x, y, Color.WHITE.getRGB());
+        AWTFontLoader.greyCliff(18).drawString(category.name(), x, y, Color.WHITE.getRGB());
     }
 
     public void handleScroll() {

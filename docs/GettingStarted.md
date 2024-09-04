@@ -95,7 +95,7 @@ NanoFont为矢量绘制，优点是加载快、较灵活，发光效果效率高
 想要进一步了解NanoVG在本项目中的使用，请转到[这里](Advanced.md)***
 #### 使用AWTFontRenderer
 ```java
-import cn.feng.untitled.ui.font.awt.FontLoader;
+import cn.feng.untitled.ui.AWTFont.awt.AWTFontLoader;
 
 public void render() {
     // 遇到中文会自动使用支持中文的字体渲染
@@ -105,8 +105,8 @@ public void render() {
 #### 使用NanoFontRenderer
 
 ```java
-import cn.feng.untitled.ui.font.nano.NanoFontLoader;
-import cn.feng.untitled.ui.font.nano.NanoFontRenderer;
+import cn.feng.untitled.ui.AWTFont.nano.NanoFontLoader;
+import cn.feng.untitled.ui.AWTFont.nano.NanoFontRenderer;
 
 public void render() {
     // 遇到中文或emoji会自动切换字体

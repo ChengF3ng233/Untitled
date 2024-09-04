@@ -1,5 +1,7 @@
 package net.minecraft.client.gui;
 
+import cn.feng.untitled.module.impl.render.GUI;
+import cn.feng.untitled.ui.font.awt.AWTFontLoader;
 import com.google.common.collect.Lists;
 import lombok.Getter;
 import net.minecraft.client.Minecraft;
@@ -42,51 +44,57 @@ public class GuiNewChat extends Gui {
 
     public void drawChat(int updateCounter) {
         if (this.mc.gameSettings.chatVisibility != EntityPlayer.EnumChatVisibility.HIDDEN) {
-            int i = this.getLineCount();
-            boolean flag = false;
-            int j = 0;
-            int k = this.drawnChatLines.size();
-            float f = this.mc.gameSettings.chatOpacity * 0.9F + 0.1F;
+            int totalLines = this.getLineCount();
+            boolean isChatOpen = false;
+            int visibleLines = 0;
+            int totalChatLines = this.drawnChatLines.size();
+            float chatOpacity = this.mc.gameSettings.chatOpacity * 0.9F + 0.1F;
 
-            if (k > 0) {
+            if (totalChatLines > 0) {
                 if (this.getChatOpen()) {
-                    flag = true;
+                    isChatOpen = true;
                 }
 
-                float f1 = this.getChatScale();
-                int l = MathHelper.ceiling_float_int((float) this.getChatWidth() / f1);
+                float chatScale = this.getChatScale();
+                int chatWidth = MathHelper.ceiling_float_int((float) this.getChatWidth() / chatScale);
                 GlStateManager.pushMatrix();
                 GlStateManager.translate(2.0F, 20.0F, 0.0F);
-                GlStateManager.scale(f1, f1, 1.0F);
+                GlStateManager.scale(chatScale, chatScale, 1.0F);
 
-                for (int i1 = 0; i1 + this.scrollPos < this.drawnChatLines.size() && i1 < i; ++i1) {
-                    ChatLine chatline = this.drawnChatLines.get(i1 + this.scrollPos);
+                for (int currentLineIndex = 0; currentLineIndex + this.scrollPos < totalChatLines && currentLineIndex < totalLines; ++currentLineIndex) {
+                    ChatLine chatLine = this.drawnChatLines.get(currentLineIndex + this.scrollPos);
 
-                    if (chatline != null) {
-                        int j1 = updateCounter - chatline.getUpdatedCounter();
+                    if (chatLine != null) {
+                        int timeSinceUpdate = updateCounter - chatLine.getUpdatedCounter();
 
-                        if (j1 < 200 || flag) {
-                            double d0 = (double) j1 / 200.0D;
-                            d0 = 1.0D - d0;
-                            d0 = d0 * 10.0D;
-                            d0 = MathHelper.clamp_double(d0, 0.0D, 1.0D);
-                            d0 = d0 * d0;
-                            int l1 = (int) (255.0D * d0);
+                        if (timeSinceUpdate < 200 || isChatOpen) {
+                            double fadeFactor = (double) timeSinceUpdate / 200.0D;
+                            fadeFactor = 1.0D - fadeFactor;
+                            fadeFactor = fadeFactor * 10.0D;
+                            fadeFactor = MathHelper.clamp_double(fadeFactor, 0.0D, 1.0D);
+                            fadeFactor = fadeFactor * fadeFactor;
+                            int alpha = (int) (255.0D * fadeFactor);
 
-                            if (flag) {
-                                l1 = 255;
+                            if (isChatOpen) {
+                                alpha = 255;
                             }
 
-                            l1 = (int) ((float) l1 * f);
-                            ++j;
+                            alpha = (int) ((float) alpha * chatOpacity);
+                            ++visibleLines;
 
-                            if (l1 > 3) {
-                                int i2 = 0;
-                                int j2 = -i1 * 9;
-                                drawRect(i2, j2 - 9, i2 + l + 4, j2, l1 / 2 << 24);
-                                String s = chatline.getChatComponent().getFormattedText();
+                            if (alpha > 3) {
+                                int startX = 0;
+                                int startY = -currentLineIndex * 9;
+                                if (GUI.renderChatRect.getValue()) {
+                                    drawRect(startX, startY - 9, startX + chatWidth + 4, startY, alpha / 2 << 24);
+                                }
+                                String chatText = chatLine.getChatComponent().getFormattedText();
                                 GlStateManager.enableBlend();
-                                this.mc.fontRendererObj.drawStringWithShadow(s, (float) i2, (float) (j2 - 8), 16777215 + (l1 << 24));
+                                if (GUI.chatFancyFont.getValue()) {
+                                    AWTFontLoader.miSans(17).drawString(chatText, (float) startX, (float) (startY - 8), 16777215 + (alpha << 24), true);
+                                } else {
+                                    this.mc.fontRendererObj.drawStringWithShadow(chatText, (float) startX, (float) (startY - 8), 16777215 + (alpha << 24));
+                                }
                                 GlStateManager.disableAlpha();
                                 GlStateManager.disableBlend();
                             }
@@ -94,19 +102,19 @@ public class GuiNewChat extends Gui {
                     }
                 }
 
-                if (flag) {
-                    int k2 = this.mc.fontRendererObj.FONT_HEIGHT;
+                if (isChatOpen) {
+                    int lineHeight = this.mc.fontRendererObj.FONT_HEIGHT;
                     GlStateManager.translate(-3.0F, 0.0F, 0.0F);
-                    int l2 = k * k2 + k;
-                    int i3 = j * k2 + j;
-                    int j3 = this.scrollPos * i3 / k;
-                    int k1 = i3 * i3 / l2;
+                    int totalHeight = totalChatLines * lineHeight + totalChatLines;
+                    int visibleHeight = visibleLines * lineHeight + visibleLines;
+                    int scrollPosition = this.scrollPos * visibleHeight / totalChatLines;
+                    int scrollBarHeight = visibleHeight * visibleHeight / totalHeight;
 
-                    if (l2 != i3) {
-                        int k3 = j3 > 0 ? 170 : 96;
-                        int l3 = this.isScrolled ? 13382451 : 3355562;
-                        drawRect(0, -j3, 2, -j3 - k1, l3 + (k3 << 24));
-                        drawRect(2, -j3, 1, -j3 - k1, 13421772 + (k3 << 24));
+                    if (totalHeight != visibleHeight) {
+                        int scrollBarColor = scrollPosition > 0 ? 170 : 96;
+                        int scrollBarBackground = this.isScrolled ? 13382451 : 3355562;
+                        drawRect(0, -scrollPosition, 2, -scrollPosition - scrollBarHeight, scrollBarBackground + (scrollBarColor << 24));
+                        drawRect(2, -scrollPosition, 1, -scrollPosition - scrollBarHeight, 13421772 + (scrollBarColor << 24));
                     }
                 }
 
@@ -114,6 +122,7 @@ public class GuiNewChat extends Gui {
             }
         }
     }
+
 
     /**
      * Clears the chat.
@@ -161,8 +170,10 @@ public class GuiNewChat extends Gui {
         if (!displayOnly) {
             this.chatLines.add(0, new ChatLine(updateCounter, chatComponent, chatLineId));
 
-            while (this.chatLines.size() > 100) {
-                this.chatLines.remove(this.chatLines.size() - 1);
+            if (!GUI.infinityChat.getValue()) {
+                while (this.chatLines.size() > 100) {
+                    this.chatLines.remove(this.chatLines.size() - 1);
+                }
             }
         }
     }

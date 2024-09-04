@@ -345,9 +345,9 @@ of.options.BETTER_SNOW.tooltip.5=(Recinzioni, erba) quando li si confina con la 
 
 of.options.CUSTOM_FONTS=Font personalizzati
 of.options.CUSTOM_FONTS.tooltip.1=Font personalizzati
-of.options.CUSTOM_FONTS.tooltip.2=  Sì - font personalizzati (per default), più lento
-of.options.CUSTOM_FONTS.tooltip.3=  No - font di default, più veloce
-of.options.CUSTOM_FONTS.tooltip.4=Alcuni pacchetti di risorse contengono font
+of.options.CUSTOM_FONTS.tooltip.2=  Sì - AWTFont personalizzati (per default), più lento
+of.options.CUSTOM_FONTS.tooltip.3=  No - AWTFont di default, più veloce
+of.options.CUSTOM_FONTS.tooltip.4=Alcuni pacchetti di risorse contengono AWTFont
 of.options.CUSTOM_FONTS.tooltip.5=personalizzati.
 
 of.options.CUSTOM_COLORS=Colori personalizzati

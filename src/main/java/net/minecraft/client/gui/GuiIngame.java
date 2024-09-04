@@ -3,7 +3,7 @@ package net.minecraft.client.gui;
 import cn.feng.untitled.Client;
 import cn.feng.untitled.event.impl.Render2DEvent;
 import cn.feng.untitled.module.impl.client.PostProcessing;
-import cn.feng.untitled.module.impl.render.HUD;
+import cn.feng.untitled.module.impl.render.GUI;
 import com.google.common.base.Predicate;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
@@ -161,7 +161,7 @@ public class GuiIngame extends Gui {
 
         ItemStack itemstack = this.mc.thePlayer.inventory.armorItemInSlot(3);
 
-        if (this.mc.gameSettings.thirdPersonView == 0 && itemstack != null && itemstack.getItem() == Item.getItemFromBlock(Blocks.pumpkin) && HUD.renderPumpkin.getValue()) {
+        if (this.mc.gameSettings.thirdPersonView == 0 && itemstack != null && itemstack.getItem() == Item.getItemFromBlock(Blocks.pumpkin) && GUI.renderPumpkin.getValue()) {
             this.renderPumpkinOverlay(scaledresolution);
         }
 
@@ -189,7 +189,7 @@ public class GuiIngame extends Gui {
             this.drawTexturedModalRect(i / 2 - 7, j / 2 - 7, 0, 0, 16, 16);
         }
 
-        if (HUD.renderBossHealth.getValue()) {
+        if (GUI.renderBossHealth.getValue()) {
             GlStateManager.enableAlpha();
             GlStateManager.tryBlendFuncSeparate(770, 771, 1, 0);
             this.mc.mcProfiler.startSection("bossHealth");
@@ -770,7 +770,7 @@ public class GuiIngame extends Gui {
     }
 
     /**
-     * Renders dragon's (boss) health on the HUD
+     * Renders dragon's (boss) health on the GUI
      */
     private void renderBossHealth() {
         if (BossStatus.bossName != null && BossStatus.statusBarTime > 0) {

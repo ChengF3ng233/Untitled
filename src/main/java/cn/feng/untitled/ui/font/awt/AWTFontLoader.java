@@ -9,13 +9,13 @@ import java.util.Map;
  * @author ChengFeng
  * @since 2024/7/29
  **/
-public class FontLoader {
-    private static final Map<Integer, FontRenderer> greyCliff = new HashMap<>();
-    private static final Map<Integer, FontRenderer> greyCliff_bold = new HashMap<>();
-    private static final Map<Integer, FontRenderer> rubik = new HashMap<>();
-    private static final Map<Integer, FontRenderer> rubik_bold = new HashMap<>();
-    private static final Map<Integer, FontRenderer> miSans = new HashMap<>();
-    private static final Map<Integer, FontRenderer> icon = new HashMap<>();
+public class AWTFontLoader {
+    private static final Map<Integer, AWTAWTFontRenderer> greyCliff = new HashMap<>();
+    private static final Map<Integer, AWTAWTFontRenderer> greyCliff_bold = new HashMap<>();
+    private static final Map<Integer, AWTAWTFontRenderer> rubik = new HashMap<>();
+    private static final Map<Integer, AWTAWTFontRenderer> rubik_bold = new HashMap<>();
+    private static final Map<Integer, AWTAWTFontRenderer> miSans = new HashMap<>();
+    private static final Map<Integer, AWTAWTFontRenderer> icon = new HashMap<>();
 
     //These are for the icon font for ease of access
     public final static String
@@ -73,36 +73,36 @@ public class FontLoader {
         rubik_bold(28);
     }
 
-    public static FontRenderer icon(int size) {
+    public static AWTAWTFontRenderer icon(int size) {
         return get(icon, size, "icon", false);
     }
 
-    public static FontRenderer greyCliff(int size) {
+    public static AWTAWTFontRenderer greyCliff(int size) {
         return get(greyCliff, size, "greycliff", false);
     }
 
-    public static FontRenderer greyCliff_bold(int size) {
+    public static AWTAWTFontRenderer greyCliff_bold(int size) {
         return get(greyCliff_bold, size, "greycliff-bold", false);
     }
 
-    public static FontRenderer rubik(int size) {
+    public static AWTAWTFontRenderer rubik(int size) {
         return get(rubik, size, "rubik", false);
     }
 
-    public static FontRenderer rubik_bold(int size) {
+    public static AWTAWTFontRenderer rubik_bold(int size) {
         return get(rubik_bold, size, "rubik-bold", false);
     }
 
-    public static FontRenderer miSans(int size) {
+    public static AWTAWTFontRenderer miSans(int size) {
         return get(miSans, size, "misans", true);
     }
 
-    private static FontRenderer get(Map<Integer, FontRenderer> map, int size, String name, boolean chinese) {
+    private static AWTAWTFontRenderer get(Map<Integer, AWTAWTFontRenderer> map, int size, String name, boolean chinese) {
         if (!map.containsKey(size)) {
             Logger.info("Registering font " + name + (chinese ? " including Chinese." : ".") + " Size: " + size);
             java.awt.Font font = FontUtil.getResource("untitled/font/" + name + ".ttf", size);
             if (font != null) {
-                map.put(size, new FontRenderer(font, chinese));
+                map.put(size, new AWTAWTFontRenderer(font, chinese));
             }
         }
 

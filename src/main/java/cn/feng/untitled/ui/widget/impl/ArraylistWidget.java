@@ -23,7 +23,7 @@ import java.util.List;
  **/
 public class ArraylistWidget extends Widget {
     public ArraylistWidget() {
-        super("Arraylist", true);
+        super("Arraylist", false);
 
         this.x = 1f;
         this.y = 0f;
@@ -36,9 +36,7 @@ public class ArraylistWidget extends Widget {
 
     @Override
     public void render() {
-        float renderX = sr.getScaledWidth() * x;
-        float renderY = sr.getScaledHeight() * y;
-
+        super.render();
         NanoFontRenderer font = NanoFontLoader.misans;
 
         List<Module> moduleList = new java.util.ArrayList<>(Client.instance.moduleManager.moduleList.stream().toList());
