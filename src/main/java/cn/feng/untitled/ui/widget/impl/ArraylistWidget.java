@@ -36,7 +36,6 @@ public class ArraylistWidget extends Widget {
 
     @Override
     public void render() {
-        super.render();
         NanoFontRenderer font = NanoFontLoader.misans;
 
         List<Module> moduleList = new java.util.ArrayList<>(Client.instance.moduleManager.moduleList.stream().toList());

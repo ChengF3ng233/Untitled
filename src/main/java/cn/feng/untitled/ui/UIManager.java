@@ -84,13 +84,12 @@ public class UIManager extends MinecraftInstance {
     private void onChatGUI(ChatGUIEvent event) {
         Widget draggingWidget = null;
         for (Widget widget : widgetList) {
-            if (Client.instance.moduleManager.getModule(widget).enabled) {
-                if (widget.dragging) {
-                    draggingWidget = widget;
-                    break;
-                }
+            if (Client.instance.moduleManager.getModule(widget).enabled && widget.dragging) {
+                draggingWidget = widget;
+                break;
             }
         }
+
         for (Widget widget : widgetList) {
             if (Client.instance.moduleManager.getModule(widget).enabled) {
                 widget.onChatGUI(event.mouseX, event.mouseY, (draggingWidget == null || draggingWidget == widget));

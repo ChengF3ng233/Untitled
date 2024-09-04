@@ -72,6 +72,9 @@ public class PlayListListGUI extends MusicPlayerGUI {
     }
 
     public void addPlayList(PlayList playList) {
+        for (PlayListButton button : buttons) {
+            if (button.playList.getId() == playList.getId()) return;
+        }
         buttons.add(new PlayListButton(playList, this));
     }
 }

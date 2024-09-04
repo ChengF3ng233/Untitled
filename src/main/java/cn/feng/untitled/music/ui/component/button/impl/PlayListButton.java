@@ -20,7 +20,7 @@ import java.awt.*;
  * @since 2024/8/13
  **/
 public class PlayListButton extends Button {
-    private final PlayList playList;
+    public final PlayList playList;
     private final PlayListGUI gui;
 
     private final Animation scaleAnim = new DecelerateAnimation(200, 0.1f, Direction.BACKWARDS);

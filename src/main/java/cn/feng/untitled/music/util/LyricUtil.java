@@ -52,7 +52,7 @@ public class LyricUtil {
             chars.add(new LyricChar(charStartTime, charDuration, character));
         }
 
-        Pattern linePattern = Pattern.compile("\\[(\\d{2}):(\\d{2}):(\\d{2})]");
+        Pattern linePattern = Pattern.compile("\\[(\\d+),(\\d+)]");
         Matcher lineMatcher = linePattern.matcher(line);
 
         if (lineMatcher.find()) {

@@ -6,6 +6,7 @@ import cn.feng.untitled.music.api.player.MusicPlayer;
 import cn.feng.untitled.music.ui.ThemeColor;
 import cn.feng.untitled.ui.font.nano.NanoFontLoader;
 import cn.feng.untitled.ui.font.nano.NanoFontRenderer;
+import cn.feng.untitled.util.render.ColorUtil;
 import cn.feng.untitled.util.render.nano.NanoUtil;
 import cn.feng.untitled.ui.widget.Widget;
 import cn.feng.untitled.value.impl.BoolValue;
@@ -35,7 +36,6 @@ public class MusicInfoWidget extends Widget {
     public void render() {
         MusicPlayer player = Client.instance.musicManager.screen.player;
         if (player.getMusic() == null) return;
-        super.render();
         NanoFontRenderer fontRenderer = NanoFontLoader.misans.bold();
         width = height + Math.max(
                 fontRenderer.getStringWidth(player.getMusic().getName(), fontSize.getValue().floatValue()),
@@ -49,7 +49,7 @@ public class MusicInfoWidget extends Widget {
         }
         height = heightValue.getValue().floatValue();
         NanoUtil.drawImageRect(player.getMusic().getCoverTexture(), renderX, renderY, height, height);
-        NanoUtil.drawRoundedRect(renderX + 2f + height, renderY + height - 5f, width -  height - 2f, 2f, 1f, ThemeColor.greyColor);
+        NanoUtil.drawRoundedRect(renderX + 2f + height, renderY + height - 5f, width -  height - 2f, 2f, 1f, ColorUtil.applyOpacity(ThemeColor.greyColor, 0.4f));
         if (player.getMediaPlayer() == null) return;
         NanoUtil.drawRoundedRect(renderX + 2f + height, renderY + height - 5f, (float) ((width -  height - 2f) * (player.getCurrentTime() / player.getMusic().getDuration())), 2f, 1f, Color.WHITE);
     }

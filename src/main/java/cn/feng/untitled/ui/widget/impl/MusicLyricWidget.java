@@ -82,9 +82,6 @@ public class MusicLyricWidget extends Widget {
         if (player.getMusic() == null || player.getMusic().getLyrics().isEmpty() || player.getMediaPlayer() == null)
             return;
 
-        // 组件的左上角
-        super.render();
-
         // 第一行歌词的Y（中间）
         float lyricTopY = renderY + scrollAnim.getOutput().floatValue() + height / 2f;
 
@@ -116,13 +113,13 @@ public class MusicLyricWidget extends Widget {
             float addition = spaceValue.getValue().floatValue() + (hasTranslateLine ? lyricHeight * 2f + yGap : lyricHeight);
 
             float lyricWidth = NanoFontLoader.misans.bold().getStringWidth(lyricLine.getLine(), fontSize);
-            if (lyricWidth > width) width = lyricWidth;
+            width = Math.max(width, lyricWidth);
             lyricLine.render(lyricX, lyricY, fontSize, addition, player.getCurrentTime(), fontShadow.getValue(), scrollAnim);
 
             if (translateMap.containsKey(lyricLine)) {
                 LyricLine translateLine = translateMap.get(lyricLine);
                 float translateWidth = NanoFontLoader.misans.getStringWidth(translateLine.getLine(), translateFontSize);
-                if (translateWidth > width) width = translateWidth;
+                width = Math.max(width, translateWidth);
                 translateLine.render(lyricX, lyricY + lyricHeight + yGap + translateHeight / 2f, translateFontSize, addition, player.getCurrentTime(), fontShadow.getValue(), scrollAnim);
             }
 
@@ -170,10 +167,12 @@ public class MusicLyricWidget extends Widget {
             float lyricWidth = NanoFontLoader.misans.bold().getStringWidth(lyricLine.getLine(), fontSize);
 
             if (bloomValue.getValue() && event.bloom) {
+                width = Math.max(width, lyricWidth + lyricHeight / 2f);
                 Gui.drawNewRect(lyricX - lyricWidth / 2f - lyricHeight / 4f, lyricY - lyricHeight / 2f - lyricHeight / 4f, lyricWidth + lyricHeight / 2f, lyricHeight * 1.5f, Color.BLACK.getRGB());
             }
 
             if (blurValue.getValue() && !event.bloom) {
+                width = Math.max(width, lyricWidth + lyricHeight / 2f);
                 Gui.drawNewRect(lyricX - lyricWidth / 2f - lyricHeight / 4f, lyricY - lyricHeight / 2f - lyricHeight / 4f, lyricWidth + lyricHeight / 2f, lyricHeight * 1.5f, Color.BLACK.getRGB());
             }
 
@@ -181,9 +180,11 @@ public class MusicLyricWidget extends Widget {
                 LyricLine translateLine = translateMap.get(lyricLine);
                 float translateWidth = NanoFontLoader.misans.getStringWidth(translateLine.getLine(), fontSize * 0.8f);
                 if (bloomValue.getValue() && event.bloom) {
+                    width = Math.max(width, translateWidth + translateHeight / 2f);
                     Gui.drawNewRect(lyricX - translateWidth / 2f - translateHeight / 4f, lyricY + lyricHeight / 2f, translateWidth + translateHeight / 2f, yGap + translateHeight * 2f, Color.BLACK.getRGB());
                 }
                 if (blurValue.getValue() && !event.bloom) {
+                    width = Math.max(width, translateWidth + translateHeight / 2f);
                     Gui.drawNewRect(lyricX - translateWidth / 2f - translateHeight / 4f, lyricY + lyricHeight / 2f, translateWidth + translateHeight / 2f, yGap + translateHeight * 2f, Color.BLACK.getRGB());
                 }
             }

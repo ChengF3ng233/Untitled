@@ -103,7 +103,7 @@ public class GuiNewChat extends Gui {
                 }
 
                 if (isChatOpen) {
-                    int lineHeight = this.mc.fontRendererObj.FONT_HEIGHT;
+                    int lineHeight = GUI.chatFancyFont.getValue()? (int) AWTFontLoader.miSans(17).getFontHeight() : this.mc.fontRendererObj.FONT_HEIGHT;
                     GlStateManager.translate(-3.0F, 0.0F, 0.0F);
                     int totalHeight = totalChatLines * lineHeight + totalChatLines;
                     int visibleHeight = visibleLines * lineHeight + visibleLines;
@@ -247,8 +247,8 @@ public class GuiNewChat extends Gui {
             if (j >= 0 && k >= 0) {
                 int l = Math.min(this.getLineCount(), this.drawnChatLines.size());
 
-                if (j <= MathHelper.floor_float((float) this.getChatWidth() / this.getChatScale()) && k < this.mc.fontRendererObj.FONT_HEIGHT * l + l) {
-                    int i1 = k / this.mc.fontRendererObj.FONT_HEIGHT + this.scrollPos;
+                if (j <= MathHelper.floor_float((float) this.getChatWidth() / this.getChatScale()) && k < (GUI.chatFancyFont.getValue()? AWTFontLoader.miSans(17).getFontHeight() : this.mc.fontRendererObj.FONT_HEIGHT) * l + l) {
+                    int i1 = (int) (k / (GUI.chatFancyFont.getValue()? AWTFontLoader.miSans(17).getFontHeight() : this.mc.fontRendererObj.FONT_HEIGHT) + this.scrollPos);
 
                     if (i1 >= 0 && i1 < this.drawnChatLines.size()) {
                         ChatLine chatline = this.drawnChatLines.get(i1);

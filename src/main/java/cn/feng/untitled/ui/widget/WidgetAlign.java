@@ -3,8 +3,8 @@ package cn.feng.untitled.ui.widget;
 public interface WidgetAlign {
     int LEFT = 1;
     int RIGHT = 2;
-    int TOP = 3;
-    int BOTTOM = 4;
-    int CENTER = 5;
-    int MIDDLE = 6;
+    int TOP = 4;
+    int BOTTOM = 8;
+    int CENTER = 16;
+    int MIDDLE = 32;
 }
