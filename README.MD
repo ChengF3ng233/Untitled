@@ -1,4 +1,6 @@
 # Untitled Client
+本项目由于某些原因停止更新。请移步至[我的新项目](https://github.com/ChengF3ng233/Aluminium)。<br>
+对于本项目`MusicPlayer`的`base`部分，我将不再开源。而新项目是完全开源的。
 ## 前言
 > 正如标题所言，这是一个无标题的客户端。<br>
 > 这意味着***此客户端仅提供基础功能***，并非一个**黑客端**或**pvp端**。<br>
